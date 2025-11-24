@@ -1,0 +1,8 @@
+mcschematic
+litemapy
+mcrcon
+discord.py
+numpy
+torch
+requests
+

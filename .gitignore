@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+venv/
+.venv/
+
+# Minecraft Server
+simulation/server/
+*.jar
+*.log
+world/
+logs/
+crash-reports/
+usercache.json
+whitelist.json
+ops.json
+banned-ips.json
+banned-players.json
+server.properties
+eula.txt
+.fabric/
+fabric-server-launch.properties
+
+# Data
+*.litematic
+*.schem
+data/
+datasets/
+checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
