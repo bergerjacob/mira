@@ -1,3 +1,8 @@
+"""
+MIRA: Schematic Inventory Utility
+Lists all .litematic files in the data directory and displays their metadata.
+"""
+
 import os
 import sys
 
@@ -37,5 +42,6 @@ def list_schematics():
 
 if __name__ == "__main__":
     list_schematics()
+
 
 

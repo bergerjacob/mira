@@ -1,1 +1,4 @@
-java -Xmx4G -jar ./simulation/server/fabric-server-launch.jar nogui
+#!/bin/bash
+
+cd ./simulation/server
+java -Xmx4G -jar fabric-server-launch.jar nogui

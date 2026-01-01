@@ -22,12 +22,12 @@ We use a custom Python-based builder (`simulation/replicator.py`) that mimics Li
 
 ### Usage
 ```bash
-python scripts/manual_test_paste.py <path_to_schematic> [x] [y] [z]
+python scripts/replicate_schematic.py <path_to_schematic> [x] [y] [z]
 ```
 
 **Example:**
 ```bash
-python scripts/manual_test_paste.py data/raw_schematics/12gt_Dispenser_Factory_Protected.litematic 0 100 0
+python scripts/replicate_schematic.py data/raw_schematics/simple_lamp.litematic 0 100 0
 ```
 
 ### Verification

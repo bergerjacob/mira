@@ -20,5 +20,5 @@ To verify the parser works, we use a "Replicator" workflow:
 
 ## Next Steps for Contributors
 - Add `.litematic` files to `data/raw_schematics/`.
-- Run `python scripts/manual_test_paste.py <filename>`.
+- Run `python scripts/replicate_schematic.py <filename>`.
 

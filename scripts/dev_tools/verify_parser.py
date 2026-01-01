@@ -1,3 +1,9 @@
+"""
+MIRA: Parser Verification Utility
+Tests the SchematicParser against a known litematic file to ensure 
+fidelity of block states and NBT extraction.
+"""
+
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -27,5 +33,6 @@ def test_parser():
 
 if __name__ == "__main__":
     test_parser()
+
 
 

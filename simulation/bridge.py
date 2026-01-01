@@ -1,3 +1,9 @@
+"""
+MIRA: Minecraft RCON Bridge
+Handles low-level communication with the Minecraft server via RCON, 
+providing methods for command execution and world manipulation.
+"""
+
 import time
 import re
 from mcrcon import MCRcon

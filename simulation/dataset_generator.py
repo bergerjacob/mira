@@ -11,6 +11,17 @@ from data_mining.parser import SchematicParser
 from simulation.deconstructor import ReverseDeconstructor
 from simulation.teacher_client import TeacherClient
 
+class NBTEncoder(json.JSONEncoder):
+    def default(self, obj):
+        # Handle nbtlib types that are not JSON serializable by default
+        if hasattr(obj, 'snbt'):
+            return obj.snbt()
+        if hasattr(obj, 'tolist'): # Handle numpy arrays or similar
+            return obj.tolist()
+        try:
+            return super().default(obj)
+        except TypeError:
+            return str(obj)
 
 class ReverseDatasetGenerator:
     """
@@ -90,7 +101,7 @@ def main():
             print(f"Processing {path} ...")
             try:
                 result = generator.process_schematic(path)
-                outfile.write(json.dumps(result) + "\n")
+                outfile.write(json.dumps(result, cls=NBTEncoder) + "\n")
             except Exception as exc:
                 print(f"Failed to process {path}: {exc}")
 

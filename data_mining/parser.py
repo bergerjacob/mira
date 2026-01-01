@@ -1,3 +1,9 @@
+"""
+MIRA: Litematic Schematic Parser
+Provides a high-level API for extracting block data, NBT states, and entities 
+from .litematic files.
+"""
+
 import os
 from litemapy import Schematic, Region, BlockState
 

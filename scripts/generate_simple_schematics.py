@@ -1,3 +1,8 @@
+"""
+MIRA: Synthetic Schematic Generator
+Creates simple redstone and container-based schematics for integration testing.
+"""
+
 import os
 import sys
 from litemapy import Schematic, Region, BlockState

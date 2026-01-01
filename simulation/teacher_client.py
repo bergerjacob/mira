@@ -160,11 +160,27 @@ class TeacherClient:
     def suggest_deconstruction_layer(
         self, blocks: List[Tuple[int, int, int, str, Any]], iteration: int = 0
     ) -> Dict[str, Any]:
+        """
+        Suggests blocks for removal based on logical layers.
+        
+        In production, this interface connects to an LLM to generate engineering-grade
+        reasoning. In the architectural stage, it utilizes a Y-layer heuristic to
+        demonstrate pipeline functionality.
+        """
         system_prompt = self.DECONSTRUCTOR_SYSTEM_PROMPT.strip()
         user_prompt = self._build_deconstruction_user_prompt(blocks)
 
         if self.mock_mode or self.llm_client is None:
-            response = self._mock_deconstruction_response(blocks)
+            # Heuristic: Remove the entire top-most layer (highest Y)
+            if not blocks:
+                response = {"reasoning": "Structure already empty.", "remove_blocks": []}
+            else:
+                highest_y = max(b[1] for b in blocks)
+                layer_blocks = [list(b[:3]) for b in blocks if b[1] == highest_y]
+                response = {
+                    "reasoning": f"[HEURISTIC] Removing all blocks at Y={highest_y} to simulate layer-by-layer deconstruction.",
+                    "remove_blocks": layer_blocks
+                }
         else:
             raw = self.llm_client.complete(system_prompt=system_prompt, user_prompt=user_prompt)
             response = json.loads(raw)
@@ -190,63 +206,3 @@ class TeacherClient:
         lines.append('Identify the next set of blocks to delete to strip this down to the "Skeleton".')
 
         return "\n".join(lines)
-
-    def _mock_deconstruction_response(
-        self, blocks: List[Tuple[int, int, int, str, Any]]
-    ) -> Dict[str, Any]:
-        if not blocks:
-            return {"reasoning": "Structure already empty.", "remove_blocks": []}
-
-        priority_map = {"decoration": 0, "control": 1, "core": 2, "foundation": 3}
-
-        enriched = []
-        for record in blocks:
-            x, y, z, state, _ = record
-            block_id = state.split("[", 1)[0].replace("minecraft:", "")
-            category = self._classify_block(block_id)
-            enriched.append({"pos": (x, y, z), "category": category, "state": state})
-
-        active_category = min(enriched, key=lambda item: priority_map[item["category"]])["category"]
-
-        removal_candidates = [
-            item["pos"]
-            for item in enriched
-            if item["category"] == active_category and not self._supports_other_block(item["pos"], blocks)
-        ]
-
-        if not removal_candidates:
-            # Fallback: remove highest block to maintain progress.
-            highest = max(blocks, key=lambda b: (b[1], b[0], b[2]))
-            removal_candidates = [(highest[0], highest[1], highest[2])]
-            active_category = "fallback"
-
-        reasoning_map = {
-            "decoration": "Removing decorative/output shell to expose control wiring.",
-            "control": "Removing control wiring before touching core mechanisms.",
-            "core": "Stripping core mechanisms now that wiring is gone.",
-            "foundation": "Clearing remaining scaffold/support blocks.",
-            "fallback": "Fallback removal to prevent stalling (highest block removed).",
-        }
-
-        return {
-            "reasoning": reasoning_map.get(active_category, "Heuristic removal."),
-            "remove_blocks": [list(pos) for pos in removal_candidates],
-        }
-
-    def _classify_block(self, block_id: str) -> str:
-        if any(keyword in block_id for keyword in ["lamp", "door", "frame", "glass", "stone", "wall"]):
-            return "decoration"
-        if any(keyword in block_id for keyword in ["redstone", "lever", "button", "torch", "repeater", "comparator"]):
-            return "control"
-        if any(keyword in block_id for keyword in ["piston", "hopper", "dropper", "dispenser", "sticky", "observer"]):
-            return "core"
-        return "foundation"
-
-    def _supports_other_block(
-        self, pos: Tuple[int, int, int], blocks: List[Tuple[int, int, int, str, Any]]
-    ) -> bool:
-        x, y, z = pos
-        for bx, by, bz, _, _ in blocks:
-            if bx == x and bz == z and by == y + 1:
-                return True
-        return False

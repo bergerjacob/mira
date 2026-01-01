@@ -1,57 +1,73 @@
-# MIRA
+# MIRA: Minecraft Iterative Reasoning Agent
 
-MIRA is an AI system designed to generate, debug, and optimize Minecraft Redstone circuits. It uses a hierarchical planning architecture, headless simulation (Carpet Mod), and reinforcement learning to build and verify complex redstone contraptions.
+MIRA is an experimental AI framework designed to bridge the gap between high-level engineering requirements and functional Minecraft Redstone circuits. Unlike standard generative models that often struggle with the strict logic of redstone physics, MIRA uses an iterative approach—combining hierarchical planning, real-time simulation, and automated verification.
+
+> **Status:** Work in Progress. Current focus is on dataset generation and simulation fidelity. Core infrastructure is operational but not yet fully optimized for production environments.
+
+## Core Features
+
+- **Hierarchical Planning:** Breaks down complex circuits into manageable modules with defined spatial constraints.
+- **Headless Simulation:** Utilizes a Fabric-based Minecraft server with [Carpet Mod](https://github.com/gnembon/fabric-carpet) for high-speed block-state verification.
+- **Automated Replicator:** A robust Python-to-Minecraft bridge that handles block states, NBT data, and entity summoning via RCON.
+- **Verification Engine:** In-game Scarpet scripts provide real-time feedback on redstone signals, container states, and logic flow.
 
 ## Project Structure
 
-- `docs/`: Documentation and Technical Design Documents.
-- `data_mining/`: Tools for scraping and processing schematic data.
-- `simulation/`: Minecraft server interface and simulation environment.
-  - `server/`: The Minecraft server instance (ignored in git).
-  - `bridge.py`: Python-to-Minecraft RCON bridge.
-  - `replicator.py`: Robust schematic builder (Python -> Minecraft).
-  - `scarpet_scripts/`: In-game API scripts using Scarpet.
-- `agent/`: The core AI logic (Architect and Contractor modes).
-- `training/`: Training pipelines and dataset management.
+- `agent/`: Core AI logic implementing Architect (planning) and Contractor (implementation) modes.
+- `simulation/`: Minecraft server integration, RCON bridge, and the Scarpet-based verification API.
+- `data_mining/`: Tools for extracting and processing redstone knowledge from `.litematic` schematics.
+- `training/`: Pipelines for synthetic dataset generation and reinforcement learning.
+- `docs/`: Technical design documents and implementation guides.
 
 ## Getting Started
 
 ### Prerequisites
 
-- Python 3.8+
-- Java 21 (for Minecraft 1.21 Server)
+- **Python 3.10+**
+- **Java 21** (Required for Minecraft 1.21 server)
 
 ### Setup
 
-1. Install dependencies:
+1. **Environment Initialization:**
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate
    pip install -r requirements.txt
    ```
 
-2. Set up the simulation environment:
+2. **Simulation Environment Setup:**
+   Run the automated setup script to download the server, Fabric loader, and necessary mods:
    ```bash
    python setup.py
    ```
 
-## Usage
+## Development & Testing
 
-### 1. Manual Testing (Replicator)
-To build a `.litematic` file in the server:
-```bash
-python scripts/manual_test_paste.py data/raw_schematics/file.litematic 0 100 0
-```
+### Integration Testing
+MIRA includes a suite of integration tests that verify the full "Parse -> Build -> Verify" loop. This ensures the replicator and simulation API are working in sync.
 
-### 2. Integration Testing
-To run the full Parse -> Build -> Verify loop:
 ```bash
 python simulation/tests/test_integration.py
 ```
-This runs a comprehensive suite of scenarios checking Blocks, NBT, Entities, Inventories, and Redstone Signals.
 
-## Phase Status
-- **Phase 1**: Infrastructure (Completed)
-- **Phase 2**: Data Factory & Replicator (Completed)
-- **Phase 3**: Simulator & Verification (Completed)
-- **Phase 4**: Dataset Generation (Next Steps)
+### Manual Schematic Replication
+To manually test the replication of a specific `.litematic` file:
+```bash
+python scripts/replicate_schematic.py data/raw_schematics/your_file.litematic <x> <y> <z>
+```
+
+### Dataset Generation (Phase 4)
+To generate a synthetic reasoning dataset from a directory of schematics:
+```bash
+python simulation/dataset_generator.py --input-dir data/raw_schematics --output-file data/training/reverse_dataset.jsonl
+```
+
+## Roadmap & Progress
+
+| Phase | Milestone | Status | Details |
+| :--- | :--- | :--- | :--- |
+| **1** | Infrastructure | **Stable** | RCON bridge and server orchestration are operational. |
+| **2** | Data Factory | **Stable** | Litematic parsing supports blocks, NBT, and entities. |
+| **3** | Verification | **Stable** | Scarpet API validates redstone signal propagation and state. |
+| **4** | Reasoning | **In Progress** | Infrastructure for synthetic reasoning traces is architected. |
+| **5** | Training | **Planned** | SFT and RL training on generated datasets. |

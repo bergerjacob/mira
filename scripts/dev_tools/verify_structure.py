@@ -1,3 +1,9 @@
+"""
+MIRA: Structure Verification Utility
+Manually triggers a verification pass on a specific coordinate region 
+to compare current server blocks against an expected state.
+"""
+
 import sys
 import os
 import time

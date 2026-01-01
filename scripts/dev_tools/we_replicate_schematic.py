@@ -1,3 +1,9 @@
+"""
+MIRA: WorldEdit Replication Utility
+Alternative replication method using WorldEdit schematics and 
+a bot-based Scarpet wrapper.
+"""
+
 import sys
 import os
 import time

@@ -5,4 +5,7 @@ discord.py
 numpy
 torch
 requests
+nbtlib
+
+
 

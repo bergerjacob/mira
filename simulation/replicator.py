@@ -106,8 +106,10 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
         
     time.sleep(1.0)
     
-    # 3. Sort Blocks (by Y, then X/Z)
-    blocks.sort(key=lambda b: (b[1], b[0], b[2])) # Y, X, Z
+    # Sort Blocks (by Y, then X, then Z)
+    # Sorting by Y ensures blocks are built from the bottom up, which is critical
+    # for certain Minecraft block dependencies (like doors or tall plants).
+    blocks.sort(key=lambda b: (b[1], b[0], b[2]))
 
     count = 0
     total = len(blocks)
@@ -120,7 +122,7 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
         abs_y = oy + y
         abs_z = oz + z
         
-        # Entity
+        # --- Entity Handling ---
         if block_state.startswith("entity:"):
             entity_id = block_state.split(":", 1)[1]
             nbt_str = "{}"
@@ -128,6 +130,7 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
                 if hasattr(nbt_obj, 'copy'): nbt_copy = nbt_obj.copy()
                 else: nbt_copy = dict(nbt_obj)
                 
+                # Strip conflicting NBT keys
                 for key in ['Pos', 'UUID', 'OnGround', 'Dimension', 'PortalCooldown', 'id']:
                     if key in nbt_copy: del nbt_copy[key]
                 
@@ -142,7 +145,7 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
             count += 1
             continue
         
-        # Block
+        # --- Block Handling ---
         final_nbt_str = None
         items_to_add = []
         
@@ -150,6 +153,7 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
             if hasattr(nbt_obj, 'copy'): nbt_copy = nbt_obj.copy()
             else: nbt_copy = dict(nbt_obj)
             
+            # Split items into separate commands to avoid RCON packet limits
             if 'Items' in nbt_copy:
                  items_list = nbt_copy['Items']
                  if len(items_list) > 0:
@@ -163,21 +167,15 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
                 print(f"Error serializing NBT: {e}")
                 final_nbt_str = str(nbt_copy)
         
-        # Set Block
+        # Placement with retries
         max_retries = 3
         block_placed = False
-        
-        # DEBUG: Log full block state and NBT
-        if nbt_obj:
-             print(f"DEBUG: Placing {block_state} at {abs_x},{abs_y},{abs_z} with NBT: {final_nbt_str} and {len(items_to_add)} items")
-        else:
-             print(f"DEBUG: Placing {block_state} at {abs_x},{abs_y},{abs_z}")
         
         for attempt in range(max_retries):
             try:
                 resp = bridge.set_block(abs_x, abs_y, abs_z, block_state, final_nbt_str)
                 if resp and ("Incorrect" in resp or "Invalid" in resp or "Expected" in resp or "Unknown" in resp or "Error" in resp):
-                    print(f"ERROR placing block at {abs_x},{abs_y},{abs_z}: {resp}")
+                    print(f"ERROR: Failed to place block at {abs_x},{abs_y},{abs_z}: {resp}")
                     if "Incorrect" in resp or "Invalid" in resp: break
                 else:
                     block_placed = True
@@ -186,7 +184,7 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
                 print(f"Warning: Exception setting block (Attempt {attempt+1}/{max_retries}): {e}")
                 is_network_error = "Broken pipe" in str(e) or "timeout" in str(e)
                 if is_network_error:
-                    print("Network error. Reconnecting...")
+                    print("Network error detected. Attempting to reconnect...")
                     try: bridge.disconnect()
                     except: pass
                     time.sleep(1 * (attempt + 1))
@@ -195,23 +193,25 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
                 else:
                     time.sleep(0.1)
 
-        # Add Items
-        if items_to_add:
-            if block_placed:
-                print(f"Adding {len(items_to_add)} items to container at {abs_x},{abs_y},{abs_z}...")
-                for i, item in enumerate(items_to_add):
-                    if 'Count' in item:
-                        item['count'] = item['Count']
-                        del item['Count']
-                    item_snbt = item.snbt() if hasattr(item, 'snbt') else str(item)
-                    cmd = f"data modify block {abs_x} {abs_y} {abs_z} Items append value {item_snbt}"
-                    try: bridge.run_command(cmd)
-                    except Exception as e: print(f"Failed to add item {i}: {e}")
-                    
-                    commands_sent += 1
-                    if commands_sent >= rate_limit:
-                        time.sleep(TICK_INTERVAL)
-                        commands_sent = 0
+        # Container Inventory Handling
+        if items_to_add and block_placed:
+            for i, item in enumerate(items_to_add):
+                # Standardize 'count' for Minecraft 1.21
+                if 'Count' in item:
+                    item['count'] = item['Count']
+                    del item['Count']
+                
+                item_snbt = item.snbt() if hasattr(item, 'snbt') else str(item)
+                cmd = f"data modify block {abs_x} {abs_y} {abs_z} Items append value {item_snbt}"
+                try: 
+                    bridge.run_command(cmd)
+                except Exception as e: 
+                    print(f"Failed to add item {i} to container: {e}")
+                
+                commands_sent += 1
+                if commands_sent >= rate_limit:
+                    time.sleep(TICK_INTERVAL)
+                    commands_sent = 0
         
         count += 1
         commands_sent += 1
