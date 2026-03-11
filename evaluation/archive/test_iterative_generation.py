@@ -8,6 +8,7 @@ Tests the iterative approach where LLM builds circuits step-by-step.
 This is the recommended approach to eliminate training-serving skew.
 """
 
+import os
 import sys
 import json
 import time
@@ -361,7 +362,7 @@ class IterativeTestRunner:
 
 
 def main():
-    api_key = "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"
+    api_key = os.environ.get("OPENROUTER_API_KEY", "")
     
     # Test on subset of circuits (iterative is expensive)
     test_circuits = [

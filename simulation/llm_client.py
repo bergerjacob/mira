@@ -4,10 +4,24 @@ Provides unified interface to multiple LLM providers via OpenRouter API.
 Supports structured outputs (JSON schema enforcement).
 """
 
+import os
 import requests
 import json
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass
+
+
+def _get_api_key() -> str:
+    """Get API key from environment variable. Raises error if not set."""
+    api_key = os.environ.get("OPENROUTER_API_KEY")
+    if not api_key:
+        raise RuntimeError(
+            "OPENROUTER_API_KEY environment variable not set.\n"
+            "Please set it before running:\n"
+            "  export OPENROUTER_API_KEY='your-key-here'\n"
+            "Or add it to your .bashrc/.zshrc file."
+        )
+    return api_key
 
 
 @dataclass
@@ -40,11 +54,11 @@ class OpenRouterClient:
         "gpt-4o": "openai/gpt-4o",
     }
     
-    def __init__(self, api_key: str):
-        self.api_key = api_key
+    def __init__(self, api_key: Optional[str] = None):
+        self.api_key = api_key or _get_api_key()
         self.session = requests.Session()
         self.session.headers.update({
-            "Authorization": f"Bearer {api_key}",
+            "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
         })
     

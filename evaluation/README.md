@@ -127,11 +127,13 @@ These represent **tested but rejected approaches**:
 
 ## API Configuration
 
-Uses OpenRouter API. Set your key in scripts or via environment:
+Uses OpenRouter API. Must be set via environment variable:
 
 ```bash
-export OPENROUTER_API_KEY="sk-or-v1-..."
+export OPENROUTER_API_KEY="your-key-here"
 ```
+
+Scripts will error if `OPENROUTER_API_KEY` is not set.
 
 **Recommended model:** `google/gemini-3.1-flash-lite-preview`
 

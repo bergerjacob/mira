@@ -170,11 +170,12 @@ result = bridge.run_scarpet("scarpet_scripts/test_redstone.signal_strength(x, y,
 
 ## API Configuration
 
-The project uses OpenRouter API. Set your key in `simulation/llm_client.py` or via environment variable:
+The project uses OpenRouter API. You must set your API key as an environment variable:
 
 ```bash
-export OPENROUTER_API_KEY="sk-or-v1-..."
+export OPENROUTER_API_KEY="your-key-here"
 ```
+
 
 **Recommended model:** `google/gemini-3.1-flash-lite-preview` (best price/performance)
 

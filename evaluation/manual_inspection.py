@@ -4,12 +4,24 @@ Generate sample circuits and manually inspect actual block outputs.
 Verify: correct block types, logical positions, valid reasoning.
 """
 
+import os
 import json
 import requests
 import re
 
-API_KEY = "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"
 BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+def _get_api_key() -> str:
+    api_key = os.environ.get("OPENROUTER_API_KEY")
+    if not api_key:
+        raise RuntimeError(
+            "OPENROUTER_API_KEY environment variable not set.\n"
+            "Please set it before running:\n"
+            "  export OPENROUTER_API_KEY='your-key-here'"
+        )
+    return api_key
+
+API_KEY = _get_api_key()
 MODEL = "google/gemini-3.1-flash-lite-preview"
 
 def call_llm(messages, schema, temperature=0.5, max_tokens=8192):

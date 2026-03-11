@@ -18,8 +18,8 @@ from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, asdict
 from datetime import datetime
 
-# OpenRouter API Key
-OPENROUTER_API_KEY = "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"
+# OpenRouter API Key (from environment)
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 
 # Add project root to path
 sys.path.append(str(Path(__file__).parent.parent))

@@ -13,8 +13,7 @@ from simulation.llm_client import OpenRouterClient, ChatMessage
 
 def test_basic_chat():
     """Test basic chat completion."""
-    api_key = "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"
-    client = OpenRouterClient(api_key)
+    client = OpenRouterClient()
     
     print("Testing basic chat with glm-5...")
     
@@ -35,8 +34,7 @@ def test_basic_chat():
 
 def test_structured_output():
     """Test structured JSON output."""
-    api_key = "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"
-    client = OpenRouterClient(api_key)
+    client = OpenRouterClient()
     
     print("\nTesting structured output...")
     
@@ -74,8 +72,7 @@ def test_structured_output():
 
 def test_redstone_prompt():
     """Test with actual redstone building prompt."""
-    api_key = "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"
-    client = OpenRouterClient(api_key)
+    client = OpenRouterClient()
     
     print("\nTesting redstone building prompt...")
     

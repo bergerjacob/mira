@@ -5,6 +5,7 @@ Tests: Plan-Then-Execute, One-Shot, Chunked on circuits with 50-100 blocks.
 Includes quantitative AND qualitative analysis.
 """
 
+import os
 import json
 import time
 import requests
@@ -13,8 +14,19 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Any
 
-API_KEY = "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"
 BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+def _get_api_key() -> str:
+    api_key = os.environ.get("OPENROUTER_API_KEY")
+    if not api_key:
+        raise RuntimeError(
+            "OPENROUTER_API_KEY environment variable not set.\n"
+            "Please set it before running:\n"
+            "  export OPENROUTER_API_KEY='your-key-here'"
+        )
+    return api_key
+
+API_KEY = _get_api_key()
 MODEL = "google/gemini-3.1-flash-lite-preview"
 
 def call_llm(messages, schema, temperature=0.0, max_tokens=4096):

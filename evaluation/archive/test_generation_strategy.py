@@ -26,6 +26,7 @@ This test validates whether our training data generation strategy
 matches what we expect MIRA to do at inference time.
 """
 
+import os
 import sys
 import json
 from pathlib import Path
@@ -35,7 +36,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 from simulation.llm_client import OpenRouterClient, ChatMessage
 
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 
 # Test circuit
 TARGET_CIRCUIT = {

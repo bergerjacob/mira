@@ -8,6 +8,7 @@ Tests LLM ability to build redstone circuits of varying complexity.
 Includes detailed metrics, token usage tracking, and quality analysis.
 """
 
+import os
 import sys
 import json
 import time
@@ -414,7 +415,7 @@ Build the following redstone circuit:
 
 
 def main():
-    api_key = "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"
+    api_key = os.environ.get("OPENROUTER_API_KEY", "")
     
     # Define test parameters
     models = [

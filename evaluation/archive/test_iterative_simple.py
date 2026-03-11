@@ -8,6 +8,7 @@ Iterative generation test - generates circuits step by step.
 Compares quality and cost with one-shot generation.
 """
 
+import os
 import sys
 import json
 import time
@@ -16,8 +17,9 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Any
 
-API_KEY = "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"
 BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 
 MODEL = "google/gemini-3.1-flash-lite-preview"
 
