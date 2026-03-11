@@ -150,10 +150,23 @@ result = bridge.run_scarpet("scarpet_scripts/test_redstone.signal_strength(x, y,
 
 ## Documentation
 
-- **`docs/TESTING_REPORT.md`** - Complete testing results and analysis
-- **`docs/PAST_ATTEMPTS.md`** - Historical context and experiments
-- **`docs/technical_design.md`** - Technical architecture
-- **`evaluation/README.md`** - Testing infrastructure guide
+**For new developers / coding agents:**
+
+1. **`docs/ARCHITECTURE.md`** - Complete system reference (READ FIRST)
+   - Current architecture (one-shot training)
+   - Future architecture (iterative with verification)
+   - All components explained
+   - Development phases and roadmap
+   - How to get started
+
+2. **`docs/TESTING_REPORT.md`** - What we validated, key findings
+3. **`docs/PAST_ATTEMPTS.md`** - Historical context, what we tried
+
+**Testing infrastructure:**
+- **`evaluation/README.md`** - How to run tests
+
+**Archive (reference only):**
+- **`docs/archive_technical_design_original.md`** - Original vision (superseded by ARCHITECTURE.md)
 
 ## API Configuration
 

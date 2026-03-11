@@ -306,3 +306,11 @@ All test results saved in `evaluation/results/`:
 *Report compiled March 11, 2026*  
 *Total API cost: ~$0.10*  
 *Status: Production ready*
+
+---
+
+## See Also
+
+- **`docs/ARCHITECTURE.md`** - Complete system architecture and roadmap
+- **`docs/PAST_ATTEMPTS.md`** - What we tried and why
+- **`evaluation/README.md`** - How to run the tests
