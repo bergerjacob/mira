@@ -1,0 +1,20 @@
+{
+  "id": "simple_lamp",
+  "name": "Simple Lever-Activated Lamp",
+  "description": "Build a simple redstone circuit where flipping a lever turns on a redstone lamp. The lever should be at one end, redstone dust in the middle, and the lamp at the other end.",
+  "difficulty": "beginner",
+  "expected_blocks": 3,
+  "ground_truth": {
+    "blocks": [
+      {"x": 0, "y": 0, "z": 0, "state": "minecraft:lever[facing=east,powered=false]"},
+      {"x": 1, "y": 0, "z": 0, "state": "minecraft:redstone_wire"},
+      {"x": 2, "y": 0, "z": 0, "state": "minecraft:redstone_lamp[lit=false]"}
+    ]
+  },
+  "verification": {
+    "initial_state": "Lamp should be OFF (lit=false)",
+    "action": "Set lever to powered=true",
+    "expected_result": "Lamp should be ON (lit=true) after 5-10 ticks",
+    "scarpet_test": "mira_api check_block 2 100 0 minecraft:redstone_lamp[lit=true]"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "t_flip_flop",
+  "name": "T Flip-Flop Circuit",
+  "description": "Build a T (toggle) flip-flop using two T-redstone circuits. Each press of the input lever should toggle the output state. Use two sets of comparators and repeaters to create the toggle behavior.",
+  "difficulty": "expert",
+  "expected_blocks": 24,
+  "ground_truth": {
+    "blocks": [
+      {"x": 0, "y": 0, "z": 0, "state": "minecraft:lever[facing=east,powered=false]"},
+      {"x": 1, "y": 0, "z": 0, "state": "minecraft:redstone_wire"},
+      {"x": 2, "y": 0, "z": -1, "state": "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"},
+      {"x": 3, "y": 0, "z": -1, "state": "minecraft:redstone_wire"},
+      {"x": 4, "y": 0, "z": -1, "state": "minecraft:comparator[facing=east,mode=subtract,powered=false]"},
+      {"x": 5, "y": 0, "z": -1, "state": "minecraft:redstone_wire"},
+      {"x": 6, "y": 0, "z": -1, "state": "minecraft:redstone_torch[facing=east]"},
+      {"x": 6, "y": 1, "z": -1, "state": "minecraft:stone"},
+      {"x": 2, "y": 0, "z": 1, "state": "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"},
+      {"x": 3, "y": 0, "z": 1, "state": "minecraft:redstone_wire"},
+      {"x": 4, "y": 0, "z": 1, "state": "minecraft:comparator[facing=east,mode=subtract,powered=false]"},
+      {"x": 5, "y": 0, "z": 1, "state": "minecraft:redstone_wire"},
+      {"x": 6, "y": 0, "z": 1, "state": "minecraft:redstone_torch[facing=east]"},
+      {"x": 6, "y": 1, "z": 1, "state": "minecraft:stone"},
+      {"x": 7, "y": 0, "z": -1, "state": "minecraft:redstone_wire"},
+      {"x": 7, "y": 0, "z": 0, "state": "minecraft:redstone_wire"},
+      {"x": 7, "y": 0, "z": 1, "state": "minecraft:redstone_wire"},
+      {"x": 8, "y": 0, "z": 0, "state": "minecraft:comparator[facing=east,mode=subtract,powered=false]"},
+      {"x": 9, "y": 0, "z": 0, "state": "minecraft:redstone_wire"},
+      {"x": 10, "y": 0, "z": 0, "state": "minecraft:redstone_lamp[lit=false]"}
+    ]
+  },
+  "verification": {
+    "initial_state": "Lamp should be OFF",
+    "action": "Toggle lever ON then OFF",
+    "expected_result": "Lamp should turn ON after first toggle, OFF after second toggle",
+    "notes": "T flip-flop toggles state on each clock pulse (lever toggle)"
+  }
+}

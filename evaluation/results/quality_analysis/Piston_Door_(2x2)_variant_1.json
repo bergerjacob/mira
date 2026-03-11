@@ -1,0 +1,181 @@
+{
+  "circuit": "Piston Door (2x2)",
+  "prompt_variant": 1,
+  "quality_score": 58.333333333333336,
+  "result": {
+    "overall_plan": "The circuit creates a 2x2 piston door by using a grounded lever to power a contiguous redstone line. This line runs beneath a 2x2 grid of sticky pistons, providing simultaneous power to all four pistons, which in turn push the stone blocks into the wall aperture.",
+    "construction_steps": [
+      {
+        "step": 1,
+        "block_to_place": {
+          "x": 2,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:sticky_piston[facing=up]"
+        },
+        "reasoning": "Placing the first sticky piston as the anchor for the door mechanism. It must be placed first to define the position of the door blocks.",
+        "function": "actuator",
+        "connects_to": [
+          "(2, 1, 0)"
+        ]
+      },
+      {
+        "step": 2,
+        "block_to_place": {
+          "x": 2,
+          "y": 1,
+          "z": 0,
+          "state": "minecraft:stone"
+        },
+        "reasoning": "Placing the door block directly on top of the sticky piston at (2,0,0) so the piston can move this block vertically.",
+        "function": "door_material",
+        "connects_to": [
+          "(2, 0, 0)"
+        ]
+      },
+      {
+        "step": 3,
+        "block_to_place": {
+          "x": 2,
+          "y": 0,
+          "z": 1,
+          "state": "minecraft:sticky_piston[facing=up]"
+        },
+        "reasoning": "Placing the second piston adjacent to the first to expand the door to a 2x2 width.",
+        "function": "actuator",
+        "connects_to": [
+          "(2, 1, 1)"
+        ]
+      },
+      {
+        "step": 4,
+        "block_to_place": {
+          "x": 2,
+          "y": 1,
+          "z": 1,
+          "state": "minecraft:stone"
+        },
+        "reasoning": "Placing the door block on top of the piston at (2,0,1) to complete the left half of the door.",
+        "function": "door_material",
+        "connects_to": [
+          "(2, 0, 1)"
+        ]
+      },
+      {
+        "step": 5,
+        "block_to_place": {
+          "x": 3,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:sticky_piston[facing=up]"
+        },
+        "reasoning": "Placing the third piston to extend the door structure horizontally.",
+        "function": "actuator",
+        "connects_to": [
+          "(3, 1, 0)"
+        ]
+      },
+      {
+        "step": 6,
+        "block_to_place": {
+          "x": 3,
+          "y": 1,
+          "z": 0,
+          "state": "minecraft:stone"
+        },
+        "reasoning": "Placing the door block on top of the piston at (3,0,0) to continue the door surface.",
+        "function": "door_material",
+        "connects_to": [
+          "(3, 0, 0)"
+        ]
+      },
+      {
+        "step": 7,
+        "block_to_place": {
+          "x": 3,
+          "y": 0,
+          "z": 1,
+          "state": "minecraft:sticky_piston[facing=up]"
+        },
+        "reasoning": "Placing the final piston to complete the 2x2 grid.",
+        "function": "actuator",
+        "connects_to": [
+          "(3, 1, 1)"
+        ]
+      },
+      {
+        "step": 8,
+        "block_to_place": {
+          "x": 3,
+          "y": 1,
+          "z": 1,
+          "state": "minecraft:stone"
+        },
+        "reasoning": "Placing the final door block on top of the piston at (3,0,1) to complete the 2x2 stone wall.",
+        "function": "door_material",
+        "connects_to": [
+          "(3, 0, 1)"
+        ]
+      },
+      {
+        "step": 9,
+        "block_to_place": {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "Placing redstone wire at (1,0,0) to carry the signal from the lever closer to the piston bank.",
+        "function": "signal_transmission",
+        "connects_to": [
+          "(0, 0, 0)",
+          "(2, 0, 0)"
+        ]
+      },
+      {
+        "step": 10,
+        "block_to_place": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "Connecting the wire at (1,0,0) to the lever position.",
+        "function": "signal_transmission",
+        "connects_to": [
+          "(-1, 0, 0)",
+          "(1, 0, 0)"
+        ]
+      },
+      {
+        "step": 11,
+        "block_to_place": {
+          "x": -1,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "Connecting the wire at (0,0,0) to the lever at (-2,0,0).",
+        "function": "signal_transmission",
+        "connects_to": [
+          "(-2, 0, 0)",
+          "(0, 0, 0)"
+        ]
+      },
+      {
+        "step": 12,
+        "block_to_place": {
+          "x": -2,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:lever"
+        },
+        "reasoning": "Placing the lever to act as the primary power source for the entire circuit, triggering the redstone line when toggled.",
+        "function": "power_source",
+        "connects_to": [
+          "(-1, 0, 0)"
+        ]
+      }
+    ]
+  }
+}

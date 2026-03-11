@@ -1,0 +1,16 @@
+{
+  "id": "comparator_subtractor",
+  "name": "Redstone Comparator Subtractor",
+  "description": "Build a simple comparator subtractor circuit. Use two inputs and a comparator in subtract mode to create a circuit that outputs the difference between two signals.",
+  "difficulty": "advanced",
+  "expected_blocks": 8,
+  "hints": [
+    "Comparator in subtract mode has torches on both sides",
+    "Main input goes into the back",
+    "Subtract input goes into the side",
+    "Output is main_input minus side_input"
+  ],
+  "verification": {
+    "test": "Verify output signal strength equals difference between inputs"
+  }
+}

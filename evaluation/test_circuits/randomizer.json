@@ -1,0 +1,20 @@
+{
+  "id": "randomizer",
+  "name": "Redstone Random Number Generator",
+  "description": "Build a redstone randomizer using observer-based randomness. Use multiple observers watching torches or other unstable components to generate unpredictable output. The circuit should output one of 4 possible signals (selectable via lamps or colored wool).",
+  "difficulty": "advanced",
+  "expected_blocks": 32,
+  "hints": [
+    "Observers watching torches can detect random flickering",
+    "Use multiple observers in parallel for different outputs",
+    "Torch randomness comes from game tick variations",
+    "Can use water flow or sand falling for additional entropy",
+    "Output can be amplified with comparators"
+  ],
+  "verification": {
+    "initial_state": "All output lamps should be off",
+    "action": "Activate the randomizer with a lever",
+    "expected_result": "One of the 4 output lamps should light up randomly",
+    "test": "Trigger multiple times and verify different outputs occur"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "hopper_transporter",
+  "name": "Hopper Item Transporter",
+  "description": "Build a simple item transporter using hoppers. Items placed in the top chest should flow through a hopper into a bottom chest.",
+  "difficulty": "beginner",
+  "expected_blocks": 3,
+  "ground_truth": {
+    "blocks": [
+      {"x": 0, "y": 2, "z": 0, "state": "minecraft:chest[facing=north,type=single]"},
+      {"x": 0, "y": 1, "z": 0, "state": "minecraft:hopper[facing=down]"},
+      {"x": 0, "y": 0, "z": 0, "state": "minecraft:chest[facing=north,type=single]"}
+    ]
+  },
+  "verification": {
+    "initial_state": "All containers empty",
+    "action": "Place item in top chest",
+    "expected_result": "Item should appear in bottom chest within 1 second (hopper tick rate)",
+    "notes": "This test requires manual verification or a longer automated test"
+  }
+}

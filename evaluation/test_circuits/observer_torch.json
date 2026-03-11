@@ -1,0 +1,18 @@
+{
+  "id": "observer_torch",
+  "name": "Observer Activated Torch",
+  "description": "Build a circuit where an observer detects a block placement and activates a redstone torch or lamp. Place an observer facing a block, and connect its output to a redstone lamp.",
+  "difficulty": "intermediate",
+  "expected_blocks": 4,
+  "hints": [
+    "Observer has a front (with eyes) and back (with redstone dot)",
+    "Observer outputs signal from the back when it detects a change in front",
+    "Place a block in front of the observer's face",
+    "Connect redstone from observer back to lamp"
+  ],
+  "verification": {
+    "initial_state": "Lamp may be off initially",
+    "action": "Break and replace the block in front of observer",
+    "expected_result": "Lamp should flash on when observer detects the change"
+  }
+}

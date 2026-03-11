@@ -1,0 +1,113 @@
+{
+  "circuit": "Redstone Line (Corner)",
+  "prompt_variant": 3,
+  "quality_score": 82.85714285714286,
+  "result": {
+    "overall_plan": "The circuit creates a 90-degree signal path starting from a lever, traversing a straight line, turning, and terminating in a lamp. The signal flows from the lever, through a chain of redstone dust, ending at the lamp block which updates based on the wire state.",
+    "construction_steps": [
+      {
+        "step": 1,
+        "block_to_place": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+        },
+        "reasoning": "Place the lever at the origin to serve as the power source. This block acts as the input device that initiates the signal flow when toggled.",
+        "function": "power source",
+        "connects_to": [
+          "(1,0,0)"
+        ]
+      },
+      {
+        "step": 2,
+        "block_to_place": {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "Place redstone dust at (1,0,0) to immediately receive the redstone signal from the lever at (0,0,0) and transmit it toward the corner segment.",
+        "function": "signal transmission",
+        "connects_to": [
+          "(0,0,0)",
+          "(2,0,0)"
+        ]
+      },
+      {
+        "step": 3,
+        "block_to_place": {
+          "x": 2,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "Place redstone dust at (2,0,0) to continue the signal path along the X-axis, bridging the gap between the first wire and the corner point.",
+        "function": "signal transmission",
+        "connects_to": [
+          "(1,0,0)",
+          "(3,0,0)"
+        ]
+      },
+      {
+        "step": 4,
+        "block_to_place": {
+          "x": 3,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "Place redstone dust at (3,0,0) to act as the corner pivot, allowing the signal to transition from the X-axis to the Z-axis.",
+        "function": "signal transmission",
+        "connects_to": [
+          "(2,0,0)",
+          "(3,0,1)"
+        ]
+      },
+      {
+        "step": 5,
+        "block_to_place": {
+          "x": 3,
+          "y": 0,
+          "z": 1,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "Place redstone dust at (3,0,1) to carry the signal forward along the Z-axis after the corner hub at (3,0,0).",
+        "function": "signal transmission",
+        "connects_to": [
+          "(3,0,0)",
+          "(3,0,2)"
+        ]
+      },
+      {
+        "step": 6,
+        "block_to_place": {
+          "x": 3,
+          "y": 0,
+          "z": 2,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "Place redstone dust at (3,0,2) to finalize the signal path extension, positioning it directly adjacent to the lamp at (3,0,3).",
+        "function": "signal transmission",
+        "connects_to": [
+          "(3,0,1)",
+          "(3,0,3)"
+        ]
+      },
+      {
+        "step": 7,
+        "block_to_place": {
+          "x": 3,
+          "y": 0,
+          "z": 3,
+          "state": "minecraft:redstone_lamp[lit=false]"
+        },
+        "reasoning": "Place the redstone lamp at (3,0,3) as the final component. It relies on the redstone wire at (3,0,2) for power; when the wire is powered, the lamp will update to the lit state.",
+        "function": "actuator",
+        "connects_to": [
+          "(3,0,2)"
+        ]
+      }
+    ]
+  }
+}

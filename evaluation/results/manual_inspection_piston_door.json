@@ -1,0 +1,137 @@
+{
+  "plan": [
+    {
+      "step": 1,
+      "block_type": "lever",
+      "position": "0,0,0",
+      "reason": "Input source to toggle the door state",
+      "connects_to": []
+    },
+    {
+      "step": 2,
+      "block_type": "redstone_dust",
+      "position": "1,0,0",
+      "reason": "Transmits signal from lever",
+      "connects_to": [
+        1
+      ]
+    },
+    {
+      "step": 3,
+      "block_type": "redstone_dust",
+      "position": "2,0,0",
+      "reason": "Extends signal path",
+      "connects_to": [
+        2
+      ]
+    },
+    {
+      "step": 4,
+      "block_type": "repeater",
+      "position": "3,0,0",
+      "reason": "Boosts signal strength",
+      "connects_to": [
+        3
+      ]
+    },
+    {
+      "step": 5,
+      "block_type": "redstone_dust",
+      "position": "4,0,0",
+      "reason": "Carries signal to piston array",
+      "connects_to": [
+        4
+      ]
+    },
+    {
+      "step": 6,
+      "block_type": "sticky_piston",
+      "position": "4,1,0",
+      "reason": "Piston to move bottom door block",
+      "connects_to": [
+        5
+      ]
+    },
+    {
+      "step": 7,
+      "block_type": "sticky_piston",
+      "position": "4,2,0",
+      "reason": "Piston to move top door block",
+      "connects_to": [
+        5
+      ]
+    },
+    {
+      "step": 8,
+      "block_type": "stone",
+      "position": "5,1,0",
+      "reason": "Bottom door block",
+      "connects_to": [
+        6
+      ]
+    },
+    {
+      "step": 9,
+      "block_type": "stone",
+      "position": "5,2,0",
+      "reason": "Top door block",
+      "connects_to": [
+        7
+      ]
+    },
+    {
+      "step": 10,
+      "block_type": "redstone_torch",
+      "position": "3,0,1",
+      "reason": "Inverts signal for closed-by-default logic",
+      "connects_to": [
+        4
+      ]
+    },
+    {
+      "step": 11,
+      "block_type": "redstone_dust",
+      "position": "4,0,1",
+      "reason": "Connects inverter to pistons",
+      "connects_to": [
+        10
+      ]
+    },
+    {
+      "step": 12,
+      "block_type": "redstone_dust",
+      "position": "5,0,1",
+      "reason": "Maintains signal flow",
+      "connects_to": [
+        11
+      ]
+    },
+    {
+      "step": 13,
+      "block_type": "redstone_dust",
+      "position": "6,0,1",
+      "reason": "Final signal path segment",
+      "connects_to": [
+        12
+      ]
+    },
+    {
+      "step": 14,
+      "block_type": "redstone_dust",
+      "position": "6,1,1",
+      "reason": "Provides power to top piston",
+      "connects_to": [
+        13
+      ]
+    },
+    {
+      "step": 15,
+      "block_type": "redstone_dust",
+      "position": "6,2,1",
+      "reason": "Provides power to bottom piston",
+      "connects_to": [
+        14
+      ]
+    }
+  ]
+}

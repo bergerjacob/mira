@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "properties": {
+    "reasoning": {
+      "type": "string",
+      "description": "Step-by-step reasoning explaining how you designed this circuit, including signal flow, timing considerations, and block choices."
+    },
+    "blocks": {
+      "type": "array",
+      "description": "List of blocks to place. Each block has x, y, z coordinates (relative to origin), and a minecraft block state string.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "integer",
+            "description": "X coordinate relative to build origin"
+          },
+          "y": {
+            "type": "integer",
+            "description": "Y coordinate relative to build origin"
+          },
+          "z": {
+            "type": "integer",
+            "description": "Z coordinate relative to build origin"
+          },
+          "state": {
+            "type": "string",
+            "description": "Full Minecraft block state, e.g. 'minecraft:lever[facing=east,powered=false]' or 'minecraft:redstone_wire'"
+          }
+        },
+        "required": ["x", "y", "z", "state"],
+        "additionalProperties": false
+      }
+    },
+    "verification": {
+      "type": "object",
+      "description": "Information needed to verify the circuit works correctly.",
+      "properties": {
+        "input_description": {
+          "type": "string",
+          "description": "Description of the circuit input (e.g. 'lever at 0,0,0')"
+        },
+        "output_description": {
+          "type": "string",
+          "description": "Description of expected output behavior (e.g. 'lamp at 2,0,0 turns on')"
+        },
+        "test_steps": {
+          "type": "array",
+          "description": "Step-by-step verification procedure",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["input_description", "output_description", "test_steps"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["reasoning", "blocks", "verification"],
+  "additionalProperties": false
+}

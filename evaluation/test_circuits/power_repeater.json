@@ -1,0 +1,17 @@
+{
+  "id": "powered_wire_repeater",
+  "name": "Redstone Wire with Repeater",
+  "description": "Build a redstone line that uses a repeater to maintain signal strength over distance. Place a redstone block as power source, then redstone dust, a repeater, and more dust ending at a lamp.",
+  "difficulty": "beginner",
+  "expected_blocks": 6,
+  "hints": [
+    "Redstone signal degrades by 1 per block",
+    "Repeaters restore signal to strength 15",
+    "Repeater must face the direction of signal flow",
+    "Lamp should light up if signal reaches it"
+  ],
+  "verification": {
+    "initial_state": "Lamp should be ON (powered by redstone block)",
+    "test": "Verify lamp is lit and repeater is powered"
+  }
+}

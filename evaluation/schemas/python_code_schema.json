@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "reasoning": {
+      "type": "string",
+      "description": "Explanation of your circuit design approach, signal flow, and key decisions."
+    },
+    "code": {
+      "type": "string",
+      "description": "Python code that defines build_circuit(ctx) and verify_circuit(ctx) functions using the MIRA API."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Any additional notes about assumptions, edge cases, or potential issues."
+    }
+  },
+  "required": ["reasoning", "code"],
+  "additionalProperties": false
+}

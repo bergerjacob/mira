@@ -1,0 +1,10 @@
+{
+  "timestamp": "20260311_125049",
+  "total_tests": 72,
+  "successful": 36,
+  "success_rate": 50.0,
+  "total_time_sec": 120.43343663215637,
+  "total_cost": 0.048329999999999984,
+  "total_tokens_input": 59790,
+  "total_tokens_output": 26706
+}

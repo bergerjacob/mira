@@ -1,0 +1,12 @@
+{
+  "kimi-k2.5": {
+    "forward": true,
+    "reverse": false,
+    "repair": true
+  },
+  "gemini-flash-lite": {
+    "forward": true,
+    "reverse": true,
+    "repair": true
+  }
+}

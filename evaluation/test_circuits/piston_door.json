@@ -1,0 +1,23 @@
+{
+  "id": "piston_door",
+  "name": "Simple Piston Door",
+  "description": "Build a 1x2 piston door that opens when a lever is flipped. Use sticky pistons to push blocks up and down. The door should be 1 block wide and 2 blocks tall, with a lever to activate it.",
+  "difficulty": "intermediate",
+  "expected_blocks": 15,
+  "hints": [
+    "Use sticky pistons facing up",
+    "Place the blocks that will be pushed above the pistons",
+    "Connect redstone from lever to pistons",
+    "May need a repeater for signal strength"
+  ],
+  "verification": {
+    "initial_state": "Door blocks should be in closed position (covering the doorway)",
+    "action": "Flip lever to powered=true",
+    "expected_result": "Door blocks should retract upward, opening the doorway",
+    "test_coords": {
+      "lever": [0, 100, 0],
+      "doorway": [2, 100, 0],
+      "door_blocks_when_open": "Should be at Y=102 or higher"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "automatic_farm",
+  "name": "Automatic Crop Farm",
+  "description": "Build a compact automatic wheat farm. Include: water source for hydration, 4x4 crop area, observer-based harvest detection, piston-based breaking mechanism, and hopper collection system. The farm should automatically harvest crops when they mature and collect them into a chest.",
+  "difficulty": "expert",
+  "expected_blocks": 87,
+  "hints": [
+    "Water in center or edges hydrates crops up to 4 blocks away",
+    "Observers detect block updates (crop growth changes block state)",
+    "Sticky pistons push blocks to 'break' crops (drop as items)",
+    "Hoppers collect dropped items",
+    "Use comparator to check crop maturity (full growth has higher signal)",
+    "Redstone clock can pulse pistons at regular intervals"
+  ],
+  "verification": {
+    "initial_state": "Farm should be ready with water and hoppers",
+    "action": "Place wheat seeds and wait for growth",
+    "expected_result": "When crops mature, pistons should activate and items should be collected in chest",
+    "manual_test": "Place fully grown wheat blocks to test harvest mechanism"
+  }
+}

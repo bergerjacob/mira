@@ -1,0 +1,20 @@
+{
+  "id": "elevator",
+  "name": "Player Elevator",
+  "description": "Build a vertical player elevator using water and pistons. The elevator should move players between 3 floors (ground, middle, top). Use water columns for smooth movement and pistons to control water flow. Include buttons at each floor for selection.",
+  "difficulty": "advanced",
+  "expected_blocks": 64,
+  "hints": [
+    "Water flows down and can be pushed by pistons",
+    "Source blocks can be moved by pistons",
+    "Use observers to detect button presses",
+    "Water elevator needs soul sand or lily pads for upward movement",
+    "Control water flow with pistons pushing source blocks sideways"
+  ],
+  "verification": {
+    "initial_state": "Elevator at ground floor, water column ready",
+    "action": "Press button for middle or top floor",
+    "expected_result": "Water column should activate and player can swim to selected floor",
+    "floors": ["ground (y=0)", "middle (y=8)", "top (y=16)"]
+  }
+}

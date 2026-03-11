@@ -1,0 +1,31 @@
+{
+  "timestamp": "20260311_134333",
+  "circuit": "piston_door",
+  "results": {
+    "iterative_1block": {
+      "api_calls": 7,
+      "blocks": 7,
+      "time": 8.45207142829895,
+      "approach": "Sequential, 1 block per call"
+    },
+    "chunked_5blocks": {
+      "api_calls": 3,
+      "blocks": 15,
+      "time": 5.420758485794067,
+      "approach": "Sequential, 5 blocks per call with per-block reasoning"
+    },
+    "plan_then_execute": {
+      "api_calls": 1,
+      "blocks": 6,
+      "time": 2.1879355907440186,
+      "approach": "2-stage: plan (API) + execute (deterministic)"
+    },
+    "parallel": {
+      "api_calls": 1,
+      "blocks": 13,
+      "time": 2.339796543121338,
+      "approach": "Fully parallel, 1 API call, all blocks at once"
+    }
+  },
+  "recommendation": "Plan-Then-Execute for batch processing"
+}

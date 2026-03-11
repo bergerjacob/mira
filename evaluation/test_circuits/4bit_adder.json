@@ -1,0 +1,22 @@
+{
+  "id": "4bit_adder",
+  "name": "4-Bit Binary Adder",
+  "description": "Build a 4-bit binary adder circuit that adds two 4-bit numbers. Use four full adder circuits in series. Each full adder takes two input bits and a carry-in, producing a sum bit and carry-out. The circuit should have 8 input levers (4 bits for each number) and 5 output lamps (4 sum bits + final carry).",
+  "difficulty": "expert",
+  "expected_blocks": 96,
+  "hints": [
+    "Each full adder needs: 2 XOR gates, 2 AND gates, 1 OR gate",
+    "XOR can be built with: 2 comparators in subtract mode or complex torch arrangement",
+    "Connect carry-out of each stage to carry-in of next stage",
+    "Use repeaters to maintain signal strength across long distances",
+    "Layout: arrange 4 full adders horizontally, inputs on left, outputs on right"
+  ],
+  "verification": {
+    "test_cases": [
+      "Input A=0001, B=0001 → Output=00010 (2 in binary)",
+      "Input A=0111, B=0001 → Output=1000 (8 in binary)",
+      "Input A=1111, B=1111 → Output=11110 (30 in binary, with carry)"
+    ],
+    "notes": "Verify each full adder produces correct sum and carry"
+  }
+}

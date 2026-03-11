@@ -1,0 +1,113 @@
+{
+  "circuit": "Redstone Line (Corner)",
+  "prompt_variant": 2,
+  "quality_score": 77.14285714285714,
+  "result": {
+    "overall_plan": "The circuit creates a 90-degree signal path from a lever to a redstone lamp. The signal flows from the lever, through a straight line of wire, turns at the corner, and terminates at the lamp, which will toggle based on the lever state.",
+    "construction_steps": [
+      {
+        "step": 1,
+        "block_to_place": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+        },
+        "reasoning": "Placing the lever at the origin acts as the primary input for the circuit. It is the dependency for all downstream components as it initiates the redstone signal.",
+        "function": "power source",
+        "connects_to": [
+          "(1,0,0)"
+        ]
+      },
+      {
+        "step": 2,
+        "block_to_place": {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "Placing the wire at (1,0,0) connects directly to the lever at (0,0,0) to propagate the signal forward along the X-axis.",
+        "function": "signal transmission",
+        "connects_to": [
+          "(0,0,0)",
+          "(2,0,0)"
+        ]
+      },
+      {
+        "step": 3,
+        "block_to_place": {
+          "x": 2,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "This wire continues the signal path from (1,0,0) towards the planned corner at (3,0,0).",
+        "function": "signal transmission",
+        "connects_to": [
+          "(1,0,0)",
+          "(3,0,0)"
+        ]
+      },
+      {
+        "step": 4,
+        "block_to_place": {
+          "x": 3,
+          "y": 0,
+          "z": 0,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "This wire acts as the junction point. It receives power from (2,0,0) and redirects the signal flow along the Z-axis toward the lamp.",
+        "function": "signal transmission",
+        "connects_to": [
+          "(2,0,0)",
+          "(3,0,1)"
+        ]
+      },
+      {
+        "step": 5,
+        "block_to_place": {
+          "x": 3,
+          "y": 0,
+          "z": 1,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "This wire extends the signal from the junction at (3,0,0) to continue the path, ensuring the signal reaches the lamp at the end of the line.",
+        "function": "signal transmission",
+        "connects_to": [
+          "(3,0,0)",
+          "(3,0,2)"
+        ]
+      },
+      {
+        "step": 6,
+        "block_to_place": {
+          "x": 3,
+          "y": 0,
+          "z": 2,
+          "state": "minecraft:redstone_wire"
+        },
+        "reasoning": "This final segment of wire is placed to bridge the gap between the wire at (3,0,1) and the lamp at (3,0,3), completing the circuit connection.",
+        "function": "signal transmission",
+        "connects_to": [
+          "(3,0,1)",
+          "(3,0,3)"
+        ]
+      },
+      {
+        "step": 7,
+        "block_to_place": {
+          "x": 3,
+          "y": 0,
+          "z": 3,
+          "state": "minecraft:redstone_lamp[lit=false]"
+        },
+        "reasoning": "The lamp is placed at the end of the wire line to serve as the output device. It depends on the signal transmitted through the wires at (3,0,2) to function.",
+        "function": "actuator",
+        "connects_to": [
+          "(3,0,2)"
+        ]
+      }
+    ]
+  }
+}

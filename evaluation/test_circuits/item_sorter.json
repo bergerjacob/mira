@@ -1,0 +1,20 @@
+{
+  "id": "item_sorter",
+  "name": "Item Sorter",
+  "description": "Build an item sorter that separates items by type. Use comparators to detect item types in a hopper, and pistons to push matching items into separate collection hoppers. Sort at least 3 different item types (e.g., diamonds, iron, gold).",
+  "difficulty": "expert",
+  "expected_blocks": 54,
+  "hints": [
+    "Comparator outputs signal strength based on first item stack type and size",
+    "Place filter item in hopper above comparator to detect matching items",
+    "Use comparator in subtract mode to check for exact matches",
+    "Pistons push items from main line to collection hoppers",
+    "Cascade multiple sorters for multiple item types"
+  ],
+  "verification": {
+    "initial_state": "All hoppers empty except filter hoppers",
+    "action": "Place mixed items in input hopper",
+    "expected_result": "Items should be sorted into correct output hoppers by type",
+    "test_items": ["diamond", "iron_ingot", "gold_ingot"]
+  }
+}

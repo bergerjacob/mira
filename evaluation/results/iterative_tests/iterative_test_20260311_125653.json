@@ -1,0 +1,121 @@
+{
+  "timestamp": "20260311_125653",
+  "total_tests": 6,
+  "total_cost": 0.00422175,
+  "results": [
+    {
+      "circuit_id": "simple_lamp",
+      "difficulty": "beginner",
+      "expected_blocks": 3,
+      "generated_blocks": 3,
+      "temperature": 0.0,
+      "total_cost": 0.0003987,
+      "total_tokens": 1704,
+      "tokens_input": 1386,
+      "tokens_output": 318,
+      "quality_score": 49.166666666666664,
+      "quality_breakdown": {
+        "spatial_awareness": 16.666666666666664,
+        "functional_clarity": 100.0,
+        "contextual_reasoning": 16.666666666666664,
+        "connectivity_tracking": 66.66666666666666,
+        "overall": 49.166666666666664
+      }
+    },
+    {
+      "circuit_id": "simple_lamp",
+      "difficulty": "beginner",
+      "expected_blocks": 3,
+      "generated_blocks": 3,
+      "temperature": 0.5,
+      "total_cost": 0.00034619999999999996,
+      "total_tokens": 1411,
+      "tokens_input": 1112,
+      "tokens_output": 299,
+      "quality_score": 50.0,
+      "quality_breakdown": {
+        "spatial_awareness": 33.33333333333333,
+        "functional_clarity": 100.0,
+        "contextual_reasoning": 0.0,
+        "connectivity_tracking": 66.66666666666666,
+        "overall": 50.0
+      }
+    },
+    {
+      "circuit_id": "piston_door",
+      "difficulty": "intermediate",
+      "expected_blocks": 15,
+      "generated_blocks": 4,
+      "temperature": 0.0,
+      "total_cost": 0.0005844000000000001,
+      "total_tokens": 2687,
+      "tokens_input": 2284,
+      "tokens_output": 403,
+      "quality_score": 33.75,
+      "quality_breakdown": {
+        "spatial_awareness": 12.5,
+        "functional_clarity": 62.5,
+        "contextual_reasoning": 0.0,
+        "connectivity_tracking": 75.0,
+        "overall": 33.75
+      }
+    },
+    {
+      "circuit_id": "piston_door",
+      "difficulty": "intermediate",
+      "expected_blocks": 15,
+      "generated_blocks": 4,
+      "temperature": 0.5,
+      "total_cost": 0.0005436,
+      "total_tokens": 2430,
+      "tokens_input": 2032,
+      "tokens_output": 398,
+      "quality_score": 37.5,
+      "quality_breakdown": {
+        "spatial_awareness": 25.0,
+        "functional_clarity": 62.5,
+        "contextual_reasoning": 0.0,
+        "connectivity_tracking": 75.0,
+        "overall": 37.5
+      }
+    },
+    {
+      "circuit_id": "comparator_subtractor",
+      "difficulty": "advanced",
+      "expected_blocks": 8,
+      "generated_blocks": 8,
+      "temperature": 0.0,
+      "total_cost": 0.00119415,
+      "total_tokens": 5804,
+      "tokens_input": 5085,
+      "tokens_output": 719,
+      "quality_score": 60.0,
+      "quality_breakdown": {
+        "spatial_awareness": 31.25,
+        "functional_clarity": 100.0,
+        "contextual_reasoning": 37.5,
+        "connectivity_tracking": 75.0,
+        "overall": 60.0
+      }
+    },
+    {
+      "circuit_id": "comparator_subtractor",
+      "difficulty": "advanced",
+      "expected_blocks": 8,
+      "generated_blocks": 8,
+      "temperature": 0.5,
+      "total_cost": 0.0011547,
+      "total_tokens": 5598,
+      "tokens_input": 4898,
+      "tokens_output": 700,
+      "quality_score": 47.8125,
+      "quality_breakdown": {
+        "spatial_awareness": 37.5,
+        "functional_clarity": 68.75,
+        "contextual_reasoning": 18.75,
+        "connectivity_tracking": 75.0,
+        "overall": 47.8125
+      }
+    }
+  ]
+}
