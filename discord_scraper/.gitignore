@@ -1,0 +1,30 @@
+# Build outputs
+DiscordChatExporter/*/bin/
+DiscordChatExporter/*/obj/
+DiscordChatExporter/cli_output/*.pdb
+DiscordChatExporter/cli_output/*.dll
+DiscordChatExporter/cli_output/*.so
+
+# Data outputs
+raw_data/
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment
+.env
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

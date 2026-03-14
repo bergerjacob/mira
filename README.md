@@ -2,7 +2,7 @@
 
 MIRA is an AI framework designed to generate, build, and debug Minecraft Redstone circuits from text descriptions. Unlike standard generative models that struggle with strict spatial logic, MIRA uses an iterative approach combining hierarchical planning, real-time simulation, and automated verification.
 
-> **Status:** ✅ **Production Ready** - Testing phase complete, ready for training data generation  
+> **Status:** Work in Progress. The pre processing testing is done, the next steps are data scraping and training.
 > **Latest Update:** March 11, 2026
 
 ## Quick Start
@@ -61,26 +61,7 @@ mira/
     └── training/         # Training datasets
 ```
 
-## Testing Results Summary
-
-**Comprehensive testing completed March 11, 2026:**
-
-| Metric | Result |
-|--------|--------|
-| Circuits Tested | 42 (3-96 blocks) |
-| Block Count Accuracy | 97-100% |
-| Block Type Correctness | 100% (manual verification) |
-| Circuit Functionality | Verified working |
-| API Cost for Testing | ~$0.10 |
-
-### Key Findings
-
-1. **LLMs CAN build working redstone circuits** - 100% success on complex circuits (24-96 blocks)
-2. **Plan+Constraint strategy works best** - Explicit "Generate EXACTLY N blocks" achieves 100% accuracy
-3. **Fully batchable with vLLM** - 1 API call per circuit, ~$1.50 for 10k circuits
-4. **Models don't lose track after 100 blocks** - 96-block circuit completed 100%
-
-**See `docs/TESTING_REPORT.md` for full details.**
+**See `docs/TESTING_REPORT.md` for full details of validation testing.**
 
 ## Usage
 
@@ -150,7 +131,7 @@ result = bridge.run_scarpet("scarpet_scripts/test_redstone.signal_strength(x, y,
 
 ## Documentation
 
-**For new developers / coding agents:**
+**To get started with development:**
 
 1. **`docs/ARCHITECTURE.md`** - Complete system reference (READ FIRST)
    - Current architecture (one-shot training)
@@ -186,4 +167,4 @@ MIT
 ---
 
 *Last updated: March 11, 2026*  
-*Testing phase complete. Ready for production deployment.*
+*Testing phase complete. Ready for data scraping and training.*

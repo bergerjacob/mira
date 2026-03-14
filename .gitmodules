@@ -1,0 +1,3 @@
+[submodule "discord_scraper/DiscordChatExporter"]
+	path = discord_scraper/DiscordChatExporter
+	url = https://github.com/Tyrrrz/DiscordChatExporter.git
