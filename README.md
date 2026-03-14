@@ -125,7 +125,7 @@ result = bridge.run_scarpet("scarpet_scripts/test_redstone.signal_strength(x, y,
 ## Next Steps
 
 1. **Generate 10k training circuits** (~$1.50, ~5 minutes with vLLM)
-2. **Fine-tune Qwen 2.5 Coder 7B** (~$50-100)
+2. **Fine-tune Qwen 3.5 9B** (~$50-100)
 3. **Validate in Minecraft** (build 10-20 circuits, expect 80%+ success)
 4. **Deploy MIRA inference loop** (generate → build → test → repair)
 
