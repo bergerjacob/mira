@@ -25,8 +25,12 @@ If you don't have .NET SDK installed:
 wget https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh
 chmod +x /tmp/dotnet-install.sh
 /tmp/dotnet-install.sh --channel 10.0 --install-dir ~/.dotnet
-export PATH=$PATH:~/.dotnet
+export PATH="$PATH:$HOME/.dotnet"
+hash -r
+dotnet --info
 ```
+
+If you previously installed dotnet and now see `dotnet: command not found`, it is almost always a **PATH** issue. Ensure `"$HOME/.dotnet"` is in your PATH (ideally in `~/.bashrc`).
 
 ### 2. Build DiscordChatExporter CLI
 
@@ -36,6 +40,8 @@ dotnet publish DiscordChatExporter.Cli/DiscordChatExporter.Cli.csproj -c Release
 ```
 
 This creates the CLI in `DiscordChatExporter/cli_output/DiscordChatExporter.Cli`
+
+Note: `cli_output/` is a **local build artifact** and is intentionally **gitignored**. If you clean your repo or switch machines, you must rebuild it.
 
 ### 3. Set Your Discord Token
 
@@ -48,20 +54,60 @@ export DISCORD_TOKEN="your-user-token-here"
 ## Usage
 
 ```bash
-python3 export_discord.py --server <server_id> --channel <channel_id>
+python3 export_discord.py --help
 ```
 
-### Example
+### 1) Configure servers (`config.json`)
 
 ```bash
-export DISCORD_TOKEN="MTV...Lwk"
-python3 export_discord.py --server ... --channel ...
+cp config.json config.local.json
+# Edit config.local.json to enable servers + select channels/categories
 ```
 
-### Arguments
+### 2) Scrape (raw collection)
 
-- `--server` - Discord server (guild) ID
-- `--channel` - Discord channel ID (parent channel containing threads)
+```bash
+export DISCORD_TOKEN="your-user-token-here"
+
+# Scrape all enabled servers/channels from config
+python3 export_discord.py --config config.local.json scrape
+
+# Scrape a specific server/channel (overrides config channels)
+python3 export_discord.py --config config.local.json scrape --server <server_id>
+python3 export_discord.py --config config.local.json scrape --server <server_id> --channel <channel_id>
+
+# Keep looping forever (useful for long-running jobs)
+python3 export_discord.py --config config.local.json scrape --loop
+
+# Quick test limits
+python3 export_discord.py --config config.local.json scrape --max-channels 1 --max-messages 10
+```
+
+### 3) Clean (post-processing)
+
+Cleaning is intentionally **permissive**: it removes obvious noise (Discord CDN/media URLs, duplicate image links, empty spam), but keeps the full descriptive content so the dataset stays diverse.
+
+```bash
+# Clean everything we have raw data for
+python3 export_discord.py clean
+
+# Clean just one server
+python3 export_discord.py clean --server <server_id>
+
+# Clean messages only (no Minecraft server needed)
+python3 export_discord.py clean --messages-only --server <server_id>
+
+# Validate schematics by pasting into Minecraft (requires server/RCON running)
+python3 export_discord.py clean --schematics-only --server <server_id>
+```
+
+### Recommended Python
+
+Use the repo venv when running these commands:
+
+```bash
+./.venv/bin/python discord_scraper/export_discord.py --help
+```
 
 ## Output Structure
 
@@ -69,14 +115,17 @@ python3 export_discord.py --server ... --channel ...
 discord_scraper/
 ├── DiscordChatExporter/          # Cloned repo (git submodule)
 │   └── cli_output/               # Built CLI
-├── raw_data/                     # Raw JSON exports
+├── raw_data/                     # Raw JSON exports (per channel)
 ├── data/
-│   ├── messages/{server_id}/{channel_id}/
-│   │   └── messages.jsonl        # Processed messages with metadata
-│   ├── schematics/{server_id}/   # Downloaded schematic files
+│   ├── raw_messages/{server_id}/{channel_id}/messages.jsonl
+│   ├── raw_schematics/{server_id}/*
+│   ├── clean_messages/{server_id}/{channel_id}/messages.jsonl
+│   ├── clean_schematics/{server_id}/*
 │   └── metadata/{server_id}/
-│       └── scrape_manifest.json  # Summary of what was collected
+│       ├── scrape_status.json    # Per-channel scrape progress
+│       └── cleaning_status.json  # Cleaning/validation progress
 ├── export_discord.py             # Main pipeline script
+├── config.json                   # Example config (copy and edit)
 └── README.md                     # This file
 ```
 
@@ -112,7 +161,7 @@ Each line in `messages.jsonl` is a JSON object:
 ## Known Limitations
 
 1. **Channel Access**: Files in channels your account can't access will fail with "Access denied"
-2. **Message History**: Discord API only returns last 100 messages per channel. Older attachments may not be found.
+2. **Signed URL lookup cost**: If a schematic is linked by CDN URL (not a direct message attachment), resolving the signed URL may require paging message history for that channel.
 3. **Deleted Files**: If the original file was deleted from Discord, it will be marked as "deleted"
 
 ## Troubleshooting

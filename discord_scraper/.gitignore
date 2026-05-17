@@ -1,6 +1,7 @@
 # Build outputs
 DiscordChatExporter/*/bin/
 DiscordChatExporter/*/obj/
+DiscordChatExporter/cli_output/
 DiscordChatExporter/cli_output/*.pdb
 DiscordChatExporter/cli_output/*.dll
 DiscordChatExporter/cli_output/*.so
@@ -14,6 +15,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
+
+# Config (contains real server IDs)
+config.json
 
 # Environment
 .env
