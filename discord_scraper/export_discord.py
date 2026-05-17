@@ -37,6 +37,11 @@ RAW_EXPORT_DIR = SCRIPT_DIR / "raw_data"
 
 SCHEMATIC_EXTENSIONS = [".litematic", ".schematic", ".schem", ".nbt"]
 
+# Discord channel types worth scraping: thread (11), forum (15).
+# Text channels (0) are typically chat/discussion, not schematic submissions.
+# Skip text (0), voice (2), category (4), announcement (5), stage (13), etc.
+SCRAPABLE_CHANNEL_TYPES = {11, 15}
+
 
 class RateLimiter:
     """
@@ -711,7 +716,8 @@ def _iter_process_export_json(
         schematic_info = extract_schematic_links_from_content(str(content))
 
         for att in attachments:
-            filename = str(att.get("filename") or "")
+            # DiscordChatExporter uses camelCase "fileName"; Discord API uses "filename"
+            filename = str(att.get("fileName") or att.get("filename") or "")
             if any(filename.lower().endswith(ext) for ext in SCHEMATIC_EXTENSIONS):
                 schematic_info.append(
                     {
@@ -839,7 +845,7 @@ def _scrape_channel(
     export_after: str | None,
     export_before: str | None,
     export_filter: str | None,
-) -> None:
+) -> str:
     rate_limiter = RateLimiter(settings.requests_per_second)
 
     RAW_EXPORT_DIR.mkdir(parents=True, exist_ok=True)
@@ -851,7 +857,7 @@ def _scrape_channel(
     channels_status = status.get("channels", {}) if isinstance(status.get("channels", {}), dict) else {}
     if not force and channel_id in channels_status and channels_status[channel_id].get("status") == "complete":
         _log(f"Skipping channel {channel_id} (already complete). Use --force to re-scrape.")
-        return
+        return "skipped"
 
     export_dir = RAW_EXPORT_DIR / server_id / channel_id
     _log(f"Scrape start server_id={server_id} channel_id={channel_id}")
@@ -897,8 +903,13 @@ def _scrape_channel(
             )
 
             processed_files: set[str] = set()
+            json_decode_retries: dict[str, int] = {}  # track per-file JSONDecodeError retries
             export_start_wall = time.time()
             heartbeat_last = time.monotonic()
+            last_progress_monotonic = time.monotonic()  # detect stale progress
+            MAX_JSON_RETRIES = 10
+            MAX_EXPORT_TIMEOUT_S = 1800  # 30 min hard timeout per channel
+            STALE_PROGRESS_TIMEOUT_S = 300  # 5 min with no new messages = stuck
 
             while True:
                 json_paths = sorted([p for p in export_dir.glob("*.json") if p.is_file()])
@@ -943,10 +954,19 @@ def _scrape_channel(
                             )
                             if total_messages >= max_messages:
                                 break
+                        # Successfully parsed — clear retry counter and mark done
+                        json_decode_retries.pop(jf_key, None)
+                        processed_files.add(jf_key)
                     except json.JSONDecodeError:
-                        # File likely isn't fully written yet; retry later.
+                        # File likely isn't fully written yet; retry with backoff.
+                        retries = json_decode_retries.get(jf_key, 0) + 1
+                        json_decode_retries[jf_key] = retries
+                        if retries >= MAX_JSON_RETRIES:
+                            _log(f"Skipping {jf.name} after {MAX_JSON_RETRIES} JSON decode failures")
+                            processed_files.add(jf_key)  # don't retry again
+                        else:
+                            _log(f"JSON decode fail #{retries} for {jf.name}, will retry")
                         continue
-                    processed_files.add(jf_key)
 
                     if total_messages >= max_messages:
                         break
@@ -972,14 +992,67 @@ def _scrape_channel(
                 rc = proc.poll()
                 if rc is not None:
                     _log(f"Exporter process exited with code {rc}")
+                    if rc != 0 and total_messages == 0:
+                        # Likely a forbidden or inaccessible channel
+                        channels_status[channel_id] = {
+                            "status": "forbidden" if rc != 0 else "error",
+                            "total_messages_added": 0,
+                            "total_schematics_found": 0,
+                            "downloaded_schematics": 0,
+                            "last_scraped": _utc_now_iso(),
+                            "errors": [f"exporter_exit_code_{rc}"],
+                        }
+                        status["channels"] = channels_status
+                        _save_scrape_status(server_id, status)
+                        _log(f"Channel {channel_id} inaccessible (exit code {rc}), marking as forbidden")
+                        return "forbidden"
                     break
 
                 now = time.monotonic()
+                elapsed = now - export_start_monotonic
+
+                # Hard timeout: bail if export takes too long
+                if elapsed > MAX_EXPORT_TIMEOUT_S:
+                    _log(f"Export timeout ({MAX_EXPORT_TIMEOUT_S}s) for channel {channel_id}, terminating")
+                    try:
+                        proc.terminate()
+                    except Exception:
+                        pass
+                    try:
+                        proc.wait(timeout=10)
+                    except Exception:
+                        try:
+                            proc.kill()
+                        except Exception:
+                            pass
+                    break
+
+                # Stale progress: if no new messages for a long time, likely stuck
+                if total_messages > 0 or len(processed_files) > 0:
+                    last_progress_monotonic = now
+                if now - last_progress_monotonic > STALE_PROGRESS_TIMEOUT_S:
+                    _log(
+                        f"No progress for {STALE_PROGRESS_TIMEOUT_S}s on channel {channel_id}, "
+                        f"terminating exporter"
+                    )
+                    try:
+                        proc.terminate()
+                    except Exception:
+                        pass
+                    try:
+                        proc.wait(timeout=10)
+                    except Exception:
+                        try:
+                            proc.kill()
+                        except Exception:
+                            pass
+                    break
+
                 if now - heartbeat_last >= 5.0:
                     _log(
                         f"Still working... added_messages={total_messages}/{max_messages} "
                         f"parsed_json_files={len(processed_files)} "
-                        f"export_elapsed={time.monotonic() - export_start_monotonic:.1f}s"
+                        f"export_elapsed={elapsed:.1f}s"
                     )
                     heartbeat_last = now
 
@@ -1005,7 +1078,7 @@ def _scrape_channel(
                 status["channels"] = channels_status
                 _save_scrape_status(server_id, status)
                 _log(f"Scrape failed server_id={server_id} channel_id={channel_id} reason=no_json_files_exported")
-                return
+                return "error"
 
             for jf in json_files:
                 _log(f"Parsing export file {jf.name}")
@@ -1051,6 +1124,7 @@ def _scrape_channel(
         f"Scrape done server_id={server_id} channel_id={channel_id} "
         f"added_messages={total_messages} schematics_found={total_schematics} downloaded={downloaded_schematics}"
     )
+    return "partial" if limited else "complete"
 
 
 def _iter_raw_message_files(*, server_id: str | None = None) -> list[Path]:
@@ -1248,10 +1322,11 @@ def main():
                             channel_ids = [
                                 c.id
                                 for c in chs
-                                if c.id and c.type != 4 and (c.parent_id in allowed_category_ids)
+                                if c.id and c.type in SCRAPABLE_CHANNEL_TYPES and (c.parent_id in allowed_category_ids)
                             ]
                         else:
-                            channel_ids = [c.id for c in chs if c.id and c.type != 4]
+                            # Only scrape text (0), forum (15), and thread (11) channels.
+                            channel_ids = [c.id for c in chs if c.id and c.type in SCRAPABLE_CHANNEL_TYPES]
                     except Exception as e:
                         print(f"Failed to list channels for server {server_id}: {e}")
                         continue
@@ -1264,19 +1339,29 @@ def main():
                 for cid in channel_ids:
                     if not cid:
                         continue
-                    _scrape_channel(
-                        exporter=exporter,
-                        token=token,
-                        server_id=server_id,
-                        channel_id=cid,
-                        settings=settings,
-                        force=bool(args.force),
-                        max_messages=int(args.max_messages or 0),
-                        export_after=args.export_after,
-                        export_before=args.export_before,
-                        export_filter=args.export_filter,
-                    )
-                    channels_seen += 1
+                    try:
+                        result = _scrape_channel(
+                            exporter=exporter,
+                            token=token,
+                            server_id=server_id,
+                            channel_id=cid,
+                            settings=settings,
+                            force=bool(args.force),
+                            max_messages=int(args.max_messages or 0),
+                            export_after=args.export_after,
+                            export_before=args.export_before,
+                            export_filter=args.export_filter,
+                        )
+                    except Exception as e:
+                        err_msg = str(e)
+                        if "forbidden" in err_msg.lower():
+                            _log(f"Skipping channel {cid} (forbidden)")
+                            continue
+                        else:
+                            raise
+                    # Don't count skipped/forbidden channels toward max_channels
+                    if result in ("complete", "partial", "error"):
+                        channels_seen += 1
                     if args.max_channels and channels_seen >= args.max_channels:
                         _log(f"Reached --max-channels {args.max_channels}, stopping scrape pass")
                         break
