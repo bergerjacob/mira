@@ -70,6 +70,7 @@ class OpenRouterClient:
         temperature: float = 0.0,
         response_format: Optional[Dict[str, Any]] = None,
         max_tokens: int = 4096,
+        reasoning_effort: Optional[str] = None,
     ) -> LLMResponse:
         """
         Send a chat completion request to OpenRouter.
@@ -81,6 +82,9 @@ class OpenRouterClient:
             temperature: Sampling temperature (0.0 for deterministic)
             response_format: Optional structured output schema
             max_tokens: Maximum tokens to generate
+            reasoning_effort: Optional reasoning effort for thinking models.
+                "none" = disable reasoning tokens (recommended for structured output)
+                "low" / "medium" / "high" = control reasoning depth
             
         Returns:
             LLMResponse with content, model, usage stats, and raw response
@@ -108,6 +112,11 @@ class OpenRouterClient:
         # Add structured output format if provided
         if response_format:
             payload["response_format"] = response_format
+        
+        # Add reasoning effort control (for Qwen and other thinking models)
+        # "none" disables reasoning tokens — essential for structured output
+        if reasoning_effort is not None:
+            payload["reasoning"] = {"effort": reasoning_effort}
         
         # Add provider preferences for structured outputs
         payload["provider"] = {
@@ -137,6 +146,7 @@ class OpenRouterClient:
         system_prompt: str,
         schema: Dict[str, Any],
         temperature: float = 0.0,
+        reasoning_effort: Optional[str] = "none",
     ) -> Dict[str, Any]:
         """
         Send a request with structured JSON schema output.
@@ -148,6 +158,10 @@ class OpenRouterClient:
             system_prompt: System instructions
             schema: JSON schema for structured output
             temperature: Sampling temperature
+            reasoning_effort: Control for thinking models. Default "none" disables
+                reasoning tokens (essential for structured output to work correctly).
+                Set to "low"/"medium"/"high" to enable reasoning, but note this may
+                cause issues with json_schema enforcement on some models.
             
         Returns:
             Parsed JSON response matching the schema
@@ -167,6 +181,7 @@ class OpenRouterClient:
             system_prompt=system_prompt,
             temperature=temperature,
             response_format=response_format,
+            reasoning_effort=reasoning_effort,
         )
         
         # Parse JSON response - some models put JSON in 'reasoning' field
