@@ -967,6 +967,10 @@ def _scrape_channel(
                         else:
                             _log(f"JSON decode fail #{retries} for {jf.name}, will retry")
                         continue
+                    except Exception as e:
+                        _log(f"Error processing export file {jf.name}: {e}")
+                        processed_files.add(jf_key)  # don't retry
+                        continue
 
                     if total_messages >= max_messages:
                         break
@@ -1059,16 +1063,22 @@ def _scrape_channel(
                 time.sleep(2)
 
         else:
-            json_files = exporter.export_channel_json(
-                token,
-                channel_id,
-                export_dir,
-                after=export_after,
-                before=export_before,
-                message_filter=export_filter,
-                reverse=reverse,
-                partition=partition,
-            )
+            # Check if export files already exist — skip re-export if so
+            existing_jsons = sorted([p for p in export_dir.glob("*.json") if p.is_file()]) if export_dir.exists() else []
+            if existing_jsons:
+                _log(f"Found {len(existing_jsons)} existing export files for channel {channel_id}, skipping re-export")
+                json_files = existing_jsons
+            else:
+                json_files = exporter.export_channel_json(
+                    token,
+                    channel_id,
+                    export_dir,
+                    after=export_after,
+                    before=export_before,
+                    message_filter=export_filter,
+                    reverse=reverse,
+                    partition=partition,
+                )
             if not json_files:
                 channels_status[channel_id] = {
                     "status": "error",
@@ -1082,18 +1092,25 @@ def _scrape_channel(
 
             for jf in json_files:
                 _log(f"Parsing export file {jf.name}")
-                processed = _iter_process_export_json(
-                    jf,
-                    token=token,
-                    schematics_out_dir=schematics_out_dir,
-                    rate_limiter=rate_limiter,
-                    signed_url_batches=settings.signed_url_max_batches,
-                    retry_on_429=settings.retry_on_429,
-                    max_retries=settings.max_retries,
-                    backoff_multiplier=settings.backoff_multiplier,
-                    max_new_messages=0,
-                    existing_ids=existing_ids,
-                )
+                try:
+                    processed = _iter_process_export_json(
+                        jf,
+                        token=token,
+                        schematics_out_dir=schematics_out_dir,
+                        rate_limiter=rate_limiter,
+                        signed_url_batches=settings.signed_url_max_batches,
+                        retry_on_429=settings.retry_on_429,
+                        max_retries=settings.max_retries,
+                        backoff_multiplier=settings.backoff_multiplier,
+                        max_new_messages=0,
+                        existing_ids=existing_ids,
+                    )
+                except json.JSONDecodeError as e:
+                    _log(f"Skipping corrupt export file {jf.name}: {e}")
+                    continue
+                except Exception as e:
+                    _log(f"Error processing export file {jf.name}: {e}")
+                    continue
                 for msg in processed:
                     mid = str(msg.get("message_id"))
                     if mid in existing_ids:
@@ -1358,7 +1375,21 @@ def main():
                             _log(f"Skipping channel {cid} (forbidden)")
                             continue
                         else:
-                            raise
+                            _log(f"Error scraping channel {cid}: {e}")
+                            # Update status to error so we don't get stuck retrying
+                            status = _load_scrape_status(server_id)
+                            channels_status = status.get("channels", {}) if isinstance(status.get("channels", {}), dict) else {}
+                            channels_status[cid] = {
+                                "status": "error",
+                                "total_messages_added": 0,
+                                "total_schematics_found": 0,
+                                "downloaded_schematics": 0,
+                                "last_scraped": _utc_now_iso(),
+                                "errors": [err_msg[:200]],
+                            }
+                            status["channels"] = channels_status
+                            _save_scrape_status(server_id, status)
+                            result = "error"
                     # Don't count skipped/forbidden channels toward max_channels
                     if result in ("complete", "partial", "error"):
                         channels_seen += 1
