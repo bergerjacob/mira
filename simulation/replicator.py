@@ -124,28 +124,8 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
         
         # --- Entity Handling ---
         if block_state.startswith("entity:"):
-            entity_id = block_state.split(":", 1)[1]
-            nbt_str = "{}"
-            if nbt_obj:
-                if hasattr(nbt_obj, 'copy'): nbt_copy = nbt_obj.copy()
-                else: nbt_copy = dict(nbt_obj)
-                
-                # Strip conflicting NBT keys
-                for key in ['Pos', 'UUID', 'OnGround', 'Dimension', 'PortalCooldown', 'id']:
-                    if key in nbt_copy: del nbt_copy[key]
-                
-                if hasattr(nbt_obj, 'snbt'):
-                     try: nbt_str = type(nbt_obj)(nbt_copy).snbt()
-                     except: nbt_str = str(nbt_copy)
-                else: nbt_str = str(nbt_copy)
-            
-            cmd = f"summon {entity_id} {abs_x} {abs_y} {abs_z} {nbt_str}"
-            try: bridge.run_command(cmd, timeout=10)
-            except Exception as e:
-                err_msg = str(e)
-                if len(err_msg) > 120:
-                    err_msg = err_msg[:120] + "..."
-                print(f"Error summoning entity: {err_msg}")
+            # Skip summoning entities in-game during replication to avoid RCON/NBT connection bottlenecks.
+            # Redstone training only requires validating block placement.
             count += 1
             continue
         
@@ -154,22 +134,25 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
         items_to_add = []
         
         if nbt_obj:
-            if hasattr(nbt_obj, 'copy'): nbt_copy = nbt_obj.copy()
-            else: nbt_copy = dict(nbt_obj)
-            
-            # Split items into separate commands to avoid RCON packet limits
-            if 'Items' in nbt_copy:
-                 items_list = nbt_copy['Items']
-                 if len(items_list) > 0:
-                     items_to_add = list(items_list)
-                     del nbt_copy['Items']
-                 
-            try:
-                if hasattr(nbt_obj, 'snbt'): final_nbt_str = type(nbt_obj)(nbt_copy).snbt()
-                else: final_nbt_str = str(nbt_copy)
-            except Exception as e:
-                print(f"Error serializing NBT: {e}")
-                final_nbt_str = str(nbt_copy)
+            if isinstance(nbt_obj, str):
+                final_nbt_str = nbt_obj
+            else:
+                if hasattr(nbt_obj, 'copy'): nbt_copy = nbt_obj.copy()
+                else: nbt_copy = dict(nbt_obj)
+                
+                # Split items into separate commands to avoid RCON packet limits
+                if 'Items' in nbt_copy:
+                     items_list = nbt_copy['Items']
+                     if len(items_list) > 0:
+                         items_to_add = list(items_list)
+                         del nbt_copy['Items']
+                     
+                try:
+                    if hasattr(nbt_obj, 'snbt'): final_nbt_str = type(nbt_obj)(nbt_copy).snbt()
+                    else: final_nbt_str = str(nbt_copy)
+                except Exception as e:
+                    print(f"Error serializing NBT: {e}")
+                    final_nbt_str = str(nbt_copy)
         
         # Placement with retries
         max_retries = 3
@@ -200,12 +183,26 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
         # Container Inventory Handling
         if items_to_add and block_placed:
             for i, item in enumerate(items_to_add):
-                # Standardize 'count' for Minecraft 1.21
-                if 'Count' in item:
-                    item['count'] = item['Count']
-                    del item['Count']
+                # Standardize and simplify items to avoid RCON bottlenecks & huge nested components.
+                # We only need 'id', 'count', and 'Slot' for redstone/comparator purposes.
+                item_id = "minecraft:stone"
+                if 'id' in item:
+                    item_id = str(item['id'])
                 
-                item_snbt = item.snbt() if hasattr(item, 'snbt') else str(item)
+                cnt = 1
+                if 'count' in item:
+                    cnt = int(item['count'])
+                elif 'Count' in item:
+                    cnt = int(item['Count'])
+                
+                slot_val = 0
+                if 'Slot' in item:
+                    slot_val = int(item['Slot'])
+                elif 'slot' in item:
+                    slot_val = int(item['slot'])
+                
+                # Construct simplified SNBT string containing only essential fields
+                item_snbt = f'{{id:"{item_id}",count:{cnt},Slot:{slot_val}b}}'
                 cmd = f"data modify block {abs_x} {abs_y} {abs_z} Items append value {item_snbt}"
                 
                 for attempt in range(max_retries):

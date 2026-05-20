@@ -1208,6 +1208,9 @@ def _clean_server(
     messages_only: bool,
     schematics_only: bool,
     force: bool,
+    max_entities: int = 0,
+    max_containers: int = 0,
+    max_blocks: int = 5000,
 ) -> None:
     status = _load_cleaning_status(server_id)
     status.setdefault("messages", {})
@@ -1228,7 +1231,12 @@ def _clean_server(
             if out_fp.exists() and not force:
                 validated += 1
                 continue
-            res = validate_schematic_with_minecraft(fp, max_entities=0, max_containers=0, max_blocks=5000)
+            res = validate_schematic_with_minecraft(
+                fp,
+                max_entities=max_entities,
+                max_containers=max_containers,
+                max_blocks=max_blocks,
+            )
             if res.valid:
                 out_fp.write_bytes(fp.read_bytes())
                 validated += 1
@@ -1320,6 +1328,9 @@ def main():
     clean.add_argument("--force", action="store_true", help="Overwrite existing clean outputs")
     clean.add_argument("--messages-only", action="store_true", help="Only clean messages")
     clean.add_argument("--schematics-only", action="store_true", help="Only validate schematics")
+    clean.add_argument("--max-entities", type=int, default=0, help="Max entities allowed (default: 0)")
+    clean.add_argument("--max-containers", type=int, default=0, help="Max containers allowed (default: 0)")
+    clean.add_argument("--max-blocks", type=int, default=5000, help="Max blocks allowed (default: 5000)")
 
     args = parser.parse_args()
 
@@ -1474,6 +1485,9 @@ def main():
                 messages_only=bool(args.messages_only),
                 schematics_only=bool(args.schematics_only),
                 force=bool(args.force),
+                max_entities=int(args.max_entities),
+                max_containers=int(args.max_containers),
+                max_blocks=int(args.max_blocks),
             )
     else:
         raise RuntimeError(f"Unknown command: {args.cmd}")
