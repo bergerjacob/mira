@@ -182,7 +182,8 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
 
         # Container Inventory Handling
         if items_to_add and block_placed:
-            for i, item in enumerate(items_to_add):
+            simplified_items = []
+            for item in items_to_add:
                 # Standardize and simplify items to avoid RCON bottlenecks & huge nested components.
                 # We only need 'id', 'count', and 'Slot' for redstone/comparator purposes.
                 item_id = "minecraft:stone"
@@ -201,9 +202,11 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
                 elif 'slot' in item:
                     slot_val = int(item['slot'])
                 
-                # Construct simplified SNBT string containing only essential fields
-                item_snbt = f'{{id:"{item_id}",count:{cnt},Slot:{slot_val}b}}'
-                cmd = f"data modify block {abs_x} {abs_y} {abs_z} Items append value {item_snbt}"
+                simplified_items.append(f'{{id:"{item_id}",count:{cnt},Slot:{slot_val}b}}')
+            
+            if simplified_items:
+                items_array_str = "[" + ",".join(simplified_items) + "]"
+                cmd = f"data merge block {abs_x} {abs_y} {abs_z} {{Items:{items_array_str}}}"
                 
                 for attempt in range(max_retries):
                     try:
@@ -212,14 +215,14 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
                     except Exception as e:
                         is_network = "Broken pipe" in str(e) or "timeout" in str(e)
                         if attempt < max_retries - 1 and is_network:
-                            print(f"Retrying container item {i} (attempt {attempt+2}/{max_retries}): {e}")
+                            print(f"Retrying container items merge (attempt {attempt+2}/{max_retries}): {e}")
                             try: bridge.disconnect()
                             except: pass
                             time.sleep(1 * (attempt + 1))
                             try: bridge.connect()
                             except: pass
                         else:
-                            print(f"Failed to add item {i} to container: {e}")
+                            print(f"Failed to merge items into container: {e}")
                 
                 commands_sent += 1
                 if commands_sent >= rate_limit:
