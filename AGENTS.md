@@ -98,3 +98,10 @@ agent/               Empty — Phase 6 target directory
 - **`.litematic` and `.schem` files are gitignored** — test schematics live in `data/raw_schematics/` locally but aren't committed.
 - **`data/` and `datasets/` are gitignored** — large data files stay local.
 - **`discord_scraper/` has its own submodule** (`DiscordChatExporter`) — init submodules with `git submodule update --init`.
+
+## Maintenance
+
+- **Keep AGENTS.md up to date.** When you add new directories, files, conventions, dependencies, or gotchas, reflect them here. Stale docs are worse than no docs.
+- **Clean as you go.** Delete temporary scripts, debug files, stale test outputs, and dead code paths when they're no longer needed. Don't let the repo accumulate cruft.
+- **Archive, don't delete, for approaches.** When a strategy is superseded, move its artifacts to `evaluation/archive/` (or a similarly obvious location), not to some random subfolder. Document the failure reason in `docs/PAST_ATTEMPTS.md`.
+- **Commit often, message briefly.** Make focused commits when you reach a logical checkpoint. Keep commit messages short, to the point, and descriptive of what changed.

@@ -140,8 +140,12 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
                 else: nbt_str = str(nbt_copy)
             
             cmd = f"summon {entity_id} {abs_x} {abs_y} {abs_z} {nbt_str}"
-            try: bridge.run_command(cmd)
-            except Exception as e: print(f"Error summoning entity: {e}")
+            try: bridge.run_command(cmd, timeout=10)
+            except Exception as e:
+                err_msg = str(e)
+                if len(err_msg) > 120:
+                    err_msg = err_msg[:120] + "..."
+                print(f"Error summoning entity: {err_msg}")
             count += 1
             continue
         
@@ -203,10 +207,22 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
                 
                 item_snbt = item.snbt() if hasattr(item, 'snbt') else str(item)
                 cmd = f"data modify block {abs_x} {abs_y} {abs_z} Items append value {item_snbt}"
-                try: 
-                    bridge.run_command(cmd)
-                except Exception as e: 
-                    print(f"Failed to add item {i} to container: {e}")
+                
+                for attempt in range(max_retries):
+                    try:
+                        bridge.run_command(cmd)
+                        break
+                    except Exception as e:
+                        is_network = "Broken pipe" in str(e) or "timeout" in str(e)
+                        if attempt < max_retries - 1 and is_network:
+                            print(f"Retrying container item {i} (attempt {attempt+2}/{max_retries}): {e}")
+                            try: bridge.disconnect()
+                            except: pass
+                            time.sleep(1 * (attempt + 1))
+                            try: bridge.connect()
+                            except: pass
+                        else:
+                            print(f"Failed to add item {i} to container: {e}")
                 
                 commands_sent += 1
                 if commands_sent >= rate_limit:

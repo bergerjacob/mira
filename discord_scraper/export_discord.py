@@ -20,6 +20,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterator
 
+# Add project root to sys.path for cross-package imports (simulation, data_mining)
+sys.path.append(str(Path(__file__).parent.parent))
+
 import requests
 
 # Paths
@@ -568,6 +571,9 @@ def validate_schematic_with_minecraft(
     schematic_path: Path,
     *,
     paste_origin: tuple[int, int, int] = (10000, 100, 10000),
+    max_entities: int = 0,
+    max_containers: int = 0,
+    max_blocks: int = 0,
 ) -> SchematicValidationResult:
     try:
         # Import lazily so `--help` works without deps.
@@ -582,6 +588,49 @@ def validate_schematic_with_minecraft(
 
         if block_count <= 0:
             return SchematicValidationResult(valid=False, error="empty_schematic", block_count=0, bounds=bounds)
+
+        # Skip schematics with entities (mob farms) — not useful for redstone training
+        entity_count = sum(1 for _, _, _, state, _ in blocks if state.startswith("entity:"))
+        if max_entities >= 0 and entity_count > max_entities:
+            return SchematicValidationResult(
+                valid=False,
+                error=f"skipped_entities:{entity_count}",
+                block_count=block_count,
+                bounds=bounds,
+            )
+
+        # Skip schematics with container NBT (hoppers, shulkers, dispensers with items)
+        # These cause RCON timeouts on `data modify block` and aren't useful for training
+        container_count = sum(1 for _, _, _, _, nbt in blocks if nbt is not None)
+        if max_containers >= 0 and container_count > max_containers:
+            return SchematicValidationResult(
+                valid=False,
+                error=f"skipped_containers:{container_count}",
+                block_count=block_count,
+                bounds=bounds,
+            )
+
+        # Skip schematics that are too large for reliable MC placement
+        if max_blocks > 0 and block_count > max_blocks:
+            return SchematicValidationResult(
+                valid=False,
+                error=f"skipped_too_large:{block_count}",
+                block_count=block_count,
+                bounds=bounds,
+            )
+
+        # Skip schematics with massive bounding boxes (even if few blocks)
+        # e.g. a 2049×2049 schematic with few blocks would need 8M+ block clears
+        (min_x, min_y, min_z), (max_x, max_y, max_z) = bounds
+        bound_area = (max_x - min_x + 1) * (max_y - min_y + 1) * (max_z - min_z + 1)
+        MAX_CLEAR_VOLUME = 1_000_000
+        if bound_area > MAX_CLEAR_VOLUME:
+            return SchematicValidationResult(
+                valid=False,
+                error=f"skipped_huge_bounds:{bound_area}",
+                block_count=block_count,
+                bounds=bounds,
+            )
 
         bridge = MinecraftBridge()
         bridge.connect()
@@ -1179,7 +1228,7 @@ def _clean_server(
             if out_fp.exists() and not force:
                 validated += 1
                 continue
-            res = validate_schematic_with_minecraft(fp)
+            res = validate_schematic_with_minecraft(fp, max_entities=0, max_containers=0, max_blocks=5000)
             if res.valid:
                 out_fp.write_bytes(fp.read_bytes())
                 validated += 1

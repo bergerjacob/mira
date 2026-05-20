@@ -14,7 +14,7 @@ class MinecraftBridge:
     A bridge between Python and the Minecraft server using RCON.
     Allows executing commands and retrieving block data (conceptually, via carpet/api).
     """
-    def __init__(self, host='localhost', port=25575, password='mira', timeout=30):
+    def __init__(self, host='localhost', port=25575, password='mira', timeout=120):
         self.host = host
         self.port = port
         self.password = password
@@ -40,18 +40,45 @@ class MinecraftBridge:
             self.client.disconnect()
             self._connected = False
 
-    def run_command(self, command: str) -> str:
+    def run_command(self, command: str, timeout: int | None = None) -> str:
         """
         Executes a command on the server and returns the output.
+
+        Args:
+            command: The Minecraft command to execute.
+            timeout: Per-command timeout override in seconds. If provided and
+                     different from self.timeout, a separate RCON connection
+                     is opened with this timeout (entity summons, etc.).
         """
+        # Per-command timeout override: use a separate short-lived connection
+        if timeout is not None and timeout != self.timeout:
+            try:
+                temp_client = MCRcon(self.host, self.password, self.port, timeout=timeout)
+                temp_client.connect()
+                try:
+                    return temp_client.command(command)
+                finally:
+                    temp_client.disconnect()
+            except Exception as e:
+                # Trim massive NBT from error output
+                err_msg = str(e)
+                if len(err_msg) > 200:
+                    err_msg = err_msg[:200] + "..."
+                print(f"Error executing command (timeout={timeout}s): {err_msg}")
+                raise e
+
         if not self._connected:
             self.connect()
-        
+
         try:
             response = self.client.command(command)
             return response
         except Exception as e:
-            print(f"Error executing command '{command}': {e}")
+            # Trim massive NBT from error output
+            err_msg = str(e)
+            if len(err_msg) > 200:
+                err_msg = err_msg[:200] + "..."
+            print(f"Error executing command '{err_msg}'")
             self._connected = False
             raise e  # Re-raise so caller can handle retry logic
 
