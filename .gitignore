@@ -35,5 +35,8 @@ checkpoints/
 .vscode/
 .idea/
 
+# Tool caches
+.antigravitycli/
+
 
 
