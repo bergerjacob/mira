@@ -157,8 +157,51 @@ The project uses OpenRouter API. You must set your API key as an environment var
 export OPENROUTER_API_KEY="your-key-here"
 ```
 
-
 **Recommended model:** `google/gemini-3.1-flash-lite-preview` (best price/performance)
+
+## Migration / Transferring to Another Machine
+
+Git tracks all source code, but several data files and configs are gitignored and must be transferred manually.
+
+### Git-tracked (automatic via `git clone`)
+
+```bash
+git clone --recurse-submodules https://github.com/bergerjacob/mira.git
+cd mira
+git submodule update --init   # if you forgot --recurse-submodules
+```
+
+### Gitignored — must copy manually
+
+| Path | Size | What | Required? |
+|---|---|---|---|
+| `.env` | ~200 B | `OPENROUTER_API_KEY` and other secrets | **Yes — critical** |
+| `data/raw_schematics/` | ~70 KB | 13 `.litematic` test schematics | **Yes** — tests depend on these |
+| `data/simple_schematics/` | ~12 KB | Simple test schematics | Yes |
+| `data/sliced_components/` | ~8 KB | Sliced circuit components | Yes |
+| `data/training/` | ~1.7 GB | Training datasets (`discord_dataset.jsonl`, `reverse_dataset.jsonl`, enriched/results) | Only if training |
+| `discord_scraper/config.json` | ~1 KB | Discord scraper config (tokens) | Only if scraping |
+| `discord_scraper/DiscordChatExporter/cli_output/` | ~29 MB | Exported Discord JSON | Only if you need raw exports |
+
+### Regenerable on the new machine (don't copy)
+
+- **`.venv/`** — recreate: `python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`
+- **`simulation/server/`** — recreate: `python setup.py` (downloads Fabric server + mods; requires Java 21)
+
+### Quick transfer command
+
+From the old machine, tar the essential ignored files:
+
+```bash
+tar czf mira-ignored.tar.gz .env data/ discord_scraper/config.json
+# optionally add: discord_scraper/DiscordChatExporter/cli_output/
+```
+
+Then on the new machine, after cloning and setting up the venv + server:
+
+```bash
+tar xzf mira-ignored.tar.gz -C /path/to/mira/
+```
 
 ## License
 
