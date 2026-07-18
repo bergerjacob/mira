@@ -45,13 +45,24 @@ class OpenRouterClient:
     
     BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
     
-    # Recommended models for code/spatial reasoning
+    # Recommended models for code/spatial reasoning (July 2026 pricing)
+    # Tier 1: Best value workhorses
     MODELS = {
-        "glm-5": "z-ai/glm-5",
-        "kimi-k2.5": "moonshotai/kimi-k2.5", 
-        "gemini-flash-lite": "google/gemini-3.1-flash-lite-preview",
-        "claude-sonnet": "anthropic/claude-sonnet-4.6",
-        "gpt-4o": "openai/gpt-4o",
+        # Tier 1: Primary workhorses (best bang-for-buck)
+        "deepseek-v4-flash": "deepseek/deepseek-v4-flash",        # $0.09/$0.18, 1M ctx, SWE-bench 79%
+        "qwen3-coder-30b": "qwen/qwen3-coder-30b-a3b-instruct",   # $0.07/$0.27, 160K ctx, code MoE
+        # Tier 2: High-quality
+        "deepseek-v4-pro": "deepseek/deepseek-v4-pro",            # $0.71/$1.43, 1M ctx, SWE-bench 80.6%
+        "llama-3.3-70b": "meta-llama/llama-3.3-70b-instruct",     # $0.13/$0.40, 131K ctx, reliable 70B
+        # Tier 3: Specialized
+        "glm-5.2": "z-ai/glm-5.2",                                # $0.30/$0.94, 1M ctx, engineering focus
+        "kimi-k3": "moonshotai/kimi-k3",                          # $3.00/$15.00, 1M ctx, newest flagship
+        # Legacy (kept for backwards compat; gemini-flash-lite-preview was shut down May 2026)
+        "gemini-flash-lite": "google/gemini-3.1-flash-lite",       # $0.25/$1.50, 1M ctx (GA, not preview)
+        "glm-5": "z-ai/glm-5",                                    # $0.95/$3.15, 202K ctx (legacy)
+        "kimi-k2.5": "moonshotai/kimi-k2.5",                      # $0.57/$2.85, 256K ctx (legacy)
+        "claude-sonnet": "anthropic/claude-sonnet-4.6",            # $3.00/$15.00, 1M ctx
+        "gpt-4o": "openai/gpt-4o",                                # $2.50/$10.00, 128K ctx
     }
     
     def __init__(self, api_key: Optional[str] = None):
@@ -113,15 +124,14 @@ class OpenRouterClient:
         if response_format:
             payload["response_format"] = response_format
         
-        # Add reasoning effort control (for Qwen and other thinking models)
+        # Add reasoning effort control (for Qwen, DeepSeek, and other thinking models)
         # "none" disables reasoning tokens — essential for structured output
+        # Only send if model supports it; some providers 404 on unknown parameters
         if reasoning_effort is not None:
             payload["reasoning"] = {"effort": reasoning_effort}
         
-        # Add provider preferences for structured outputs
-        payload["provider"] = {
-            "require_parameters": True
-        }
+        # Note: Do NOT set provider.require_parameters=True — it causes 404s for models
+        # that don't support the reasoning parameter. Let OpenRouter route freely.
         
         try:
             response = self.session.post(self.BASE_URL, json=payload, timeout=120)

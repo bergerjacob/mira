@@ -1,0 +1,858 @@
+{
+  "timestamp": "20260718_054123",
+  "models": [
+    "qwen3-coder-30b"
+  ],
+  "circuits": [
+    "simple_lamp",
+    "piston_door"
+  ],
+  "attempts": 3,
+  "iterate_rounds": 0,
+  "results": [
+    {
+      "model": "qwen3-coder-30b",
+      "circuit": "simple_lamp",
+      "attempt": 1,
+      "expected_blocks": 3,
+      "timestamp": "2026-07-18T05:39:48.891906",
+      "llm_output": {
+        "plan": [
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,0",
+            "reason": "Support block for lever",
+            "step": 2
+          },
+          {
+            "block_type": "minecraft:lever[facing=north,powered=false]",
+            "connects_to": [],
+            "position": "1,1,0",
+            "reason": "Input lever to activate circuit",
+            "step": 3
+          },
+          {
+            "block_type": "minecraft:redstone_lamp[lit=false]",
+            "connects_to": [],
+            "position": "2,1,0",
+            "reason": "Output lamp that should light when lever is activated",
+            "step": 4
+          }
+        ],
+        "reasoning": "I need to create a simple redstone circuit with exactly 3 blocks as requested. Since redstone components need solid support blocks, I'll use stone blocks as the base. The lever is placed on a stone block, and the lamp is placed on a stone block. However, looking at the requirement again, I see I need to use exactly 3 blocks total. I need to reconsider the approach - the lever, redstone dust, and lamp are all separate blocks, but I need to make the circuit functional with only 3 blocks. Let me fix this - I'll make the lever directly on the ground (using stone as support) and connect it to a lamp directly, but that won't work with redstone dust. I'll need to use a different approach where I have a lever, redstone dust, and a lamp - but that's 4 blocks minimum. Let me re-read the requirement...",
+        "verification": {
+          "actions": [
+            {
+              "position": "1,1,0",
+              "state": "minecraft:lever[facing=north,powered=true]",
+              "type": "set_block"
+            }
+          ],
+          "final_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=true]",
+              "position": "2,1,0"
+            }
+          ],
+          "initial_checks": [
+            {
+              "expected_state": "minecraft:lever[facing=north,powered=false]",
+              "position": "1,1,0"
+            }
+          ],
+          "tick_steps": 10
+        }
+      },
+      "block_count": 3,
+      "block_count_match": true,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": true,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "1,1,0",
+            "expected": "minecraft:lever[facing=north,powered=false]",
+            "passed": true
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "2,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          }
+        ]
+      },
+      "verification_is_fair": true,
+      "negative_check_details": {
+        "negative_checks": [
+          {
+            "position": "2,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": false
+          }
+        ],
+        "any_check_failed_on_broken": true
+      },
+      "status": "pass"
+    },
+    {
+      "model": "qwen3-coder-30b",
+      "circuit": "simple_lamp",
+      "attempt": 2,
+      "expected_blocks": 3,
+      "timestamp": "2026-07-18T05:40:02.473400",
+      "llm_output": {
+        "plan": [
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,0",
+            "reason": "Support block for lever",
+            "step": 1
+          },
+          {
+            "block_type": "minecraft:lever[facing=north,powered=false]",
+            "connects_to": [],
+            "position": "0,1,0",
+            "reason": "Input lever to activate circuit",
+            "step": 2
+          },
+          {
+            "block_type": "minecraft:redstone_lamp[lit=false]",
+            "connects_to": [],
+            "position": "2,1,0",
+            "reason": "Output lamp that should light when lever is activated",
+            "step": 3
+          }
+        ],
+        "reasoning": "The circuit requires 3 blocks total: 1 support block, 1 lever, and 1 lamp. Redstone dust is not required as a separate block since the lever directly powers the lamp through the redstone connection. The lamp is placed 2 blocks away from the lever to ensure proper redstone transmission.",
+        "verification": {
+          "actions": [
+            {
+              "position": "0,1,0",
+              "state": "minecraft:lever[facing=north,powered=true]",
+              "type": "set_block"
+            }
+          ],
+          "final_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=true]",
+              "position": "2,1,0"
+            }
+          ],
+          "initial_checks": [
+            {
+              "expected_state": "minecraft:lever[facing=north,powered=false]",
+              "position": "0,1,0"
+            },
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=false]",
+              "position": "2,1,0"
+            }
+          ],
+          "tick_steps": 10
+        }
+      },
+      "block_count": 3,
+      "block_count_match": true,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": false,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:lever[facing=north,powered=false]",
+            "passed": true
+          },
+          {
+            "position": "2,1,0",
+            "expected": "minecraft:redstone_lamp[lit=false]",
+            "passed": true
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "2,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": false
+          }
+        ]
+      },
+      "status": "fail"
+    },
+    {
+      "model": "qwen3-coder-30b",
+      "circuit": "simple_lamp",
+      "attempt": 3,
+      "expected_blocks": 3,
+      "timestamp": "2026-07-18T05:40:09.499249",
+      "llm_output": {
+        "plan": [
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [
+              1
+            ],
+            "position": "0,0,0",
+            "reason": "Support block for lever",
+            "step": 1
+          },
+          {
+            "block_type": "minecraft:lever",
+            "connects_to": [
+              2
+            ],
+            "position": "1,1,0",
+            "reason": "Input lever to activate circuit",
+            "step": 2
+          },
+          {
+            "block_type": "minecraft:redstone_lamp",
+            "connects_to": [
+              3
+            ],
+            "position": "2,1,0",
+            "reason": "Output lamp that should light when lever is activated",
+            "step": 3
+          }
+        ],
+        "reasoning": "I need to create a simple redstone circuit with exactly 3 blocks as requested. The circuit requires a lever as input, redstone dust in the middle to transmit the signal, and a redstone lamp as output. However, looking at the requirement more carefully, I see that redstone dust is not a block that can be placed directly - it's a redstone component that connects to blocks. The actual blocks needed are: 1) a stone block to support the lever, 2) a lever block, and 3) a redstone lamp block. The redstone dust is implied by the connections between these blocks and doesn't count as a separate block in the total count. Let me reconsider this with the right approach.",
+        "verification": {
+          "actions": [
+            {
+              "position": "1,1,0",
+              "state": "minecraft:lever[facing=north,powered=true]",
+              "type": "set_block"
+            }
+          ],
+          "final_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=true]",
+              "position": "2,1,0"
+            }
+          ],
+          "initial_checks": [
+            {
+              "expected_state": "minecraft:lever[facing=north,powered=false]",
+              "position": "1,1,0"
+            },
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=false]",
+              "position": "2,1,0"
+            }
+          ],
+          "tick_steps": 10
+        }
+      },
+      "block_count": 3,
+      "block_count_match": true,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": true,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "1,1,0",
+            "expected": "minecraft:lever[facing=north,powered=false]",
+            "passed": true
+          },
+          {
+            "position": "2,1,0",
+            "expected": "minecraft:redstone_lamp[lit=false]",
+            "passed": true
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "2,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          }
+        ]
+      },
+      "verification_is_fair": true,
+      "negative_check_details": {
+        "negative_checks": [
+          {
+            "position": "2,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": false
+          }
+        ],
+        "any_check_failed_on_broken": true
+      },
+      "status": "pass"
+    },
+    {
+      "model": "qwen3-coder-30b",
+      "circuit": "piston_door",
+      "attempt": 1,
+      "expected_blocks": 15,
+      "timestamp": "2026-07-18T05:40:17.556551",
+      "llm_output": {
+        "plan": [
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,0",
+            "reason": "Support block for redstone components below door frame, and base for piston mechanism at 0,1,0 (piston face facing up)",
+            "step": 1
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,1,0",
+            "reason": "Support block for sticky piston at 0,1,0 (piston face facing up)",
+            "step": 2
+          },
+          {
+            "block_type": "minecraft:sticky_piston",
+            "connects_to": [],
+            "position": "0,1,0",
+            "reason": "Main piston to push door up",
+            "step": 3
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,2,0",
+            "reason": "Support block for redstone components above door frame",
+            "step": 4
+          },
+          {
+            "block_type": "minecraft:redstone_wire",
+            "connects_to": [],
+            "position": "0,2,1",
+            "reason": "Redstone wire to connect to lever",
+            "step": 5
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,2,2",
+            "reason": "Support block for lever",
+            "step": 6
+          },
+          {
+            "block_type": "minecraft:lever",
+            "connects_to": [],
+            "position": "0,2,2",
+            "reason": "Player activation point",
+            "step": 7
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,3,0",
+            "reason": "Support block for door block",
+            "step": 8
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,4,0",
+            "reason": "Support block for second door block",
+            "step": 9
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,5,0",
+            "reason": "Top of door frame",
+            "step": 10
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,1",
+            "reason": "Support block for redstone repeater",
+            "step": 11
+          },
+          {
+            "block_type": "minecraft:redstone_repeater",
+            "connects_to": [],
+            "position": "0,0,1",
+            "reason": "Delay to ensure stable signal",
+            "step": 12
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,2",
+            "reason": "Support block for redstone comparator",
+            "step": 13
+          },
+          {
+            "block_type": "minecraft:redstone_comparator",
+            "connects_to": [],
+            "position": "0,0,2",
+            "reason": "Signal processing",
+            "step": 14
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,3",
+            "reason": "Support block for redstone lamp",
+            "step": 15
+          }
+        ],
+        "reasoning": "This plan creates a 1x2 piston door with a lever trigger. The sticky piston at 0,1,0 pushes two stone blocks up to form the door. The lever at 0,2,2 activates the redstone circuit. The redstone wire connects to the lever. A repeater delays the signal. A comparator processes the signal. A redstone lamp shows the output state. The door is 2 blocks tall (0,3,0 and 0,4,0), and the lever is 2 blocks above the door frame (at 0,2,2). The circuit is designed to activate when the lever is flipped, causing the piston to extend and move the door.",
+        "verification": {
+          "actions": [
+            {
+              "position": "0,2,2",
+              "state": "minecraft:lever[facing=north,powered=true]\"}",
+              "type": "set_block"
+            }
+          ],
+          "final_checks": [
+            {
+              "expected_state": "minecraft:sticky_piston[facing=up,extended=true]",
+              "position": "0,1,0"
+            },
+            {
+              "expected_state": "minecraft:stone[waterlogged=false]",
+              "position": "0,3,0"
+            },
+            {
+              "expected_state": "minecraft:stone[waterlogged=false]",
+              "position": "0,4,0"
+            }
+          ],
+          "initial_checks": [
+            {
+              "expected_state": "minecraft:lever[facing=north,powered=false]",
+              "position": "0,2,2"
+            },
+            {
+              "expected_state": "minecraft:sticky_piston[facing=up,extended=false]",
+              "position": "0,1,0"
+            }
+          ],
+          "tick_steps": 10
+        }
+      },
+      "block_count": 13,
+      "block_count_match": false,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": false,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "0,2,2",
+            "expected": "minecraft:lever[facing=north,powered=false]",
+            "passed": true
+          },
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:sticky_piston[facing=up,extended=false]",
+            "passed": false
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:sticky_piston[facing=up,extended=true]",
+            "passed": false
+          },
+          {
+            "position": "0,3,0",
+            "expected": "minecraft:stone[waterlogged=false]",
+            "passed": false
+          },
+          {
+            "position": "0,4,0",
+            "expected": "minecraft:stone[waterlogged=false]",
+            "passed": false
+          }
+        ]
+      },
+      "status": "fail"
+    },
+    {
+      "model": "qwen3-coder-30b",
+      "circuit": "piston_door",
+      "attempt": 2,
+      "expected_blocks": 15,
+      "timestamp": "2026-07-18T05:40:55.507222",
+      "llm_output": {
+        "plan": [
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,0",
+            "reason": "Support block for redstone components",
+            "step": 1
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,1,0",
+            "reason": "Support block for redstone components",
+            "step": 2
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,2,0",
+            "reason": "Support block for redstone components",
+            "step": 3
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "1,0,0",
+            "reason": "Support block for redstone components",
+            "step": 4
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "1,1,0",
+            "reason": "Support block for redstone components",
+            "step": 5
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "1,2,0",
+            "reason": "Support block for redstone components",
+            "step": 6
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "2,0,0",
+            "reason": "Support block for redstone components",
+            "step": 7
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "2,1,0",
+            "reason": "Support block for redstone components",
+            "step": 8
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "2,2,0",
+            "reason": "Support block for redstone components",
+            "step": 9
+          },
+          {
+            "block_type": "minecraft:sticky_piston",
+            "connects_to": [],
+            "position": "1,1,1",
+            "reason": "Piston to push door block up",
+            "step": 10
+          },
+          {
+            "block_type": "minecraft:sticky_piston",
+            "connects_to": [],
+            "position": "1,2,1",
+            "reason": "Piston to push door block down",
+            "step": 11
+          },
+          {
+            "block_type": "minecraft:redstone_wire",
+            "connects_to": [],
+            "position": "0,1,1",
+            "reason": "Redstone wire to power pistons",
+            "step": 12
+          },
+          {
+            "block_type": "minecraft:lever",
+            "connects_to": [],
+            "position": "0,1,2",
+            "reason": "Lever to activate the circuit",
+            "step": 13
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,1,1",
+            "reason": "Support block for redstone wire",
+            "step": 14
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "1,0,1",
+            "reason": "Support block for door block",
+            "step": 15
+          }
+        ],
+        "reasoning": "I need to build a 1x2 piston door with sticky pistons. Let me count carefully:\n\n1. Support blocks for redstone components (3x3 grid = 9 blocks)\n2. Piston blocks (2 blocks)\n3. Redstone wire (1 block)\n4. Lever (1 block)\n5. Support block for door block (1 block)\n\nTotal: 15 blocks\n\nThe door consists of two sticky pistons (one at y=1, one at y=2) pushing a door block (at x=1, y=0, z=1) in opposite directions. The lever at x=0, y=1, z=2 powers the redstone wire at x=0, y=1, z=1 which powers both pistons. The pistons will push the door block up and down to create the door effect.",
+        "verification": {
+          "actions": [
+            {
+              "position": "0,1,2",
+              "state": "minecraft:lever[facing=north,powered=true]",
+              "type": "set_block"
+            }
+          ],
+          "final_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=true]",
+              "position": "0,1,1"
+            }
+          ],
+          "initial_checks": [
+            {
+              "expected_state": "minecraft:lever[facing=north,powered=false]",
+              "position": "0,1,2"
+            }
+          ],
+          "tick_steps": 10
+        }
+      },
+      "block_count": 15,
+      "block_count_match": true,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": false,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "0,1,2",
+            "expected": "minecraft:lever[facing=north,powered=false]",
+            "passed": true
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "0,1,1",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": false
+          }
+        ]
+      },
+      "status": "fail"
+    },
+    {
+      "model": "qwen3-coder-30b",
+      "circuit": "piston_door",
+      "attempt": 3,
+      "expected_blocks": 15,
+      "timestamp": "2026-07-18T05:41:09.936474",
+      "llm_output": {
+        "plan": [
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,0",
+            "reason": "Support block for redstone components",
+            "step": 1
+          },
+          {
+            "block_type": "minecraft:redstone_wire",
+            "connects_to": [],
+            "position": "0,1,0",
+            "reason": "Redstone power transmission",
+            "step": 2
+          },
+          {
+            "block_type": "minecraft:lever",
+            "connects_to": [],
+            "position": "1,1,0",
+            "reason": "Power source for the circuit",
+            "step": 3
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "2,0,0",
+            "reason": "Support block for redstone components",
+            "step": 4
+          },
+          {
+            "block_type": "minecraft:redstone_wire",
+            "connects_to": [],
+            "position": "2,1,0",
+            "reason": "Redstone power transmission",
+            "step": 5
+          },
+          {
+            "block_type": "minecraft:sticky_piston",
+            "connects_to": [],
+            "position": "3,1,0",
+            "reason": "Piston to push the door block",
+            "step": 6
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "4,0,0",
+            "reason": "Support block for redstone components",
+            "step": 7
+          },
+          {
+            "block_type": "minecraft:redstone_wire",
+            "connects_to": [],
+            "position": "4,1,0",
+            "reason": "Redstone power transmission",
+            "step": 8
+          },
+          {
+            "block_type": "minecraft:sticky_piston",
+            "connects_to": [],
+            "position": "5,1,0",
+            "reason": "Piston to push the door block",
+            "step": 9
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "6,0,0",
+            "reason": "Support block for redstone components",
+            "step": 10
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "6,1,0",
+            "reason": "Support block for redstone components",
+            "step": 11
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "3,2,0",
+            "reason": "Support block for door block",
+            "step": 12
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "5,2,0",
+            "reason": "Support block for door block",
+            "step": 13
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "3,3,0",
+            "reason": "Door block to be pushed",
+            "step": 14
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "5,3,0",
+            "reason": "Door block to be pushed",
+            "step": 15
+          }
+        ],
+        "reasoning": "The circuit consists of a 1x2 piston door with sticky pistons pushing blocks upward. The lever powers the redstone circuit which activates both pistons simultaneously.",
+        "verification": {
+          "actions": [
+            {
+              "position": "1,1,0",
+              "state": "minecraft:lever[facing=north,powered=true]",
+              "type": "set_block"
+            }
+          ],
+          "final_checks": [
+            {
+              "expected_state": "minecraft:sticky_piston[facing=up,extended=true]",
+              "position": "3,1,0"
+            },
+            {
+              "expected_state": "minecraft:sticky_piston[facing=up,extended=true]",
+              "position": "5,1,0"
+            },
+            {
+              "expected_state": "minecraft:stone",
+              "position": "3,3,0"
+            },
+            {
+              "expected_state": "minecraft:stone",
+              "position": "5,3,0"
+            }
+          ],
+          "initial_checks": [
+            {
+              "expected_state": "minecraft:lever[facing=north,powered=false]",
+              "position": "1,1,0"
+            },
+            {
+              "expected_state": "minecraft:sticky_piston[facing=up,extended=false]",
+              "position": "3,1,0"
+            },
+            {
+              "expected_state": "minecraft:sticky_piston[facing=up,extended=false]",
+              "position": "5,1,0"
+            }
+          ],
+          "tick_steps": 10
+        }
+      },
+      "block_count": 15,
+      "block_count_match": true,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": false,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "1,1,0",
+            "expected": "minecraft:lever[facing=north,powered=false]",
+            "passed": true
+          },
+          {
+            "position": "3,1,0",
+            "expected": "minecraft:sticky_piston[facing=up,extended=false]",
+            "passed": false
+          },
+          {
+            "position": "5,1,0",
+            "expected": "minecraft:sticky_piston[facing=up,extended=false]",
+            "passed": false
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "3,1,0",
+            "expected": "minecraft:sticky_piston[facing=up,extended=true]",
+            "passed": false
+          },
+          {
+            "position": "5,1,0",
+            "expected": "minecraft:sticky_piston[facing=up,extended=true]",
+            "passed": false
+          },
+          {
+            "position": "3,3,0",
+            "expected": "minecraft:stone",
+            "passed": true
+          },
+          {
+            "position": "5,3,0",
+            "expected": "minecraft:stone",
+            "passed": true
+          }
+        ]
+      },
+      "status": "fail"
+    }
+  ]
+}
