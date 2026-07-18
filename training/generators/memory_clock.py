@@ -47,15 +47,24 @@ class RsLatchGenerator(CircuitGenerator):
     category = "memory_clock"
 
     def enumerate_params(self) -> List[Dict[str, Any]]:
-        # Two orientations: lever on north side (z=-1) or south side (z=1)
-        return [
+        # Two orientations × two block types = 4 examples
+        orientations = [
             {"orientation": "north", "facing": "north", "lever_z": -1},
             {"orientation": "south", "facing": "south", "lever_z": 1},
         ]
+        params = []
+        for orient in orientations:
+            for block_type in ["stone", "cobblestone"]:
+                p = dict(orient)
+                p["block_type"] = block_type
+                params.append(p)
+        return params
 
     def generate(self, params: Dict[str, Any]) -> CircuitExample:
         facing = params["facing"]
         lz = params["lever_z"]
+        block_type = params["block_type"]
+        block_state = f"minecraft:{block_type}"
 
         block_a_pos = (0, 0, 0)
         torch_a_pos = (0, 1, 0)
@@ -69,10 +78,10 @@ class RsLatchGenerator(CircuitGenerator):
         lamp_pos = (3, 1, 0)
 
         blocks: List[Block] = [
-            (*block_a_pos, "minecraft:stone", None),
+            (*block_a_pos, block_state, None),
             (*torch_a_pos, "minecraft:redstone_torch", None),
             (*lever_set_pos, f"minecraft:lever[facing={facing},powered=false]", None),
-            (*block_b_pos, "minecraft:stone", None),
+            (*block_b_pos, block_state, None),
             (*torch_b_pos, "minecraft:redstone_torch", None),
             (*lever_reset_pos, f"minecraft:lever[facing={facing},powered=false]", None),
             (*wire_pos, "minecraft:redstone_wire", None),
@@ -80,13 +89,15 @@ class RsLatchGenerator(CircuitGenerator):
         ]
         support = add_support_blocks(blocks)
 
+        block_name = block_type.replace("_", " ")
+
         # Structural verification — check core blocks are in place
         verify = VerifyContract(
             initial_checks=[
-                VerifyCheck(block_a_pos, "minecraft:stone"),
+                VerifyCheck(block_a_pos, block_state),
                 VerifyCheck(torch_a_pos, "minecraft:redstone_torch"),
                 VerifyCheck(lever_set_pos, f"minecraft:lever[facing={facing},powered=false]"),
-                VerifyCheck(block_b_pos, "minecraft:stone"),
+                VerifyCheck(block_b_pos, block_state),
                 VerifyCheck(torch_b_pos, "minecraft:redstone_torch"),
                 VerifyCheck(lever_reset_pos, f"minecraft:lever[facing={facing},powered=false]"),
                 VerifyCheck(wire_pos, "minecraft:redstone_wire"),
@@ -94,16 +105,17 @@ class RsLatchGenerator(CircuitGenerator):
             actions=[],
             tick_steps=20,
             final_checks=[
-                VerifyCheck(block_a_pos, "minecraft:stone"),
+                VerifyCheck(block_a_pos, block_state),
                 VerifyCheck(torch_a_pos, "minecraft:redstone_torch"),
-                VerifyCheck(block_b_pos, "minecraft:stone"),
+                VerifyCheck(block_b_pos, block_state),
                 VerifyCheck(torch_b_pos, "minecraft:redstone_torch"),
                 VerifyCheck(wire_pos, "minecraft:redstone_wire"),
             ],
         )
 
         desc = (
-            f"An RS latch (reset-set latch) using two cross-coupled redstone torches. "
+            f"An RS latch (reset-set latch) using two cross-coupled redstone torches "
+            f"on {block_name} blocks. "
             f"Block A at {block_a_pos} has a redstone torch at {torch_a_pos} and "
             f"SET lever at {lever_set_pos} (facing {facing}). "
             f"Block B at {block_b_pos} has a redstone torch at {torch_b_pos} and "
@@ -152,18 +164,28 @@ class TFlipFlopGenerator(CircuitGenerator):
     category = "memory_clock"
 
     def enumerate_params(self) -> List[Dict[str, Any]]:
-        return [
+        # Two orientations × two block types = 4 examples
+        orientations = [
             {"orientation": "east", "facing": "east"},
             {"orientation": "west", "facing": "west"},
         ]
+        params = []
+        for orient in orientations:
+            for block_type in ["stone", "cobblestone"]:
+                p = dict(orient)
+                p["block_type"] = block_type
+                params.append(p)
+        return params
 
     def generate(self, params: Dict[str, Any]) -> CircuitExample:
         facing = params["facing"]
+        block_type = params["block_type"]
+        block_state = f"minecraft:{block_type}"
 
         lever_pos = (0, 0, 0)
         block_a_pos = (1, 0, 0)
         torch_a_pos = (1, 1, 0)
-        block_c_pos = (2, 0, 0)   # Support for wire at (2,1,0)
+        block_c_pos = (2, 0, 0)   # Support for wire above
         wire_pos = (2, 1, 0)      # Torch A output at torch level
         block_b_pos = (3, 0, 0)
         torch_b_pos = (3, 1, 0)
@@ -171,36 +193,48 @@ class TFlipFlopGenerator(CircuitGenerator):
 
         blocks: List[Block] = [
             (*lever_pos, f"minecraft:lever[facing={facing},powered=false]", None),
-            (*block_a_pos, "minecraft:stone", None),
+            (*block_a_pos, block_state, None),
             (*torch_a_pos, "minecraft:redstone_torch", None),
-            (*block_c_pos, "minecraft:stone", None),
+            (*block_c_pos, block_state, None),
             (*wire_pos, "minecraft:redstone_wire", None),
-            (*block_b_pos, "minecraft:stone", None),
+            (*block_b_pos, block_state, None),
             (*torch_b_pos, "minecraft:redstone_torch", None),
             (*lamp_pos, "minecraft:redstone_lamp[lit=false]", None),
         ]
         support = add_support_blocks(blocks)
 
+        block_name = block_type.replace("_", " ")
+
         verify = VerifyContract(
             initial_checks=[
                 VerifyCheck(lever_pos, f"minecraft:lever[facing={facing},powered=false]"),
-                VerifyCheck(block_a_pos, "minecraft:stone"),
+                VerifyCheck(block_a_pos, block_state),
                 VerifyCheck(torch_a_pos, "minecraft:redstone_torch"),
-                VerifyCheck(block_c_pos, "minecraft:stone"),
+                VerifyCheck(block_c_pos, block_state),
                 VerifyCheck(wire_pos, "minecraft:redstone_wire"),
-                VerifyCheck(block_b_pos, "minecraft:stone"),
+                VerifyCheck(block_b_pos, block_state),
                 VerifyCheck(torch_b_pos, "minecraft:redstone_torch"),
             ],
             actions=[],
             tick_steps=20,
             final_checks=[
-                VerifyCheck(block_a_pos, "minecraft:stone"),
+                VerifyCheck(block_a_pos, block_state),
                 VerifyCheck(torch_a_pos, "minecraft:redstone_torch"),
-                VerifyCheck(block_c_pos, "minecraft:stone"),
+                VerifyCheck(block_c_pos, block_state),
                 VerifyCheck(wire_pos, "minecraft:redstone_wire"),
-                VerifyCheck(block_b_pos, "minecraft:stone"),
+                VerifyCheck(block_b_pos, block_state),
                 VerifyCheck(torch_b_pos, "minecraft:redstone_torch"),
             ],
+        )
+
+        desc = (
+            f"A T flip-flop (toggle) circuit on {block_name} blocks. "
+            f"A lever at {lever_pos} controls "
+            f"a chain of two NOT gates: Block A at {block_a_pos} with torch at {torch_a_pos}, "
+            f"and Block B at {block_b_pos} with torch at {torch_b_pos}. "
+            f"Redstone wire at {wire_pos} carries the signal between the two stages. "
+            f"The lamp at {lamp_pos} toggles between on and off "
+            f"each time the lever is pressed and released."
         )
 
         desc = (
@@ -249,13 +283,23 @@ class ClockGenerator(CircuitGenerator):
     category = "memory_clock"
 
     def enumerate_params(self) -> List[Dict[str, Any]]:
-        return [
+        # Two orientations × two block types = 4 examples
+        orientations = [
             {"orientation": "east", "lamp_dx": 3},
             {"orientation": "west", "lamp_dx": -1},
         ]
+        params = []
+        for orient in orientations:
+            for block_type in ["stone", "cobblestone"]:
+                p = dict(orient)
+                p["block_type"] = block_type
+                params.append(p)
+        return params
 
     def generate(self, params: Dict[str, Any]) -> CircuitExample:
         lamp_dx = params["lamp_dx"]
+        block_type = params["block_type"]
+        block_state = f"minecraft:{block_type}"
 
         block_a_pos = (0, 0, 0)
         torch_a_pos = (0, 1, 0)
@@ -265,36 +309,38 @@ class ClockGenerator(CircuitGenerator):
         lamp_pos = (lamp_dx, 1, 0)
 
         blocks: List[Block] = [
-            (*block_a_pos, "minecraft:stone", None),
+            (*block_a_pos, block_state, None),
             (*torch_a_pos, "minecraft:redstone_torch", None),
-            (*block_b_pos, "minecraft:stone", None),
+            (*block_b_pos, block_state, None),
             (*torch_b_pos, "minecraft:redstone_torch", None),
             (*wire_pos, "minecraft:redstone_wire", None),
             (*lamp_pos, "minecraft:redstone_lamp[lit=false]", None),
         ]
         support = add_support_blocks(blocks)
 
+        block_name = block_type.replace("_", " ")
+
         verify = VerifyContract(
             initial_checks=[
-                VerifyCheck(block_a_pos, "minecraft:stone"),
+                VerifyCheck(block_a_pos, block_state),
                 VerifyCheck(torch_a_pos, "minecraft:redstone_torch"),
-                VerifyCheck(block_b_pos, "minecraft:stone"),
+                VerifyCheck(block_b_pos, block_state),
                 VerifyCheck(torch_b_pos, "minecraft:redstone_torch"),
                 VerifyCheck(wire_pos, "minecraft:redstone_wire"),
             ],
             actions=[],
             tick_steps=20,
             final_checks=[
-                VerifyCheck(block_a_pos, "minecraft:stone"),
+                VerifyCheck(block_a_pos, block_state),
                 VerifyCheck(torch_a_pos, "minecraft:redstone_torch"),
-                VerifyCheck(block_b_pos, "minecraft:stone"),
+                VerifyCheck(block_b_pos, block_state),
                 VerifyCheck(torch_b_pos, "minecraft:redstone_torch"),
                 VerifyCheck(wire_pos, "minecraft:redstone_wire"),
             ],
         )
 
         desc = (
-            f"A redstone clock circuit using two cross-coupled torches. "
+            f"A redstone clock circuit using two cross-coupled torches on {block_name} blocks. "
             f"Block A at {block_a_pos} has torch at {torch_a_pos}, "
             f"Block B at {block_b_pos} has torch at {torch_b_pos}. "
             f"The torches are cross-coupled through redstone wire at {wire_pos}, "
@@ -343,14 +389,24 @@ class PulseGenerator(CircuitGenerator):
     category = "memory_clock"
 
     def enumerate_params(self) -> List[Dict[str, Any]]:
-        return [
+        # Two orientations × two block types = 4 examples
+        orientations = [
             {"orientation": "north", "facing": "north", "lever_z": -1},
             {"orientation": "south", "facing": "south", "lever_z": 1},
         ]
+        params = []
+        for orient in orientations:
+            for block_type in ["stone", "cobblestone"]:
+                p = dict(orient)
+                p["block_type"] = block_type
+                params.append(p)
+        return params
 
     def generate(self, params: Dict[str, Any]) -> CircuitExample:
         facing = params["facing"]
         lz = params["lever_z"]
+        block_type = params["block_type"]
+        block_state = f"minecraft:{block_type}"
 
         lever_pos = (0, 0, lz)
         block_a_pos = (0, 0, 0)
@@ -363,32 +419,34 @@ class PulseGenerator(CircuitGenerator):
 
         blocks: List[Block] = [
             (*lever_pos, f"minecraft:lever[facing={facing},powered=false]", None),
-            (*block_a_pos, "minecraft:stone", None),
+            (*block_a_pos, block_state, None),
             (*torch_a_pos, "minecraft:redstone_torch", None),
             (*wire_a_pos, "minecraft:redstone_wire", None),
             (*wire_b_pos, "minecraft:redstone_wire", None),
-            (*block_b_pos, "minecraft:stone", None),
+            (*block_b_pos, block_state, None),
             (*torch_b_pos, "minecraft:redstone_torch", None),
             (*lamp_pos, "minecraft:redstone_lamp[lit=false]", None),
         ]
         support = add_support_blocks(blocks)
 
+        block_name = block_type.replace("_", " ")
+
         verify = VerifyContract(
             initial_checks=[
                 VerifyCheck(lever_pos, f"minecraft:lever[facing={facing},powered=false]"),
-                VerifyCheck(block_a_pos, "minecraft:stone"),
+                VerifyCheck(block_a_pos, block_state),
                 VerifyCheck(torch_a_pos, "minecraft:redstone_torch"),
                 VerifyCheck(wire_a_pos, "minecraft:redstone_wire"),
                 VerifyCheck(wire_b_pos, "minecraft:redstone_wire"),
-                VerifyCheck(block_b_pos, "minecraft:stone"),
+                VerifyCheck(block_b_pos, block_state),
                 VerifyCheck(torch_b_pos, "minecraft:redstone_torch"),
             ],
             actions=[],
             tick_steps=20,
             final_checks=[
-                VerifyCheck(block_a_pos, "minecraft:stone"),
+                VerifyCheck(block_a_pos, block_state),
                 VerifyCheck(torch_a_pos, "minecraft:redstone_torch"),
-                VerifyCheck(block_b_pos, "minecraft:stone"),
+                VerifyCheck(block_b_pos, block_state),
                 VerifyCheck(torch_b_pos, "minecraft:redstone_torch"),
                 VerifyCheck(wire_a_pos, "minecraft:redstone_wire"),
                 VerifyCheck(wire_b_pos, "minecraft:redstone_wire"),
@@ -396,8 +454,9 @@ class PulseGenerator(CircuitGenerator):
         )
 
         desc = (
-            f"A pulse generator circuit that produces a brief output pulse "
-            f"when triggered. A lever at {lever_pos} (facing {facing}) controls "
+            f"A pulse generator circuit on {block_name} blocks that produces "
+            f"a brief output pulse when triggered. A lever at {lever_pos} "
+            f"(facing {facing}) controls "
             f"a chain of two NOT gates: Block A at {block_a_pos} with torch at {torch_a_pos}, "
             f"and Block B at {block_b_pos} with torch at {torch_b_pos}. "
             f"Redstone wire at {wire_a_pos} and {wire_b_pos} carries the signal between "

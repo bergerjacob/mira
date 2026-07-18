@@ -32,6 +32,7 @@ class DirectPowerLamp(CircuitGenerator):
         ("north", 0, 0, -1, "facing=north"),
         ("south", 0, 0, 1, "facing=south"),
         ("up", 0, 1, 0, "facing=up"),
+        ("down", 0, -1, 0, "facing=down"),
     ]
 
     def enumerate_params(self) -> List[Dict[str, Any]]:
@@ -80,25 +81,32 @@ class LeverLampDirect(CircuitGenerator):
     name = "lever_lamp_direct"
     category = "power_distribution"
 
+    # (name, dx, dy, dz, lever_facing)
     DIRECTIONS = [
-        ("east", 1, 0, 0),
-        ("west", -1, 0, 0),
+        ("east", 1, 0, 0, "east"),
+        ("west", -1, 0, 0, "west"),
+        ("north", 0, 0, -1, "north"),
+        ("south", 0, 0, 1, "south"),
+        ("up", 0, 1, 0, "north"),
+        ("down", 0, -1, 0, "north"),
     ]
 
     def enumerate_params(self) -> List[Dict[str, Any]]:
         params = []
-        for direction, dx, dy, dz in self.DIRECTIONS:
-            params.append({"direction": direction, "dx": dx, "dy": dy, "dz": dz})
+        for direction, dx, dy, dz, lever_facing in self.DIRECTIONS:
+            params.append({"direction": direction, "dx": dx, "dy": dy, "dz": dz,
+                           "lever_facing": lever_facing})
         return params
 
     def generate(self, params: Dict[str, Any]) -> CircuitExample:
         direction = params["direction"]
         dx, dy, dz = params["dx"], params["dy"], params["dz"]
+        lever_facing = params["lever_facing"]
 
         lever_pos = (0, 0, 0)
         lamp_pos = (dx, dy, dz)
         blocks: List[Block] = [
-            (*lever_pos, "minecraft:lever[facing=east,powered=false]", None),
+            (*lever_pos, f"minecraft:lever[facing={lever_facing},powered=false]", None),
             (*lamp_pos, "minecraft:redstone_lamp[lit=false]", None),
         ]
         support = add_support_blocks(blocks)
@@ -107,7 +115,7 @@ class LeverLampDirect(CircuitGenerator):
                 VerifyCheck(lamp_pos, "minecraft:redstone_lamp[lit=false]"),
             ],
             actions=[
-                VerifyAction(lever_pos, "minecraft:lever[facing=east,powered=true]"),
+                VerifyAction(lever_pos, f"minecraft:lever[facing={lever_facing},powered=true]"),
             ],
             tick_steps=20,
             final_checks=[
@@ -117,8 +125,9 @@ class LeverLampDirect(CircuitGenerator):
                 VerifyCheck(lamp_pos, "minecraft:redstone_lamp[lit=false]"),
             ],
         )
+        direction_word = direction if direction in ("up", "down") else f"the {direction}"
         desc = (f"A lever at (0,0,0) directly powers a redstone lamp at ({dx},{dy},{dz}) "
-                f"to the {direction}. Flipping the lever turns the lamp on.")
+                f"to {direction_word}. Flipping the lever turns the lamp on.")
         return CircuitExample(
             description=desc,
             blocks=blocks,
@@ -138,7 +147,7 @@ class LeverWireLamp(CircuitGenerator):
 
     def enumerate_params(self) -> List[Dict[str, Any]]:
         params = []
-        for wire_length in [1, 2, 3, 5, 8, 13]:
+        for wire_length in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
             for direction in ["east", "west"]:
                 params.append({"wire_length": wire_length, "direction": direction})
         return params
@@ -197,10 +206,10 @@ class FanOutLamp(CircuitGenerator):
 
     def enumerate_params(self) -> List[Dict[str, Any]]:
         # Redstone block only powers ADJACENT blocks (distance 1).
-        # Valid adjacent positions: east, west, north, south, up.
-        # We can have 2, 3, or 4 lamps in various combinations.
+        # Valid adjacent positions: east, west, north, south, up, down.
+        # We can have 2-6 lamps in various combinations.
         params = []
-        for num_lamps in [2, 3, 4]:
+        for num_lamps in [2, 3, 4, 5, 6]:
             params.append({"num_lamps": num_lamps})
         return params
 
@@ -210,9 +219,8 @@ class FanOutLamp(CircuitGenerator):
         blocks: List[Block] = [
             (0, 0, 0, "minecraft:redstone_block", None),
         ]
-        # All 4 adjacent positions (east, west, north, south)
-        # Note: Z-axis (north/south) lamps work when directly adjacent to redstone_block
-        dirs = [(1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, -1)]
+        # All 6 adjacent positions (east, west, north, south, up, down)
+        dirs = [(1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, -1), (0, 1, 0), (0, -1, 0)]
         lamp_positions = []
 
         for i in range(num_lamps):
@@ -244,6 +252,66 @@ class FanOutLamp(CircuitGenerator):
             verify_contract=verify,
             category=self.category,
             difficulty="beginner" if num_lamps <= 2 else "intermediate",
+            metadata={"generator": self.name, "params": params},
+        )
+
+
+class RedstoneBlockLamp(CircuitGenerator):
+    """Lamp placed directly adjacent to a redstone block — always lit.
+
+    Framed from the lamp's perspective: a redstone lamp placed next to a
+    redstone block receives constant power and remains always on.
+    """
+
+    name = "redstone_block_lamp"
+    category = "power_distribution"
+
+    DIRECTIONS = [
+        ("east", 1, 0, 0, "east"),
+        ("west", -1, 0, 0, "west"),
+        ("north", 0, 0, -1, "north"),
+        ("south", 0, 0, 1, "south"),
+        ("up", 0, 1, 0, "up"),
+        ("down", 0, -1, 0, "down"),
+    ]
+
+    def enumerate_params(self) -> List[Dict[str, Any]]:
+        params = []
+        for direction, dx, dy, dz, _ in self.DIRECTIONS:
+            params.append({"direction": direction, "dx": dx, "dy": dy, "dz": dz})
+        return params
+
+    def generate(self, params: Dict[str, Any]) -> CircuitExample:
+        direction = params["direction"]
+        dx, dy, dz = params["dx"], params["dy"], params["dz"]
+
+        blocks: List[Block] = [
+            (dx, dy, dz, "minecraft:redstone_lamp[lit=false]", None),
+            (0, 0, 0, "minecraft:redstone_block", None),
+        ]
+        support = add_support_blocks(blocks)
+        direction_word = direction if direction in ("up", "down") else f"to the {direction}"
+        verify = VerifyContract(
+            initial_checks=[
+                VerifyCheck((dx, dy, dz), "minecraft:redstone_lamp[lit=true]"),
+            ],
+            actions=[],
+            tick_steps=5,
+            final_checks=[
+                VerifyCheck((dx, dy, dz), "minecraft:redstone_lamp[lit=true]"),
+            ],
+            negative_checks=[],
+        )
+        desc = (f"A redstone lamp at ({dx},{dy},{dz}) is placed {direction_word} of a "
+                f"redstone block at (0,0,0). The lamp receives constant power from the "
+                f"adjacent redstone block and remains lit at all times.")
+        return CircuitExample(
+            description=desc,
+            blocks=blocks,
+            support_blocks=support,
+            verify_contract=verify,
+            category=self.category,
+            difficulty="beginner",
             metadata={"generator": self.name, "params": params},
         )
 

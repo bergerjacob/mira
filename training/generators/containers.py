@@ -1,7 +1,7 @@
 """
 MIRA: Container Circuit Generator
 
-Generates circuits involving containers (chests, hoppers, droppers, dispensers).
+Generates circuits involving containers (chests, hoppers, droppers, dispensers, barrels).
 Uses structural verification (check_block) exclusively since the current
 verification framework supports block state checking, not inventory checking.
 
@@ -9,7 +9,8 @@ Generators:
 - HopperChainGenerator: Vertical hopper chain for item transport
 - HopperTransportGenerator: Horizontal hopper transport line
 - ChestArrayGenerator: Array of chests with items
-- DropperDispenserGenerator: Droppers facing various directions
+- DropperDispenserGenerator: Droppers and dispensers facing various directions
+- BarrelArrayGenerator: Array of barrels with items
 """
 from __future__ import annotations
 from typing import List, Dict, Any, Tuple
@@ -31,7 +32,7 @@ class HopperChainGenerator(CircuitGenerator):
 
     def enumerate_params(self) -> List[Dict[str, Any]]:
         params = []
-        for chain_length in [1, 2, 3]:
+        for chain_length in [1, 2, 3, 4, 5]:
             params.append({"chain_length": chain_length})
         return params
 
@@ -117,7 +118,7 @@ class HopperTransportGenerator(CircuitGenerator):
 
     def enumerate_params(self) -> List[Dict[str, Any]]:
         params = []
-        for chain_length in [1, 2, 3]:
+        for chain_length in [1, 2, 3, 4, 5]:
             params.append({"chain_length": chain_length})
         return params
 
@@ -203,7 +204,7 @@ class ChestArrayGenerator(CircuitGenerator):
 
     def enumerate_params(self) -> List[Dict[str, Any]]:
         params = []
-        for num_chests in [2, 4, 6]:
+        for num_chests in [2, 4, 6, 8, 10]:
             params.append({"num_chests": num_chests})
         return params
 
@@ -232,6 +233,7 @@ class ChestArrayGenerator(CircuitGenerator):
         item_types = [
             "diamond", "iron_ingot", "gold_ingot", "emerald",
             "redstone", "lapis_lazuli", "coal", "copper_ingot",
+            "netherite_scrap", "quartz",
         ]
         items_desc = ", ".join(item_types[:num_chests])
 
@@ -280,25 +282,29 @@ class DropperDispenserGenerator(CircuitGenerator):
     def enumerate_params(self) -> List[Dict[str, Any]]:
         params = []
         for facing in self.FACINGS:
-            params.append({"facing": facing})
+            for container_type in ["dropper", "dispenser"]:
+                params.append({"facing": facing, "container_type": container_type})
         return params
 
     def generate(self, params: Dict[str, Any]) -> CircuitExample:
         facing = params["facing"]
+        container_type = params["container_type"]  # "dropper" or "dispenser"
 
-        # Single dropper at (0,0,0) with specified facing
-        dropper_pos = (0, 0, 0)
-        state = f"minecraft:dropper[facing={facing}]"
+        # Single container at (0,0,0) with specified facing
+        container_pos = (0, 0, 0)
+        state = f"minecraft:{container_type}[facing={facing}]"
 
         blocks: List[Block] = [
-            (*dropper_pos, state, None),
+            (*container_pos, state, None),
         ]
         support: List[Block] = []
 
-        check = VerifyCheck(dropper_pos, state)
+        check = VerifyCheck(container_pos, state)
+
+        ct_display = container_type  # already the right name
         desc = (
-            f"A dropper placed at (0,0,0) facing {facing}. "
-            f"The dropper can store up to 9 stacks of items and will eject "
+            f"A {ct_display} placed at (0,0,0) facing {facing}. "
+            f"The {ct_display} can store up to 9 stacks of items and will eject "
             f"items in the {facing} direction when activated with a redstone signal."
         )
 
@@ -319,6 +325,77 @@ class DropperDispenserGenerator(CircuitGenerator):
                 "generator": self.name,
                 "params": params,
                 "facing": facing,
-                "container_type": "dropper",
+                "container_type": container_type,
+            },
+        )
+
+
+class BarrelArrayGenerator(CircuitGenerator):
+    """Array of barrels with items.
+
+    A linear arrangement of barrels, similar to ChestArrayGenerator but
+    using barrels instead of chests. Barrels provide single-chest-equivalent
+    storage and can be locked with redstone.
+
+    Structural verification confirms all barrels are placed.
+    3 variants: 2, 4, or 6 barrels.
+    """
+
+    name = "barrel_array"
+    category = "containers"
+
+    def enumerate_params(self) -> List[Dict[str, Any]]:
+        params = []
+        for num_barrels in [2, 4, 6]:
+            params.append({"num_barrels": num_barrels})
+        return params
+
+    def generate(self, params: Dict[str, Any]) -> CircuitExample:
+        num_barrels = params["num_barrels"]
+
+        # Layout: barrels spaced 2 apart along X axis
+        blocks: List[Block] = []
+        support: List[Block] = []
+
+        barrel_positions = []
+        for i in range(num_barrels):
+            x = i * 2
+            barrel_pos = (x, 0, 0)
+            barrel_positions.append(barrel_pos)
+            blocks.append((*barrel_pos, "minecraft:barrel[facing=up]", None))
+
+        # Structural verification
+        checks = [
+            VerifyCheck(pos, "minecraft:barrel[facing=up]")
+            for pos in barrel_positions
+        ]
+
+        pos_strs = [str(p) for p in barrel_positions]
+        desc = (
+            f"An array of {num_barrels} barrels arranged along the X-axis. "
+            f"The barrels are at positions: {', '.join(pos_strs)}. "
+            f"Each barrel is facing up and can store up to 27 stacks of items. "
+            f"Barrels are used for item storage and remain accessible even when "
+            f"a block is placed above them (unlike chests)."
+        )
+
+        return CircuitExample(
+            description=desc,
+            blocks=blocks,
+            support_blocks=support,
+            verify_contract=VerifyContract(
+                initial_checks=checks,
+                actions=[],
+                tick_steps=5,
+                final_checks=checks,
+                negative_checks=[],
+            ),
+            category=self.category,
+            difficulty="beginner",
+            metadata={
+                "generator": self.name,
+                "params": params,
+                "num_barrels": num_barrels,
+                "container_type": "barrel_array",
             },
         )
