@@ -2,6 +2,8 @@
 
 **Purpose:** Historical record of what we tried, what worked, and what didn't during the testing phase (March 2026).
 
+> **⚠️ CORRECTION (July 2026):** The "100% accuracy" claims below refer to **block-count accuracy** (the LLM generates the correct number of blocks) and **manual inspection** of a few circuits. They do NOT mean the circuits were functionally verified in Minecraft. Phase 0 measurement (July 2026) showed the actual functional pass rate is **17.5%** — see "July 2026: Phase 0 Functional Measurement" section at the bottom.
+
 ---
 
 ## March 2026: Comprehensive Testing Phase
@@ -369,3 +371,54 @@ These files were consolidated into the 3-file structure:
 
 *Historical record compiled March 11, 2026*  
 *Testing phase complete, documentation consolidated*
+
+---
+
+## July 2026: Phase 0 Functional Measurement
+
+### Context
+
+The March 2026 "100% accuracy" claims were block-count accuracy + manual signal-flow inspection on 6 circuits — NOT functional verification in Minecraft. The generate→build→verify→pass/fail loop had never been closed. Phase 0 closes that loop and measures the actual functional pass rate.
+
+### Method
+
+- **Script:** `scripts/phase0_measure_success_rate.py`
+- **Prompt:** Plan+Constraint (the "winner" from March 2026 testing)
+- **Model:** `google/gemini-3.1-flash-lite-preview`, temperature 0.5, max_tokens 8192
+- **Circuits:** 8 test circuits × 10 attempts = 80 LLM generations
+- **Pipeline:** LLM generates plan → parse blocks → add support blocks → forceload chunks → replicate_blocks → tick step → mira_api check_block → pass/fail
+
+### Results
+
+**Overall: 14/80 functional passes = 17.5%**
+
+| Circuit | Blocks | Block Count Match | Build Success | Functional Pass |
+|---------|--------|-------------------|---------------|-----------------|
+| simple_lamp | 3 | 100% | 100% | **100%** |
+| randomizer | 32 | 30% | 100% | **30%** |
+| piston_door | 15 | 60% | 100% | **10%** |
+| comparator_subtractor | 8 | 0% | 100% | 0% |
+| observer_torch | 4 | 0% | 100% | 0% |
+| power_repeater | 6 | 0% | 100% | 0% |
+| t_flip_flop | 24 | 0% | 100% | 0% |
+| hopper_transporter | 3 | 0% | 0% | 0% |
+
+### Key Findings
+
+1. **Success rate drops sharply with complexity:** 3 blocks → 100%, 15 blocks → 10%, 24-32 blocks → 0-30%.
+2. **Block-count accuracy ≠ functional accuracy:** The LLM often generates the right number of blocks that don't actually work.
+3. **Repeaters/comparators can't be powered via `setblock`** — fundamental Minecraft mechanic (setblock triggers block updates, not redstone updates). This limits which circuits can be verified.
+4. **LLM produces invalid block names** — `minecraft:block_iron`, `minecraft:redstone_dust`, `minecraft:lamp`, names with spaces. Requires normalization.
+5. **LLM under-generates on complex circuits** — t_flip_flop (24 blocks) gets 12-17 blocks.
+
+### Calibration for Data Acquisition
+
+- **Distillation (Phase 3) viable for simple circuits (3-15 blocks)** but needs verification filtering.
+- **Procedural core (Phase 2) essential for complex circuits** — LLM can't reliably generate them.
+- **17.5% overall rate** → ~5,700 generations for 1,000 verified examples (~$4 API, ~8-15 server-hours).
+- **Quality > quantity** — 3-5k verified examples is the MVP target, not 10k unverified.
+
+### Files
+
+- `scripts/phase0_measure_success_rate.py` — measurement script (928 lines)
+- `evaluation/results/phase0_measurement/` — JSON results per run
