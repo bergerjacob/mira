@@ -1,0 +1,27 @@
+{
+  "id": "vertical_redstone",
+  "description": "Vertical redstone: redstone_block → wire (vertical) → wire → lamp. Tests vertical redstone propagation through blocks.",
+  "blocks": [
+    {"x": 0, "y": 0, "z": 0, "state": "minecraft:redstone_block"},
+    {"x": 0, "y": 1, "z": 0, "state": "minecraft:stone"},
+    {"x": 0, "y": 2, "z": 0, "state": "minecraft:redstone_wire"},
+    {"x": 0, "y": 3, "z": 0, "state": "minecraft:stone"},
+    {"x": 1, "y": 3, "z": 0, "state": "minecraft:redstone_wire"},
+    {"x": 2, "y": 3, "z": 0, "state": "minecraft:redstone_lamp[lit=false]"}
+  ],
+  "support_blocks": [
+    {"x": 0, "y": -1, "z": 0, "state": "minecraft:stone"},
+    {"x": 1, "y": 2, "z": 0, "state": "minecraft:stone"},
+    {"x": 2, "y": 2, "z": 0, "state": "minecraft:stone"}
+  ],
+  "verification": {
+    "initial_checks": [
+      {"pos": [2, 3, 0], "expected": "minecraft:redstone_lamp[lit=true]"}
+    ],
+    "actions": [],
+    "tick_steps": 20,
+    "final_checks": [
+      {"pos": [2, 3, 0], "expected": "minecraft:redstone_lamp[lit=true]"}
+    ]
+  }
+}

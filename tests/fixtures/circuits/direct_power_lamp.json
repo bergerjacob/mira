@@ -1,0 +1,22 @@
+{
+  "id": "direct_power_lamp",
+  "description": "A redstone block directly powers an adjacent redstone lamp",
+  "blocks": [
+    {"x": 0, "y": 0, "z": 0, "state": "minecraft:redstone_block"},
+    {"x": 1, "y": 0, "z": 0, "state": "minecraft:redstone_lamp[lit=false]"}
+  ],
+  "support_blocks": [
+    {"x": 0, "y": -1, "z": 0, "state": "minecraft:stone"},
+    {"x": 1, "y": -1, "z": 0, "state": "minecraft:stone"}
+  ],
+  "verification": {
+    "initial_checks": [
+      {"pos": [1, 0, 0], "expected": "minecraft:redstone_lamp[lit=true]"}
+    ],
+    "actions": [],
+    "tick_steps": 20,
+    "final_checks": [
+      {"pos": [1, 0, 0], "expected": "minecraft:redstone_lamp[lit=true]"}
+    ]
+  }
+}

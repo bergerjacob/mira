@@ -1,0 +1,30 @@
+{
+  "id": "wire_propagation",
+  "description": "A redstone block powers a line of redstone dust. Tests power level decay: 15, 14, 13.",
+  "blocks": [
+    {"x": 0, "y": 0, "z": 0, "state": "minecraft:redstone_block"},
+    {"x": 1, "y": 0, "z": 0, "state": "minecraft:redstone_wire"},
+    {"x": 2, "y": 0, "z": 0, "state": "minecraft:redstone_wire"},
+    {"x": 3, "y": 0, "z": 0, "state": "minecraft:redstone_wire"}
+  ],
+  "support_blocks": [
+    {"x": 0, "y": -1, "z": 0, "state": "minecraft:stone"},
+    {"x": 1, "y": -1, "z": 0, "state": "minecraft:stone"},
+    {"x": 2, "y": -1, "z": 0, "state": "minecraft:stone"},
+    {"x": 3, "y": -1, "z": 0, "state": "minecraft:stone"}
+  ],
+  "verification": {
+    "initial_checks": [
+      {"pos": [1, 0, 0], "expected": "minecraft:redstone_wire[power=15]"},
+      {"pos": [2, 0, 0], "expected": "minecraft:redstone_wire[power=14]"},
+      {"pos": [3, 0, 0], "expected": "minecraft:redstone_wire[power=13]"}
+    ],
+    "actions": [],
+    "tick_steps": 20,
+    "final_checks": [
+      {"pos": [1, 0, 0], "expected": "minecraft:redstone_wire[power=15]"},
+      {"pos": [2, 0, 0], "expected": "minecraft:redstone_wire[power=14]"},
+      {"pos": [3, 0, 0], "expected": "minecraft:redstone_wire[power=13]"}
+    ]
+  }
+}

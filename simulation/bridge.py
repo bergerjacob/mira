@@ -133,7 +133,7 @@ class MinecraftBridge:
         """
         Unfreezes the game tick.
         """
-        return self.run_command("tick freeze status") # Toggle or set specific logic
+        return self.run_command("tick unfreeze")
 
 # Example usage block
 if __name__ == "__main__":

@@ -1,0 +1,54 @@
+{
+  "metadata": {
+    "timestamp": "2026-07-18T04:42:11.695321",
+    "model": "gemini-flash-lite",
+    "temperature": 0.5,
+    "attempts_per_circuit": 1,
+    "dry_run": true,
+    "circuits": [
+      "simple_lamp"
+    ]
+  },
+  "circuits": {
+    "simple_lamp": {
+      "name": "simple_lamp",
+      "expected_blocks": 3,
+      "difficulty": "beginner",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": null,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": null,
+            "functional_pass": null,
+            "details": {
+              "verification_method": "dry_run"
+            }
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 1,
+        "llm_errors": 0,
+        "block_count_matches": 1,
+        "build_successes": 0,
+        "functional_passes": 0,
+        "block_count_rate": 1.0,
+        "build_success_rate": 0.0,
+        "functional_pass_rate": 0.0
+      }
+    }
+  },
+  "summary": {
+    "total_attempts": 1,
+    "total_passes": 0,
+    "overall_pass_rate": 0.0,
+    "total_cost_usd": 0.0
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "signal_split",
+  "description": "Signal split: lever → wire → 2 lamps. Tests that redstone signal splits to multiple outputs.",
+  "blocks": [
+    {"x": 0, "y": 0, "z": 0, "state": "minecraft:lever[facing=east,powered=false]"},
+    {"x": 1, "y": 0, "z": 0, "state": "minecraft:redstone_wire"},
+    {"x": 2, "y": 0, "z": 0, "state": "minecraft:redstone_lamp[lit=false]"},
+    {"x": 1, "y": 0, "z": 1, "state": "minecraft:redstone_wire"},
+    {"x": 2, "y": 0, "z": 1, "state": "minecraft:redstone_lamp[lit=false]"}
+  ],
+  "support_blocks": [
+    {"x": 0, "y": -1, "z": 0, "state": "minecraft:stone"},
+    {"x": 1, "y": -1, "z": 0, "state": "minecraft:stone"},
+    {"x": 2, "y": -1, "z": 0, "state": "minecraft:stone"},
+    {"x": 1, "y": -1, "z": 1, "state": "minecraft:stone"},
+    {"x": 2, "y": -1, "z": 1, "state": "minecraft:stone"}
+  ],
+  "verification": {
+    "initial_checks": [
+      {"pos": [2, 0, 0], "expected": "minecraft:redstone_lamp[lit=false]"},
+      {"pos": [2, 0, 1], "expected": "minecraft:redstone_lamp[lit=false]"}
+    ],
+    "actions": [
+      {"type": "set_block", "pos": [0, 0, 0], "state": "minecraft:lever[facing=east,powered=true]"}
+    ],
+    "tick_steps": 20,
+    "final_checks": [
+      {"pos": [2, 0, 0], "expected": "minecraft:redstone_lamp[lit=true]"},
+      {"pos": [2, 0, 1], "expected": "minecraft:redstone_lamp[lit=true]"}
+    ]
+  }
+}

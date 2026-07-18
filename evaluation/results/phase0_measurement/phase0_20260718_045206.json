@@ -1,0 +1,1203 @@
+{
+  "metadata": {
+    "timestamp": "2026-07-18T04:47:24.776595",
+    "model": "gemini-flash-lite",
+    "temperature": 0.5,
+    "attempts_per_circuit": 10,
+    "dry_run": false,
+    "circuits": [
+      "comparator_subtractor",
+      "hopper_transporter",
+      "observer_torch",
+      "piston_door",
+      "power_repeater",
+      "randomizer",
+      "simple_lamp",
+      "t_flip_flop"
+    ]
+  },
+  "circuits": {
+    "comparator_subtractor": {
+      "name": "comparator_subtractor",
+      "expected_blocks": 8,
+      "difficulty": "advanced",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 8,
+          "expected_block_count": 8,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "Connection timeout error"
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 8,
+          "expected_block_count": 8,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 8,
+          "expected_block_count": 8,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 8,
+          "expected_block_count": 8,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 8,
+          "expected_block_count": 8,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 8,
+          "expected_block_count": 8,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 8,
+          "expected_block_count": 8,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 8,
+          "expected_block_count": 8,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 8,
+          "expected_block_count": 8,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 8,
+          "expected_block_count": 8,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 10,
+        "build_successes": 0,
+        "functional_passes": 0,
+        "block_count_rate": 1.0,
+        "build_success_rate": 0.0,
+        "functional_pass_rate": 0.0
+      }
+    },
+    "hopper_transporter": {
+      "name": "hopper_transporter",
+      "expected_blocks": 3,
+      "difficulty": "beginner",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 10,
+        "build_successes": 0,
+        "functional_passes": 0,
+        "block_count_rate": 1.0,
+        "build_success_rate": 0.0,
+        "functional_pass_rate": 0.0
+      }
+    },
+    "observer_torch": {
+      "name": "observer_torch",
+      "expected_blocks": 4,
+      "difficulty": "intermediate",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 4,
+          "expected_block_count": 4,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 4,
+          "expected_block_count": 4,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 4,
+          "expected_block_count": 4,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 4,
+          "expected_block_count": 4,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 4,
+          "expected_block_count": 4,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 4,
+          "expected_block_count": 4,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 4,
+          "expected_block_count": 4,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 4,
+          "expected_block_count": 4,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 4,
+          "expected_block_count": 4,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 4,
+          "expected_block_count": 4,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 10,
+        "build_successes": 0,
+        "functional_passes": 0,
+        "block_count_rate": 1.0,
+        "build_success_rate": 0.0,
+        "functional_pass_rate": 0.0
+      }
+    },
+    "piston_door": {
+      "name": "piston_door",
+      "expected_blocks": 15,
+      "difficulty": "intermediate",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 10,
+        "build_successes": 0,
+        "functional_passes": 0,
+        "block_count_rate": 1.0,
+        "build_success_rate": 0.0,
+        "functional_pass_rate": 0.0
+      }
+    },
+    "power_repeater": {
+      "name": "power_repeater",
+      "expected_blocks": 6,
+      "difficulty": "beginner",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 6,
+          "expected_block_count": 6,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 6,
+          "expected_block_count": 6,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 6,
+          "expected_block_count": 6,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 6,
+          "expected_block_count": 6,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 6,
+          "expected_block_count": 6,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 6,
+          "expected_block_count": 6,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 6,
+          "expected_block_count": 6,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 6,
+          "expected_block_count": 6,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 6,
+          "expected_block_count": 6,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 6,
+          "expected_block_count": 6,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 10,
+        "build_successes": 0,
+        "functional_passes": 0,
+        "block_count_rate": 1.0,
+        "build_success_rate": 0.0,
+        "functional_pass_rate": 0.0
+      }
+    },
+    "randomizer": {
+      "name": "randomizer",
+      "expected_blocks": 32,
+      "difficulty": "advanced",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 10,
+        "build_successes": 0,
+        "functional_passes": 0,
+        "block_count_rate": 1.0,
+        "build_success_rate": 0.0,
+        "functional_pass_rate": 0.0
+      }
+    },
+    "simple_lamp": {
+      "name": "simple_lamp",
+      "expected_blocks": 3,
+      "difficulty": "beginner",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 10,
+        "build_successes": 0,
+        "functional_passes": 0,
+        "block_count_rate": 1.0,
+        "build_success_rate": 0.0,
+        "functional_pass_rate": 0.0
+      }
+    },
+    "t_flip_flop": {
+      "name": "t_flip_flop",
+      "expected_blocks": 24,
+      "difficulty": "expert",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 24,
+          "expected_block_count": 24,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 24,
+          "expected_block_count": 24,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 24,
+          "expected_block_count": 24,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 24,
+          "expected_block_count": 24,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 24,
+          "expected_block_count": 24,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 24,
+          "expected_block_count": 24,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 24,
+          "expected_block_count": 24,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 24,
+          "expected_block_count": 24,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 24,
+          "expected_block_count": 24,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 24,
+          "expected_block_count": 24,
+          "block_count_match": true,
+          "build_success": false,
+          "verification": {
+            "functional_pass": false,
+            "error": "[Errno 111] Connection refused"
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 10,
+        "build_successes": 0,
+        "functional_passes": 0,
+        "block_count_rate": 1.0,
+        "build_success_rate": 0.0,
+        "functional_pass_rate": 0.0
+      }
+    }
+  },
+  "summary": {
+    "total_attempts": 80,
+    "total_passes": 0,
+    "overall_pass_rate": 0.0,
+    "total_cost_usd": 0.0
+  }
+}

@@ -1,0 +1,1778 @@
+{
+  "metadata": {
+    "timestamp": "2026-07-18T05:01:18.159312",
+    "model": "gemini-flash-lite",
+    "temperature": 0.5,
+    "attempts_per_circuit": 10,
+    "dry_run": false,
+    "circuits": [
+      "comparator_subtractor",
+      "hopper_transporter",
+      "observer_torch",
+      "piston_door",
+      "power_repeater",
+      "randomizer",
+      "simple_lamp",
+      "t_flip_flop"
+    ]
+  },
+  "circuits": {
+    "comparator_subtractor": {
+      "name": "comparator_subtractor",
+      "expected_blocks": 8,
+      "difficulty": "advanced",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 7,
+          "expected_block_count": 8,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "verification_method": "structural_only_comparator"
+            }
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 7,
+          "expected_block_count": 8,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "verification_method": "structural_only_comparator"
+            }
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 7,
+          "expected_block_count": 8,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "verification_method": "structural_only_comparator"
+            }
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 7,
+          "expected_block_count": 8,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "verification_method": "structural_only_comparator"
+            }
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 7,
+          "expected_block_count": 8,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "verification_method": "structural_only_comparator"
+            }
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 7,
+          "expected_block_count": 8,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "verification_method": "structural_only_comparator"
+            }
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 7,
+          "expected_block_count": 8,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "verification_method": "structural_only_comparator"
+            }
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 7,
+          "expected_block_count": 8,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "verification_method": "structural_only_comparator"
+            }
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 7,
+          "expected_block_count": 8,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "verification_method": "structural_only_comparator"
+            }
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 7,
+          "expected_block_count": 8,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "verification_method": "structural_only_comparator"
+            }
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 0,
+        "build_successes": 10,
+        "functional_passes": 0,
+        "block_count_rate": 0.0,
+        "build_success_rate": 1.0,
+        "functional_pass_rate": 0.0
+      }
+    },
+    "hopper_transporter": {
+      "name": "hopper_transporter",
+      "expected_blocks": 3,
+      "difficulty": "beginner",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 0,
+          "expected_block_count": 3,
+          "block_count_match": false,
+          "build_success": null,
+          "verification": null
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 0,
+          "expected_block_count": 3,
+          "block_count_match": false,
+          "build_success": null,
+          "verification": null
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 0,
+          "expected_block_count": 3,
+          "block_count_match": false,
+          "build_success": null,
+          "verification": null
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 0,
+          "expected_block_count": 3,
+          "block_count_match": false,
+          "build_success": null,
+          "verification": null
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 0,
+          "expected_block_count": 3,
+          "block_count_match": false,
+          "build_success": null,
+          "verification": null
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 0,
+          "expected_block_count": 3,
+          "block_count_match": false,
+          "build_success": null,
+          "verification": null
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 0,
+          "expected_block_count": 3,
+          "block_count_match": false,
+          "build_success": null,
+          "verification": null
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 0,
+          "expected_block_count": 3,
+          "block_count_match": false,
+          "build_success": null,
+          "verification": null
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 0,
+          "expected_block_count": 3,
+          "block_count_match": false,
+          "build_success": null,
+          "verification": null
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 0,
+          "expected_block_count": 3,
+          "block_count_match": false,
+          "build_success": null,
+          "verification": null
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 0,
+        "build_successes": 0,
+        "functional_passes": 0,
+        "block_count_rate": 0.0,
+        "build_success_rate": 0.0,
+        "functional_pass_rate": 0.0
+      }
+    },
+    "observer_torch": {
+      "name": "observer_torch",
+      "expected_blocks": 4,
+      "difficulty": "intermediate",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 2,
+          "expected_block_count": 4,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_observer": false,
+              "has_lamp": true,
+              "has_torch": false,
+              "verification_method": "structural_only"
+            }
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 2,
+          "expected_block_count": 4,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_observer": false,
+              "has_lamp": true,
+              "has_torch": false,
+              "verification_method": "structural_only"
+            }
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 2,
+          "expected_block_count": 4,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_observer": false,
+              "has_lamp": true,
+              "has_torch": false,
+              "verification_method": "structural_only"
+            }
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 2,
+          "expected_block_count": 4,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_observer": false,
+              "has_lamp": true,
+              "has_torch": false,
+              "verification_method": "structural_only"
+            }
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 2,
+          "expected_block_count": 4,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_observer": false,
+              "has_lamp": true,
+              "has_torch": false,
+              "verification_method": "structural_only"
+            }
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 2,
+          "expected_block_count": 4,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_observer": false,
+              "has_lamp": true,
+              "has_torch": false,
+              "verification_method": "structural_only"
+            }
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 2,
+          "expected_block_count": 4,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_observer": false,
+              "has_lamp": true,
+              "has_torch": false,
+              "verification_method": "structural_only"
+            }
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 2,
+          "expected_block_count": 4,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_observer": false,
+              "has_lamp": true,
+              "has_torch": false,
+              "verification_method": "structural_only"
+            }
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 2,
+          "expected_block_count": 4,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_observer": false,
+              "has_lamp": true,
+              "has_torch": false,
+              "verification_method": "structural_only"
+            }
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 2,
+          "expected_block_count": 4,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_observer": false,
+              "has_lamp": true,
+              "has_torch": false,
+              "verification_method": "structural_only"
+            }
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 0,
+        "build_successes": 10,
+        "functional_passes": 0,
+        "block_count_rate": 0.0,
+        "build_success_rate": 1.0,
+        "functional_pass_rate": 0.0
+      }
+    },
+    "piston_door": {
+      "name": "piston_door",
+      "expected_blocks": 15,
+      "difficulty": "intermediate",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "piston_count": 2,
+              "piston_initially_retracted": false,
+              "piston_extended": false,
+              "verification_method": "functional_piston_extend"
+            }
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "piston_count": 4,
+              "piston_initially_retracted": false,
+              "piston_extended": false,
+              "verification_method": "functional_piston_extend"
+            }
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 14,
+          "expected_block_count": 15,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "piston_count": 4,
+              "piston_initially_retracted": true,
+              "piston_extended": false,
+              "verification_method": "functional_piston_extend"
+            }
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "piston_count": 2,
+              "piston_initially_retracted": true,
+              "piston_extended": false,
+              "verification_method": "functional_piston_extend"
+            }
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 13,
+          "expected_block_count": 15,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "piston_count": 4,
+              "piston_initially_retracted": false,
+              "piston_extended": true,
+              "verification_method": "functional_piston_extend"
+            }
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 14,
+          "expected_block_count": 15,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "piston_count": 4,
+              "piston_initially_retracted": true,
+              "piston_extended": false,
+              "verification_method": "functional_piston_extend"
+            }
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "piston_count": 2,
+              "piston_initially_retracted": false,
+              "piston_extended": false,
+              "verification_method": "functional_piston_extend"
+            }
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 14,
+          "expected_block_count": 15,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "piston_count": 4,
+              "piston_initially_retracted": true,
+              "piston_extended": false,
+              "verification_method": "functional_piston_extend"
+            }
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "piston_count": 4,
+              "piston_initially_retracted": false,
+              "piston_extended": false,
+              "verification_method": "functional_piston_extend"
+            }
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 15,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "piston_count": 4,
+              "piston_initially_retracted": true,
+              "piston_extended": false,
+              "verification_method": "functional_piston_extend"
+            }
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 6,
+        "build_successes": 10,
+        "functional_passes": 1,
+        "block_count_rate": 0.6,
+        "build_success_rate": 1.0,
+        "functional_pass_rate": 0.1
+      }
+    },
+    "power_repeater": {
+      "name": "power_repeater",
+      "expected_blocks": 6,
+      "difficulty": "beginner",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 5,
+          "expected_block_count": 6,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 6,
+              "actual_blocks": 5,
+              "block_types": [
+                "minecraft:redstone_block",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 5,
+          "expected_block_count": 6,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 6,
+              "actual_blocks": 5,
+              "block_types": [
+                "minecraft:redstone_block",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 5,
+          "expected_block_count": 6,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 6,
+              "actual_blocks": 5,
+              "block_types": [
+                "minecraft:redstone_block",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 5,
+          "expected_block_count": 6,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 6,
+              "actual_blocks": 5,
+              "block_types": [
+                "minecraft:redstone_block",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 5,
+          "expected_block_count": 6,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 6,
+              "actual_blocks": 5,
+              "block_types": [
+                "minecraft:redstone_block",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 5,
+          "expected_block_count": 6,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 6,
+              "actual_blocks": 5,
+              "block_types": [
+                "minecraft:redstone_block",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 5,
+          "expected_block_count": 6,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 6,
+              "actual_blocks": 5,
+              "block_types": [
+                "minecraft:redstone_block",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 5,
+          "expected_block_count": 6,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 6,
+              "actual_blocks": 5,
+              "block_types": [
+                "minecraft:redstone_block",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 5,
+          "expected_block_count": 6,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 6,
+              "actual_blocks": 5,
+              "block_types": [
+                "minecraft:redstone_block",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 5,
+          "expected_block_count": 6,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 6,
+              "actual_blocks": 5,
+              "block_types": [
+                "minecraft:redstone_block",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 0,
+        "build_successes": 10,
+        "functional_passes": 0,
+        "block_count_rate": 0.0,
+        "build_success_rate": 1.0,
+        "functional_pass_rate": 0.0
+      }
+    },
+    "randomizer": {
+      "name": "randomizer",
+      "expected_blocks": 32,
+      "difficulty": "advanced",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "expected_blocks": 32,
+              "actual_blocks": 32,
+              "block_types": [
+                "minecraft:observer",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_torch",
+                "minecraft:redstone_wire",
+                "minecraft:repeater",
+                "minecraft:stone"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 31,
+          "expected_block_count": 32,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 32,
+              "actual_blocks": 31,
+              "block_types": [
+                "minecraft:lever",
+                "minecraft:observer",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_torch",
+                "minecraft:redstone_wire",
+                "minecraft:stone"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 19,
+          "expected_block_count": 32,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 32,
+              "actual_blocks": 19,
+              "block_types": [
+                "minecraft:observer",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_torch",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "expected_blocks": 32,
+              "actual_blocks": 32,
+              "block_types": [
+                "minecraft:observer",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_torch",
+                "minecraft:redstone_wire",
+                "minecraft:stone"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 32,
+          "expected_block_count": 32,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "expected_blocks": 32,
+              "actual_blocks": 32,
+              "block_types": [
+                "minecraft:observer",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_torch",
+                "minecraft:redstone_wire",
+                "minecraft:repeater",
+                "minecraft:stone"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 17,
+          "expected_block_count": 32,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 32,
+              "actual_blocks": 17,
+              "block_types": [
+                "minecraft:observer",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_torch",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 28,
+          "expected_block_count": 32,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 32,
+              "actual_blocks": 28,
+              "block_types": [
+                "minecraft:lever",
+                "minecraft:observer",
+                "minecraft:piston",
+                "minecraft:redstone_block",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_torch",
+                "minecraft:redstone_wire",
+                "minecraft:stone"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 18,
+          "expected_block_count": 32,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 32,
+              "actual_blocks": 18,
+              "block_types": [
+                "minecraft:comparator",
+                "minecraft:dropper",
+                "minecraft:hopper",
+                "minecraft:observer",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_torch",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 30,
+          "expected_block_count": 32,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 32,
+              "actual_blocks": 30,
+              "block_types": [
+                "minecraft:observer",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_torch",
+                "minecraft:redstone_wire",
+                "minecraft:stone"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 26,
+          "expected_block_count": 32,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "expected_blocks": 32,
+              "actual_blocks": 26,
+              "block_types": [
+                "minecraft:observer",
+                "minecraft:redstone_lamp",
+                "minecraft:redstone_torch",
+                "minecraft:redstone_wire"
+              ],
+              "verification_method": "block_count_only"
+            }
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 3,
+        "build_successes": 10,
+        "functional_passes": 3,
+        "block_count_rate": 0.3,
+        "build_success_rate": 1.0,
+        "functional_pass_rate": 0.3
+      }
+    },
+    "simple_lamp": {
+      "name": "simple_lamp",
+      "expected_blocks": 3,
+      "difficulty": "beginner",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": true,
+              "lever_state": "minecraft:lever",
+              "lever_state_on": "minecraft:lever[powered=true]",
+              "lamp_turned_on": true,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": true,
+              "lever_state": "minecraft:lever",
+              "lever_state_on": "minecraft:lever[powered=true]",
+              "lamp_turned_on": true,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": true,
+              "lever_state": "minecraft:lever",
+              "lever_state_on": "minecraft:lever[powered=true]",
+              "lamp_turned_on": true,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": true,
+              "lever_state": "minecraft:lever",
+              "lever_state_on": "minecraft:lever[powered=true]",
+              "lamp_turned_on": true,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": true,
+              "lever_state": "minecraft:lever",
+              "lever_state_on": "minecraft:lever[powered=true]",
+              "lamp_turned_on": true,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": true,
+              "lever_state": "minecraft:lever",
+              "lever_state_on": "minecraft:lever[powered=true]",
+              "lamp_turned_on": true,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": true,
+              "lever_state": "minecraft:lever",
+              "lever_state_on": "minecraft:lever[powered=true]",
+              "lamp_turned_on": true,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": true,
+              "lever_state": "minecraft:lever",
+              "lever_state_on": "minecraft:lever[powered=true]",
+              "lamp_turned_on": true,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": true,
+              "lever_state": "minecraft:lever",
+              "lever_state_on": "minecraft:lever[powered=true]",
+              "lamp_turned_on": true,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": true,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": true,
+              "lever_state": "minecraft:lever",
+              "lever_state_on": "minecraft:lever[powered=true]",
+              "lamp_turned_on": true,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 10,
+        "build_successes": 10,
+        "functional_passes": 10,
+        "block_count_rate": 1.0,
+        "build_success_rate": 1.0,
+        "functional_pass_rate": 1.0
+      }
+    },
+    "t_flip_flop": {
+      "name": "t_flip_flop",
+      "expected_blocks": 24,
+      "difficulty": "expert",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 18,
+          "expected_block_count": 24,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_comparator": false,
+              "has_lamp": true,
+              "verification_method": "structural_only_tff"
+            }
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 17,
+          "expected_block_count": 24,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_comparator": false,
+              "has_lamp": true,
+              "verification_method": "structural_only_tff"
+            }
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 18,
+          "expected_block_count": 24,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_comparator": true,
+              "has_lamp": true,
+              "verification_method": "structural_only_tff"
+            }
+          }
+        },
+        {
+          "attempt": 4,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 24,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_comparator": false,
+              "has_lamp": true,
+              "verification_method": "structural_only_tff"
+            }
+          }
+        },
+        {
+          "attempt": 5,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 17,
+          "expected_block_count": 24,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_comparator": true,
+              "has_lamp": false,
+              "verification_method": "structural_only_tff"
+            }
+          }
+        },
+        {
+          "attempt": 6,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 14,
+          "expected_block_count": 24,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_comparator": false,
+              "has_lamp": true,
+              "verification_method": "structural_only_tff"
+            }
+          }
+        },
+        {
+          "attempt": 7,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 12,
+          "expected_block_count": 24,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_comparator": false,
+              "has_lamp": true,
+              "verification_method": "structural_only_tff"
+            }
+          }
+        },
+        {
+          "attempt": 8,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 24,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_comparator": false,
+              "has_lamp": true,
+              "verification_method": "structural_only_tff"
+            }
+          }
+        },
+        {
+          "attempt": 9,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 14,
+          "expected_block_count": 24,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_comparator": false,
+              "has_lamp": true,
+              "verification_method": "structural_only_tff"
+            }
+          }
+        },
+        {
+          "attempt": 10,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 15,
+          "expected_block_count": 24,
+          "block_count_match": false,
+          "build_success": true,
+          "verification": {
+            "block_count_match": false,
+            "key_blocks_present": false,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_comparator": false,
+              "has_lamp": true,
+              "verification_method": "structural_only_tff"
+            }
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 10,
+        "llm_errors": 0,
+        "block_count_matches": 0,
+        "build_successes": 10,
+        "functional_passes": 0,
+        "block_count_rate": 0.0,
+        "build_success_rate": 1.0,
+        "functional_pass_rate": 0.0
+      }
+    }
+  },
+  "summary": {
+    "total_attempts": 80,
+    "total_passes": 14,
+    "overall_pass_rate": 0.175,
+    "total_cost_usd": 0.0
+  }
+}

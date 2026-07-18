@@ -1,0 +1,30 @@
+{
+  "id": "fan_out_lamp",
+  "description": "A lever powers two lamps through different paths: one directly adjacent, one via redstone dust perpendicular to the lever. Tests signal fan-out.",
+  "blocks": [
+    {"x": 0, "y": 0, "z": 0, "state": "minecraft:lever[facing=east,powered=false]"},
+    {"x": 1, "y": 0, "z": 0, "state": "minecraft:redstone_lamp[lit=false]"},
+    {"x": 0, "y": 0, "z": 1, "state": "minecraft:redstone_wire"},
+    {"x": 0, "y": 0, "z": 2, "state": "minecraft:redstone_lamp[lit=false]"}
+  ],
+  "support_blocks": [
+    {"x": 0, "y": -1, "z": 0, "state": "minecraft:stone"},
+    {"x": 1, "y": -1, "z": 0, "state": "minecraft:stone"},
+    {"x": 0, "y": -1, "z": 1, "state": "minecraft:stone"},
+    {"x": 0, "y": -1, "z": 2, "state": "minecraft:stone"}
+  ],
+  "verification": {
+    "initial_checks": [
+      {"pos": [1, 0, 0], "expected": "minecraft:redstone_lamp[lit=false]"},
+      {"pos": [0, 0, 2], "expected": "minecraft:redstone_lamp[lit=false]"}
+    ],
+    "actions": [
+      {"type": "set_block", "pos": [0, 0, 0], "state": "minecraft:lever[facing=east,powered=true]"}
+    ],
+    "tick_steps": 20,
+    "final_checks": [
+      {"pos": [1, 0, 0], "expected": "minecraft:redstone_lamp[lit=true]"},
+      {"pos": [0, 0, 2], "expected": "minecraft:redstone_lamp[lit=true]"}
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "timestamp": "2026-07-18T04:55:47.261813",
+    "model": "gemini-flash-lite",
+    "temperature": 0.5,
+    "attempts_per_circuit": 3,
+    "dry_run": false,
+    "circuits": [
+      "simple_lamp"
+    ]
+  },
+  "circuits": {
+    "simple_lamp": {
+      "name": "simple_lamp",
+      "expected_blocks": 3,
+      "difficulty": "beginner",
+      "attempts": [
+        {
+          "attempt": 1,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": false,
+              "lamp_turned_on": false,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        },
+        {
+          "attempt": 2,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": false,
+              "lamp_turned_on": false,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        },
+        {
+          "attempt": 3,
+          "llm_error": false,
+          "llm_error_msg": "",
+          "block_count": 3,
+          "expected_block_count": 3,
+          "block_count_match": true,
+          "build_success": true,
+          "verification": {
+            "block_count_match": true,
+            "key_blocks_present": true,
+            "functional_pass": false,
+            "details": {
+              "has_lever": true,
+              "has_lamp": true,
+              "has_wire": true,
+              "lamp_initially_off": false,
+              "lamp_turned_on": false,
+              "verification_method": "functional_lamp_toggle"
+            }
+          }
+        }
+      ],
+      "summary": {
+        "total_attempts": 3,
+        "llm_errors": 0,
+        "block_count_matches": 3,
+        "build_successes": 3,
+        "functional_passes": 0,
+        "block_count_rate": 1.0,
+        "build_success_rate": 1.0,
+        "functional_pass_rate": 0.0
+      }
+    }
+  },
+  "summary": {
+    "total_attempts": 3,
+    "total_passes": 0,
+    "overall_pass_rate": 0.0,
+    "total_cost_usd": 0.0
+  }
+}

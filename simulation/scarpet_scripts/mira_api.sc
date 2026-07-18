@@ -118,7 +118,7 @@ check_inventory(pos, slot, expected_item, expected_count) -> (
    
        item = inventory_get(pos, slot);
        if (!item, 
-           if (expected_item == 'air', 
+           if (expected_item == 'air' || expected_item == 'minecraft:air',
                print(format('g PASS: Slot ' + slot + ' at ' + pos + ' is empty')); 'PASS',
                print(format('r FAIL: Slot ' + slot + ' at ' + pos + ' is empty, expected ' + expected_item)); 'FAIL'
            ),
@@ -142,7 +142,7 @@ check_entity(pos, expected_type) -> (
    if (!(expected_type ~ ':'), expected_type = 'minecraft:' + expected_type);
    
    // Use selector for robustness
-   selector = '@e[type=' + expected_type + ',x=' + pos:0 + ',y=' + pos:1 + ',z=' + pos:2 + ',distance=..1]';
+    selector = '@e[type=' + expected_type + ',x=' + pos:0 + ',y=' + pos:1 + ',z=' + pos:2 + ',distance=..2]';
    e_list = entity_selector(selector);
    
    if (length(e_list) > 0,

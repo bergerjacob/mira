@@ -239,7 +239,12 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
         if count % 100 == 0:
             print(f"Progress: {count}/{total} blocks placed.")
 
-    # 3. Post-Build Updates
+    # 3. Restore game state (unfreeze BEFORE updating so redstone propagates)
+    bridge.run_command("gamerule sendCommandFeedback true")
+    bridge.run_command("carpet fillUpdates true") # Always restore to true
+    bridge.run_command("tick unfreeze")
+
+    # 4. Post-Build Updates (must be AFTER unfreeze so updates propagate)
     if force_update_region:
         print("Forcing update in schematic region...")
         u_min_x = ox + p_min_x
@@ -254,10 +259,6 @@ def replicate_blocks(blocks, origin, bounds, bridge, rate_limit=MAX_COMMANDS_PER
             resp = bridge.run_command(f"mira_api update_region {u_min_x} {u_min_y} {u_min_z} {u_max_x} {u_max_y} {u_max_z}")
             print(f"Update Region Response: {resp}")
 
-    # 4. Restore
-    bridge.run_command("gamerule sendCommandFeedback true")
-    bridge.run_command("carpet fillUpdates true") # Always restore to true
-    bridge.run_command("tick unfreeze")
     print("Build complete.")
 
 if __name__ == "__main__":
