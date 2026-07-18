@@ -1,0 +1,1740 @@
+{
+  "timestamp": "2026-07-18T06:16:37.806145",
+  "total": 27,
+  "passed": 27,
+  "failed": 0,
+  "results": [
+    {
+      "generator": "direct_power_lamp",
+      "params": {
+        "direction": "east",
+        "dx": 1,
+        "dy": 0,
+        "dz": 0
+      },
+      "description": "A redstone block at position (0,0,0) directly powers a redstone lamp at (1,0,0) to the east. The lamp is always on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        0,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "direct_power_lamp",
+      "params": {
+        "direction": "west",
+        "dx": -1,
+        "dy": 0,
+        "dz": 0
+      },
+      "description": "A redstone block at position (0,0,0) directly powers a redstone lamp at (-1,0,0) to the west. The lamp is always on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        64,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [63, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [63, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [63, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [63, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "direct_power_lamp",
+      "params": {
+        "direction": "north",
+        "dx": 0,
+        "dy": 0,
+        "dz": -1
+      },
+      "description": "A redstone block at position (0,0,0) directly powers a redstone lamp at (0,0,-1) to the north. The lamp is always on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        128,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 200, -1]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [128, 200, -1] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 200, -1]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [128, 200, -1] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "direct_power_lamp",
+      "params": {
+        "direction": "south",
+        "dx": 0,
+        "dy": 0,
+        "dz": 1
+      },
+      "description": "A redstone block at position (0,0,0) directly powers a redstone lamp at (0,0,1) to the south. The lamp is always on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        192,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [192, 200, 1]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [192, 200, 1] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [192, 200, 1]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [192, 200, 1] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "direct_power_lamp",
+      "params": {
+        "direction": "up",
+        "dx": 0,
+        "dy": 1,
+        "dz": 0
+      },
+      "description": "A redstone block at position (0,0,0) directly powers a redstone lamp at (0,1,0) to the up. The lamp is always on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        256,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [256, 201, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [256, 201, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_lamp_direct",
+      "params": {
+        "direction": "east",
+        "dx": 1,
+        "dy": 0,
+        "dz": 0
+      },
+      "description": "A lever at (0,0,0) directly powers a redstone lamp at (1,0,0) to the east. Flipping the lever turns the lamp on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        320,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [321, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [321, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [321, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [321, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [321, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [321, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_lamp_direct",
+      "params": {
+        "direction": "west",
+        "dx": -1,
+        "dy": 0,
+        "dz": 0
+      },
+      "description": "A lever at (0,0,0) directly powers a redstone lamp at (-1,0,0) to the west. Flipping the lever turns the lamp on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        384,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [383, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [383, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [383, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [383, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [383, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [383, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 1,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (2,0,0) through a chain of 1 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 3,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        448,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [450, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [450, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [450, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [450, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [450, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [450, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 1,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-2,0,0) through a chain of 1 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 3,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        512,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [510, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [510, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [510, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [510, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [510, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [510, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 2,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (3,0,0) through a chain of 2 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 4,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        576,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [579, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [579, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [579, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [579, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [579, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [579, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 2,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-3,0,0) through a chain of 2 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 4,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        0,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-3, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [-3, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-3, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [-3, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-3, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [-3, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 3,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (4,0,0) through a chain of 3 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 5,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        64,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [68, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [68, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [68, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [68, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [68, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [68, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 3,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-4,0,0) through a chain of 3 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 5,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        128,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [124, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [124, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [124, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [124, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [124, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [124, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 5,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (6,0,0) through a chain of 5 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 7,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        192,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [198, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [198, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [198, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [198, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [198, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [198, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 5,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-6,0,0) through a chain of 5 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 7,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        256,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [250, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [250, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [250, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [250, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [250, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [250, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 8,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (9,0,0) through a chain of 8 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 10,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        320,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [329, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [329, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [329, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [329, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [329, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [329, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 8,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-9,0,0) through a chain of 8 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 10,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        384,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [375, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [375, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [375, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [375, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [375, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [375, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 13,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (14,0,0) through a chain of 13 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 15,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        448,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [462, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [462, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [462, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [462, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [462, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [462, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 13,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-14,0,0) through a chain of 13 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 15,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        512,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [498, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [498, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [498, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [498, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [498, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [498, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "fan_out_lamp",
+      "params": {
+        "num_lamps": 2
+      },
+      "description": "A redstone block at (0,0,0) powers 2 redstone lamps placed directly adjacent to it. All lamps are always on.",
+      "block_count": 3,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        576,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [577, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [577, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [575, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [575, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [577, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [577, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [575, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [575, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "fan_out_lamp",
+      "params": {
+        "num_lamps": 3
+      },
+      "description": "A redstone block at (0,0,0) powers 3 redstone lamps placed directly adjacent to it. All lamps are always on.",
+      "block_count": 4,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        0,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-1, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [-1, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 129]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [0, 200, 129] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-1, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [-1, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 129]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [0, 200, 129] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "fan_out_lamp",
+      "params": {
+        "num_lamps": 4
+      },
+      "description": "A redstone block at (0,0,0) powers 4 redstone lamps placed directly adjacent to it. All lamps are always on.",
+      "block_count": 5,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        64,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [65, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [65, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [63, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [63, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 129]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [64, 200, 129] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [64, 200, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [65, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [65, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [63, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [63, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 129]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [64, 200, 129] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [64, 200, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "not_gate",
+      "params": {
+        "direction": "north",
+        "lever_offset": [
+          0,
+          0,
+          -1
+        ],
+        "lamp_offset": [
+          1,
+          0,
+          0
+        ]
+      },
+      "description": "A NOT gate (inverter) circuit. A lever at (0, 0, -1) controls a redstone torch on top of a stone block at (0, 0, 0). The torch powers a redstone lamp at (1, 1, 0). When the lever is off, the torch is on and the lamp is lit. When the lever is on, the torch turns off and the lamp goes dark. This inverts the signal: output is the opposite of input.",
+      "block_count": 4,
+      "category": "logic_gate",
+      "difficulty": "beginner",
+      "origin": [
+        128,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [129, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [129, 201, 128] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            -1
+          ],
+          "state": "minecraft:lever[facing=north,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [129, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [129, 201, 128] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [129, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [129, 201, 128] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "not_gate",
+      "params": {
+        "direction": "south",
+        "lever_offset": [
+          0,
+          0,
+          1
+        ],
+        "lamp_offset": [
+          1,
+          0,
+          0
+        ]
+      },
+      "description": "A NOT gate (inverter) circuit. A lever at (0, 0, 1) controls a redstone torch on top of a stone block at (0, 0, 0). The torch powers a redstone lamp at (1, 1, 0). When the lever is off, the torch is on and the lamp is lit. When the lever is on, the torch turns off and the lamp goes dark. This inverts the signal: output is the opposite of input.",
+      "block_count": 4,
+      "category": "logic_gate",
+      "difficulty": "beginner",
+      "origin": [
+        192,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [193, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [193, 201, 128] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "state": "minecraft:lever[facing=south,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [193, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [193, 201, 128] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [193, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [193, 201, 128] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "not_gate",
+      "params": {
+        "direction": "east",
+        "lever_offset": [
+          1,
+          0,
+          0
+        ],
+        "lamp_offset": [
+          0,
+          0,
+          -1
+        ]
+      },
+      "description": "A NOT gate (inverter) circuit. A lever at (1, 0, 0) controls a redstone torch on top of a stone block at (0, 0, 0). The torch powers a redstone lamp at (0, 1, -1). When the lever is off, the torch is on and the lamp is lit. When the lever is on, the torch turns off and the lamp goes dark. This inverts the signal: output is the opposite of input.",
+      "block_count": 4,
+      "category": "logic_gate",
+      "difficulty": "beginner",
+      "origin": [
+        256,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [256, 201, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [256, 201, 127] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [256, 201, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "not_gate",
+      "params": {
+        "direction": "west",
+        "lever_offset": [
+          -1,
+          0,
+          0
+        ],
+        "lamp_offset": [
+          0,
+          0,
+          -1
+        ]
+      },
+      "description": "A NOT gate (inverter) circuit. A lever at (-1, 0, 0) controls a redstone torch on top of a stone block at (0, 0, 0). The torch powers a redstone lamp at (0, 1, -1). When the lever is off, the torch is on and the lamp is lit. When the lever is on, the torch turns off and the lamp goes dark. This inverts the signal: output is the opposite of input.",
+      "block_count": 4,
+      "category": "logic_gate",
+      "difficulty": "beginner",
+      "origin": [
+        320,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [320, 201, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [320, 201, 127] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [320, 201, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "or_gate",
+      "params": {},
+      "description": "An OR gate circuit. Two levers at (0, 0, 0) and (5, 0, 0) are connected to a redstone wire line with a lamp at (3, 0, 0) in the middle. The lamp turns on when either lever is powered. Truth table: OFF+OFF=OFF, ON+OFF=ON, OFF+ON=ON, ON+ON=ON.",
+      "block_count": 6,
+      "category": "logic_gate",
+      "difficulty": "intermediate",
+      "origin": [
+        384,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [387, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [387, 200, 128] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [387, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [387, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [387, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [387, 200, 128] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    }
+  ]
+}
