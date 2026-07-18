@@ -1,0 +1,1313 @@
+{
+  "timestamp": "2026-07-18T06:20:29.341804",
+  "total": 15,
+  "passed": 15,
+  "failed": 0,
+  "results": [
+    {
+      "generator": "hopper_chain",
+      "params": {
+        "chain_length": 1
+      },
+      "description": "A vertical hopper chain with 1 hopper. A chest at (0, 2, 0) feeds items into a chain of 1 hopper all facing downward, ending in a bottom chest at (0, 0, 0). Items placed in the top chest will flow down through the hopper to the bottom chest via gravity.",
+      "block_count": 3,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        0,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [0, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 201, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [0, 201, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 202, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [0, 202, 0] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [0, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 201, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [0, 201, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 202, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [0, 202, 0] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "hopper_chain",
+      "params": {
+        "chain_length": 2
+      },
+      "description": "A vertical hopper chain with 2 hoppers. A chest at (0, 3, 0) feeds items into a chain of 2 hoppers all facing downward, ending in a bottom chest at (0, 0, 0). Items placed in the top chest will flow down through the hoppers to the bottom chest via gravity.",
+      "block_count": 4,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        64,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [64, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 201, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [64, 201, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 202, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [64, 202, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 203, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [64, 203, 0] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [64, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 201, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [64, 201, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 202, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [64, 202, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 203, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [64, 203, 0] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "hopper_chain",
+      "params": {
+        "chain_length": 3
+      },
+      "description": "A vertical hopper chain with 3 hoppers. A chest at (0, 4, 0) feeds items into a chain of 3 hoppers all facing downward, ending in a bottom chest at (0, 0, 0). Items placed in the top chest will flow down through the hoppers to the bottom chest via gravity.",
+      "block_count": 5,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        128,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [128, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 201, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [128, 201, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 202, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [128, 202, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 203, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [128, 203, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            4,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 204, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [128, 204, 0] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [128, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 201, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [128, 201, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 202, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [128, 202, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 203, 0]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [128, 203, 0] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            4,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 204, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [128, 204, 0] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "hopper_transport",
+      "params": {
+        "chain_length": 1
+      },
+      "description": "A horizontal hopper transport line with 1 hopper. A source chest at (0, 0, 0) feeds into 1 hopper facing east, ending at a destination chest at (2, 0, 0). Items placed in the source chest will be pulled into the hopper chain and transported horizontally to the destination chest.",
+      "block_count": 3,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        192,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [192, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [192, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [193, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [193, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [194, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [194, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [193, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [193, 199, 0] matches minecraft:stone"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [192, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [192, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [193, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [193, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [194, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [194, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [193, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [193, 199, 0] matches minecraft:stone"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "hopper_transport",
+      "params": {
+        "chain_length": 2
+      },
+      "description": "A horizontal hopper transport line with 2 hoppers. A source chest at (0, 0, 0) feeds into 2 hoppers facing east, ending at a destination chest at (3, 0, 0). Items placed in the source chest will be pulled into the hopper chain and transported horizontally to the destination chest.",
+      "block_count": 4,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        256,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [256, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [257, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [257, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [258, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [258, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [259, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [259, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [257, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [257, 199, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            2,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [258, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [258, 199, 0] matches minecraft:stone"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [256, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [257, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [257, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [258, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [258, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [259, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [259, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [257, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [257, 199, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            2,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [258, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [258, 199, 0] matches minecraft:stone"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "hopper_transport",
+      "params": {
+        "chain_length": 3
+      },
+      "description": "A horizontal hopper transport line with 3 hoppers. A source chest at (0, 0, 0) feeds into 3 hoppers facing east, ending at a destination chest at (4, 0, 0). Items placed in the source chest will be pulled into the hopper chain and transported horizontally to the destination chest.",
+      "block_count": 5,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        320,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [320, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [321, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [321, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [322, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [322, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [323, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [323, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [324, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [324, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [321, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [321, 199, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            2,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [322, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [322, 199, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            3,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [323, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [323, 199, 0] matches minecraft:stone"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [320, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [321, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [321, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [322, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [322, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [323, 200, 0]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [323, 200, 0] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [324, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [324, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [321, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [321, 199, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            2,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [322, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [322, 199, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            3,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [323, 199, 0]: ID=minecraft:stone, Props={}PASS: Block at [323, 199, 0] matches minecraft:stone"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "chest_array",
+      "params": {
+        "num_chests": 2
+      },
+      "description": "An array of 2 chests arranged along the X-axis. The chests are at positions: (0, 0, 0), (2, 0, 0). Each chest contains a different item type: diamond, iron_ingot. The chests are used for item storage and organization.",
+      "block_count": 2,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        384,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [384, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [386, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [386, 200, 0] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [384, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [386, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [386, 200, 0] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "chest_array",
+      "params": {
+        "num_chests": 4
+      },
+      "description": "An array of 4 chests arranged along the X-axis. The chests are at positions: (0, 0, 0), (2, 0, 0), (4, 0, 0), (6, 0, 0). Each chest contains a different item type: diamond, iron_ingot, gold_ingot, emerald. The chests are used for item storage and organization.",
+      "block_count": 4,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        448,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [448, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [450, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [450, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [452, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [452, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [454, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [454, 200, 0] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [448, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [450, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [450, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [452, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [452, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [454, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [454, 200, 0] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "chest_array",
+      "params": {
+        "num_chests": 6
+      },
+      "description": "An array of 6 chests arranged along the X-axis. The chests are at positions: (0, 0, 0), (2, 0, 0), (4, 0, 0), (6, 0, 0), (8, 0, 0), (10, 0, 0). Each chest contains a different item type: diamond, iron_ingot, gold_ingot, emerald, redstone, lapis_lazuli. The chests are used for item storage and organization.",
+      "block_count": 6,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        512,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [512, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [514, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [514, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [516, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [516, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [518, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [518, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            8,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [520, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [520, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            10,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [522, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [522, 200, 0] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [512, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [514, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [514, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [516, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [516, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [518, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [518, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            8,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [520, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [520, 200, 0] matches minecraft:chest"
+        },
+        {
+          "position": [
+            10,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [522, 200, 0]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [522, 200, 0] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "north"
+      },
+      "description": "A dropper placed at (0,0,0) facing north. The dropper can store up to 9 stacks of items and will eject items in the north direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        576,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=north]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 200, 0]: ID=minecraft:dropper, Props={triggered: false, facing: north}PASS: Block at [576, 200, 0] matches minecraft:dropper[facing=north]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=north]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 200, 0]: ID=minecraft:dropper, Props={triggered: false, facing: north}PASS: Block at [576, 200, 0] matches minecraft:dropper[facing=north]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "south"
+      },
+      "description": "A dropper placed at (0,0,0) facing south. The dropper can store up to 9 stacks of items and will eject items in the south direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        0,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=south]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 64]: ID=minecraft:dropper, Props={triggered: false, facing: south}PASS: Block at [0, 200, 64] matches minecraft:dropper[facing=south]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=south]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 64]: ID=minecraft:dropper, Props={triggered: false, facing: south}PASS: Block at [0, 200, 64] matches minecraft:dropper[facing=south]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "east"
+      },
+      "description": "A dropper placed at (0,0,0) facing east. The dropper can store up to 9 stacks of items and will eject items in the east direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        64,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 64]: ID=minecraft:dropper, Props={triggered: false, facing: east}PASS: Block at [64, 200, 64] matches minecraft:dropper[facing=east]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 64]: ID=minecraft:dropper, Props={triggered: false, facing: east}PASS: Block at [64, 200, 64] matches minecraft:dropper[facing=east]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "west"
+      },
+      "description": "A dropper placed at (0,0,0) facing west. The dropper can store up to 9 stacks of items and will eject items in the west direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        128,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=west]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 200, 64]: ID=minecraft:dropper, Props={triggered: false, facing: west}PASS: Block at [128, 200, 64] matches minecraft:dropper[facing=west]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=west]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 200, 64]: ID=minecraft:dropper, Props={triggered: false, facing: west}PASS: Block at [128, 200, 64] matches minecraft:dropper[facing=west]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "up"
+      },
+      "description": "A dropper placed at (0,0,0) facing up. The dropper can store up to 9 stacks of items and will eject items in the up direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        192,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=up]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [192, 200, 64]: ID=minecraft:dropper, Props={triggered: false, facing: up}PASS: Block at [192, 200, 64] matches minecraft:dropper[facing=up]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=up]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [192, 200, 64]: ID=minecraft:dropper, Props={triggered: false, facing: up}PASS: Block at [192, 200, 64] matches minecraft:dropper[facing=up]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "down"
+      },
+      "description": "A dropper placed at (0,0,0) facing down. The dropper can store up to 9 stacks of items and will eject items in the down direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        256,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 200, 64]: ID=minecraft:dropper, Props={triggered: false, facing: down}PASS: Block at [256, 200, 64] matches minecraft:dropper[facing=down]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 200, 64]: ID=minecraft:dropper, Props={triggered: false, facing: down}PASS: Block at [256, 200, 64] matches minecraft:dropper[facing=down]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    }
+  ]
+}

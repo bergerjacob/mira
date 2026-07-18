@@ -19,6 +19,12 @@ from .memory_clock import (
     ClockGenerator,
     PulseGenerator,
 )
+from .signal_routing import (
+    WireChainGenerator,
+    VerticalWireGenerator,
+    TorchTowerGenerator,
+    SignalSplitGenerator,
+)
 
 ALL_GENERATORS = [
     DirectPowerLamp,
@@ -35,4 +41,8 @@ ALL_GENERATORS = [
     TFlipFlopGenerator,
     ClockGenerator,
     PulseGenerator,
+    WireChainGenerator,
+    VerticalWireGenerator,
+    TorchTowerGenerator,
+    SignalSplitGenerator,
 ]

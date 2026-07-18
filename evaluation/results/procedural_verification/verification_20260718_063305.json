@@ -1,0 +1,1179 @@
+{
+  "timestamp": "2026-07-18T06:33:05.963484",
+  "total": 11,
+  "passed": 7,
+  "failed": 4,
+  "results": [
+    {
+      "generator": "wire_chain",
+      "params": {
+        "wire_length": 2
+      },
+      "description": "A wire chain circuit with 2 redstone wire blocks. A lever at (0, 0, 0) (facing east) powers a chain of 2 wire blocks extending east. A redstone lamp at (3, 0, 0) is lit when the lever is toggled on, and turns off when the lever is toggled off.",
+      "block_count": 4,
+      "category": "signal_routing",
+      "difficulty": "beginner",
+      "origin": [
+        0,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [3, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [3, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [3, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [3, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [3, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [3, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "wire_chain",
+      "params": {
+        "wire_length": 3
+      },
+      "description": "A wire chain circuit with 3 redstone wire blocks. A lever at (0, 0, 0) (facing east) powers a chain of 3 wire blocks extending east. A redstone lamp at (4, 0, 0) is lit when the lever is toggled on, and turns off when the lever is toggled off.",
+      "block_count": 5,
+      "category": "signal_routing",
+      "difficulty": "beginner",
+      "origin": [
+        64,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [68, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [68, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [68, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [68, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [68, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [68, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "wire_chain",
+      "params": {
+        "wire_length": 4
+      },
+      "description": "A wire chain circuit with 4 redstone wire blocks. A lever at (0, 0, 0) (facing east) powers a chain of 4 wire blocks extending east. A redstone lamp at (5, 0, 0) is lit when the lever is toggled on, and turns off when the lever is toggled off.",
+      "block_count": 6,
+      "category": "signal_routing",
+      "difficulty": "beginner",
+      "origin": [
+        128,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            5,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [133, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [133, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            5,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [133, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [133, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            5,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [133, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [133, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "wire_chain",
+      "params": {
+        "wire_length": 5
+      },
+      "description": "A wire chain circuit with 5 redstone wire blocks. A lever at (0, 0, 0) (facing east) powers a chain of 5 wire blocks extending east. A redstone lamp at (6, 0, 0) is lit when the lever is toggled on, and turns off when the lever is toggled off.",
+      "block_count": 7,
+      "category": "signal_routing",
+      "difficulty": "beginner",
+      "origin": [
+        192,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [198, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [198, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [198, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [198, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [198, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [198, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "vertical_wire",
+      "params": {
+        "height": 2
+      },
+      "description": "A vertical redstone wire tower of height 2. A redstone block at (0,0,0) powers 2 redstone wire blocks climbing upward, each mounted on a stone support block at z=-1. A redstone lamp at (0, 3, 0) sits at the top of the tower.",
+      "block_count": 6,
+      "category": "signal_routing",
+      "difficulty": "intermediate",
+      "origin": [
+        256,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_block",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 200, 0]: ID=minecraft:redstone_block, Props={}PASS: Block at [256, 200, 0] matches minecraft:redstone_block"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 0]: ID=minecraft:redstone_wire, Props={east: none, power: 15, south: none, north: none, west: none}PASS: Block at [256, 201, 0] matches minecraft:redstone_wire"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [256, 202, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [256, 202, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, -1]: ID=minecraft:stone, Props={}PASS: Block at [256, 201, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            2,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 202, -1]: ID=minecraft:stone, Props={}PASS: Block at [256, 202, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 203, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [256, 203, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_block",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 200, 0]: ID=minecraft:redstone_block, Props={}PASS: Block at [256, 200, 0] matches minecraft:redstone_block"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 0]: ID=minecraft:redstone_wire, Props={east: none, power: 15, south: none, north: none, west: none}PASS: Block at [256, 201, 0] matches minecraft:redstone_wire"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [256, 202, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [256, 202, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, -1]: ID=minecraft:stone, Props={}PASS: Block at [256, 201, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            2,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 202, -1]: ID=minecraft:stone, Props={}PASS: Block at [256, 202, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 203, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [256, 203, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": false,
+      "errors": [
+        "Initial check failed at (0, 2, 0): expected minecraft:redstone_wire",
+        "Final check failed at (0, 2, 0): expected minecraft:redstone_wire"
+      ]
+    },
+    {
+      "generator": "vertical_wire",
+      "params": {
+        "height": 3
+      },
+      "description": "A vertical redstone wire tower of height 3. A redstone block at (0,0,0) powers 3 redstone wire blocks climbing upward, each mounted on a stone support block at z=-1. A redstone lamp at (0, 4, 0) sits at the top of the tower.",
+      "block_count": 8,
+      "category": "signal_routing",
+      "difficulty": "intermediate",
+      "origin": [
+        320,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_block",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 200, 0]: ID=minecraft:redstone_block, Props={}PASS: Block at [320, 200, 0] matches minecraft:redstone_block"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 201, 0]: ID=minecraft:redstone_wire, Props={east: none, power: 15, south: none, north: none, west: none}PASS: Block at [320, 201, 0] matches minecraft:redstone_wire"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [320, 202, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [320, 202, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [320, 203, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [320, 203, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 201, -1]: ID=minecraft:stone, Props={}PASS: Block at [320, 201, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            2,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 202, -1]: ID=minecraft:stone, Props={}PASS: Block at [320, 202, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            3,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 203, -1]: ID=minecraft:stone, Props={}PASS: Block at [320, 203, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            4,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 204, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [320, 204, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_block",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 200, 0]: ID=minecraft:redstone_block, Props={}PASS: Block at [320, 200, 0] matches minecraft:redstone_block"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 201, 0]: ID=minecraft:redstone_wire, Props={east: none, power: 15, south: none, north: none, west: none}PASS: Block at [320, 201, 0] matches minecraft:redstone_wire"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [320, 202, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [320, 202, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [320, 203, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [320, 203, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 201, -1]: ID=minecraft:stone, Props={}PASS: Block at [320, 201, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            2,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 202, -1]: ID=minecraft:stone, Props={}PASS: Block at [320, 202, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            3,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 203, -1]: ID=minecraft:stone, Props={}PASS: Block at [320, 203, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            4,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 204, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [320, 204, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": false,
+      "errors": [
+        "Initial check failed at (0, 2, 0): expected minecraft:redstone_wire",
+        "Initial check failed at (0, 3, 0): expected minecraft:redstone_wire",
+        "Final check failed at (0, 2, 0): expected minecraft:redstone_wire",
+        "Final check failed at (0, 3, 0): expected minecraft:redstone_wire"
+      ]
+    },
+    {
+      "generator": "vertical_wire",
+      "params": {
+        "height": 4
+      },
+      "description": "A vertical redstone wire tower of height 4. A redstone block at (0,0,0) powers 4 redstone wire blocks climbing upward, each mounted on a stone support block at z=-1. A redstone lamp at (0, 5, 0) sits at the top of the tower.",
+      "block_count": 10,
+      "category": "signal_routing",
+      "difficulty": "intermediate",
+      "origin": [
+        384,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_block",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 200, 0]: ID=minecraft:redstone_block, Props={}PASS: Block at [384, 200, 0] matches minecraft:redstone_block"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 201, 0]: ID=minecraft:redstone_wire, Props={east: none, power: 15, south: none, north: none, west: none}PASS: Block at [384, 201, 0] matches minecraft:redstone_wire"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [384, 202, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [384, 202, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [384, 203, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [384, 203, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            4,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [384, 204, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [384, 204, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 201, -1]: ID=minecraft:stone, Props={}PASS: Block at [384, 201, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            2,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 202, -1]: ID=minecraft:stone, Props={}PASS: Block at [384, 202, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            3,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 203, -1]: ID=minecraft:stone, Props={}PASS: Block at [384, 203, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            4,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 204, -1]: ID=minecraft:stone, Props={}PASS: Block at [384, 204, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            5,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 205, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [384, 205, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_block",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 200, 0]: ID=minecraft:redstone_block, Props={}PASS: Block at [384, 200, 0] matches minecraft:redstone_block"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 201, 0]: ID=minecraft:redstone_wire, Props={east: none, power: 15, south: none, north: none, west: none}PASS: Block at [384, 201, 0] matches minecraft:redstone_wire"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [384, 202, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [384, 202, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [384, 203, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [384, 203, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            4,
+            0
+          ],
+          "expected": "minecraft:redstone_wire",
+          "passed": false,
+          "response": "DEBUG: Read Block at [384, 204, 0]: ID=minecraft:air, Props={}FAIL: Block ID mismatch at [384, 204, 0]. Expected minecraft:redstone_wire, got minecraft:air"
+        },
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 201, -1]: ID=minecraft:stone, Props={}PASS: Block at [384, 201, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            2,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 202, -1]: ID=minecraft:stone, Props={}PASS: Block at [384, 202, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            3,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 203, -1]: ID=minecraft:stone, Props={}PASS: Block at [384, 203, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            4,
+            -1
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 204, -1]: ID=minecraft:stone, Props={}PASS: Block at [384, 204, -1] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            5,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 205, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [384, 205, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": false,
+      "errors": [
+        "Initial check failed at (0, 2, 0): expected minecraft:redstone_wire",
+        "Initial check failed at (0, 3, 0): expected minecraft:redstone_wire",
+        "Initial check failed at (0, 4, 0): expected minecraft:redstone_wire",
+        "Final check failed at (0, 2, 0): expected minecraft:redstone_wire",
+        "Final check failed at (0, 3, 0): expected minecraft:redstone_wire",
+        "Final check failed at (0, 4, 0): expected minecraft:redstone_wire"
+      ]
+    },
+    {
+      "generator": "torch_tower",
+      "params": {
+        "num_torches": 1
+      },
+      "description": "A redstone torch tower with 1 torch. A stone block at (0,0,0) supports a floor-mounted redstone torch at (0,1,0), which powers the block above it. The torch powers the lamp at (0, 2, 0).",
+      "block_count": 3,
+      "category": "signal_routing",
+      "difficulty": "intermediate",
+      "origin": [
+        448,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 200, 0]: ID=minecraft:stone, Props={}PASS: Block at [448, 200, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_torch",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 201, 0]: ID=minecraft:redstone_torch, Props={lit: true}PASS: Block at [448, 201, 0] matches minecraft:redstone_torch"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": false,
+          "response": "DEBUG: Read Block at [448, 202, 0]: ID=minecraft:redstone_lamp, Props={lit: true}FAIL: Property lit mismatch. Expected false, got trueFull Actual State: {lit: true}"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 200, 0]: ID=minecraft:stone, Props={}PASS: Block at [448, 200, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_torch",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 201, 0]: ID=minecraft:redstone_torch, Props={lit: true}PASS: Block at [448, 201, 0] matches minecraft:redstone_torch"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": false,
+          "response": "DEBUG: Read Block at [448, 202, 0]: ID=minecraft:redstone_lamp, Props={lit: true}FAIL: Property lit mismatch. Expected false, got trueFull Actual State: {lit: true}"
+        }
+      ],
+      "negative_checks": [],
+      "passed": false,
+      "errors": [
+        "Initial check failed at (0, 2, 0): expected minecraft:redstone_lamp[lit=false]",
+        "Final check failed at (0, 2, 0): expected minecraft:redstone_lamp[lit=false]"
+      ]
+    },
+    {
+      "generator": "torch_tower",
+      "params": {
+        "num_torches": 2
+      },
+      "description": "A redstone torch tower with 2 torches. A stone block at (0,0,0) supports a floor-mounted redstone torch at (0,1,0), which powers the block above it. A second stone at (0,2,0) supports another torch at (0,3,0), which powers the lamp at (0, 4, 0).",
+      "block_count": 5,
+      "category": "signal_routing",
+      "difficulty": "intermediate",
+      "origin": [
+        512,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 200, 0]: ID=minecraft:stone, Props={}PASS: Block at [512, 200, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_torch",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 201, 0]: ID=minecraft:redstone_torch, Props={lit: true}PASS: Block at [512, 201, 0] matches minecraft:redstone_torch"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:redstone_torch",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 203, 0]: ID=minecraft:redstone_torch, Props={lit: false}PASS: Block at [512, 203, 0] matches minecraft:redstone_torch"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 202, 0]: ID=minecraft:stone, Props={}PASS: Block at [512, 202, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            4,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 204, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [512, 204, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 200, 0]: ID=minecraft:stone, Props={}PASS: Block at [512, 200, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_torch",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 201, 0]: ID=minecraft:redstone_torch, Props={lit: true}PASS: Block at [512, 201, 0] matches minecraft:redstone_torch"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:redstone_torch",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 203, 0]: ID=minecraft:redstone_torch, Props={lit: false}PASS: Block at [512, 203, 0] matches minecraft:redstone_torch"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 202, 0]: ID=minecraft:stone, Props={}PASS: Block at [512, 202, 0] matches minecraft:stone"
+        },
+        {
+          "position": [
+            0,
+            4,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 204, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [512, 204, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "signal_split",
+      "params": {
+        "num_lamps": 2
+      },
+      "description": "A signal distribution circuit: a redstone block at (0,0,0) powers 2 adjacent redstone lamps positioned to the east, west. All lamps are lit because the redstone block directly powers adjacent redstone components.",
+      "block_count": 3,
+      "category": "signal_routing",
+      "difficulty": "beginner",
+      "origin": [
+        576,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [577, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [577, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [575, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [575, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [577, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [577, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [575, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [575, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "signal_split",
+      "params": {
+        "num_lamps": 3
+      },
+      "description": "A signal distribution circuit: a redstone block at (0,0,0) powers 3 adjacent redstone lamps positioned to the east, west, up. All lamps are lit because the redstone block directly powers adjacent redstone components.",
+      "block_count": 4,
+      "category": "signal_routing",
+      "difficulty": "beginner",
+      "origin": [
+        0,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-1, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [-1, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 201, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [0, 201, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-1, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [-1, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 201, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [0, 201, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    }
+  ]
+}

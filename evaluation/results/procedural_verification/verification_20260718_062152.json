@@ -1,0 +1,3045 @@
+{
+  "timestamp": "2026-07-18T06:21:52.304449",
+  "total": 42,
+  "passed": 42,
+  "failed": 0,
+  "results": [
+    {
+      "generator": "direct_power_lamp",
+      "params": {
+        "direction": "east",
+        "dx": 1,
+        "dy": 0,
+        "dz": 0
+      },
+      "description": "A redstone block at position (0,0,0) directly powers a redstone lamp at (1,0,0) to the east. The lamp is always on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        0,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "direct_power_lamp",
+      "params": {
+        "direction": "west",
+        "dx": -1,
+        "dy": 0,
+        "dz": 0
+      },
+      "description": "A redstone block at position (0,0,0) directly powers a redstone lamp at (-1,0,0) to the west. The lamp is always on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        64,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [63, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [63, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [63, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [63, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "direct_power_lamp",
+      "params": {
+        "direction": "north",
+        "dx": 0,
+        "dy": 0,
+        "dz": -1
+      },
+      "description": "A redstone block at position (0,0,0) directly powers a redstone lamp at (0,0,-1) to the north. The lamp is always on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        128,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 200, -1]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [128, 200, -1] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 200, -1]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [128, 200, -1] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "direct_power_lamp",
+      "params": {
+        "direction": "south",
+        "dx": 0,
+        "dy": 0,
+        "dz": 1
+      },
+      "description": "A redstone block at position (0,0,0) directly powers a redstone lamp at (0,0,1) to the south. The lamp is always on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        192,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [192, 200, 1]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [192, 200, 1] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [192, 200, 1]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [192, 200, 1] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "direct_power_lamp",
+      "params": {
+        "direction": "up",
+        "dx": 0,
+        "dy": 1,
+        "dz": 0
+      },
+      "description": "A redstone block at position (0,0,0) directly powers a redstone lamp at (0,1,0) to the up. The lamp is always on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        256,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [256, 201, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [256, 201, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_lamp_direct",
+      "params": {
+        "direction": "east",
+        "dx": 1,
+        "dy": 0,
+        "dz": 0
+      },
+      "description": "A lever at (0,0,0) directly powers a redstone lamp at (1,0,0) to the east. Flipping the lever turns the lamp on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        320,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [321, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [321, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [321, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [321, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [321, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [321, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_lamp_direct",
+      "params": {
+        "direction": "west",
+        "dx": -1,
+        "dy": 0,
+        "dz": 0
+      },
+      "description": "A lever at (0,0,0) directly powers a redstone lamp at (-1,0,0) to the west. Flipping the lever turns the lamp on.",
+      "block_count": 2,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        384,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [383, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [383, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [383, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [383, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [383, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [383, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 1,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (2,0,0) through a chain of 1 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 3,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        448,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [450, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [450, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [450, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [450, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [450, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [450, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 1,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-2,0,0) through a chain of 1 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 3,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        512,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [510, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [510, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [510, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [510, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -2,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [510, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [510, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 2,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (3,0,0) through a chain of 2 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 4,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        576,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [579, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [579, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [579, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [579, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [579, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [579, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 2,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-3,0,0) through a chain of 2 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 4,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        0,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-3, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [-3, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-3, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [-3, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-3, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [-3, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 3,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (4,0,0) through a chain of 3 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 5,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        64,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [68, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [68, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [68, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [68, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [68, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [68, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 3,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-4,0,0) through a chain of 3 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 5,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        128,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [124, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [124, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [124, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [124, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -4,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [124, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [124, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 5,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (6,0,0) through a chain of 5 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 7,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        192,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [198, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [198, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [198, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [198, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [198, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [198, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 5,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-6,0,0) through a chain of 5 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 7,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        256,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [250, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [250, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [250, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [250, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -6,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [250, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [250, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 8,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (9,0,0) through a chain of 8 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 10,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        320,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [329, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [329, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [329, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [329, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [329, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [329, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 8,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-9,0,0) through a chain of 8 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 10,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        384,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [375, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [375, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [375, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [375, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -9,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [375, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [375, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 13,
+        "direction": "east"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (14,0,0) through a chain of 13 redstone wire blocks extending east. Flipping the lever turns the lamp on.",
+      "block_count": 15,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        448,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [462, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [462, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [462, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [462, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [462, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [462, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "lever_wire_lamp",
+      "params": {
+        "wire_length": 13,
+        "direction": "west"
+      },
+      "description": "A lever at (0,0,0) powers a redstone lamp at (-14,0,0) through a chain of 13 redstone wire blocks extending west. Flipping the lever turns the lamp on.",
+      "block_count": 15,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        512,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            -14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [498, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [498, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            -14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [498, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [498, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            -14,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [498, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [498, 200, 64] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "fan_out_lamp",
+      "params": {
+        "num_lamps": 2
+      },
+      "description": "A redstone block at (0,0,0) powers 2 redstone lamps placed directly adjacent to it. All lamps are always on.",
+      "block_count": 3,
+      "category": "power_distribution",
+      "difficulty": "beginner",
+      "origin": [
+        576,
+        200,
+        64
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [577, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [577, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [575, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [575, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [577, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [577, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [575, 200, 64]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [575, 200, 64] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "fan_out_lamp",
+      "params": {
+        "num_lamps": 3
+      },
+      "description": "A redstone block at (0,0,0) powers 3 redstone lamps placed directly adjacent to it. All lamps are always on.",
+      "block_count": 4,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        0,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-1, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [-1, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 129]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [0, 200, 129] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [-1, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [-1, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 129]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [0, 200, 129] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "fan_out_lamp",
+      "params": {
+        "num_lamps": 4
+      },
+      "description": "A redstone block at (0,0,0) powers 4 redstone lamps placed directly adjacent to it. All lamps are always on.",
+      "block_count": 5,
+      "category": "power_distribution",
+      "difficulty": "intermediate",
+      "origin": [
+        64,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [65, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [65, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [63, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [63, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 129]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [64, 200, 129] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [64, 200, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [65, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [65, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [63, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [63, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 129]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [64, 200, 129] matches minecraft:redstone_lamp[lit=true]"
+        },
+        {
+          "position": [
+            0,
+            0,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [64, 200, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "not_gate",
+      "params": {
+        "direction": "north",
+        "lever_offset": [
+          0,
+          0,
+          -1
+        ],
+        "lamp_offset": [
+          1,
+          0,
+          0
+        ]
+      },
+      "description": "A NOT gate (inverter) circuit. A lever at (0, 0, -1) controls a redstone torch on top of a stone block at (0, 0, 0). The torch powers a redstone lamp at (1, 1, 0). When the lever is off, the torch is on and the lamp is lit. When the lever is on, the torch turns off and the lamp goes dark. This inverts the signal: output is the opposite of input.",
+      "block_count": 4,
+      "category": "logic_gate",
+      "difficulty": "beginner",
+      "origin": [
+        128,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [129, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [129, 201, 128] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            -1
+          ],
+          "state": "minecraft:lever[facing=north,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [129, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [129, 201, 128] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [129, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [129, 201, 128] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "not_gate",
+      "params": {
+        "direction": "south",
+        "lever_offset": [
+          0,
+          0,
+          1
+        ],
+        "lamp_offset": [
+          1,
+          0,
+          0
+        ]
+      },
+      "description": "A NOT gate (inverter) circuit. A lever at (0, 0, 1) controls a redstone torch on top of a stone block at (0, 0, 0). The torch powers a redstone lamp at (1, 1, 0). When the lever is off, the torch is on and the lamp is lit. When the lever is on, the torch turns off and the lamp goes dark. This inverts the signal: output is the opposite of input.",
+      "block_count": 4,
+      "category": "logic_gate",
+      "difficulty": "beginner",
+      "origin": [
+        192,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [193, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [193, 201, 128] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            1
+          ],
+          "state": "minecraft:lever[facing=south,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [193, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [193, 201, 128] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [193, 201, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [193, 201, 128] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "not_gate",
+      "params": {
+        "direction": "east",
+        "lever_offset": [
+          1,
+          0,
+          0
+        ],
+        "lamp_offset": [
+          0,
+          0,
+          -1
+        ]
+      },
+      "description": "A NOT gate (inverter) circuit. A lever at (1, 0, 0) controls a redstone torch on top of a stone block at (0, 0, 0). The torch powers a redstone lamp at (0, 1, -1). When the lever is off, the torch is on and the lamp is lit. When the lever is on, the torch turns off and the lamp goes dark. This inverts the signal: output is the opposite of input.",
+      "block_count": 4,
+      "category": "logic_gate",
+      "difficulty": "beginner",
+      "origin": [
+        256,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [256, 201, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [256, 201, 127] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [256, 201, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "not_gate",
+      "params": {
+        "direction": "west",
+        "lever_offset": [
+          -1,
+          0,
+          0
+        ],
+        "lamp_offset": [
+          0,
+          0,
+          -1
+        ]
+      },
+      "description": "A NOT gate (inverter) circuit. A lever at (-1, 0, 0) controls a redstone torch on top of a stone block at (0, 0, 0). The torch powers a redstone lamp at (0, 1, -1). When the lever is off, the torch is on and the lamp is lit. When the lever is on, the torch turns off and the lamp goes dark. This inverts the signal: output is the opposite of input.",
+      "block_count": 4,
+      "category": "logic_gate",
+      "difficulty": "beginner",
+      "origin": [
+        320,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [320, 201, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            -1,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=west,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [320, 201, 127] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            0,
+            1,
+            -1
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 201, 127]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [320, 201, 127] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "or_gate",
+      "params": {},
+      "description": "An OR gate circuit. Two levers at (0, 0, 0) and (5, 0, 0) are connected to a redstone wire line with a lamp at (3, 0, 0) in the middle. The lamp turns on when either lever is powered. Truth table: OFF+OFF=OFF, ON+OFF=ON, OFF+ON=ON, ON+ON=ON.",
+      "block_count": 6,
+      "category": "logic_gate",
+      "difficulty": "intermediate",
+      "origin": [
+        384,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [387, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [387, 200, 128] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "state": "minecraft:lever[facing=east,powered=true]"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [387, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [387, 200, 128] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [387, 200, 128]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [387, 200, 128] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "hopper_chain",
+      "params": {
+        "chain_length": 1
+      },
+      "description": "A vertical hopper chain with 1 hopper. A chest at (0, 2, 0) feeds items into a chain of 1 hopper all facing downward, ending in a bottom chest at (0, 0, 0). Items placed in the top chest will flow down through the hopper to the bottom chest via gravity.",
+      "block_count": 3,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        448,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 200, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [448, 200, 128] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 201, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [448, 201, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 202, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [448, 202, 128] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 200, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [448, 200, 128] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 201, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [448, 201, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 202, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [448, 202, 128] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "hopper_chain",
+      "params": {
+        "chain_length": 2
+      },
+      "description": "A vertical hopper chain with 2 hoppers. A chest at (0, 3, 0) feeds items into a chain of 2 hoppers all facing downward, ending in a bottom chest at (0, 0, 0). Items placed in the top chest will flow down through the hoppers to the bottom chest via gravity.",
+      "block_count": 4,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        512,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 200, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [512, 200, 128] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 201, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [512, 201, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 202, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [512, 202, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 203, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [512, 203, 128] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 200, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [512, 200, 128] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 201, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [512, 201, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 202, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [512, 202, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 203, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [512, 203, 128] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "hopper_chain",
+      "params": {
+        "chain_length": 3
+      },
+      "description": "A vertical hopper chain with 3 hoppers. A chest at (0, 4, 0) feeds items into a chain of 3 hoppers all facing downward, ending in a bottom chest at (0, 0, 0). Items placed in the top chest will flow down through the hoppers to the bottom chest via gravity.",
+      "block_count": 5,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        576,
+        200,
+        128
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 200, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [576, 200, 128] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 201, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [576, 201, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 202, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [576, 202, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 203, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [576, 203, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            4,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 204, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [576, 204, 128] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 200, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [576, 200, 128] matches minecraft:chest"
+        },
+        {
+          "position": [
+            0,
+            1,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 201, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [576, 201, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            2,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 202, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [576, 202, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            3,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 203, 128]: ID=minecraft:hopper, Props={enabled: true, facing: down}PASS: Block at [576, 203, 128] matches minecraft:hopper[facing=down]"
+        },
+        {
+          "position": [
+            0,
+            4,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 204, 128]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [576, 204, 128] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "hopper_transport",
+      "params": {
+        "chain_length": 1
+      },
+      "description": "A horizontal hopper transport line with 1 hopper. A source chest at (0, 0, 0) feeds into 1 hopper facing east, ending at a destination chest at (2, 0, 0). Items placed in the source chest will be pulled into the hopper chain and transported horizontally to the destination chest.",
+      "block_count": 3,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        0,
+        200,
+        192
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [0, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [1, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [2, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [2, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [1, 199, 192] matches minecraft:stone"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [0, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [1, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [2, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [2, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [1, 199, 192] matches minecraft:stone"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "hopper_transport",
+      "params": {
+        "chain_length": 2
+      },
+      "description": "A horizontal hopper transport line with 2 hoppers. A source chest at (0, 0, 0) feeds into 2 hoppers facing east, ending at a destination chest at (3, 0, 0). Items placed in the source chest will be pulled into the hopper chain and transported horizontally to the destination chest.",
+      "block_count": 4,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        64,
+        200,
+        192
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [64, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [65, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [65, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [66, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [66, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [67, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [67, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [65, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [65, 199, 192] matches minecraft:stone"
+        },
+        {
+          "position": [
+            2,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [66, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [66, 199, 192] matches minecraft:stone"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [64, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [65, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [65, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [66, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [66, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [67, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [67, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [65, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [65, 199, 192] matches minecraft:stone"
+        },
+        {
+          "position": [
+            2,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [66, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [66, 199, 192] matches minecraft:stone"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "hopper_transport",
+      "params": {
+        "chain_length": 3
+      },
+      "description": "A horizontal hopper transport line with 3 hoppers. A source chest at (0, 0, 0) feeds into 3 hoppers facing east, ending at a destination chest at (4, 0, 0). Items placed in the source chest will be pulled into the hopper chain and transported horizontally to the destination chest.",
+      "block_count": 5,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        128,
+        200,
+        192
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [128, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [129, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [129, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [130, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [130, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [131, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [131, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [132, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [132, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [129, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [129, 199, 192] matches minecraft:stone"
+        },
+        {
+          "position": [
+            2,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [130, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [130, 199, 192] matches minecraft:stone"
+        },
+        {
+          "position": [
+            3,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [131, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [131, 199, 192] matches minecraft:stone"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [128, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [128, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [129, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [129, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [130, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [130, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:hopper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [131, 200, 192]: ID=minecraft:hopper, Props={enabled: true, facing: east}PASS: Block at [131, 200, 192] matches minecraft:hopper[facing=east]"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [132, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [132, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            1,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [129, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [129, 199, 192] matches minecraft:stone"
+        },
+        {
+          "position": [
+            2,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [130, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [130, 199, 192] matches minecraft:stone"
+        },
+        {
+          "position": [
+            3,
+            -1,
+            0
+          ],
+          "expected": "minecraft:stone",
+          "passed": true,
+          "response": "DEBUG: Read Block at [131, 199, 192]: ID=minecraft:stone, Props={}PASS: Block at [131, 199, 192] matches minecraft:stone"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "chest_array",
+      "params": {
+        "num_chests": 2
+      },
+      "description": "An array of 2 chests arranged along the X-axis. The chests are at positions: (0, 0, 0), (2, 0, 0). Each chest contains a different item type: diamond, iron_ingot. The chests are used for item storage and organization.",
+      "block_count": 2,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        192,
+        200,
+        192
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [192, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [192, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [194, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [194, 200, 192] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [192, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [192, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [194, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [194, 200, 192] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "chest_array",
+      "params": {
+        "num_chests": 4
+      },
+      "description": "An array of 4 chests arranged along the X-axis. The chests are at positions: (0, 0, 0), (2, 0, 0), (4, 0, 0), (6, 0, 0). Each chest contains a different item type: diamond, iron_ingot, gold_ingot, emerald. The chests are used for item storage and organization.",
+      "block_count": 4,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        256,
+        200,
+        192
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [256, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [258, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [258, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [260, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [260, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [262, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [262, 200, 192] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [256, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [256, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [258, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [258, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [260, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [260, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [262, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [262, 200, 192] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "chest_array",
+      "params": {
+        "num_chests": 6
+      },
+      "description": "An array of 6 chests arranged along the X-axis. The chests are at positions: (0, 0, 0), (2, 0, 0), (4, 0, 0), (6, 0, 0), (8, 0, 0), (10, 0, 0). Each chest contains a different item type: diamond, iron_ingot, gold_ingot, emerald, redstone, lapis_lazuli. The chests are used for item storage and organization.",
+      "block_count": 6,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        320,
+        200,
+        192
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [320, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [322, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [322, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [324, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [324, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [326, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [326, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            8,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [328, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [328, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            10,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [330, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [330, 200, 192] matches minecraft:chest"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [320, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [320, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            2,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [322, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [322, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            4,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [324, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [324, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            6,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [326, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [326, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            8,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [328, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [328, 200, 192] matches minecraft:chest"
+        },
+        {
+          "position": [
+            10,
+            0,
+            0
+          ],
+          "expected": "minecraft:chest",
+          "passed": true,
+          "response": "DEBUG: Read Block at [330, 200, 192]: ID=minecraft:chest, Props={waterlogged: false, type: single, facing: north}PASS: Block at [330, 200, 192] matches minecraft:chest"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "north"
+      },
+      "description": "A dropper placed at (0,0,0) facing north. The dropper can store up to 9 stacks of items and will eject items in the north direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        384,
+        200,
+        192
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=north]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 200, 192]: ID=minecraft:dropper, Props={triggered: false, facing: north}PASS: Block at [384, 200, 192] matches minecraft:dropper[facing=north]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=north]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [384, 200, 192]: ID=minecraft:dropper, Props={triggered: false, facing: north}PASS: Block at [384, 200, 192] matches minecraft:dropper[facing=north]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "south"
+      },
+      "description": "A dropper placed at (0,0,0) facing south. The dropper can store up to 9 stacks of items and will eject items in the south direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        448,
+        200,
+        192
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=south]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 200, 192]: ID=minecraft:dropper, Props={triggered: false, facing: south}PASS: Block at [448, 200, 192] matches minecraft:dropper[facing=south]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=south]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [448, 200, 192]: ID=minecraft:dropper, Props={triggered: false, facing: south}PASS: Block at [448, 200, 192] matches minecraft:dropper[facing=south]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "east"
+      },
+      "description": "A dropper placed at (0,0,0) facing east. The dropper can store up to 9 stacks of items and will eject items in the east direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        512,
+        200,
+        192
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 200, 192]: ID=minecraft:dropper, Props={triggered: false, facing: east}PASS: Block at [512, 200, 192] matches minecraft:dropper[facing=east]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=east]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [512, 200, 192]: ID=minecraft:dropper, Props={triggered: false, facing: east}PASS: Block at [512, 200, 192] matches minecraft:dropper[facing=east]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "west"
+      },
+      "description": "A dropper placed at (0,0,0) facing west. The dropper can store up to 9 stacks of items and will eject items in the west direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        576,
+        200,
+        192
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=west]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 200, 192]: ID=minecraft:dropper, Props={triggered: false, facing: west}PASS: Block at [576, 200, 192] matches minecraft:dropper[facing=west]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=west]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [576, 200, 192]: ID=minecraft:dropper, Props={triggered: false, facing: west}PASS: Block at [576, 200, 192] matches minecraft:dropper[facing=west]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "up"
+      },
+      "description": "A dropper placed at (0,0,0) facing up. The dropper can store up to 9 stacks of items and will eject items in the up direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        0,
+        200,
+        256
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=up]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 256]: ID=minecraft:dropper, Props={triggered: false, facing: up}PASS: Block at [0, 200, 256] matches minecraft:dropper[facing=up]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=up]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [0, 200, 256]: ID=minecraft:dropper, Props={triggered: false, facing: up}PASS: Block at [0, 200, 256] matches minecraft:dropper[facing=up]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "dropper_dispenser",
+      "params": {
+        "facing": "down"
+      },
+      "description": "A dropper placed at (0,0,0) facing down. The dropper can store up to 9 stacks of items and will eject items in the down direction when activated with a redstone signal.",
+      "block_count": 1,
+      "category": "containers",
+      "difficulty": "beginner",
+      "origin": [
+        64,
+        200,
+        256
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 256]: ID=minecraft:dropper, Props={triggered: false, facing: down}PASS: Block at [64, 200, 256] matches minecraft:dropper[facing=down]"
+        }
+      ],
+      "actions": [],
+      "final_checks": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "expected": "minecraft:dropper[facing=down]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [64, 200, 256]: ID=minecraft:dropper, Props={triggered: false, facing: down}PASS: Block at [64, 200, 256] matches minecraft:dropper[facing=down]"
+        }
+      ],
+      "negative_checks": [],
+      "passed": true,
+      "errors": []
+    }
+  ]
+}
