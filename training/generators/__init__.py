@@ -7,6 +7,18 @@ from .power_distribution import (
     DirectPowerLamp, LeverLampDirect, LeverWireLamp, FanOutLamp,
 )
 from .logic_gates import NotGate, OrGate
+from .containers import (
+    HopperChainGenerator,
+    HopperTransportGenerator,
+    ChestArrayGenerator,
+    DropperDispenserGenerator,
+)
+from .memory_clock import (
+    RsLatchGenerator,
+    TFlipFlopGenerator,
+    ClockGenerator,
+    PulseGenerator,
+)
 
 ALL_GENERATORS = [
     DirectPowerLamp,
@@ -15,4 +27,12 @@ ALL_GENERATORS = [
     FanOutLamp,
     NotGate,
     OrGate,
+    HopperChainGenerator,
+    HopperTransportGenerator,
+    ChestArrayGenerator,
+    DropperDispenserGenerator,
+    RsLatchGenerator,
+    TFlipFlopGenerator,
+    ClockGenerator,
+    PulseGenerator,
 ]
