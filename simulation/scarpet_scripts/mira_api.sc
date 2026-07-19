@@ -28,10 +28,94 @@ __config() -> {
           // Return block state as string map
           print(str(block_state(pos)))
       ),
-      'check_inv <pos> <string> <int> <text>' -> _(pos, slot, count, item) -> check_inventory(pos, slot, item, count),
-      'check_entity <pos> <text>' -> _(pos, type) -> check_entity(pos, type)
+      'check_inv <pos> <string> <int> <text>' -> _(pos, slot, item, count) -> check_inventory(pos, slot, item, count),
+      'check_entity <pos> <text>' -> _(pos, type) -> check_entity(pos, type),
+      // redstone_update: Emit proper NC (Neighbor Changed) and PP (Post Placement) updates
+      // at priority 0/2 using TIS Addition's manipulate command. This is the reliable way
+      // to trigger redstone updates after setblock — setblock alone only emits priority 3
+      // updates which redstone components (repeaters, comparators, pistons, torches, dust)
+      // do NOT respond to. See MC-31100, MC-48804, MC-77180.
+      'redstone_update <pos>' -> _(pos) -> redstone_update(pos),
+      // toggle_lever: Simulate a player flipping a lever. Reads current powered state,
+      // flips it, then emits proper redstone updates so the signal propagates correctly.
+      'toggle_lever <pos>' -> _(pos) -> toggle_lever(pos),
+      // press_button: Simulate a player pressing a button. Uses fake player interaction
+      // which triggers proper priority -1 NC updates (buttons don't have a powered state
+      // we can setblock — they need actual interaction).
+      'press_button <pos>' -> _(pos) -> press_button(pos)
    }
 };
+
+// Emit NC (Neighbor Changed) update at priority 0 and PP (Post Placement) update at priority 2.
+// This is what redstone components respond to. Uses TIS Addition's manipulate command.
+// Must be called AFTER setblock changes the block state.
+// Syntax: manipulate block <x1> <y1> <z1> <x2> <y2> <z2> emit <update_type>
+redstone_update(pos) -> (
+    run(str('manipulate block %d %d %d %d %d %d emit block_update', pos:0, pos:1, pos:2, pos:0, pos:1, pos:2));
+    run(str('manipulate block %d %d %d %d %d %d emit state_update', pos:0, pos:1, pos:2, pos:0, pos:1, pos:2));
+    'OK'
+);
+
+// Toggle a lever: read current powered state, flip it.
+// This simulates a player right-clicking the lever.
+// NOTE: Does NOT emit redstone updates — the caller must do:
+//   1. mira_api toggle_lever <pos>     (this function — changes lever state)
+//   2. tick step 5                      (let lever state propagate internally)
+//   3. mira_api redstone_update <pos>  (emit NC update on lever)
+//   4. mira_api redstone_update <attached_block_pos>  (emit NC update on attached block)
+//   5. tick step 10                     (let torch/repeater re-evaluate)
+// This sequence is required because set() doesn't propagate redstone signal
+// immediately — the lever state needs a tick to propagate before block_update
+// will cause neighbors to re-evaluate.
+toggle_lever(pos) -> (
+    b = block(pos);
+    // Verify it's actually a lever
+    if (str(b) != 'lever' && str(b) != 'minecraft:lever',
+        print(format('r FAIL: Block at ' + pos + ' is not a lever (got ' + b + ')'));
+        return('FAIL')
+    );
+    
+    // Read current state — use get() for map access, not : operator
+    state = block_state(pos);
+    current_powered = get(state, 'powered');
+    
+    // Flip the powered state — handle both boolean and string values
+    is_on = (current_powered == 'true' || current_powered == true);
+    if (is_on,
+        new_powered = 'false',
+        new_powered = 'true'
+    );
+    
+    // Reconstruct lever state preserving ALL properties (face, facing, powered)
+    face = get(state, 'face');
+    if (face == null, face = 'wall');  // fallback
+    facing = get(state, 'facing');
+    if (facing == null, facing = 'east');  // fallback
+    
+    // Place the lever with flipped state (does NOT emit redstone updates)
+    set(pos, 'lever[face=' + face + ',facing=' + facing + ',powered=' + new_powered + ']');
+    
+    print(format('g Lever at ' + pos + ' toggled to powered=' + new_powered + ' (was ' + current_powered + ')'));
+    'OK'
+);
+
+// Press a button: use fake player interaction (works perfectly for buttons).
+// Buttons don't have a settable powered state — they need actual interaction.
+press_button(pos) -> (
+    b = block(pos);
+    if (str(b) != 'button' && str(b) != 'minecraft:button',
+        print(format('r FAIL: Block at ' + pos + ' is not a button (got ' + b + ')'));
+        return('FAIL')
+    );
+    
+    // Use fake player to interact with the button
+    // /player spawn creates a fake player, /player use once interacts
+    // This triggers proper priority -1 NC updates
+    run(str('execute positioned %d %d %d run player Steve use once', pos:0, pos:1, pos:2));
+    
+    print(format('g Button at ' + pos + ' pressed'));
+    'OK'
+);
 
 check_block(pos, expected_input) -> (
    // Parse expected string "id[k=v,k2=v2]"

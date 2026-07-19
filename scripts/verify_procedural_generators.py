@@ -75,9 +75,12 @@ def build_and_verify(bridge: MinecraftBridge, example: CircuitExample,
             force_update_region=False,
         )
 
-        # Update each block individually (safe, not update_region)
+        # Emit proper redstone updates (NC + PP) on each block using TIS Addition's
+        # manipulate command. This is needed because setblock only emits priority 3
+        # updates which redstone components (repeaters, comparators, torches, dust)
+        # do NOT respond to. redstone_update emits priority 0 NC updates.
         for x, y, z, state, nbt in all_blocks:
-            bridge.run_command(f"mira_api update_block {ox + x} {oy + y} {oz + z}")
+            bridge.run_command(f"mira_api redstone_update {ox + x} {oy + y} {oz + z}")
 
         # Tick to settle
         bridge.run_command("tick freeze")
@@ -106,17 +109,45 @@ def build_and_verify(bridge: MinecraftBridge, example: CircuitExample,
         for action in example.verify_contract.actions:
             ax, ay, az = action.position
             abs_pos = (ox + ax, oy + ay, oz + az)
-            bridge.run_command(
-                f"setblock {abs_pos[0]} {abs_pos[1]} {abs_pos[2]} {action.state}"
-            )
-            result["actions"].append({
-                "position": list(action.position),
-                "state": action.state,
-            })
-
-        # Update blocks after actions
-        for x, y, z, state, nbt in all_blocks:
-            bridge.run_command(f"mira_api update_block {ox + x} {oy + y} {oz + z}")
+            if action.action_type == "toggle_lever":
+                # Toggle lever: change state, tick to propagate, emit redstone updates
+                # This sequence is required because set() doesn't propagate redstone
+                # signal immediately — the lever state needs a tick to propagate
+                # before block_update will cause neighbors to re-evaluate.
+                bridge.run_command(f"mira_api toggle_lever {abs_pos[0]} {abs_pos[1]} {abs_pos[2]}")
+                # Tick to let lever state propagate internally
+                bridge.run_command("tick freeze")
+                bridge.run_command("tick step 5")
+                bridge.run_command("tick unfreeze")
+                # Emit redstone updates on ALL blocks in the circuit
+                # (not just lever + 6 neighbors — the lamp may be far away
+                # and needs its own redstone_update to re-evaluate)
+                for bx, by, bz, bstate, bnbt in all_blocks:
+                    bridge.run_command(
+                        f"mira_api redstone_update {ox + bx} {oy + by} {oz + bz}"
+                    )
+                result["actions"].append({
+                    "position": list(action.position),
+                    "action_type": "toggle_lever",
+                })
+            else:
+                # set_block action
+                bridge.run_command(
+                    f"setblock {abs_pos[0]} {abs_pos[1]} {abs_pos[2]} {action.state}"
+                )
+                # Tick to let state propagate, then emit redstone updates on ALL blocks
+                bridge.run_command("tick freeze")
+                bridge.run_command("tick step 5")
+                bridge.run_command("tick unfreeze")
+                for bx, by, bz, bstate, bnbt in all_blocks:
+                    bridge.run_command(
+                        f"mira_api redstone_update {ox + bx} {oy + by} {oz + bz}"
+                    )
+                result["actions"].append({
+                    "position": list(action.position),
+                    "state": action.state,
+                    "action_type": "set_block",
+                })
 
         # Tick for redstone propagation
         tick_steps = example.verify_contract.tick_steps
@@ -144,20 +175,31 @@ def build_and_verify(bridge: MinecraftBridge, example: CircuitExample,
 
         # Run negative checks (unpower circuit, verify output changes)
         if example.verify_contract.negative_checks:
-            # Unpower all levers
+            # Unpower all levers using toggle_lever (proper redstone updates)
             for x, y, z, state, nbt in all_blocks:
                 if "lever" in state:
-                    bridge.run_command(
-                        f"setblock {ox + x} {oy + y} {oz + z} minecraft:lever[facing=east,powered=false]"
-                    )
+                    abs_pos = (ox + x, oy + y, oz + z)
+                    # Check if lever is powered, if so toggle it OFF
+                    state_resp = bridge.run_command(f"mira_api get_state {abs_pos[0]} {abs_pos[1]} {abs_pos[2]}")
+                    if "powered: true" in state_resp or "powered=true" in state_resp:
+                        # Toggle lever OFF with proper timing
+                        bridge.run_command(f"mira_api toggle_lever {abs_pos[0]} {abs_pos[1]} {abs_pos[2]}")
+                        bridge.run_command("tick freeze")
+                        bridge.run_command("tick step 5")
+                        bridge.run_command("tick unfreeze")
                 elif "redstone_block" in state:
                     bridge.run_command(
                         f"setblock {ox + x} {oy + y} {oz + z} minecraft:stone"
                     )
+                    bridge.run_command("tick freeze")
+                    bridge.run_command("tick step 5")
+                    bridge.run_command("tick unfreeze")
 
-            # Update blocks
-            for x, y, z, state, nbt in all_blocks:
-                bridge.run_command(f"mira_api update_block {ox + x} {oy + y} {oz + z}")
+            # Emit redstone updates on ALL blocks in the circuit
+            for bx, by, bz, bstate, bnbt in all_blocks:
+                bridge.run_command(
+                    f"mira_api redstone_update {ox + bx} {oy + by} {oz + bz}"
+                )
 
             # Tick
             bridge.run_command("tick freeze")

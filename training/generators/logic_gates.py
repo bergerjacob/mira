@@ -79,7 +79,7 @@ class NotGate(CircuitGenerator):
             (*lever_pos, f"minecraft:lever[facing={lever_facing},powered=false]", None),
             (*stone_pos, "minecraft:stone", None),
             (*torch_pos, "minecraft:redstone_torch", None),
-            (*lamp_pos, "minecraft:redstone_lamp[lit=false]", None),
+            (*lamp_pos, "minecraft:redstone_lamp[lit=true]", None),
         ]
         support = add_support_blocks(blocks)
 
@@ -90,7 +90,7 @@ class NotGate(CircuitGenerator):
             ],
             actions=[
                 # Power the lever
-                VerifyAction(lever_pos, f"minecraft:lever[facing={lever_facing},powered=true]"),
+                VerifyAction(lever_pos, f"minecraft:lever[facing={lever_facing},powered=true]", action_type="toggle_lever"),
             ],
             tick_steps=20,
             final_checks=[
@@ -166,21 +166,53 @@ class OrGate(CircuitGenerator):
             return self._generate_side_levers(params)
 
     def _generate_two_lever(self, params: Dict[str, Any]) -> CircuitExample:
-        """Original 2-lever OR: levers at opposite ends, lamp in middle."""
+        """2-lever OR: levers at opposite ends, lamp at one end.
+
+        Lamp is at the END of the wire chain (not middle) because lamps
+        don't conduct redstone — placing a lamp in the middle of a wire
+        chain breaks the connection.
+
+        Layout (X axis, Y=0 ground):
+          (0,0,0): Lever A (face=floor, on top of stone at (0,-1,0))
+          (1,0,0): Wire
+          (2,0,0): Wire
+          (3,0,0): Wire
+          (4,0,0): Wire
+          (5,0,0): Lever B (face=floor, on top of stone at (5,-1,0))
+          (6,0,0): Lamp (at end of chain, adjacent to wire at (5,0,0))
+
+        Wait — lever B at (5,0,0) would break the wire chain. Let me use:
+          (0,0,0): Lever A (face=floor)
+          (1,0,0): Wire
+          (2,0,0): Wire
+          (3,0,0): Wire
+          (4,0,0): Wire
+          (5,0,0): Lamp (at end)
+          (3,0,1): Lever B (face=floor, on stone, adjacent to wire at (3,0,0))
+
+        Actually, simplest: both levers on top of stone blocks, both adjacent
+        to the same wire chain, lamp at one end.
+          (0,0,0): Lever A (face=floor, on stone at (0,-1,0))
+          (1,0,0): Wire
+          (2,0,0): Wire
+          (3,0,0): Wire
+          (4,0,0): Lamp (at end of chain)
+          (2,0,1): Lever B (face=floor, on stone at (2,-1,1), adjacent to wire at (2,0,0))
+        """
         lever_a_pos = (0, 0, 0)
         wire1_pos = (1, 0, 0)
         wire2_pos = (2, 0, 0)
-        lamp_pos = (3, 0, 0)
-        wire3_pos = (4, 0, 0)
-        lever_b_pos = (5, 0, 0)
+        wire3_pos = (3, 0, 0)
+        lamp_pos = (4, 0, 0)
+        lever_b_pos = (2, 0, 1)  # On side, adjacent to wire2
 
         blocks: List[Block] = [
-            (*lever_a_pos, "minecraft:lever[facing=east,powered=false]", None),
+            (*lever_a_pos, "minecraft:lever[face=floor,facing=east,powered=false]", None),
             (*wire1_pos, "minecraft:redstone_wire", None),
             (*wire2_pos, "minecraft:redstone_wire", None),
-            (*lamp_pos, "minecraft:redstone_lamp[lit=false]", None),
             (*wire3_pos, "minecraft:redstone_wire", None),
-            (*lever_b_pos, "minecraft:lever[facing=west,powered=false]", None),
+            (*lamp_pos, "minecraft:redstone_lamp[lit=false]", None),
+            (*lever_b_pos, "minecraft:lever[face=floor,facing=north,powered=false]", None),
         ]
         support = add_support_blocks(blocks)
 
@@ -189,7 +221,7 @@ class OrGate(CircuitGenerator):
                 VerifyCheck(lamp_pos, "minecraft:redstone_lamp[lit=false]"),
             ],
             actions=[
-                VerifyAction(lever_a_pos, "minecraft:lever[facing=east,powered=true]"),
+                VerifyAction(lever_a_pos, "", action_type="toggle_lever"),
             ],
             tick_steps=20,
             final_checks=[
@@ -200,7 +232,7 @@ class OrGate(CircuitGenerator):
             ],
         )
         desc = (f"An OR gate circuit with 2 levers at {lever_a_pos} and {lever_b_pos} "
-                f"connected to a redstone wire line with a lamp at {lamp_pos} in the middle. "
+                f"connected to a redstone wire line with a lamp at {lamp_pos} at the end. "
                 f"The lamp turns on when any lever is powered. "
                 f"Truth table: OFF+OFF=OFF, ON+OFF=ON, OFF+ON=ON, ON+ON=ON.")
         return CircuitExample(
@@ -214,34 +246,47 @@ class OrGate(CircuitGenerator):
         )
 
     def _generate_side_levers(self, params: Dict[str, Any]) -> CircuitExample:
-        """Multi-lever OR: levers on one side of a continuous wire, lamp at end.
+        """Multi-lever OR: levers on top of stone blocks adjacent to wire, lamp at end.
 
-        Levers placed as powered=true from the start. This is a workaround for
-        a setblock limitation: lamps placed before wires are powered don't
-        re-evaluate their power source when the lever is toggled ON later.
-        By placing levers as powered=true, wires are powered when the lamp is
-        placed, so the lamp initializes correctly.
+        Levers placed in their resting state (powered=false) on top of stone
+        blocks (face=floor). Each lever is adjacent to a wire segment and
+        powers it when toggled ON. Uses mira_api toggle_lever in the
+        verification action to properly emit redstone updates.
 
-        Verification: initial check lamp lit=true (lever ON), toggle lever OFF,
-        final check lamp lit=false (lamp should turn OFF when lever is OFF).
+        Layout (X axis, Y=0 ground, Z=0 wire, Z=1 levers):
+          (0,0,0): Wire
+          (1,0,0): Wire
+          ...
+          (num_levers,0,0): Wire  (extra wire segment — no lever here, keeps lamp connection clean)
+          (num_levers+1,0,0): Lamp (at end)
+          (i,0,1): Lever i (face=floor, on stone at (i,-1,1))
+
+        The extra wire segment between the last lever and the lamp ensures
+        the wire's east connection to the lamp isn't broken by a side lever.
+
+        Verification: initial check lamp lit=false (all levers OFF), toggle
+        one lever ON using toggle_lever, final check lamp lit=true (lamp
+        should turn ON when any lever is ON).
         """
         num_levers = params["num_levers"]
 
-        # Wire along X axis from x=0 to x=num_levers-1
-        # Lamp at x=num_levers
-        # Levers at Z=1, each adjacent to one wire segment
+        # Wire along X axis from x=0 to x=num_levers (num_levers+1 segments)
+        # Lamp at x=num_levers+1
+        # Levers at Z=1, each on top of stone block, adjacent to wire
         lever_positions = []
         blocks: List[Block] = []
-        for i in range(num_levers):
+        for i in range(num_levers + 1):
             # Wire segment
             blocks.append((i, 0, 0, "minecraft:redstone_wire", None))
-            # Lever at (i, 0, 1) facing=north — attached to wire at (i, 0, 0), powers it
+
+        for i in range(num_levers):
+            # Lever at (i, 0, 1) face=floor — on top of stone at (i, -1, 1), adjacent to wire at (i, 0, 0)
             lever_pos = (i, 0, 1)
             lever_positions.append(lever_pos)
-            # Place lever as powered=true from the start
-            blocks.append((*lever_pos, "minecraft:lever[facing=north,powered=true]", None))
+            # Place lever in resting state (powered=false)
+            blocks.append((*lever_pos, "minecraft:lever[face=floor,facing=north,powered=false]", None))
 
-        lamp_x = num_levers
+        lamp_x = num_levers + 1
         lamp_pos = (lamp_x, 0, 0)
         blocks.append((*lamp_pos, "minecraft:redstone_lamp[lit=false]", None))
 
@@ -249,21 +294,20 @@ class OrGate(CircuitGenerator):
 
         verify = VerifyContract(
             initial_checks=[
-                # Don't check lamp initial state — setblock limitation prevents
-                # lamps from initializing as lit=true even when wires are powered.
-                # We verify the circuit works by toggling the lever OFF and checking
-                # the lamp turns OFF.
+                # All levers OFF → lamp OFF (resting state)
+                VerifyCheck(lamp_pos, "minecraft:redstone_lamp[lit=false]"),
             ],
             actions=[
-                # Toggle lever OFF — lamp should turn OFF
-                VerifyAction(lever_positions[0], "minecraft:lever[facing=north,powered=false]"),
+                # Toggle lever ON using toggle_lever — emits proper redstone updates
+                VerifyAction(lever_positions[0], "", action_type="toggle_lever"),
             ],
             tick_steps=20,
             final_checks=[
-                VerifyCheck(lamp_pos, "minecraft:redstone_lamp[lit=false]"),
+                # Any lever ON → lamp ON
+                VerifyCheck(lamp_pos, "minecraft:redstone_lamp[lit=true]"),
             ],
             negative_checks=[
-                # After unpowering all levers, lamp should be OFF
+                # All levers OFF → lamp OFF
                 VerifyCheck(lamp_pos, "minecraft:redstone_lamp[lit=false]"),
             ],
         )
@@ -447,8 +491,8 @@ class AndGate(CircuitGenerator):
             ],
             actions=[
                 # Power BOTH levers
-                VerifyAction(lever_a_pos, "minecraft:lever[facing=north,powered=true]"),
-                VerifyAction(lever_b_pos, "minecraft:lever[facing=north,powered=true]"),
+                VerifyAction(lever_a_pos, "minecraft:lever[facing=north,powered=true]", action_type="toggle_lever"),
+                VerifyAction(lever_b_pos, "minecraft:lever[facing=north,powered=true]", action_type="toggle_lever"),
             ],
             tick_steps=20,
             final_checks=[
@@ -560,7 +604,7 @@ class NorGate(CircuitGenerator):
             blocks.append((wx, wy, wz, "minecraft:redstone_wire", None))
         blocks.append((*stone_pos, "minecraft:stone", None))
         blocks.append((*torch_pos, "minecraft:redstone_torch", None))
-        blocks.append((*lamp_pos, "minecraft:redstone_lamp[lit=false]", None))
+        blocks.append((*lamp_pos, "minecraft:redstone_lamp[lit=true]", None))
 
         support = add_support_blocks(blocks)
 
@@ -571,7 +615,7 @@ class NorGate(CircuitGenerator):
             ],
             actions=[
                 # Power lever A — should turn lamp OFF
-                VerifyAction(lever_a_pos, f"minecraft:lever[facing={lever_a_facing},powered=true]"),
+                VerifyAction(lever_a_pos, f"minecraft:lever[facing={lever_a_facing},powered=true]", action_type="toggle_lever"),
             ],
             tick_steps=20,
             final_checks=[

@@ -213,26 +213,51 @@ class VerificationContext:
         when the game is frozen, and 'tick warp' is not a valid command
         in this Carpet version.
 
-        Before stepping, forces individual block updates on all positions
-        set via set_block(). This is needed because setblock with
-        fillUpdates=true triggers neighbor updates but does NOT cause the
-        placed block itself to re-evaluate its power state (e.g. a lamp
-        placed next to a redstone_block stays lit=false until it gets an
-        update).
+        Before stepping, emits proper redstone updates (NC + PP) on all
+        positions set via set_block(). This is needed because setblock
+        only emits priority 3 updates, which redstone components (repeaters,
+        comparators, pistons, torches, dust) do NOT respond to. We use
+        TIS Addition's `manipulate block emit block_update` which emits
+        priority 0 NC updates that redstone components respond to.
 
-        We use update_block (individual) NOT update_region (scan). The
-        latter causes false positives on negative tests (broken circuits
-        get lamps to light incorrectly) and can crash/hang the server.
-        Individual update_block calls are safe and targeted.
+        We use redstone_update (individual positions) NOT update_region
+        (scan). The latter causes false positives on negative tests (broken
+        circuits get lamps to light incorrectly) and can crash/hang the server.
         """
         for pos in self._set_positions:
-            self.bridge.run_command(f"mira_api update_block {pos[0]} {pos[1]} {pos[2]}")
+            self.bridge.run_command(f"mira_api redstone_update {pos[0]} {pos[1]} {pos[2]}")
 
         self.bridge.run_command("tick freeze")
         self.bridge.run_command(f"tick step {ticks}")
         self.bridge.run_command("tick unfreeze")
         time.sleep(0.3)
         self._set_positions.clear()  # Reset for next tick cycle
+
+    def toggle_lever(self, pos):
+        """Simulate a player flipping a lever at a relative position.
+        
+        Uses mira_api toggle_lever which reads the current powered state,
+        flips it, and emits proper redstone updates (NC + PP at priority 0/2).
+        This is the reliable way to toggle levers — setblock alone only
+        emits priority 3 updates which redstone components don't respond to.
+        """
+        x, y, z = self._abs(pos)
+        self.bridge.run_command(f"mira_api toggle_lever {x} {y} {z}")
+        # Step a few ticks to let the signal propagate
+        self.bridge.run_command("tick freeze")
+        self.bridge.run_command("tick step 5")
+        self.bridge.run_command("tick unfreeze")
+        time.sleep(0.3)
+
+    def redstone_update(self, pos):
+        """Force proper redstone updates (NC + PP) at a relative position.
+        
+        Uses TIS Addition's manipulate block emit block_update/state_update.
+        Call this after setblock if you need redstone components to respond
+        to the block change.
+        """
+        x, y, z = self._abs(pos)
+        self.bridge.run_command(f"mira_api redstone_update {x} {y} {z}")
 
     def assert_block(self, pos, expected):
         """

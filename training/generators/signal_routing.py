@@ -86,7 +86,8 @@ class WireChainGenerator(CircuitGenerator):
                 actions=[
                     # Toggle lever ON
                     VerifyAction(lever_pos,
-                                 f"minecraft:lever[facing={direction},powered=true]"),
+                                 f"minecraft:lever[facing={direction},powered=true]",
+                                 action_type="toggle_lever"),
                 ],
                 tick_steps=20,
                 final_checks=[
@@ -115,6 +116,10 @@ class VerticalWireGenerator(CircuitGenerator):
     block directly underneath, but adjacent vertical wires occupy Y-1).
     Fallback: uses a torch tower where each floor torch powers the block
     above it, achieving vertical signal propagation.
+
+    NOTE: Torch `lit` states are overridden by the server when placed via
+    setblock (server re-evaluates torch based on block below). So we use
+    structural verification (block TYPE only, not lit state).
 
     Layout (2 torches, height=2):
       (0,0,0): redstone_block
@@ -160,16 +165,18 @@ class VerticalWireGenerator(CircuitGenerator):
             stone_positions.append(stone_pos)
             torch_positions.append(torch_pos)
             blocks.append((*stone_pos, "minecraft:stone", None))
+            # Don't specify lit state — server will evaluate it
             blocks.append((*torch_pos, "minecraft:redstone_torch", None))
 
-        # Lamp at top
+        # Lamp at top — don't specify lit state (server evaluates)
         lamp_y = 2 * height + 1
         lamp_pos = (0, lamp_y, 0)
-        blocks.append((*lamp_pos, "minecraft:redstone_lamp[lit=false]", None))
+        blocks.append((*lamp_pos, "minecraft:redstone_lamp", None))
 
         support: List[Block] = []
 
-        # Structural verification: check all core blocks
+        # Structural verification: check block TYPE only (not lit state)
+        # Torch lit states are server-evaluated and can't be predicted reliably
         all_checks: List[VerifyCheck] = [
             VerifyCheck((0, 0, 0), "minecraft:redstone_block"),
         ]
@@ -262,7 +269,7 @@ class TorchTowerGenerator(CircuitGenerator):
         # Lamp at top (at y = 2 * n)
         lamp_y = 2 * n
         lamp_pos = (0, lamp_y, 0)
-        blocks.append((*lamp_pos, "minecraft:redstone_lamp[lit=false]", None))
+        blocks.append((*lamp_pos, "minecraft:redstone_lamp[lit=true]", None))
 
         # No extra support needed — blocks serve as torch supports
         support: List[Block] = []
@@ -353,7 +360,7 @@ class SignalSplitGenerator(CircuitGenerator):
             dx, dy, dz = lamp_dirs[i]
             pos = (dx, dy, dz)
             lamp_positions.append(pos)
-            blocks.append((*pos, "minecraft:redstone_lamp[lit=false]", None))
+            blocks.append((*pos, "minecraft:redstone_lamp[lit=true]", None))
 
         # No support needed — redstone_block and redstone_lamp don't need supports
         support: List[Block] = []
@@ -406,11 +413,12 @@ class SignalSplitGenerator(CircuitGenerator):
 class LeverBranchGenerator(CircuitGenerator):
     """Lever → wire → 2 lamps on opposite sides (east and west).
 
-    A floor-mounted lever powers redstone wire extending both east and west.
-    Each wire chain ends with a redstone lamp at the far end.
-    Both lamps light up when the lever is toggled on.
+    A floor-mounted lever (face=floor) on top of a stone block powers
+    redstone wire extending both east and west. Each wire chain ends with
+    a redstone lamp at the far end. Both lamps light up when the lever is
+    toggled on.
 
-    Uses structural verification (block presence checks).
+    Uses functional verification: toggle lever ON → both lamps lit.
     Two variants: wire_length=1 (short branches) and wire_length=2 (longer branches).
     """
 
@@ -425,12 +433,14 @@ class LeverBranchGenerator(CircuitGenerator):
 
     def generate(self, params: Dict[str, Any]) -> CircuitExample:
         wire_length = params["wire_length"]
-        direction = "east"
 
         lever_pos = (0, 0, 0)
+        # Stone block under lever (floor-mounted lever needs support)
+        lever_support_pos = (0, -1, 0)
 
         blocks: List[Block] = [
-            (*lever_pos, f"minecraft:lever[facing={direction},powered=false]", None),
+            (*lever_support_pos, "minecraft:stone", None),
+            (*lever_pos, "minecraft:lever[face=floor,facing=east,powered=false]", None),
         ]
 
         # East-going wire chain
@@ -455,21 +465,12 @@ class LeverBranchGenerator(CircuitGenerator):
 
         support = add_support_blocks(blocks)
 
-        # Structural verification — check all blocks are present
-        all_checks: List[VerifyCheck] = [
-            VerifyCheck(lever_pos, f"minecraft:lever[facing={direction},powered=false]"),
-        ]
-        for wp in east_wire_positions:
-            all_checks.append(VerifyCheck(wp, "minecraft:redstone_wire"))
-        for wp in west_wire_positions:
-            all_checks.append(VerifyCheck(wp, "minecraft:redstone_wire"))
-        all_checks.append(VerifyCheck(east_lamp_pos, "minecraft:redstone_lamp"))
-        all_checks.append(VerifyCheck(west_lamp_pos, "minecraft:redstone_lamp"))
-
+        # Functional verification: toggle lever ON → both lamps lit
         wire_word = "wire" if wire_length == 1 else "wires"
         desc = (
-            f"A signal branch circuit: a lever at {lever_pos} (facing east) powers "
-            f"redstone wire chains extending both east and west. "
+            f"A signal branch circuit: a floor-mounted lever at {lever_pos} "
+            f"(on top of a stone block at {lever_support_pos}) powers redstone "
+            f"wire chains extending both east and west. "
             f"Each chain has {wire_length} {wire_word} block{'s' if wire_length != 1 else ''}. "
             f"A redstone lamp at {east_lamp_pos} (east end) and {west_lamp_pos} (west end) "
             f"both light up when the lever is toggled on."
@@ -480,11 +481,28 @@ class LeverBranchGenerator(CircuitGenerator):
             blocks=blocks,
             support_blocks=support,
             verify_contract=VerifyContract(
-                initial_checks=all_checks,
-                actions=[],
+                initial_checks=[
+                    # Lever OFF → both lamps OFF
+                    VerifyCheck(east_lamp_pos, "minecraft:redstone_lamp[lit=false]"),
+                    VerifyCheck(west_lamp_pos, "minecraft:redstone_lamp[lit=false]"),
+                ],
+                actions=[
+                    # Toggle lever ON
+                    VerifyAction(lever_pos,
+                                 "minecraft:lever[face=floor,facing=east,powered=true]",
+                                 action_type="toggle_lever"),
+                ],
                 tick_steps=20,
-                final_checks=all_checks,
-                negative_checks=[],
+                final_checks=[
+                    # Lever ON → both lamps ON
+                    VerifyCheck(east_lamp_pos, "minecraft:redstone_lamp[lit=true]"),
+                    VerifyCheck(west_lamp_pos, "minecraft:redstone_lamp[lit=true]"),
+                ],
+                negative_checks=[
+                    # Lever OFF again → both lamps OFF
+                    VerifyCheck(east_lamp_pos, "minecraft:redstone_lamp[lit=false]"),
+                    VerifyCheck(west_lamp_pos, "minecraft:redstone_lamp[lit=false]"),
+                ],
             ),
             category=self.category,
             difficulty="beginner",

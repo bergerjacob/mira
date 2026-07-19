@@ -29,9 +29,10 @@ class VerifyCheck:
 
 @dataclass
 class VerifyAction:
-    """A verification action: set a block to a new state."""
+    """A verification action: set a block to a new state, or toggle a lever."""
     position: Tuple[int, int, int]
     state: str  # e.g. "minecraft:lever[facing=east,powered=true]"
+    action_type: str = "set_block"  # "set_block" or "toggle_lever"
 
 
 @dataclass

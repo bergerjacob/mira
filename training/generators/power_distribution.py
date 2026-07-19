@@ -47,7 +47,7 @@ class DirectPowerLamp(CircuitGenerator):
 
         blocks: List[Block] = [
             (0, 0, 0, "minecraft:redstone_block", None),
-            (dx, dy, dz, "minecraft:redstone_lamp[lit=false]", None),
+            (dx, dy, dz, "minecraft:redstone_lamp[lit=true]", None),
         ]
         support = add_support_blocks(blocks)
         # Lamp should be lit=true because redstone_block powers it
@@ -115,7 +115,7 @@ class LeverLampDirect(CircuitGenerator):
                 VerifyCheck(lamp_pos, "minecraft:redstone_lamp[lit=false]"),
             ],
             actions=[
-                VerifyAction(lever_pos, f"minecraft:lever[facing={lever_facing},powered=true]"),
+                VerifyAction(lever_pos, f"minecraft:lever[facing={lever_facing},powered=true]", action_type="toggle_lever"),
             ],
             tick_steps=20,
             final_checks=[
@@ -182,7 +182,7 @@ class LeverWireLamp(CircuitGenerator):
                     VerifyCheck(lamp_pos, "minecraft:redstone_lamp[lit=false]"),
                 ],
                 actions=[
-                    VerifyAction((0, 0, 0), f"minecraft:lever[facing={lever_facing},powered=true]"),
+                    VerifyAction((0, 0, 0), f"minecraft:lever[facing={lever_facing},powered=true]", action_type="toggle_lever"),
                 ],
                 tick_steps=20,
                 final_checks=[
@@ -227,7 +227,7 @@ class FanOutLamp(CircuitGenerator):
             dx, dy, dz = dirs[i]
             pos = (dx, dy, dz)
             lamp_positions.append(pos)
-            blocks.append((*pos, "minecraft:redstone_lamp[lit=false]", None))
+            blocks.append((*pos, "minecraft:redstone_lamp[lit=true]", None))
 
         support = add_support_blocks(blocks)
         verify = VerifyContract(
@@ -286,7 +286,7 @@ class RedstoneBlockLamp(CircuitGenerator):
         dx, dy, dz = params["dx"], params["dy"], params["dz"]
 
         blocks: List[Block] = [
-            (dx, dy, dz, "minecraft:redstone_lamp[lit=false]", None),
+            (dx, dy, dz, "minecraft:redstone_lamp[lit=true]", None),
             (0, 0, 0, "minecraft:redstone_block", None),
         ]
         support = add_support_blocks(blocks)
@@ -364,7 +364,7 @@ class LeverMultiLamp(CircuitGenerator):
                 for pos in lamp_positions
             ],
             actions=[
-                VerifyAction((0, 0, 0), "minecraft:lever[facing=east,powered=true]"),
+                VerifyAction((0, 0, 0), "minecraft:lever[facing=east,powered=true]", action_type="toggle_lever"),
             ],
             tick_steps=20,
             final_checks=[

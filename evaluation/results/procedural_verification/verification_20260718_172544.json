@@ -1,0 +1,210 @@
+{
+  "timestamp": "2026-07-18T17:25:44.557625",
+  "total": 3,
+  "passed": 2,
+  "failed": 1,
+  "results": [
+    {
+      "generator": "not_gate",
+      "params": {
+        "direction": "north (lamp east)",
+        "lever_facing": "north",
+        "lever_offset": [
+          0,
+          0,
+          -1
+        ],
+        "lamp_offset": [
+          1,
+          0,
+          0
+        ]
+      },
+      "description": "A NOT gate (inverter) circuit. A lever at (0, 0, -1) controls a redstone torch on top of a stone block at (0, 0, 0). The torch powers a redstone lamp at (1, 1, 0). When the lever is off, the torch is on and the lamp is lit. When the lever is on, the torch turns off and the lamp goes dark. This inverts the signal: output is the opposite of input.",
+      "block_count": 4,
+      "category": "logic_gate",
+      "difficulty": "beginner",
+      "origin": [
+        0,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 201, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 201, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            -1
+          ],
+          "action_type": "toggle_lever"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": false,
+          "response": "DEBUG: Read Block at [1, 201, 0]: ID=minecraft:redstone_lamp, Props={lit: true}FAIL: Property lit mismatch. Expected false, got trueFull Actual State: {lit: true}"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            1,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [1, 201, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [1, 201, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "passed": false,
+      "errors": [
+        "Final check failed at (1, 1, 0): expected minecraft:redstone_lamp[lit=false]"
+      ]
+    },
+    {
+      "generator": "or_gate",
+      "params": {
+        "num_levers": 2
+      },
+      "description": "An OR gate circuit with 2 levers at (0, 0, 0) and (5, 0, 0) connected to a redstone wire line with a lamp at (3, 0, 0) in the middle. The lamp turns on when any lever is powered. Truth table: OFF+OFF=OFF, ON+OFF=ON, OFF+ON=ON, ON+ON=ON.",
+      "block_count": 6,
+      "category": "logic_gate",
+      "difficulty": "intermediate",
+      "origin": [
+        64,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [67, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [67, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "action_type": "toggle_lever"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [67, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [67, 200, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [67, 200, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [67, 200, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    },
+    {
+      "generator": "nor_gate",
+      "params": {
+        "variant": "x_axis_lamp_east"
+      },
+      "description": "A NOR gate circuit. Two levers at (0, 0, 0) and (0, 0, 1) connect to a redstone wire. The wire powers a stone block at (5, 0, 0) with a redstone torch on top at (5, 1, 0). The torch powers a lamp at (6, 1, 0). The lamp is ON only when BOTH levers are OFF (neither input is active). If either lever is ON, the wire powers the stone, the torch turns OFF, and the lamp goes dark. Truth table: OFF+OFF=ON, ON+OFF=OFF, OFF+ON=OFF, ON+ON=OFF.",
+      "block_count": 9,
+      "category": "logic_gate",
+      "difficulty": "advanced",
+      "origin": [
+        128,
+        200,
+        0
+      ],
+      "initial_checks": [
+        {
+          "position": [
+            6,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [134, 201, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [134, 201, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "actions": [
+        {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "action_type": "toggle_lever"
+        }
+      ],
+      "final_checks": [
+        {
+          "position": [
+            6,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=false]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [134, 201, 0]: ID=minecraft:redstone_lamp, Props={lit: false}PASS: Block at [134, 201, 0] matches minecraft:redstone_lamp[lit=false]"
+        }
+      ],
+      "negative_checks": [
+        {
+          "position": [
+            6,
+            1,
+            0
+          ],
+          "expected": "minecraft:redstone_lamp[lit=true]",
+          "passed": true,
+          "response": "DEBUG: Read Block at [134, 201, 0]: ID=minecraft:redstone_lamp, Props={lit: true}PASS: Block at [134, 201, 0] matches minecraft:redstone_lamp[lit=true]"
+        }
+      ],
+      "passed": true,
+      "errors": []
+    }
+  ]
+}
