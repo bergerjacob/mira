@@ -7,3 +7,4 @@ torch
 requests
 nbtlib
 nucleation
+pyyaml
