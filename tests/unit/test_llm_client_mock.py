@@ -27,7 +27,7 @@ class TestModelsDict:
         assert OpenRouterClient.MODELS["glm-5"] == "z-ai/glm-5"
 
     def test_models_contains_gemini_flash_lite(self):
-        assert OpenRouterClient.MODELS["gemini-flash-lite"] == "google/gemini-3.1-flash-lite-preview"
+        assert OpenRouterClient.MODELS["gemini-flash-lite"] == "google/gemini-3.1-flash-lite"
 
     def test_models_contains_kimi_k25(self):
         assert OpenRouterClient.MODELS["kimi-k2.5"] == "moonshotai/kimi-k2.5"
@@ -36,7 +36,7 @@ class TestModelsDict:
         """Short name resolves to full model ID."""
         client = OpenRouterClient(api_key="test-key")
         resolved = client.MODELS.get("gemini-flash-lite")
-        assert resolved == "google/gemini-3.1-flash-lite-preview"
+        assert resolved == "google/gemini-3.1-flash-lite"
 
 
 # ---------------------------------------------------------------------------
@@ -70,7 +70,7 @@ class TestClientInit:
 
 class TestChatPayloadBuilding:
     def test_chat_builds_correct_payload(self):
-        """chat() sends correct model, messages, temperature, max_tokens."""
+        """chat() sends correct model, messages, temperature, max_tokens (non-Gemini)."""
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "test-key"}):
             client = OpenRouterClient()
 
@@ -78,7 +78,7 @@ class TestChatPayloadBuilding:
         mock_response = MagicMock()
         mock_response.json.return_value = {
             "choices": [{"message": {"content": "Hello!"}}],
-            "model": "google/gemini-3.1-flash-lite-preview",
+            "model": "z-ai/glm-5",
             "usage": {"prompt_tokens": 10, "completion_tokens": 5},
         }
         mock_response.status_code = 200
@@ -86,7 +86,7 @@ class TestChatPayloadBuilding:
 
         messages = [ChatMessage(role="user", content="Say hello")]
         client.chat(
-            model="gemini-flash-lite",
+            model="glm-5",
             messages=messages,
             temperature=0.5,
             max_tokens=8192,
@@ -95,7 +95,7 @@ class TestChatPayloadBuilding:
         # Verify payload
         call_args = client.session.post.call_args
         payload = call_args[1]["json"]
-        assert payload["model"] == "google/gemini-3.1-flash-lite-preview"
+        assert payload["model"] == "z-ai/glm-5"
         assert payload["temperature"] == 0.5
         assert payload["max_tokens"] == 8192
         assert payload["messages"] == [{"role": "user", "content": "Say hello"}]
@@ -155,7 +155,7 @@ class TestChatPayloadBuilding:
         assert payload["response_format"] == response_format
 
     def test_chat_with_reasoning_effort(self):
-        """reasoning_effort adds reasoning field to payload."""
+        """reasoning_effort adds reasoning field to payload (non-Gemini)."""
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "test-key"}):
             client = OpenRouterClient()
 
@@ -178,6 +178,66 @@ class TestChatPayloadBuilding:
         assert "reasoning" in payload
         assert payload["reasoning"] == {"effort": "high"}
 
+    def test_chat_gemini_skips_temperature_and_reasoning(self):
+        """Gemini models don't get temperature or reasoning_effort in payload."""
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "test-key"}):
+            client = OpenRouterClient()
+
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            "choices": [{"message": {"content": "Hello!"}}],
+            "model": "google/gemini-3.1-flash-lite",
+            "usage": {},
+        }
+        mock_response.status_code = 200
+        client.session.post = MagicMock(return_value=mock_response)
+
+        client.chat(
+            model="gemini-flash-lite",
+            messages=[ChatMessage(role="user", content="Hi")],
+            temperature=0.5,
+            reasoning_effort="none",
+        )
+
+        payload = client.session.post.call_args[1]["json"]
+        assert "temperature" not in payload
+        assert "reasoning" not in payload
+        # But max_tokens should still be present
+        assert payload["max_tokens"] == 4096
+
+    def test_chat_gemini_uses_response_mime_type(self):
+        """Gemini models use responseMimeType + responseSchema instead of response_format."""
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "test-key"}):
+            client = OpenRouterClient()
+
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            "choices": [{"message": {"content": '{"ok": true}'}}],
+            "model": "google/gemini-3.1-flash-lite",
+            "usage": {},
+        }
+        mock_response.status_code = 200
+        client.session.post = MagicMock(return_value=mock_response)
+
+        schema = {"type": "object", "properties": {"ok": {"type": "boolean"}}}
+        response_format = {
+            "type": "json_schema",
+            "json_schema": {"name": "test", "strict": True, "schema": schema},
+        }
+
+        client.chat(
+            model="gemini-flash-lite",
+            messages=[ChatMessage(role="user", content="test")],
+            response_format=response_format,
+        )
+
+        payload = client.session.post.call_args[1]["json"]
+        # Should NOT have standard response_format
+        assert "response_format" not in payload
+        # Should have Gemini-specific fields
+        assert payload["responseMimeType"] == "application/json"
+        assert payload["responseSchema"] == schema
+
 
 # ---------------------------------------------------------------------------
 # chat() — return value
@@ -192,7 +252,7 @@ class TestChatReturnValue:
         mock_response = MagicMock()
         mock_response.json.return_value = {
             "choices": [{"message": {"content": "Result"}}],
-            "model": "google/gemini-3.1-flash-lite-preview",
+            "model": "google/gemini-3.1-flash-lite",
             "usage": {"prompt_tokens": 10, "completion_tokens": 5},
         }
         mock_response.status_code = 200
@@ -205,7 +265,7 @@ class TestChatReturnValue:
 
         assert isinstance(result, LLMResponse)
         assert result.content == "Result"
-        assert result.model == "google/gemini-3.1-flash-lite-preview"
+        assert result.model == "google/gemini-3.1-flash-lite"
         assert result.usage == {"prompt_tokens": 10, "completion_tokens": 5}
         assert "choices" in result.raw_response
 
@@ -368,8 +428,43 @@ class TestCompleteWithSchema:
                 schema=schema,
             )
 
+    def test_complete_with_schema_gemini_uses_response_mime_type(self):
+        """complete_with_schema uses responseMimeType+responseSchema for Gemini."""
+        with patch.dict(os.environ, {"OPENROUTER_API_KEY": "test-key"}):
+            client = OpenRouterClient()
+
+        mock_response = MagicMock()
+        mock_response.json.return_value = {
+            "choices": [{"message": {"content": '{"name": "gemini_test"}'}}],
+            "model": "google/gemini-3.5-flash",
+            "usage": {},
+        }
+        mock_response.status_code = 200
+        client.session.post = MagicMock(return_value=mock_response)
+
+        schema = {"type": "object", "properties": {"name": {"type": "string"}}}
+
+        result = client.complete_with_schema(
+            model="gemini-3.5-flash",
+            prompt="Make JSON",
+            system_prompt="You output JSON",
+            schema=schema,
+        )
+
+        # Verify return value
+        assert result == {"name": "gemini_test"}
+
+        # Verify payload uses Gemini format
+        payload = client.session.post.call_args[1]["json"]
+        assert "response_format" not in payload
+        assert payload["responseMimeType"] == "application/json"
+        assert payload["responseSchema"] == schema
+        # Verify no temperature or reasoning for Gemini
+        assert "temperature" not in payload
+        assert "reasoning" not in payload
+
     def test_complete_with_schema_passes_reasoning_effort(self):
-        """complete_with_schema defaults reasoning_effort to 'none'."""
+        """complete_with_schema defaults reasoning_effort to 'none' (non-Gemini)."""
         with patch.dict(os.environ, {"OPENROUTER_API_KEY": "test-key"}):
             client = OpenRouterClient()
 
@@ -385,7 +480,7 @@ class TestCompleteWithSchema:
         schema = {"type": "object", "properties": {}}
 
         client.complete_with_schema(
-            model="gemini-flash-lite",
+            model="glm-5",
             prompt="Make JSON",
             system_prompt="You output JSON",
             schema=schema,
