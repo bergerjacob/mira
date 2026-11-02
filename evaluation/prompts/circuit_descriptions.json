@@ -1,0 +1,378 @@
+[
+  {
+    "id": "simple_lever_lamp",
+    "description": "Build a circuit where flipping a lever turns on a lamp",
+    "complexity": "simple",
+    "circuit_type": "power_distribution",
+    "verification_behavior": "Lamp is off initially, turns on when lever is flipped, turns back off when lever is restored",
+    "expected_blocks": 3
+  },
+  {
+    "id": "simple_redstone_block_lamp",
+    "description": "Create a circuit where a lamp is powered directly by a redstone block placed next to it",
+    "complexity": "simple",
+    "circuit_type": "power_distribution",
+    "verification_behavior": "Lamp is lit as long as the redstone block is adjacent to it",
+    "expected_blocks": 2
+  },
+  {
+    "id": "simple_not_gate",
+    "description": "Make a redstone torch inverter so a lamp turns off when a lever is flipped on, and turns on when the lever is off",
+    "complexity": "simple",
+    "circuit_type": "logic_gate",
+    "verification_behavior": "Lamp is on when lever is off; lamp turns off when lever is flipped on",
+    "expected_blocks": 4
+  },
+  {
+    "id": "simple_and_gate",
+    "description": "Build an AND gate that lights a lamp only when both of two levers are flipped on",
+    "complexity": "simple",
+    "circuit_type": "logic_gate",
+    "verification_behavior": "Lamp off when either or both levers are off; lamp on only when both levers are on",
+    "expected_blocks": 5
+  },
+  {
+    "id": "simple_or_gate",
+    "description": "Create an OR gate where a lamp turns on if either of two levers is flipped on",
+    "complexity": "simple",
+    "circuit_type": "logic_gate",
+    "verification_behavior": "Lamp off only when both levers are off; lamp on when either or both levers are on",
+    "expected_blocks": 4
+  },
+  {
+    "id": "simple_button_two_lamps",
+    "description": "Build a circuit where pressing a button turns on two lamps at the same time",
+    "complexity": "simple",
+    "circuit_type": "signal_split",
+    "verification_behavior": "Both lamps light up simultaneously when button is pressed; both turn off when button timer expires",
+    "expected_blocks": 5
+  },
+  {
+    "id": "simple_pressure_plate_door",
+    "description": "Create a circuit where stepping on a pressure plate opens an iron door",
+    "complexity": "simple",
+    "circuit_type": "door",
+    "verification_behavior": "Iron door opens when pressure plate is activated; door closes when pressure plate is released",
+    "expected_blocks": 4
+  },
+  {
+    "id": "simple_lever_piston",
+    "description": "Build a circuit where flipping a lever causes a piston to extend and push a block forward",
+    "complexity": "simple",
+    "circuit_type": "piston",
+    "verification_behavior": "Piston is retracted when lever is off; piston extends and pushes block when lever is flipped on",
+    "expected_blocks": 4
+  },
+  {
+    "id": "simple_repeater_signal_boost",
+    "description": "Create a circuit with a long line of redstone dust that uses a repeater to carry the signal all the way to a lamp",
+    "complexity": "simple",
+    "circuit_type": "power_distribution",
+    "verification_behavior": "Lamp at the end of the dust line is lit because the repeater restores signal strength",
+    "expected_blocks": 6
+  },
+  {
+    "id": "simple_observer_block_detect",
+    "description": "Build a circuit where placing or breaking a block in front of an observer flashes a lamp briefly",
+    "complexity": "simple",
+    "circuit_type": "detection",
+    "verification_behavior": "Lamp flashes on briefly when a block is placed or broken in front of the observer's face",
+    "expected_blocks": 4
+  },
+  {
+    "id": "simple_nor_gate",
+    "description": "Build a NOR gate where a lamp is on only when both of two levers are off",
+    "complexity": "simple",
+    "circuit_type": "logic_gate",
+    "verification_behavior": "Lamp on when both levers are off; lamp turns off when either lever is flipped on",
+    "expected_blocks": 4
+  },
+  {
+    "id": "simple_nand_gate",
+    "description": "Create a NAND gate where a lamp stays on unless both of two levers are flipped on at the same time",
+    "complexity": "simple",
+    "circuit_type": "logic_gate",
+    "verification_behavior": "Lamp on when either or both levers are off; lamp turns off only when both levers are on",
+    "expected_blocks": 5
+  },
+  {
+    "id": "simple_lever_trapdoor",
+    "description": "Build a circuit where flipping a lever opens a trapdoor, creating a hole in the floor",
+    "complexity": "simple",
+    "circuit_type": "door",
+    "verification_behavior": "Trapdoor is closed when lever is off; trapdoor flips open when lever is on",
+    "expected_blocks": 3
+  },
+  {
+    "id": "simple_button_noteblock",
+    "description": "Create a circuit where pressing a button makes a noteblock play a sound",
+    "complexity": "simple",
+    "circuit_type": "sound",
+    "verification_behavior": "Noteblock is silent initially; noteblock produces a sound when button is pressed",
+    "expected_blocks": 3
+  },
+  {
+    "id": "simple_comparator_signal_strength",
+    "description": "Build a circuit where a comparator reads the fullness of a chest and lights a lamp when the chest has any items",
+    "complexity": "simple",
+    "circuit_type": "detection",
+    "verification_behavior": "Lamp is off when chest is empty; lamp turns on when items are placed in the chest",
+    "expected_blocks": 4
+  },
+  {
+    "id": "medium_t_flip_flop",
+    "description": "Create a T-flip-flop that toggles a lamp on and off each time you press a button, making the button act like a lever",
+    "complexity": "medium",
+    "circuit_type": "memory",
+    "verification_behavior": "Lamp toggles state on each button press: off→on→off→on; pressing repeatedly cycles the lamp state",
+    "expected_blocks": 16
+  },
+  {
+    "id": "medium_piston_door_2x2",
+    "description": "Build a 2x2 piston door that opens when you flip a lever, hiding the entrance in a wall",
+    "complexity": "medium",
+    "circuit_type": "door",
+    "verification_behavior": "4 door blocks form a seamless wall when closed; lever flip retracts blocks to reveal a 2x2 opening",
+    "expected_blocks": 18
+  },
+  {
+    "id": "medium_repeater_clock",
+    "description": "Build a redstone clock using repeaters in a loop so a lamp blinks on and off repeatedly",
+    "complexity": "medium",
+    "circuit_type": "clock",
+    "verification_behavior": "Lamp alternates between on and off at a steady rhythm; clocking pattern continues indefinitely",
+    "expected_blocks": 6
+  },
+  {
+    "id": "medium_pulse_limiter",
+    "description": "Make a monostable circuit (pulse limiter) that turns a long lever flip into a short pulse, so a lamp blinks briefly regardless of how long the lever is held",
+    "complexity": "medium",
+    "circuit_type": "pulse",
+    "verification_behavior": "Lamp blinks on briefly and turns off even while lever stays on; lamp does not stay lit",
+    "expected_blocks": 6
+  },
+  {
+    "id": "medium_rs_nor_latch",
+    "description": "Build an RS NOR latch that remembers which of two buttons was pressed last, lighting a lamp for set and keeping it off for reset",
+    "complexity": "medium",
+    "circuit_type": "memory",
+    "verification_behavior": "Lamp turns on when set button is pressed and stays on; lamp turns off when reset button is pressed and stays off",
+    "expected_blocks": 8
+  },
+  {
+    "id": "medium_hopper_transport",
+    "description": "Create a hopper chain that moves items from an input chest down through a hopper into a chest below",
+    "complexity": "medium",
+    "circuit_type": "transport",
+    "verification_behavior": "Items placed in the top chest appear in the bottom chest after a short delay as hoppers transfer them downward",
+    "expected_blocks": 3
+  },
+  {
+    "id": "medium_single_item_sorter",
+    "description": "Build an item sorter that separates diamonds from other items, sending diamonds into one chest and everything else into another",
+    "complexity": "medium",
+    "circuit_type": "storage",
+    "verification_behavior": "Diamonds placed in the input hopper end up in the designated diamond chest; other items pass through to overflow",
+    "expected_blocks": 14
+  },
+  {
+    "id": "medium_pulse_extender",
+    "description": "Make a pulse extender so a brief button press keeps a lamp lit for several seconds before it turns off",
+    "complexity": "medium",
+    "circuit_type": "pulse",
+    "verification_behavior": "Brief button press causes lamp to turn on and stay lit for several seconds before automatically turning off",
+    "expected_blocks": 6
+  },
+  {
+    "id": "medium_daylight_night_lamps",
+    "description": "Create a circuit using a daylight sensor that automatically turns on lamps when it gets dark and turns them off at dawn",
+    "complexity": "medium",
+    "circuit_type": "detection",
+    "verification_behavior": "Lamps are off during daytime; lamps turn on automatically when daylight sensor detects nighttime conditions",
+    "expected_blocks": 6
+  },
+  {
+    "id": "medium_observer_clock",
+    "description": "Build a fast clock using two observers facing each other, making a lamp flicker very rapidly",
+    "complexity": "medium",
+    "circuit_type": "clock",
+    "verification_behavior": "Lamp flickers on and off rapidly as the observer clock generates a fast alternating signal",
+    "expected_blocks": 4
+  },
+  {
+    "id": "medium_xor_gate",
+    "description": "Build an XOR gate where a lamp turns on only when exactly one of two levers is flipped on (not both)",
+    "complexity": "medium",
+    "circuit_type": "logic_gate",
+    "verification_behavior": "Lamp off when both levers are off or both are on; lamp on when exactly one lever is on",
+    "expected_blocks": 10
+  },
+  {
+    "id": "medium_dual_edge_detector",
+    "description": "Make a dual-edge detector that produces a brief pulse whenever a lever is flipped either on or off",
+    "complexity": "medium",
+    "circuit_type": "pulse",
+    "verification_behavior": "Lamp flashes briefly both when lever is turned on and when lever is turned off; two flashes per full toggle cycle",
+    "expected_blocks": 6
+  },
+  {
+    "id": "medium_dispenser_arrow_trap",
+    "description": "Build a circuit where stepping on a hidden pressure plate fires an arrow from a dispenser",
+    "complexity": "medium",
+    "circuit_type": "trap",
+    "verification_behavior": "Dispenser fires an arrow when pressure plate is activated; dispenser does not fire when plate is untouched",
+    "expected_blocks": 5
+  },
+  {
+    "id": "medium_lever_combination_lock",
+    "description": "Create a circuit with two levers where a lamp turns on only when the levers are in opposite states (one on, one off)",
+    "complexity": "medium",
+    "circuit_type": "logic_gate",
+    "verification_behavior": "Lamp is off when levers match; lamp turns on when levers are in opposite positions",
+    "expected_blocks": 10
+  },
+  {
+    "id": "medium_hopper_timer",
+    "description": "Build a hopper clock that uses items moving between two hoppers to blink a lamp on and off with a slow, regular rhythm",
+    "complexity": "medium",
+    "circuit_type": "clock",
+    "verification_behavior": "Lamp alternates between on and off at a slow, steady pace determined by item transfer between hoppers",
+    "expected_blocks": 10
+  },
+  {
+    "id": "complex_three_bit_counter",
+    "description": "Build a 3-bit binary counter that counts from 0 to 7 when a button is pressed repeatedly, displaying the count on three lamps",
+    "complexity": "complex",
+    "circuit_type": "arithmetic",
+    "verification_behavior": "Each button press increments the binary counter; lamps show binary value from 000 to 111; counter wraps around after 7",
+    "expected_blocks": 35
+  },
+  {
+    "id": "complex_combination_lock_three_levers",
+    "description": "Create a combination lock that opens a door only when three levers are set to a specific pattern (e.g., on-off-on)",
+    "complexity": "complex",
+    "circuit_type": "security",
+    "verification_behavior": "Door stays closed for all wrong lever combinations; door opens only when levers match the correct secret pattern",
+    "expected_blocks": 18
+  },
+  {
+    "id": "complex_automatic_wheat_farm",
+    "description": "Build an automatic wheat farm that uses an observer to detect when crops are fully grown and a piston to harvest them, with a hopper collecting the drops",
+    "complexity": "complex",
+    "circuit_type": "farm",
+    "verification_behavior": "When wheat reaches full maturity, observer triggers piston; wheat is broken and items are collected by hoppers into a chest",
+    "expected_blocks": 30
+  },
+  {
+    "id": "complex_item_sorter_3_types",
+    "description": "Build an item sorting system that separates three different item types (like iron, gold, and diamonds) into separate chests with an overflow for everything else",
+    "complexity": "complex",
+    "circuit_type": "storage",
+    "verification_behavior": "Diamonds go to diamond chest, gold to gold chest, iron to iron chest; any other items go to overflow chest",
+    "expected_blocks": 50
+  },
+  {
+    "id": "complex_4bit_adder",
+    "description": "Build a 4-bit binary adder that adds two 4-bit numbers entered on 8 levers and displays the 5-bit result on lamps",
+    "complexity": "complex",
+    "circuit_type": "arithmetic",
+    "verification_behavior": "Correct binary sum displayed on output lamps for various test inputs; carry output works for overflow",
+    "expected_blocks": 80
+  },
+  {
+    "id": "complex_piston_elevator_2_floor",
+    "description": "Make a 2-floor piston elevator with a call button on each floor that moves a platform up and down to the requested floor",
+    "complexity": "complex",
+    "circuit_type": "transport",
+    "verification_behavior": "Pressing the call button on the bottom floor moves platform to ground level; pressing top floor button moves platform up",
+    "expected_blocks": 40
+  },
+  {
+    "id": "complex_daylight_door",
+    "description": "Create a circuit using an inverted daylight sensor that automatically opens a set of iron doors at dawn and closes them at dusk",
+    "complexity": "medium",
+    "circuit_type": "detection",
+    "verification_behavior": "Doors open automatically when daylight sensor detects morning; doors close at nightfall",
+    "expected_blocks": 8
+  },
+  {
+    "id": "complex_redstone_randomizer",
+    "description": "Build a redstone random number generator that lights one of four lamps randomly whenever a button is pressed",
+    "complexity": "complex",
+    "circuit_type": "random",
+    "verification_behavior": "Each button press lights exactly one of four lamps; different outputs occur across multiple presses (random distribution)",
+    "expected_blocks": 28
+  },
+  {
+    "id": "complex_4bit_sram_cell",
+    "description": "Build a 4-bit SRAM memory cell that can store a 4-bit value entered on four levers when a write button is pressed and display the stored value on lamps",
+    "complexity": "complex",
+    "circuit_type": "memory",
+    "verification_behavior": "Changing levers does not change lamps until write button is pressed; after write, lamps reflect lever states and stay that way",
+    "expected_blocks": 40
+  },
+  {
+    "id": "complex_abba_door_switch",
+    "description": "Build an ABBA switch that opens two sets of doors in sequence: the first set opens, then the second, and they close in reverse order",
+    "complexity": "complex",
+    "circuit_type": "pulse",
+    "verification_behavior": "First set of pistons retracts, then second set follows; on close, second set extends first, then first set extends",
+    "expected_blocks": 30
+  },
+  {
+    "id": "complex_automatic_sugarcane_farm",
+    "description": "Build an automatic sugarcane farm using observers to detect when sugarcane has grown and pistons to break it, with water collecting the items",
+    "complexity": "complex",
+    "circuit_type": "farm",
+    "verification_behavior": "When sugarcane reaches height 3, observer fires piston; broken sugarcane items are collected by water flow into a hopper",
+    "expected_blocks": 25
+  },
+  {
+    "id": "complex_3bit_shift_register",
+    "description": "Build a 3-bit shift register that shifts data through three stages when clocked, with input from a lever and output shown on three lamps",
+    "complexity": "complex",
+    "circuit_type": "memory",
+    "verification_behavior": "On each clock pulse, the data from the input lever shifts one position; old values propagate through the register stages",
+    "expected_blocks": 30
+  },
+  {
+    "id": "complex_hidden_staircase",
+    "description": "Build a hidden staircase where pistons push blocks out of the floor to form stairs when a hidden lever is flipped",
+    "complexity": "complex",
+    "circuit_type": "piston",
+    "verification_behavior": "Floor is flat and seamless when hidden; flipping lever causes stair blocks to rise from the floor in sequence",
+    "expected_blocks": 35
+  },
+  {
+    "id": "complex_super_smelter",
+    "description": "Build an automatic super-smelter that takes items from an input chest, smelts them in a row of furnaces, and deposits the results in an output chest",
+    "complexity": "complex",
+    "circuit_type": "transport",
+    "verification_behavior": "Raw items placed in input chest are distributed to furnaces, smelted, and collected in output chest; fuel is managed automatically",
+    "expected_blocks": 50
+  },
+  {
+    "id": "complex_redstone_safe_sequence",
+    "description": "Create a redstone safe that opens only when four buttons are pressed in the correct order, with a reset button to clear the attempt",
+    "complexity": "complex",
+    "circuit_type": "security",
+    "verification_behavior": "Door stays locked when wrong sequence is pressed; door opens only after correct button sequence; reset clears all progress",
+    "expected_blocks": 40
+  },
+  {
+    "id": "complex_minecart_station",
+    "description": "Build a minecart station that dispenses a minecart when a button is pressed and uses powered rails to stop the minecart where a player can board it",
+    "complexity": "complex",
+    "circuit_type": "transport",
+    "verification_behavior": "Pressing button dispenses a minecart from dispenser; powered rails are powered to boost then brake the minecart at the boarding position",
+    "expected_blocks": 25
+  },
+  {
+    "id": "medium_comparator_subtractor",
+    "description": "Build a redstone comparator subtractor circuit where the output signal strength equals the difference between two input signal strengths",
+    "complexity": "medium",
+    "circuit_type": "arithmetic",
+    "verification_behavior": "Output signal strength equals main input minus side input; if side input exceeds main input, output is zero",
+    "expected_blocks": 8
+  }
+]

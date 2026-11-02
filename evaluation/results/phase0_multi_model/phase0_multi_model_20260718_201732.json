@@ -1,0 +1,238 @@
+{
+  "timestamp": "20260718_201732",
+  "source": "descriptions",
+  "models": [
+    "deepseek-v4-flash"
+  ],
+  "circuits": [
+    "simple_lever_lamp",
+    "simple_redstone_block_lamp",
+    "simple_not_gate",
+    "simple_and_gate",
+    "simple_or_gate",
+    "simple_button_two_lamps",
+    "simple_pressure_plate_door",
+    "simple_lever_piston",
+    "simple_repeater_signal_boost",
+    "simple_observer_block_detect",
+    "simple_nor_gate",
+    "simple_nand_gate",
+    "simple_lever_trapdoor",
+    "simple_button_noteblock",
+    "simple_comparator_signal_strength"
+  ],
+  "attempts": 1,
+  "iterate_rounds": 0,
+  "results": [
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_lever_lamp",
+      "attempt": 1,
+      "expected_blocks": 3,
+      "timestamp": "2026-07-18T20:17:32.793261",
+      "complexity": "simple",
+      "circuit_type": "power_distribution",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_redstone_block_lamp",
+      "attempt": 1,
+      "expected_blocks": 2,
+      "timestamp": "2026-07-18T20:17:32.825768",
+      "complexity": "simple",
+      "circuit_type": "power_distribution",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_not_gate",
+      "attempt": 1,
+      "expected_blocks": 4,
+      "timestamp": "2026-07-18T20:17:32.834979",
+      "complexity": "simple",
+      "circuit_type": "logic_gate",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_and_gate",
+      "attempt": 1,
+      "expected_blocks": 5,
+      "timestamp": "2026-07-18T20:17:32.843321",
+      "complexity": "simple",
+      "circuit_type": "logic_gate",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_or_gate",
+      "attempt": 1,
+      "expected_blocks": 4,
+      "timestamp": "2026-07-18T20:17:32.851512",
+      "complexity": "simple",
+      "circuit_type": "logic_gate",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_button_two_lamps",
+      "attempt": 1,
+      "expected_blocks": 5,
+      "timestamp": "2026-07-18T20:17:32.859899",
+      "complexity": "simple",
+      "circuit_type": "signal_split",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_pressure_plate_door",
+      "attempt": 1,
+      "expected_blocks": 4,
+      "timestamp": "2026-07-18T20:17:32.868314",
+      "complexity": "simple",
+      "circuit_type": "door",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_lever_piston",
+      "attempt": 1,
+      "expected_blocks": 4,
+      "timestamp": "2026-07-18T20:17:32.876749",
+      "complexity": "simple",
+      "circuit_type": "piston",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_repeater_signal_boost",
+      "attempt": 1,
+      "expected_blocks": 6,
+      "timestamp": "2026-07-18T20:17:32.884887",
+      "complexity": "simple",
+      "circuit_type": "power_distribution",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_observer_block_detect",
+      "attempt": 1,
+      "expected_blocks": 4,
+      "timestamp": "2026-07-18T20:17:32.893665",
+      "complexity": "simple",
+      "circuit_type": "detection",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_nor_gate",
+      "attempt": 1,
+      "expected_blocks": 4,
+      "timestamp": "2026-07-18T20:17:32.901980",
+      "complexity": "simple",
+      "circuit_type": "logic_gate",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_nand_gate",
+      "attempt": 1,
+      "expected_blocks": 5,
+      "timestamp": "2026-07-18T20:17:32.910039",
+      "complexity": "simple",
+      "circuit_type": "logic_gate",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_lever_trapdoor",
+      "attempt": 1,
+      "expected_blocks": 3,
+      "timestamp": "2026-07-18T20:17:32.918354",
+      "complexity": "simple",
+      "circuit_type": "door",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_button_noteblock",
+      "attempt": 1,
+      "expected_blocks": 3,
+      "timestamp": "2026-07-18T20:17:32.926482",
+      "complexity": "simple",
+      "circuit_type": "sound",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_comparator_signal_strength",
+      "attempt": 1,
+      "expected_blocks": 4,
+      "timestamp": "2026-07-18T20:17:32.934977",
+      "complexity": "simple",
+      "circuit_type": "detection",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    }
+  ]
+}

@@ -1,0 +1,1089 @@
+{
+  "timestamp": "20260721_020756",
+  "source": "descriptions",
+  "models": [
+    "deepseek-v4-flash"
+  ],
+  "circuits": [
+    "simple_lever_lamp",
+    "simple_redstone_block_lamp",
+    "simple_not_gate"
+  ],
+  "attempts": 3,
+  "iterate_rounds": 0,
+  "results": [
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_lever_lamp",
+      "attempt": 1,
+      "expected_blocks": 3,
+      "timestamp": "2026-07-21T02:04:31.658598",
+      "complexity": "simple",
+      "circuit_type": "power_distribution",
+      "llm_output": {
+        "plan": [
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,0",
+            "reason": "Support block under the lever.",
+            "step": 1
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "1,0,0",
+            "reason": "Support block under the redstone wire.",
+            "step": 2
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "2,0,0",
+            "reason": "Support block under the redstone lamp.",
+            "step": 3
+          },
+          {
+            "block_type": "minecraft:lever",
+            "connects_to": [],
+            "position": "0,1,0",
+            "reason": "Lever placed on top of stone, facing=up (on block). Initial state: OFF.",
+            "step": 4
+          },
+          {
+            "block_type": "minecraft:redstone_wire",
+            "connects_to": [],
+            "position": "1,1,0",
+            "reason": "Wire carries signal from lever to lamp. Single tick delay.",
+            "step": 5
+          },
+          {
+            "block_type": "minecraft:redstone_lamp",
+            "connects_to": [],
+            "position": "2,1,0",
+            "reason": "Lamp powered by redstone wire. Lit when wire is powered.",
+            "step": 6
+          }
+        ],
+        "reasoning": "Classic lever-to-lamp circuit. Lever OFF (powered=false) -> wire unpowered -> lamp OFF. Flip lever ON -> wire powered -> lamp ON. Restore lever OFF -> lamp OFF.",
+        "verification": {
+          "actions": [
+            {
+              "position": "0,1,0",
+              "state": "minecraft:lever[facing=up,powered=true]",
+              "type": "set_block"
+            }
+          ],
+          "final_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=true]",
+              "position": "2,1,0"
+            }
+          ],
+          "initial_checks": [
+            {
+              "expected_state": "minecraft:lever[facing=up,powered=false]",
+              "position": "0,1,0"
+            },
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=false]",
+              "position": "2,1,0"
+            }
+          ],
+          "tick_steps": 15
+        }
+      },
+      "block_count": 6,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": false,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:lever[facing=up,powered=false]",
+            "passed": false
+          },
+          {
+            "position": "2,1,0",
+            "expected": "minecraft:redstone_lamp[lit=false]",
+            "passed": true
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "2,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          }
+        ]
+      },
+      "status": "fail"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_lever_lamp",
+      "attempt": 2,
+      "expected_blocks": 3,
+      "timestamp": "2026-07-21T02:05:07.280824",
+      "complexity": "simple",
+      "circuit_type": "power_distribution",
+      "llm_output": {
+        "plan": [
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,0",
+            "reason": "Support block for lever (placed at 0,0,1)",
+            "step": 1
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "1,0,0",
+            "reason": "Support block for redstone wire",
+            "step": 2
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "2,0,0",
+            "reason": "Support block for redstone wire",
+            "step": 3
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "3,0,0",
+            "reason": "Support block for redstone lamp",
+            "step": 4
+          },
+          {
+            "block_type": "minecraft:lever",
+            "connects_to": [],
+            "position": "0,0,1",
+            "reason": "Lever facing east, attached to stone at 0,0,0, powers wire at 1,0,0",
+            "step": 5
+          },
+          {
+            "block_type": "minecraft:redstone_wire",
+            "connects_to": [],
+            "position": "1,0,0",
+            "reason": "Redstone wire carrying signal from lever to lamp",
+            "step": 6
+          },
+          {
+            "block_type": "minecraft:redstone_wire",
+            "connects_to": [],
+            "position": "2,0,0",
+            "reason": "Redstone wire carrying signal from lever to lamp",
+            "step": 7
+          },
+          {
+            "block_type": "minecraft:redstone_lamp",
+            "connects_to": [],
+            "position": "3,0,0",
+            "reason": "Redstone lamp that lights when powered by wire at 2,0,0",
+            "step": 8
+          }
+        ],
+        "reasoning": "This is a simple lever-to-lamp circuit. The lever is placed on the east side of the stone block at (0,0,0), facing east, so it powers the wire to its east. Two redstone wires carry the signal to the lamp. When the lever is OFF (powered=false), the lamp is unlit (lit=false). When the lever is flipped ON (powered=true), the lamp lights up (lit=true). The verification tests both states.",
+        "verification": {
+          "actions": [
+            {
+              "position": "0,0,1",
+              "state": "minecraft:lever[facing=east,powered=true]",
+              "type": "set_block"
+            }
+          ],
+          "final_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=true]",
+              "position": "3,0,0"
+            }
+          ],
+          "initial_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=false]",
+              "position": "3,0,0"
+            }
+          ],
+          "tick_steps": 15
+        }
+      },
+      "block_count": 8,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": false,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "3,0,0",
+            "expected": "minecraft:redstone_lamp[lit=false]",
+            "passed": true
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "3,0,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": false
+          }
+        ]
+      },
+      "status": "fail"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_lever_lamp",
+      "attempt": 3,
+      "expected_blocks": 3,
+      "timestamp": "2026-07-21T02:05:21.608115",
+      "complexity": "simple",
+      "circuit_type": "power_distribution",
+      "llm_output": {
+        "plan": [
+          {
+            "step": 1,
+            "block_type": "minecraft:stone",
+            "position": "1,0,1",
+            "reason": "Support block for redstone wire and lever attachment (south wall of this block). The lever will be placed on the north face of this block.",
+            "connects_to": []
+          },
+          {
+            "step": 2,
+            "block_type": "minecraft:stone",
+            "position": "2,0,1",
+            "reason": "Support block for redstone wire connecting lever to lamp.",
+            "connects_to": []
+          },
+          {
+            "step": 3,
+            "block_type": "minecraft:stone",
+            "position": "3,0,1",
+            "reason": "Support block for redstone lamp.",
+            "connects_to": []
+          },
+          {
+            "step": 4,
+            "block_type": "minecraft:lever",
+            "position": "1,1,1",
+            "reason": "Lever on the north face of block (1,0,1). facing=north means it's attached to block (1,0,2) \u2014 but wait, that's wrong. Let me recalculate: facing=north means the lever is on the south wall of the block it's attached to. The lever is at (1,1,1) and attached to block (1,1,2) (south). That powers the block to the north: (1,1,0). But we want to power wire at (2,1,1). Let me fix: The lever should be on the west face of block (2,0,1) so it powers east to (2,1,1). That means lever at (2,1,1) with facing=west, attached to block (3,1,1)? No. facing=west means lever is on the east wall of the attached block. Let me use a different approach: Lever at (1,1,1) with facing=south, attached to block (1,0,1) \u2014 wait, the lever is at (1,1,1), it's attached to the block at (1,1,0) if facing=south? No. Let me be precise: A lever with facing=south is on the north wall of the block it's attached to. So lever at (1,1,1) with facing=south is attached to block (1,1,0) \u2014 but there's no block there. I need to rethink. Let me place the lever on the ground instead, on top of a block. That's simpler: lever with face=ceiling or face=floor. But then it powers the block it's on. Let me use: Lever at (1,1,1) with face=floor, attached to block (1,0,1). It powers the block (1,0,1) and any adjacent redstone wire. But redstone wire is at (2,1,1), which is diagonally adjacent \u2014 that doesn't work. Let me place the lever on the side of block (2,0,1) so it powers the wire at (2,1,1). Lever at (2,1,1) with facing=north means it's on the south wall of block (2,1,2) \u2014 but there's no block there. facing=east means lever is on the west wall of block (3,1,1) \u2014 but that's the lamp. Let me just put the lever on the ground: Lever at (1,1,1) with face=floor on block (1,0,1). Then run redstone wire from (1,1,1) to (2,1,1) to (3,1,1). But the lever powers the block it's on (1,0,1), not the wire at (1,1,1). Actually, a lever on the floor powers the block it's on (the support block) and any redstone wire on top of that same block. But the lever is at (1,1,1) and the wire would be at (1,1,1) \u2014 they can't share the same space. So I need the lever on the side of the block, powering the wire on an adjacent block. Let me use: Lever at (1,1,1) with facing=east, attached to block (0,1,1) \u2014 wait, that means the lever is on the west wall of block (0,1,1). But block (0,1,1) is air. I need to place a stone block at (0,1,1) for the lever to attach to. Then the lever at (1,1,1) with facing=east is attached to block (0,1,1) and powers block (2,1,1) to the east. That works! Let me redesign.",
+            "connects_to": []
+          },
+          {
+            "step": 5,
+            "block_type": "minecraft:stone",
+            "position": "0,0,1",
+            "reason": "Support block for the lever attachment (the lever's facing=east means it's on the west wall of this block).",
+            "connects_to": []
+          },
+          {
+            "step": 6,
+            "block_type": "minecraft:lever",
+            "position": "1,1,1",
+            "reason": "Lever on the west face of block (0,0,1). facing=east means attached to block (0,1,1) \u2014 wait, the lever is at (1,1,1) and facing=east means the lever is on the west wall of the block it's attached to. The attached block is at (0,1,1). But the support block is at (0,0,1). The lever needs a solid block at (0,1,1) to attach to. Let me place a stone block at (0,1,1). Actually, the lever is at (1,1,1) \u2014 it occupies that space. The attached block is at (0,1,1). So I need a solid block at (0,1,1). That block needs support from below. Let me put stone at (0,0,1) and then stone at (0,1,1). Then lever at (1,1,1) with facing=east attaches to (0,1,1) and powers (2,1,1) to the east.",
+            "connects_to": []
+          },
+          {
+            "step": 7,
+            "block_type": "minecraft:stone",
+            "position": "0,1,1",
+            "reason": "Block for lever to attach to (west face).",
+            "connects_to": []
+          },
+          {
+            "step": 8,
+            "block_type": "minecraft:redstone_wire",
+            "position": "2,1,1",
+            "reason": "Redstone wire to carry signal from lever to lamp.",
+            "connects_to": []
+          },
+          {
+            "step": 9,
+            "block_type": "minecraft:redstone_lamp",
+            "position": "3,1,1",
+            "reason": "Lamp that lights up when powered by redstone wire.",
+            "connects_to": []
+          },
+          {
+            "step": 10,
+            "block_type": "minecraft:stone",
+            "position": "3,0,1",
+            "reason": "Support block for the lamp.",
+            "connects_to": []
+          }
+        ],
+        "verification": {
+          "initial_checks": [
+            {
+              "position": "3,1,1",
+              "expected_state": "minecraft:redstone_lamp[lit=false]"
+            },
+            {
+              "position": "1,1,1",
+              "expected_state": "minecraft:lever[facing=east,powered=false]"
+            }
+          ],
+          "actions": [
+            {
+              "type": "set_block",
+              "position": "1,1,1",
+              "state": "minecraft:lever[facing=east,powered=true]"
+            }
+          ],
+          "tick_steps": 15,
+          "final_checks": [
+            {
+              "position": "3,1,1",
+              "expected_state": "minecraft:redstone_lamp[lit=true]"
+            }
+          ]
+        },
+        "reasoning": "The lever at (1,1,1) with facing=east is attached to the stone block at (0,1,1). When powered=true, it powers the block to the east: (2,1,1). The redstone wire at (2,1,1) conducts power to the lamp at (3,1,1), lighting it. The initial check verifies the lamp is off and lever is off. The action flips the lever on, then after 15 ticks the lamp should be lit. This tests the functional behavior \u2014 if the circuit is broken (e.g., missing wire, wrong position, lever not attached), the test will fail."
+      },
+      "block_count": 10,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": true,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "3,1,1",
+            "expected": "minecraft:redstone_lamp[lit=false]",
+            "passed": true
+          },
+          {
+            "position": "1,1,1",
+            "expected": "minecraft:lever[facing=east,powered=false]",
+            "passed": true
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "3,1,1",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          }
+        ]
+      },
+      "verification_is_fair": false,
+      "negative_check_details": {
+        "negative_checks": [
+          {
+            "position": "3,1,1",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          }
+        ],
+        "any_check_failed_on_broken": false
+      },
+      "status": "unfair_test"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_redstone_block_lamp",
+      "attempt": 1,
+      "expected_blocks": 2,
+      "timestamp": "2026-07-21T02:06:22.889191",
+      "complexity": "simple",
+      "circuit_type": "power_distribution",
+      "llm_output": {
+        "plan": [
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,0",
+            "reason": "Support block under the redstone lamp.",
+            "step": 1
+          },
+          {
+            "block_type": "minecraft:redstone_lamp",
+            "connects_to": [],
+            "position": "0,1,0",
+            "reason": "The lamp that will be lit by the redstone block.",
+            "step": 2
+          },
+          {
+            "block_type": "minecraft:redstone_block",
+            "connects_to": [],
+            "position": "1,1,0",
+            "reason": "Power source adjacent to the lamp, keeps it lit.",
+            "step": 3
+          }
+        ],
+        "reasoning": "The redstone block at (1,1,0) is directly adjacent to the lamp at (0,1,0). The lamp is always powered (lit=true) because a redstone block is a constant power source. No levers, torches, or wires are needed. The stone at (0,0,0) provides a solid block for the lamp to sit on.",
+        "verification": {
+          "actions": [],
+          "final_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=true]",
+              "position": "0,1,0"
+            }
+          ],
+          "initial_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=true]",
+              "position": "0,1,0"
+            },
+            {
+              "expected_state": "minecraft:redstone_block",
+              "position": "1,1,0"
+            }
+          ],
+          "tick_steps": 0
+        }
+      },
+      "block_count": 3,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": true,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          },
+          {
+            "position": "1,1,0",
+            "expected": "minecraft:redstone_block",
+            "passed": true
+          }
+        ],
+        "actions_executed": 0,
+        "final_checks": [
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          }
+        ]
+      },
+      "verification_is_fair": true,
+      "negative_check_details": {
+        "negative_checks": [
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": false
+          }
+        ],
+        "any_check_failed_on_broken": true
+      },
+      "status": "pass"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_redstone_block_lamp",
+      "attempt": 2,
+      "expected_blocks": 2,
+      "timestamp": "2026-07-21T02:06:33.201894",
+      "complexity": "simple",
+      "circuit_type": "power_distribution",
+      "llm_output": {
+        "plan": [
+          {
+            "step": 1,
+            "block_type": "minecraft:stone",
+            "position": "0,0,0",
+            "reason": "Support block for the redstone block.",
+            "connects_to": []
+          },
+          {
+            "step": 2,
+            "block_type": "minecraft:redstone_block",
+            "position": "0,1,0",
+            "reason": "Power source \u2013 placed on the stone support.",
+            "connects_to": []
+          },
+          {
+            "step": 3,
+            "block_type": "minecraft:stone",
+            "position": "1,0,0",
+            "reason": "Support block for the lamp.",
+            "connects_to": []
+          },
+          {
+            "step": 4,
+            "block_type": "minecraft:redstone_lamp",
+            "position": "1,1,0",
+            "reason": "Lamp \u2013 placed adjacent to the redstone block (east of it).",
+            "connects_to": []
+          }
+        ],
+        "verification": {
+          "initial_checks": [
+            {
+              "position": "1,1,0",
+              "expected_state": "minecraft:redstone_lamp[lit=true]"
+            }
+          ],
+          "actions": [],
+          "tick_steps": 0,
+          "final_checks": [
+            {
+              "position": "1,1,0",
+              "expected_state": "minecraft:redstone_lamp[lit=true]"
+            }
+          ]
+        },
+        "reasoning": "The lamp is directly adjacent to a redstone block, so it should be lit (lit=true) in the resting state. The verification checks that the lamp starts lit and remains lit \u2014 if the redstone block is missing or not adjacent, the lamp will be off and the test will fail."
+      },
+      "block_count": 4,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": true,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "1,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          }
+        ],
+        "actions_executed": 0,
+        "final_checks": [
+          {
+            "position": "1,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          }
+        ]
+      },
+      "verification_is_fair": true,
+      "negative_check_details": {
+        "negative_checks": [
+          {
+            "position": "1,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": false
+          }
+        ],
+        "any_check_failed_on_broken": true
+      },
+      "status": "pass"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_redstone_block_lamp",
+      "attempt": 3,
+      "expected_blocks": 2,
+      "timestamp": "2026-07-21T02:06:43.417421",
+      "complexity": "simple",
+      "circuit_type": "power_distribution",
+      "llm_output": {
+        "plan": [
+          {
+            "step": 1,
+            "block_type": "minecraft:stone",
+            "position": "0,0,0",
+            "reason": "Support block for the lamp.",
+            "connects_to": []
+          },
+          {
+            "step": 2,
+            "block_type": "minecraft:stone",
+            "position": "1,0,0",
+            "reason": "Support block for the redstone block.",
+            "connects_to": []
+          },
+          {
+            "step": 3,
+            "block_type": "minecraft:redstone_lamp",
+            "position": "0,1,0",
+            "reason": "Lamp to be lit by the adjacent redstone block.",
+            "connects_to": []
+          },
+          {
+            "step": 4,
+            "block_type": "minecraft:redstone_block",
+            "position": "1,1,0",
+            "reason": "Power source for the lamp. Placed directly next to the lamp.",
+            "connects_to": []
+          }
+        ],
+        "verification": {
+          "initial_checks": [
+            {
+              "position": "0,1,0",
+              "expected_state": "minecraft:redstone_lamp[lit=true]"
+            }
+          ],
+          "actions": [
+            {
+              "type": "set_block",
+              "position": "1,1,0",
+              "state": "minecraft:air"
+            }
+          ],
+          "tick_steps": 10,
+          "final_checks": [
+            {
+              "position": "0,1,0",
+              "expected_state": "minecraft:redstone_lamp[lit=false]"
+            }
+          ]
+        },
+        "reasoning": "The circuit is a simple direct connection: a redstone block adjacent to a lamp keeps it lit. The verification first checks that the lamp is lit (initial state). Then it removes the redstone block (replaces with air). After ticks, it checks the lamp is off. If the lamp stays lit after removal, the test fails. If the lamp is off initially, the test fails. This tests the functional behavior."
+      },
+      "block_count": 4,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": true,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:redstone_lamp[lit=false]",
+            "passed": true
+          }
+        ]
+      },
+      "verification_is_fair": false,
+      "negative_check_details": {
+        "negative_checks": [
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:redstone_lamp[lit=false]",
+            "passed": true
+          }
+        ],
+        "any_check_failed_on_broken": false
+      },
+      "status": "unfair_test"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_not_gate",
+      "attempt": 1,
+      "expected_blocks": 4,
+      "timestamp": "2026-07-21T02:06:55.293282",
+      "complexity": "simple",
+      "circuit_type": "logic_gate",
+      "llm_output": {
+        "plan": [
+          {
+            "step": 1,
+            "block_type": "minecraft:stone",
+            "position": "0,0,0",
+            "reason": "Support block under the lever",
+            "connects_to": [
+              2
+            ]
+          },
+          {
+            "step": 2,
+            "block_type": "minecraft:lever",
+            "position": "0,1,0",
+            "reason": "Lever to toggle the circuit input, attached to block at (0,0,0) below",
+            "connects_to": [
+              3
+            ]
+          },
+          {
+            "step": 3,
+            "block_type": "minecraft:stone",
+            "position": "1,0,0",
+            "reason": "Support block under the redstone wire",
+            "connects_to": [
+              4
+            ]
+          },
+          {
+            "step": 4,
+            "block_type": "minecraft:redstone_wire",
+            "position": "1,1,0",
+            "reason": "Wire carrying signal from lever to torch",
+            "connects_to": [
+              5
+            ]
+          },
+          {
+            "step": 5,
+            "block_type": "minecraft:stone",
+            "position": "2,0,0",
+            "reason": "Support block under the redstone torch",
+            "connects_to": [
+              6
+            ]
+          },
+          {
+            "step": 6,
+            "block_type": "minecraft:redstone_torch",
+            "position": "2,1,0",
+            "reason": "Inverter torch: turns off when powered by lever, on when lever is off",
+            "connects_to": [
+              7
+            ]
+          },
+          {
+            "step": 7,
+            "block_type": "minecraft:stone",
+            "position": "3,0,0",
+            "reason": "Support block under the lamp",
+            "connects_to": [
+              8
+            ]
+          },
+          {
+            "step": 8,
+            "block_type": "minecraft:redstone_lamp",
+            "position": "3,1,0",
+            "reason": "Lamp that lights up when torch is on (lever off) and turns off when torch is off (lever on)",
+            "connects_to": []
+          }
+        ],
+        "verification": {
+          "initial_checks": [
+            {
+              "position": "0,1,0",
+              "expected_state": "minecraft:lever[powered=false]"
+            },
+            {
+              "position": "3,1,0",
+              "expected_state": "minecraft:redstone_lamp[lit=true]"
+            }
+          ],
+          "actions": [
+            {
+              "type": "set_block",
+              "position": "0,1,0",
+              "state": "minecraft:lever[powered=true]"
+            }
+          ],
+          "tick_steps": 25,
+          "final_checks": [
+            {
+              "position": "3,1,0",
+              "expected_state": "minecraft:redstone_lamp[lit=false]"
+            }
+          ]
+        },
+        "reasoning": "The circuit is a simple NOT gate: lever at (0,1,0) controls a redstone torch at (2,1,0) via wire at (1,1,0). The torch powers a lamp at (3,1,0). Initially (lever off), the torch is on and the lamp is lit. When the lever is turned on, the torch turns off, and the lamp turns off. The verification tests both states: initial check confirms lamp is on with lever off, then after flipping the lever on and waiting for propagation, the final check confirms the lamp is off."
+      },
+      "block_count": 8,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": false,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:lever[powered=false]",
+            "passed": true
+          },
+          {
+            "position": "3,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "3,1,0",
+            "expected": "minecraft:redstone_lamp[lit=false]",
+            "passed": false
+          }
+        ]
+      },
+      "status": "fail"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_not_gate",
+      "attempt": 2,
+      "expected_blocks": 4,
+      "timestamp": "2026-07-21T02:07:16.052856",
+      "complexity": "simple",
+      "circuit_type": "logic_gate",
+      "llm_output": {
+        "plan": [
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,0",
+            "reason": "Support block for the redstone torch at (0,1,0)",
+            "step": 1
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,1",
+            "reason": "Support block for the redstone wire at (0,1,1)",
+            "step": 2
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,2",
+            "reason": "Support block for the lever at (0,1,2) and also serves as the attachment block for the lever",
+            "step": 3
+          },
+          {
+            "block_type": "minecraft:redstone_torch",
+            "connects_to": [],
+            "position": "0,1,0",
+            "reason": "Redstone torch on top of stone at (0,0,0). Inverter: torch is ON when its input (lever) is OFF, and OFF when input is ON.",
+            "step": 4
+          },
+          {
+            "block_type": "minecraft:redstone_wire",
+            "connects_to": [],
+            "position": "0,1,1",
+            "reason": "Redstone wire connecting the lever to the torch. When lever is OFF, wire is unpowered, torch is ON. When lever is ON, wire is powered, torch is OFF.",
+            "step": 5
+          },
+          {
+            "block_type": "minecraft:lever",
+            "connects_to": [],
+            "position": "0,1,2",
+            "reason": "Lever on the south wall of stone at (0,0,2) (facing=north). Controls the redstone wire at (0,1,1).",
+            "step": 6
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "1,0,0",
+            "reason": "Support block for the redstone lamp at (1,1,0)",
+            "step": 7
+          },
+          {
+            "block_type": "minecraft:redstone_lamp",
+            "connects_to": [],
+            "position": "1,1,0",
+            "reason": "Redstone lamp adjacent to the torch at (0,1,0). When torch is ON, lamp is lit. When torch is OFF, lamp is unlit.",
+            "step": 8
+          }
+        ],
+        "reasoning": "The circuit is a simple NOT gate (inverter). The lever at (0,1,2) controls the wire at (0,1,1). When the lever is OFF, the wire is unpowered, so the torch at (0,1,0) is ON, lighting the lamp at (1,1,0). When the lever is ON, the wire is powered, turning the torch OFF, so the lamp goes dark.",
+        "verification": {
+          "actions": [
+            {
+              "position": "0,1,2",
+              "state": "minecraft:lever[facing=north,powered=true]",
+              "type": "set_block"
+            }
+          ],
+          "final_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=false]",
+              "position": "1,1,0"
+            },
+            {
+              "expected_state": "minecraft:redstone_torch[lit=false]",
+              "position": "0,1,0"
+            }
+          ],
+          "initial_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=true]",
+              "position": "1,1,0"
+            },
+            {
+              "expected_state": "minecraft:redstone_torch[lit=true]",
+              "position": "0,1,0"
+            },
+            {
+              "expected_state": "minecraft:lever[facing=north,powered=false]",
+              "position": "0,1,2"
+            }
+          ],
+          "tick_steps": 30
+        }
+      },
+      "block_count": 8,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": false,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "1,1,0",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          },
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:redstone_torch[lit=true]",
+            "passed": true
+          },
+          {
+            "position": "0,1,2",
+            "expected": "minecraft:lever[facing=north,powered=false]",
+            "passed": false
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "1,1,0",
+            "expected": "minecraft:redstone_lamp[lit=false]",
+            "passed": false
+          },
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:redstone_torch[lit=false]",
+            "passed": false
+          }
+        ]
+      },
+      "status": "fail"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_not_gate",
+      "attempt": 3,
+      "expected_blocks": 4,
+      "timestamp": "2026-07-21T02:07:44.278727",
+      "complexity": "simple",
+      "circuit_type": "logic_gate",
+      "llm_output": {
+        "plan": [
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,0",
+            "reason": "Base block for the redstone torch and lever support.",
+            "step": 1
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,1",
+            "reason": "Support block for the redstone wire.",
+            "step": 2
+          },
+          {
+            "block_type": "minecraft:stone",
+            "connects_to": [],
+            "position": "0,0,2",
+            "reason": "Support block for the lever (attached to north face).",
+            "step": 3
+          },
+          {
+            "block_type": "minecraft:redstone_torch",
+            "connects_to": [],
+            "position": "0,1,0",
+            "reason": "Inverter torch on top of stone at (0,0,0). Powers lamp when lever is off.",
+            "step": 4
+          },
+          {
+            "block_type": "minecraft:redstone_wire",
+            "connects_to": [],
+            "position": "0,0,1",
+            "reason": "Wire connects lever signal to the base block of the torch.",
+            "step": 5
+          },
+          {
+            "block_type": "minecraft:lever",
+            "connects_to": [],
+            "position": "0,0,2",
+            "reason": "Lever attached to north face of stone at (0,0,2). Facing south, so it powers the wire at (0,0,1).",
+            "step": 6
+          },
+          {
+            "block_type": "minecraft:redstone_lamp",
+            "connects_to": [],
+            "position": "0,1,1",
+            "reason": "Lamp to be lit by the torch when lever is off, and turn off when lever is on.",
+            "step": 7
+          }
+        ],
+        "reasoning": "The circuit is a standard NOT gate. Lever at (0,0,2) sends signal through wire at (0,0,1) to the block at (0,0,0) which holds the torch. When lever is off (powered=false), the block at (0,0,0) is unpowered, so the torch at (0,1,0) is on, lighting the lamp at (0,1,1). When lever is on (powered=true), the block at (0,0,0) is powered, turning off the torch, thus the lamp turns off.",
+        "verification": {
+          "actions": [
+            {
+              "position": "0,0,2",
+              "state": "minecraft:lever[facing=south,powered=true]",
+              "type": "set_block"
+            }
+          ],
+          "final_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=false]",
+              "position": "0,1,1"
+            },
+            {
+              "expected_state": "minecraft:redstone_torch[lit=false]",
+              "position": "0,1,0"
+            }
+          ],
+          "initial_checks": [
+            {
+              "expected_state": "minecraft:redstone_lamp[lit=true]",
+              "position": "0,1,1"
+            },
+            {
+              "expected_state": "minecraft:redstone_torch[lit=true]",
+              "position": "0,1,0"
+            },
+            {
+              "expected_state": "minecraft:lever[facing=south,powered=false]",
+              "position": "0,0,2"
+            }
+          ],
+          "tick_steps": 25
+        }
+      },
+      "block_count": 7,
+      "has_verification": true,
+      "build_success": true,
+      "build_error": null,
+      "verification_passed": false,
+      "verification_details": {
+        "initial_checks": [
+          {
+            "position": "0,1,1",
+            "expected": "minecraft:redstone_lamp[lit=true]",
+            "passed": true
+          },
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:redstone_torch[lit=true]",
+            "passed": true
+          },
+          {
+            "position": "0,0,2",
+            "expected": "minecraft:lever[facing=south,powered=false]",
+            "passed": false
+          }
+        ],
+        "actions_executed": 1,
+        "final_checks": [
+          {
+            "position": "0,1,1",
+            "expected": "minecraft:redstone_lamp[lit=false]",
+            "passed": true
+          },
+          {
+            "position": "0,1,0",
+            "expected": "minecraft:redstone_torch[lit=false]",
+            "passed": true
+          }
+        ]
+      },
+      "status": "fail"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "timestamp": "20260718_201735",
+  "source": "test_circuits",
+  "models": [
+    "deepseek-v4-flash"
+  ],
+  "circuits": [
+    "simple_lamp"
+  ],
+  "attempts": 1,
+  "iterate_rounds": 0,
+  "results": [
+    {
+      "model": "deepseek-v4-flash",
+      "circuit": "simple_lamp",
+      "attempt": 1,
+      "expected_blocks": 3,
+      "timestamp": "2026-07-18T20:17:35.666905",
+      "llm_output": {
+        "error": "OpenRouter API error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions",
+        "exception_type": "RuntimeError"
+      },
+      "status": "llm_error"
+    }
+  ]
+}
