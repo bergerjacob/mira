@@ -2,8 +2,8 @@
 
 MIRA is an AI framework designed to generate, build, and debug Minecraft Redstone circuits from text descriptions. Unlike standard generative models that struggle with strict spatial logic, MIRA uses an iterative approach combining hierarchical planning, real-time simulation, and automated verification.
 
-> **Status:** Work in Progress. The pre processing testing is done, the next steps are data scraping and training.
-> **Latest Update:** March 11, 2026
+> **Status:** Re-scoped Nov 2026. One-shot generation measured at ~17.5% functional pass (the March "100%" was block-count only); training has not started. Direction: a verifiable redstone/build environment + harness for frontier agents, then training. See **`docs/STATUS_2026-11.md`** (read first).
+> **Latest Update:** November 1, 2026
 
 ## Quick Start
 
@@ -181,5 +181,4 @@ MIT
 
 ---
 
-*Last updated: March 11, 2026*  
-*Testing phase complete. Ready for data scraping and training.*
+*Last updated: November 1, 2026 - see `docs/STATUS_2026-11.md`.*

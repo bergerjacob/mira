@@ -2,7 +2,7 @@
 
 ## Project Summary
 
-MIRA (Minecraft Iterative Reasoning Agent) generates, builds, and debugs Minecraft Redstone circuits from text descriptions. Currently in Phase 4 (complete) → Phase 5 (training) transition. The one-shot generation pipeline is validated; the iterative verification loop is built but not yet wired into training.
+MIRA (Minecraft Iterative Reasoning Agent) generates, builds, and debugs Minecraft Redstone circuits from text descriptions. **Read `docs/STATUS_2026-11.md` first**: as of Nov 2026 one-shot generation is measured at ~17.5% functional pass (earlier "100%" claims were block-count only), no training has run, and the plan is a verifiable-environment + harness approach (spike Nucleation as a fast simulator, then harness, then training). Older docs (ARCHITECTURE.md, PAST_ATTEMPTS.md March sections) are historical.
 
 ## Setup
 

@@ -1,5 +1,7 @@
 # MIRA Architecture Guide
 
+> **Historical (Mar 2026).** Phase 4 "complete / ready to train" below is superseded by `STATUS_2026-11.md`.
+
 **Purpose:** Complete reference for understanding MIRA's architecture, data flows, and development roadmap.
 
 **Audience:** New developers, coding agents, collaborators.
