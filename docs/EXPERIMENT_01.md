@@ -19,7 +19,7 @@ Question (oracle_loop unknown #1): does simulator feedback ("rounds") and the bu
 | gemma blocks | 0% | 6% | 0% |
 | gemma builder | 38% | 50% | 50% |
 
-1. **Authoring format dominates.** The builder arm beats the block-list arm by 27 points at R=0 for the two models together, and gemma goes from 0% to 38%. The block-list arm mostly fails R2 (no input-to-output path, 69% of failures); the builder arm halves that (29%). This is the most solid result, and it is consistent across both models and all R values.
+1. **Authoring format dominates (partly confounded - see audit M2: the builder prompt contains worked examples the blocks prompt lacks, gemma's blocks-arm zeros are a tool-calling breakdown, and the turn budget grows with R).** The builder arm beats the block-list arm by 27 points at R=0 for the two models together, and gemma goes from 0% to 38%. The block-list arm mostly fails R2 (no input-to-output path, 69% of failures); the builder arm halves that (29%). This is the most solid result, and it is consistent across both models and all R values.
 2. **Feedback helps, modestly, and is noisy.** R=3 is +6 points (blocks) and +14 points (builder) over R=0, but the bootstrap 95% intervals include 0 for the builder arm and R=8 is not better than R=3. The pre-registered criterion (R=8 >= 2x R=0 and > 60% on T1) is **not met** for any model/arm. Cheap models use extra rounds poorly (more turns, more tokens, no more passes).
 3. **Cost per solved task** is lowest for the builder arm at R=0 or R=3 ($0.006-0.008 for deepseek, $0.007-0.014 for gemma); blocks are 2-3x more expensive per solve for deepseek and nearly unaffordable for gemma.
 4. **Never solved by either model in any condition:** t1_clock, t1_edge_detector, t1_mux2, t1_pulse_extender (sequential/timing or multi-gate circuits). Whether that is capability or harness limits is open (next point).
@@ -28,7 +28,7 @@ Question (oracle_loop unknown #1): does simulator feedback ("rounds") and the bu
 The per-call output cap was 8192 tokens. deepseek-v4-flash is a reasoning model and spent 6-8k of it on thinking; about 17% of its runs ended with `finish_reason=length` and no tool call (`no_tool_calls` + `token_cap` = 34 of 204). `reasoning=low` did not reduce this (the provider ignored it). Confirmation run `tok16k` (deepseek, builder, R=3, same 7 hard tasks, 16k per-call cap): 4/7 passed against 3/7 in main1; t1_clock was rescued, t1_edge_detector, t1_mux2 and t1_pulse_extender are still failing, 2 of 7 episodes still ended `no_tool_calls`. So the cap cost roughly one task in seven on the hard subset and the headline conclusions stand, but the absolute numbers for deepseek are slightly pessimistic. The harness default is now 16384 per call.
 
 ## Strong-agent baselines (no OpenRouter; Sonnet-class subagents through `scripts/mira_env_cli.py`)
-All five attempts passed the hidden checks:
+**Corrected by the round-2 audit (`docs/audits/oracle_round2_2026-11.md`): read the caveats under the table before using any number.** All five attempts passed the hidden checks:
 | task | variant | run_spec calls | note |
 |---|---|---|---|
 | t2_door_2x2 | primitives only | 1 | 40 blocks, 3 min |
@@ -37,7 +37,7 @@ All five attempts passed the hidden checks:
 | t3_decoder2to4 | with library | 1 | recipe nearly given by docs/LIBRARY.md |
 | t3_adder4 | with library | 1 | needed a local workaround for a library bug |
 
-So T0-T3 do not discriminate strong agents; the benchmark needs a harder tier (T4, being built) and the S50 curve. The baselines reported tooling friction (library `floor=False` bug, `wire_path` with fixed cells, undocumented physics facts), which is being fixed in `docs/T4.md`.
+Caveats found by the audit: (1) the door pass is a **spec loophole**: the agent pushed no door blocks, its sticky-piston heads fill the door cells and the 'solid' output accepts `piston_head`; withdraw any comparison with Nekochu's door until the port requires a pushed non-piston block (fix scheduled). (2) the adder4 build contains `lib/full_adder.py` verbatim although no tool returns that text, so that agent read files it was told not to; strong-agent runs need a read-denied sandbox (scheduled). (3) one run per cell, one model family, four distinct tasks, mostly combinational: 'T0-T3 do not discriminate strong agents' is **not established**; cheap models fail timing/state tasks (clock, edge detector, pulse extender) and no strong agent was run on those. (4) the vanilla oracle can return wrong verdicts when jobs share a JVM batch (reproduced: door reference then adder4 reference fails adder4); gate with one JVM per verdict until fixed. The baselines reported tooling friction (library `floor=False` bug, `wire_path` with fixed cells, undocumented physics facts), which is being fixed in `docs/T4.md`.
 
 ## What this does and does not show
 - It does show: representation (builder code vs block lists) matters more than extra feedback rounds for cheap models, and the environment/harness work end to end at about $0.005-0.02 per episode.
