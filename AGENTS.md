@@ -4,6 +4,8 @@
 
 MIRA (Minecraft Iterative Reasoning Agent) generates, builds, and debugs Minecraft Redstone circuits from text descriptions. **Read `docs/STATUS_2026-11.md` first**: as of Nov 2026 one-shot generation is measured at ~17.5% functional pass (earlier "100%" claims were block-count only), no training has run, and the plan is a verifiable-environment + harness approach (spike Nucleation as a fast simulator, then harness, then training). Older docs (ARCHITECTURE.md, PAST_ATTEMPTS.md March sections) are historical.
 
+**Current direction (Nov 2026):** model writes builds as Python against `simulation/builder.py` (flat `(x,y,z,state,nbt)` tuples are the interchange format); scoring is Nucleation's tick simulator through `env/` with author-written hidden specs; the vanilla MC 26.2 GameTest oracle (`tools/oracle/`) is the referee; the Carpet/RCON server is no longer used for functional verdicts. Decisions and reasoning: `docs/audits/oracle_*_2026-11.md`; docs per component: `docs/BUILDER.md`, `docs/ENV.md`, `docs/ORACLE.md`, `docs/CORPUS_REPORT.md`, `docs/DATA_SOURCES.md`.
+
 ## Setup
 
 ```bash
@@ -114,7 +116,11 @@ tests/               Pytest test suite (1,116 tests)
 discord_scraper/     Discord data scraping (submodule: DiscordChatExporter)
   Has its own config.json and requirements — semi-independent
 
-training/            Empty — Phase 5 target directory
+builder (simulation/builder.py, blockstates.py)  Part API + sandboxed compile + lossless decompile; always settle with TickSettleMode.Placement
+env/                 Verification/reward environment (contract v2, runner, R0-R4 score, agent tools, env/tasks/*.json with reference + broken variants); only env/sim.py imports nucleation. Gate: `python env/validate_tasks.py`
+tools/oracle/        Vanilla MC 26.2 GameTest tracer (needs `bash scripts/oracle_setup.sh`; jar lives in data/external/oracle_work). Compare with `scripts/oracle_env_diff.py`
+scripts/corpus_*.py  Corpus fetch/index/convert/decompile (outputs under data/corpus, data/external; gitignored)
+training/            Procedural generators only; no training run yet — Phase 5 target directory
 agent/               Empty — Phase 6 target directory
 ```
 
@@ -127,6 +133,10 @@ agent/               Empty — Phase 6 target directory
 - **`evaluation/archive/` contains rejected approaches** (iterative generation, reasoning traces from complete circuits, server-based benchmarking). Do not reuse these patterns — see `docs/PAST_ATTEMPTS.md` for why they failed.
 
 ## Gotchas
+
+- **Nucleation quirks (verified, see docs/ORACLE.md, docs/ENV.md):** `Schematic.set_block` accepts invalid states silently (use `env.blocks.canonical` / `simulation/blockstates.py`); repeater `facing` points at the INPUT side (builder `flow=` takes the signal direction); place wires bare; `known_shape` settle diverges from vanilla; known simulator bugs: comparator with lever side input, dropper-into-dropper false trigger, torch burnout clock. 263 of 1286 block ids cannot be loaded by the simulator.
+- **Spawned subagents are network-sandboxed** (GitHub only); do downloads from the parent shell.
+- **Discord token in `.env` expired (401, Nov 2026)**; see `discord_scraper/RUNBOOK.md`.
 
 - **`simulation/server/` is gitignored** — you must run `python setup.py` to download the Fabric server, mods, and create `server.properties`. Without it, any server-dependent test will fail.
 - **Tests cost money** — `test_complex_circuits_strategies.py` and `ultra_comprehensive_test.py` make real API calls. `quick_test.py` and `test_api.py` are free/cheap. The pytest suite uses mocks for all LLM calls — no API cost.
