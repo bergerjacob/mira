@@ -1379,6 +1379,8 @@ def main():
                     continue
 
                 channels_cfg = s.get("channels", "all")
+                # Per-server override, e.g. [0, 5, 11, 15] to include text/announcement channels.
+                scrapable_types = set(s.get("channel_types") or SCRAPABLE_CHANNEL_TYPES)
                 channel_ids: list[str] = []
                 if channel_filter:
                     channel_ids = [str(channel_filter)]
@@ -1399,11 +1401,11 @@ def main():
                             channel_ids = [
                                 c.id
                                 for c in chs
-                                if c.id and c.type in SCRAPABLE_CHANNEL_TYPES and (c.parent_id in allowed_category_ids)
+                                if c.id and c.type in scrapable_types and (c.parent_id in allowed_category_ids)
                             ]
                         else:
                             # Only scrape text (0), forum (15), and thread (11) channels.
-                            channel_ids = [c.id for c in chs if c.id and c.type in SCRAPABLE_CHANNEL_TYPES]
+                            channel_ids = [c.id for c in chs if c.id and c.type in scrapable_types]
                     except Exception as e:
                         print(f"Failed to list channels for server {server_id}: {e}")
                         continue
