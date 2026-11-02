@@ -1,0 +1,454 @@
+{
+ "name": "d_flipflop",
+ "title": "D flip-flop (positive edge)",
+ "description": "Q := D on every rising edge of CLK; D changes while CLK is high or low do not reach Q.",
+ "requires": [],
+ "params": {
+  "floor": true
+ },
+ "kind": "seq",
+ "ports": {
+  "CLK": {
+   "dir": "in",
+   "pos": [
+    1,
+    1,
+    0
+   ],
+   "face": "west"
+  },
+  "D": {
+   "dir": "in",
+   "pos": [
+    1,
+    1,
+    2
+   ],
+   "face": "west"
+  },
+  "Q": {
+   "dir": "out",
+   "pos": [
+    6,
+    1,
+    2
+   ],
+   "face": "east"
+  }
+ },
+ "footprint": {
+  "size": [
+   7,
+   2,
+   3
+  ],
+  "blocks": 34
+ },
+ "timing_ticks": null,
+ "notes": "Positive-edge capture. A D that changes in the SAME tick as the rising edge is NOT captured (the old value is: zero hold time), which is what makes shift registers and accumulators race-free. Q changes ~6 ticks after the edge.",
+ "spec": {
+  "inputs": [
+   "CLK",
+   "D"
+  ],
+  "outputs": [
+   "Q"
+  ],
+  "rows": null,
+  "sequences": [
+   {
+    "name": "capture",
+    "events": [
+     [
+      0,
+      {
+       "D": 1
+      }
+     ],
+     [
+      30,
+      {
+       "CLK": 1
+      }
+     ],
+     [
+      70,
+      {
+       "CLK": 0
+      }
+     ],
+     [
+      100,
+      {
+       "D": 0
+      }
+     ],
+     [
+      130,
+      {
+       "CLK": 1
+      }
+     ],
+     [
+      170,
+      {
+       "CLK": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      "init",
+      0,
+      0
+     ],
+     [
+      "Q",
+      "init",
+      20,
+      29
+     ],
+     [
+      "Q",
+      "!init",
+      45,
+      99
+     ],
+     [
+      "Q",
+      "!init",
+      100,
+      129
+     ],
+     [
+      "Q",
+      "init",
+      145,
+      200
+     ]
+    ],
+    "duration": 200
+   },
+   {
+    "name": "d_changes_while_clk_high",
+    "events": [
+     [
+      0,
+      {
+       "D": 1
+      }
+     ],
+     [
+      30,
+      {
+       "CLK": 1
+      }
+     ],
+     [
+      50,
+      {
+       "D": 0
+      }
+     ],
+     [
+      80,
+      {
+       "D": 1
+      }
+     ],
+     [
+      110,
+      {
+       "CLK": 0
+      }
+     ],
+     [
+      130,
+      {
+       "D": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      "!init",
+      45,
+      140
+     ]
+    ],
+    "duration": 140
+   },
+   {
+    "name": "d_changes_while_clk_low",
+    "events": [
+     [
+      0,
+      {
+       "D": 1
+      }
+     ],
+     [
+      30,
+      {
+       "CLK": 1
+      }
+     ],
+     [
+      70,
+      {
+       "CLK": 0
+      }
+     ],
+     [
+      90,
+      {
+       "D": 0
+      }
+     ],
+     [
+      110,
+      {
+       "D": 1
+      }
+     ],
+     [
+      130,
+      {
+       "D": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      "!init",
+      45,
+      160
+     ]
+    ],
+    "duration": 160
+   },
+   {
+    "name": "d_low_stays_low",
+    "events": [
+     [
+      10,
+      {
+       "CLK": 1
+      }
+     ],
+     [
+      50,
+      {
+       "CLK": 0
+      }
+     ],
+     [
+      90,
+      {
+       "CLK": 1
+      }
+     ],
+     [
+      130,
+      {
+       "CLK": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      "init",
+      0,
+      170
+     ]
+    ],
+    "duration": 170
+   },
+   {
+    "name": "d_changes_with_the_edge",
+    "events": [
+     [
+      30,
+      {
+       "D": 1,
+       "CLK": 1
+      }
+     ],
+     [
+      70,
+      {
+       "CLK": 0
+      }
+     ],
+     [
+      90,
+      {
+       "D": 0,
+       "CLK": 1
+      }
+     ],
+     [
+      130,
+      {
+       "CLK": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      "init",
+      0,
+      29
+     ],
+     [
+      "Q",
+      "init",
+      45,
+      89
+     ],
+     [
+      "Q",
+      "!init",
+      110,
+      160
+     ]
+    ],
+    "duration": 160
+   }
+  ]
+ },
+ "verified": {
+  "env": {
+   "rot0": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot0+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   }
+  },
+  "env_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "func_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "paste_stable_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "min_in_strength": 3,
+  "min_in_strength_per_port": {
+   "CLK": 3,
+   "D": 1
+  },
+  "oracle_captures": 45,
+  "oracle_tick_identical": 45,
+  "oracle_vanilla_pass": true,
+  "oracle_nucleation_pass": true,
+  "oracle_ok": true
+ },
+ "provenance": {
+  "origin": "layout of this repo's env task (env/tasks/author.py), dust ports added",
+  "licence": "repo licence",
+  "redistributable": true
+ }
+}

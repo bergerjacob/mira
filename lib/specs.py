@@ -83,6 +83,30 @@ comb("crossover", "Two-signal crossover", "XE = XW and ZS = ZN, independently (t
      ["XW", "ZN"], ["XE", "ZS"], lambda XW, ZN: (XW, ZN), notes="Both lines tolerate weak input; Z leaves at full strength (repeater), X keeps its strength minus 4.")
 
 
+def _dff_events(*steps):
+    ev = []
+    for t, port, v in steps:
+        ev.append((t, {port: v}))
+    return ev
+
+
+SPECS["d_flipflop"] = dict(
+    title="D flip-flop (positive edge)", kind="seq", description="Q := D on every rising edge of CLK; D changes while CLK is high or low do not reach Q.",
+    inputs=["CLK", "D"], outputs=["Q"], settle=300, requires=[],
+    sequences=[
+        dict(name="capture", events=_dff_events((0, "D", 1), (30, "CLK", 1), (70, "CLK", 0), (100, "D", 0), (130, "CLK", 1), (170, "CLK", 0)),
+             expect=[["Q", "init", 0, 0], ["Q", "init", 20, 29], ["Q", "!init", 45, 99], ["Q", "!init", 100, 129], ["Q", "init", 145, 200]], duration=200),
+        dict(name="d_changes_while_clk_high", events=_dff_events((0, "D", 1), (30, "CLK", 1), (50, "D", 0), (80, "D", 1), (110, "CLK", 0), (130, "D", 0)),
+             expect=[["Q", "!init", 45, 140]], duration=140),
+        dict(name="d_changes_while_clk_low", events=_dff_events((0, "D", 1), (30, "CLK", 1), (70, "CLK", 0), (90, "D", 0), (110, "D", 1), (130, "D", 0)),
+             expect=[["Q", "!init", 45, 160]], duration=160),
+        dict(name="d_low_stays_low", events=_dff_events((10, "CLK", 1), (50, "CLK", 0), (90, "CLK", 1), (130, "CLK", 0)),
+             expect=[["Q", "init", 0, 170]], duration=170),
+        dict(name="d_changes_with_the_edge", events=[(30, {"D": 1, "CLK": 1}), (70, {"CLK": 0}), (90, {"D": 0, "CLK": 1}), (130, {"CLK": 0})],
+             expect=[["Q", "init", 0, 29], ["Q", "init", 45, 89], ["Q", "!init", 110, 160]], duration=160)],
+    notes="Positive-edge capture. A D that changes in the SAME tick as the rising edge is NOT captured (the old value is: zero hold time), which is what makes shift registers and accumulators race-free. Q changes ~6 ticks after the edge.")
+
+
 # --------------------------------------------------------------------------- provenance (everything not listed is original to this repo)
 RV = {"origin": "adapted from formalized-si/redstone-verify (MIT): layout, lever/lamp interface replaced by dust ports and re-verified",
       "upstream": "https://github.com/formalized-si/redstone-verify", "upstream_commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
@@ -92,5 +116,5 @@ SPECS["half_adder"]["provenance"] = {**RV, "upstream_layout": "circuits/half_add
 SPECS["xor2"]["provenance"] = {**RV, "upstream_layout": "circuits/half_adder/cand_comparators.rsl (without the carry stage)"}
 SPECS["full_adder"]["provenance"] = {**RV, "upstream_layout": "circuits/full_adder/cand_comparators.rsl"}
 SPECS["mux2"]["provenance"] = {**RV, "upstream_layout": "circuits/mux2/cand_comparators.rsl"}
-for _n in ("sr_latch", "edge_detector", "t_flipflop"):
+for _n in ("sr_latch", "edge_detector", "t_flipflop", "d_flipflop"):
     SPECS[_n]["provenance"] = ENV_TASK

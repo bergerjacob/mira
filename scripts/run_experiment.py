@@ -42,12 +42,15 @@ def parse_args(argv=None):
     ap.add_argument("--limit", type=int, help="only the first N runs of the (ordered) grid")
     ap.add_argument("--dry-run", action="store_true", help="print the planned grid and a conservative cost estimate, run nothing")
     ap.add_argument("--mock", action="store_true", help="scripted reference-solution player instead of a real model (no network, $0)")
-    ap.add_argument("--max-turns", type=int, help="override max assistant turns (default 10 + 3R)")
+    ap.add_argument("--turns-mode", choices=["fixed", "scaled"], default="fixed",
+                    help="fixed: 30 assistant turns for every R (default; R changes feedback only) | scaled: 10 + 3R (the round-1 grid)")
+    ap.add_argument("--max-turns", type=int, help="explicit cap on assistant turns (overrides --turns-mode)")
     ap.add_argument("--max-tokens", type=int, default=16384, help="max output tokens per call")
     ap.add_argument("--max-output-tokens", type=int, default=40000, help="episode cap on completion tokens")
     ap.add_argument("--temperature", type=float, default=0.7)
     ap.add_argument("--reasoning", choices=["low", "medium", "high"], help="OpenRouter reasoning.effort (default: provider default)")
     ap.add_argument("--no-palette-hint", action="store_true")
+    ap.add_argument("--no-blocks-examples", action="store_true", help="blocks arm without the worked examples (the round-1 prompt; default: with)")
     ap.add_argument("--keep-reasoning", action="store_true", help="echo provider reasoning_details back (try if a thinking model 400s mid-episode)")
     ap.add_argument("--no-require-params", action="store_true", help="do not send provider.require_parameters")
     ap.add_argument("--reasoning-tokens-est", type=int, default=800, help="dry-run: assumed hidden reasoning tokens per turn")
@@ -63,8 +66,8 @@ def build_plan(a):
     arms = csv(a.arms) if a.arms else ["blocks", "builder"]
     rounds = [int(r) for r in csv(a.rounds)] if a.rounds else base.get("rounds", [0, 3, 8])
     seeds = a.seeds if a.seeds is not None else base.get("seeds", 3)
-    kw = dict(max_tokens=a.max_tokens, max_output_tokens=a.max_output_tokens, temperature=a.temperature, reasoning=a.reasoning,
-              palette_hint=not a.no_palette_hint, keep_reasoning=a.keep_reasoning)
+    kw = dict(turns_mode=a.turns_mode, max_tokens=a.max_tokens, max_output_tokens=a.max_output_tokens, temperature=a.temperature, reasoning=a.reasoning,
+              palette_hint=not a.no_palette_hint, blocks_examples=not a.no_blocks_examples, keep_reasoning=a.keep_reasoning)
     if a.max_turns:
         kw["max_turns"] = a.max_turns
     cfgs = plan_grid(tasks, models, arms, rounds, seeds, **kw)

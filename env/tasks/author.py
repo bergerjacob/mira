@@ -486,24 +486,43 @@ DOOR_SOLUTION = """
 """
 
 
+# Blocks that count as a closed door cell: pushed opaque full blocks. piston_head / moving_piston / pistons are NOT in the list
+# (the old 'solid' = not-air port accepted a piston's own extended head; see docs/VALIDITY.md).
+DOOR_BLOCKS = ["minecraft:" + b for b in ("stone", "cobblestone", "smooth_stone", "stone_bricks", "dirt", "bricks",
+                                           "oak_planks", "spruce_planks", "birch_planks", "white_wool", "netherrack")]
+
+
+def door_ports(p, x0, y0, z, w, h):
+    """Output ports for a w*h door whose min corner cell is (x0,y0,z). D<i><j> = cell holds a pushed full block (closed),
+    A<i><j> = cell is air (open). A sequence expects each port 'init' / '!init', so a door that rests closed or open both
+    qualify, but every cell must really be air when open and a real block when closed (never a piston head)."""
+    names = {}
+    allow = ", ".join(b.split(":")[1] for b in DOOR_BLOCKS)
+    for i in range(w):
+        for j in range(h):
+            pos = (x0 + i, y0 + j, z)
+            p.ports.append(Port(f"D{i}{j}", "region", pos, box=[*pos, *pos], region_mode="block_in", blocks=list(DOOR_BLOCKS),
+                                doc=f"door cell closed: 1 = holds a pushed full block ({allow}); a piston head or moving piston is 0"))
+            p.ports.append(Port(f"A{i}{j}", "region", pos, box=[*pos, *pos], region_mode="air", doc="door cell open: 1 = air"))
+            names[f"D{i}{j}"] = names[f"A{i}{j}"] = pos
+    return names
+
+
 def t2_door_2x2():
     """Spec in the style of Nekochu/Gemma-4-31B-RedstoneDoor (same hallway/door coordinates); the activation lever is
-    fixed at (2,1,2) instead of model-chosen. The reference is that model card's live-verified 2x2 door."""
+    fixed at (2,1,2) instead of model-chosen. The reference is that model card's live-verified 2x2 door.
+    Round-2 audit fix: closed = a pushed non-piston full block (block_in allowlist), open = air; the first version accepted
+    any non-air block and a sticky piston's own head filled the cells."""
     p = Plan("t2_door_2x2", "2x2 piston door", "T2", (22, 16, 25),
-             "Build a working 2x2 piston door. The four door cells (0..1, 2..3, z=3) must toggle between air and solid when "
-             "the lever is flipped, and then hold their state indefinitely in both positions. The hallway (x 0..1, y 2..3, "
-             "z -3..9) must stay air except for the door cells (and may not be built in). Use sticky pistons; do not place "
+             "Build a working 2x2 piston door. The four door cells (0..1, 2..3, z=3) must toggle between air (open) and a solid "
+             "full block (closed: a block your pistons push into the cell, e.g. stone) when the lever is flipped, and then hold their "
+             "state indefinitely in both positions. A piston head in a cell does not count as a closed door. The hallway (x 0..1, "
+             "y 2..3, z -3..9) must stay air except for the door cells (and may not be built in). Use sticky pistons; do not place "
              "piston_head or moving_piston blocks.")
     p.fixed = [{"box": [-10, -3, -6, 11, -3, 18], "state": "minecraft:smooth_stone"}]
     p.fix((2, 1, 2), "minecraft:lever[face=floor,facing=north,powered=false]")
     p.ports.append(Port("L", "click", (2, 1, 2), facing="north", doc="activation lever (fixed)"))
-    names = {}
-    for x in (0, 1):
-        for y in (2, 3):
-            n = f"D{x}{y - 2}"
-            names[n] = (x, y, 3)
-            p.ports.append(Port(n, "region", (x, y, 3), box=[x, y, 3, x, y, 3], region_mode="solid",
-                                doc="door cell: 1 = solid, 0 = air"))
+    names = door_ports(p, 0, 2, 3, 2, 2)
     for ln in DOOR_SOLUTION.strip().splitlines():
         for item in ln.split("|"):
             x, y, z, st = item.split()

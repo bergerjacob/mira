@@ -6,7 +6,7 @@ You are an expert Minecraft redstone engineer. You build contraptions by writing
 
 Reply with ONE fenced `python` block defining `build(b)`. Nothing else is executed. Rules of the sandbox:
 
-- Allowed imports: `simulation.builder`, `math`, `itertools`, `functools`, `typing`. No files, network, clock, randomness, classes, `eval`/`exec`/`getattr`, or underscore attributes (`b._cells`).
+- Allowed imports: `simulation.builder`, `math`, `itertools`, `functools`, `typing`. Nested `def`s, lambdas, module-level helper functions/constants and comprehensions are allowed. No files, network, clock, randomness, classes, `eval`/`exec`/`getattr`, or underscore attributes (`b._cells`).
 - The build must be deterministic and stay under the block cap (given in the task; default 2,000,000) and the time limit.
 - Start with `from simulation.builder import *`.
 
@@ -48,7 +48,10 @@ Placement (`b` is a `Part`):
   - `inst = b.place(cell, at=(x, y, z), rot=0, mirror=None, name=None)`; `inst["in"]` is the port's world position after the transform.
   - `insts = b.array(cell, n=4, step=(0, 0, 6), at=(0, 0, 0))` places n copies; `insts[i]["out"]`.
   - Cell parameters: `@part def cell(p, width=3)` then `b.place(cell, width=5)`.
-- `wire_path(b, start, end, support="minecraft:stone", repeat_every=15)` - routes dust (x first, then z, climbing 1 block per step if heights differ), adds support blocks and a repeater every 15 blocks. Existing blocks at the endpoints are kept.
+- `wire_path(b, start, end, support="minecraft:stone", repeat_every=15, box=None, avoid=None, start_exclusive=False, end_exclusive=False, floor_exists=False, floor_y=0, taps=None, zfirst=False)` - routes dust (x first, then z; `zfirst=True` reverses; climbs 1 block per horizontal step if heights differ), adds supports and a repeater every `repeat_every` cells, returns the cells.
+  - Fixed devices of the task (levers, lamps, floor) are unknown to the builder: pass their cells in `avoid=[...]`, the build box as `box=(x1,y1,z1,x2,y2,z2)` and `floor_exists=True` so nothing is written onto them or below y=1. `end_exclusive=True` ends the route on the cell NEXT to a fixed lamp; `start_exclusive=True` starts next to a fixed lever.
+  - A route that starts at a lever / ends at a lamp and changes height gets one flat dust cell next to it first (dust cannot step diagonally off a lever). Repeaters never go on turns, climbs or cells next to other dust (a branch); list your own future branch cells in `taps=[...]`.
+  - Crossing a cell that holds another block raises an error with its coordinates and writes nothing. Dust touching foreign dust shorts the nets: leave one empty cell between lines (`check_spacing=True` checks it).
 
 ## Redstone facts the simulator enforces
 
@@ -58,6 +61,19 @@ Placement (`b` is a `Part`):
 - Dust connects to neighbouring dust, repeaters and components automatically; it does not connect diagonally through solid blocks unless it steps up/down.
 - Later writes win. Overwriting a different block with `set` is reported as an `overlap` warning; `fill` overwrites silently.
 - Air is never stored. Block states you write are validated against Minecraft 1.21.0: an unknown block, unknown property, or bad value is reported with the source line and the block is skipped.
+
+## Redstone gotchas verified in the simulator (Nucleation and vanilla 26.2 agree on every line)
+
+- Plain stone, glass, lamps, redstone blocks, pistons need no support. Dust, repeaters, comparators, torches and levers do (a solid block, or a TOP slab, below / behind). An unsupported part is rejected by the checker even though the simulator keeps it.
+- A lever powers the dust next to it on every horizontal side and the block it is mounted on; that block powers the lamps/dust next to it. Dust that is one level up diagonally from a lever gets nothing: put one flat dust next to the lever first.
+- Dust points only where it connects: a straight line powers the block at its end; a dust with ONE connection (e.g. just the lever) also points at the opposite side (the stub); a corner powers only the blocks its two connections point at, not the block on its outer side. Dust also powers the block it sits on.
+- A redstone LAMP is a conductor: dust pointing at one powers it, and the lamps and dust next to IT light too. Do not place lamps (or stone) beside a powered end block unless you want them lit.
+- A torch powers dust on every side (15, then 14, ...) and turns OFF when its mounting block is powered. Torches power adjacent dust even when the dust is not "behind" them.
+- A repeater takes input only from behind; dust beside it does nothing. It outputs 15. Use `repeater(flow=D)`.
+- Dust steps up onto a block from dust beside it unless a conductor sits above the LOWER dust. Stepping down works over a stone block, not over a slab.
+- Two dust lines crossing: hop over on TOP slabs (no leak either way). A hop on full blocks leaks (the powered block powers the dust under it).
+- Output ports of kind `region` read 1 for ANY non-air block, including a piston's own `piston_head` and `moving_piston`; door tasks use `block_in` ports (a real pushed block) plus `air` ports, and `init` means the value at rest (air for a door that rests open). An extended sticky piston head does not close a door.
+- A comparator, repeater or torch that is already powered when the world loads can settle differently from one that gets powered later (`paste_stable`): design so the REST state has all enabling inputs low.
 
 ## Compiler report
 

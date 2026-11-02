@@ -169,3 +169,13 @@ def test_repeated_api_errors_abort_the_grid(tmp_path):
     cfgs = plan_grid(["t0_lamp", "t0_not", "t0_and"], ["m1", "m2"], ["blocks", "builder"], [0, 3], 1)
     s = run_grid("e", cfgs, 1.0, exp_root=tmp_path, ledger=tmp_path / "l.jsonl", inprocess_factory=factory, progress=lambda m: None)
     assert s["stopped_by"] == "repeated_api_errors" and s["finished"] == 0 and s["incomplete"] == 6
+
+
+def test_turns_mode_flag_defaults_to_fixed_30_and_scaled_restores_the_round_1_budget():
+    rx = load_script("run_experiment")
+    a = rx.parse_args(["--exp-id", "p", "--budget-usd", "1", "--tasks", "t0_not", "--rounds", "0,3,8", "--arms", "blocks", "--seeds", "1"])
+    assert [c.max_turns for c in rx.build_plan(a)] == [30, 30, 30]
+    a = rx.parse_args(["--exp-id", "p", "--budget-usd", "1", "--tasks", "t0_not", "--rounds", "0,3,8", "--arms", "blocks", "--seeds", "1", "--turns-mode", "scaled"])
+    assert [c.max_turns for c in rx.build_plan(a)] == [10, 19, 34]
+    a = rx.parse_args(["--exp-id", "p", "--budget-usd", "1", "--tasks", "t0_not", "--rounds", "0,3", "--arms", "blocks", "--seeds", "1", "--max-turns", "12"])
+    assert [c.max_turns for c in rx.build_plan(a)] == [12, 12]

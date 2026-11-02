@@ -1,0 +1,46 @@
+{
+ "t4_accum4": {
+  "agree": 9,
+  "captures": 9,
+  "first_divergence": null,
+  "hold": 40,
+  "jvm_per_capture": true,
+  "nucleation_failures": [],
+  "nucleation_pass": true,
+  "seconds": 330.7,
+  "vanilla_failures": [],
+  "vanilla_pass": true,
+  "vectors": 0
+ },
+ "t4_adder16": {
+  "agree": 1,
+  "captures": 1,
+  "first_divergence": null,
+  "hold": 220,
+  "jvm_per_capture": true,
+  "nucleation_failures": [],
+  "nucleation_pass": true,
+  "seconds": 271.1,
+  "vanilla_failures": [],
+  "vanilla_pass": true,
+  "vectors": 40
+ },
+ "t4_addsub8": {
+  "agree": 1,
+  "captures": 1,
+  "first_divergence": null,
+  "hold": 124,
+  "jvm_per_capture": true,
+  "nucleation_failures": [],
+  "nucleation_pass": true,
+  "seconds": 98.3,
+  "vanilla_failures": [],
+  "vanilla_pass": true,
+  "vectors": 42
+ },
+ "t4_shift32": {
+  "jvm_per_capture": true,
+  "reason": "isolated one-JVM-per-capture vanilla run exceeded 40 min wall clock (8 sequence captures of 740..4800 ticks over a 333-block-long structure) and was cancelled; no verdict",
+  "status": "not_completed"
+ }
+}

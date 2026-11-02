@@ -179,3 +179,52 @@ server read and write the same files under an `flock`, so a session started in o
 * `Env.remove` (env/tools.py) answers "filled N cells" for removals; left as is (not owned here).
 * Not verified with the real Claude Code / pi clients, only the SDK client. Installed `mcp` is 2.3 (`MCPServer`, not 1.x `FastMCP`); pin it.
 * `AGENTS.md` should list `mira_mcp/`, `scripts/mira_env_cli.py`, `tests/mira_mcp/` (not owned by this task).
+
+## Baseline protocol (sandboxed; round-2 audit H2)
+
+The "Protocol for a baseline run" above only *instructs* the agent not to read the repo, and the round-2 audit found an agent that did
+(the `t3_adder4` build contained `lib/full_adder.py` verbatim). Strong-agent numbers are only reportable from runs made this way
+(`docs/VALIDITY.md`, checklist). It supersedes the first bullet of "Limitations" below ("No isolation from the answer files").
+
+```bash
+.venv/bin/python scripts/run_baseline_sandboxed.py start t2_door_2x2 --arm builder --rounds 15 --variant raw --label sonnet-5-5-raw
+#   --variant raw: no library; --variant lib: extras=components and /mira/lib/*.py, *.meta.json, docs/LIBRARY.md are readable
+#   prints the session id, the wrapper path data/sandbox/<id>/sh and the agent prompt (also in data/sandbox/<id>/PROMPT.md)
+.venv/bin/python scripts/run_baseline_sandboxed.py record-usage <id> --model sonnet-5-5 --input-tokens N --output-tokens N --transcript agent.jsonl
+.venv/bin/python scripts/run_baseline_sandboxed.py audit <id> --transcript agent.jsonl     # forbidden-path mentions in the agent's own transcript
+.venv/bin/python scripts/run_baseline_sandboxed.py finish <id> [--submit-open]              # data/sandbox/<id>/{session/,summary.json}
+.venv/bin/python scripts/run_baseline_sandboxed.py exec <id> -- python3 -c 'print(1)'      # any command in the sandbox (tests, debugging)
+scripts/sandboxed_cli.sh <id> -c 'mira desc'                                                # same, shell-style
+```
+
+**What the agent gets.** One shell wrapper, `data/sandbox/<id>/sh`; every command the agent runs must go through it (`sh -c '<command>'`).
+Inside (bubblewrap, no network, empty read-only root, `--cap-drop ALL`, own pid/ipc/uts/user namespaces): system python3 and coreutils,
+`/tmp/work` (writable, host dir `data/sandbox/<id>/work`), `/mira/docs/BUILDER.md`, `/mira/docs/MCP.md`,
+`/mira/evaluation/prompts/builder_system.md`, and the `mira` command. Not present: `env/` (so no `env/tasks`), `lib/` (unless variant lib: only `*.py`,
+`*.meta.json`, `docs/LIBRARY.md`), `data/`, `tests/`, `harness/`, the other docs, `.env`, the venv, nucleation, other sessions' files.
+`--with-sim` additionally mounts the venv, `simulation/builder.py`, `blockstates.py` and the `env/` code with `env/tasks` masked by an empty tmpfs.
+
+**How the CLI still works.** The session code never runs in the sandbox. `mira` is a stdlib client that sends its argument list and the
+contents of any `--file` over a unix socket to a *broker* thread that the wrapper runs for the lifetime of the wrapped command
+(no daemon; background processes do not survive the tool call that started them in the agent sandboxes used so far). The broker runs the
+real `scripts/mira_env_cli.py --session <id> ...` on the host with full repo access, so the contract, hidden vectors and reference
+solution are read host-side only. The broker pins the session, accepts only `desc guide show set fill remove build view probe run-spec
+undo submit components corpus block` (no `start`, `sessions`, `results`, `tasks`, no `--session`), and refuses any `--file` that was not
+read inside the sandbox (so it is not a host file-read primitive). Every request is logged to `data/sandbox/<id>/broker.jsonl`, every wrapped
+command to `shell.log`.
+
+**Tested** (`tests/harness/test_sandbox.py`): `env/tasks`, `lib`, `data`, `tests`, `harness`, other docs and `.env` are unreadable (absolute host
+paths and `/mira/...`); the docs are readable but read-only; no network; `desc/guide/build/run-spec/submit` work and a reference scores
+full pass; `start/results/sessions/tasks/--session` are refused; a hand-rolled broker request naming a host file is refused; the R budget
+holds; the lib variant exposes exactly the library; `--with-sim` masks `env/tasks`.
+
+**Records per run** (host side, `data/sandbox/<id>/`): `broker.jsonl`, `shell.log`, `PROMPT.md`, `config.json`, `session/` (copy of
+`data/sessions/<id>`: `transcript.jsonl`, `sources/NNN.py`, `final_blocks.json`, `result.json`), `usage.json` (token counts and cost, entered with
+`record-usage` from the launching harness, which is the only place that knows them), `agent_transcript.*` (copy of the agent's own transcript), `summary.json`.
+
+**Limits.** The sandbox confines whatever runs through the wrapper. If the agent is launched by another tool (e.g. the `subagent` tool),
+that agent keeps its own file tools: launch it with bash as the only tool if the harness allows it, put the wrapper path and prompt in
+its task, and run `audit` on its transcript afterwards (a heuristic grep for paths; the sandbox is the enforcement, the audit the check
+that the agent used it). To confine the whole agent process run it under `exec --net <id> -- <command>` (network on; filesystem confined; credentials
+for the model API must be passed by the caller; not exercised here). The sandbox does not stop the agent from using `mira` as intended,
+including `run-spec` up to R and the extras the session enables; `explain_block`/`guide` text is by design visible.

@@ -209,3 +209,63 @@ def test_scan_summary_is_consistent_with_the_promotions():
     assert len(passed) == len(L.corpus_index()) >= 100
     assert all(r["status"] == "env_pass" for r in passed)
     assert BD  # builder imported: the cells are loadable through simulation.builder.use
+
+
+# --------------------------------------------------------------------------- floor=False (friction fix, 2026-11-02)
+def _plane_offset(name):
+    return 1 if name == "wire_link" else 0     # wire_link's origin is the DUST level (support plane at its y=-1)
+
+
+def _place_src(name, floor, extra=""):
+    return f"def build(b):\n    b.place({name}, at=(0, {1 if name == 'wire_link' else 0}, 0), floor={floor}{extra})\n"
+
+
+@pytest.mark.parametrize("name", NAMES)
+def test_floor_false_writes_nothing_at_or_below_the_support_plane(name):
+    """Tasks have a fixed floor and reject writes outside the build box [.., y=1, ..]: floor=False must not write y=0."""
+    variants = L.specs()[name].get("variants") or [{}]
+    for params in variants:
+        extra = "".join(f", {k}={v!r}" for k, v in params.items())
+        if params.get("dy", 0) < 0:
+            continue
+        build = L.compile_program(name, _place_src(name, False, extra))
+        assert build.ok, build.errors
+        low = [blk[:3] for blk in build.blocks if blk[1] <= 0]
+        assert low == [], f"{name}{params} writes at y<=0: {low[:4]}"
+        assert min(blk[1] for blk in build.blocks) >= 1
+
+
+@pytest.mark.parametrize("name", [n for n in NAMES if n != "wire_link"])
+def test_floor_false_is_floor_true_minus_the_plane(name):
+    with_floor = L.compile_program(name, _place_src(name, True))
+    without = L.compile_program(name, _place_src(name, False))
+    assert [b for b in with_floor.blocks if b[1] > 0] == without.blocks
+    assert len(with_floor.blocks) > len(without.blocks) or name == "delay_line"
+
+
+def test_wire_link_with_a_downhill_route_and_no_floor_stays_above_the_plane_of_its_lowest_dust():
+    build = L.compile_program("wire_link", "def build(b):\n    b.place(wire_link, at=(0, 5, 0), floor=False, dx=4, dy=-2, dz=3)\n")
+    assert build.ok and min(b[1] for b in build.blocks) >= 5 - 2    # the plane under the lowest dust (y=2) is not written
+    dust = [b for b in build.blocks if "redstone_wire" in b[3]]
+    assert min(b[1] for b in dust) == 3
+
+
+@pytest.mark.parametrize("name", ["full_adder", "half_adder", "xor2"])
+def test_floor_false_parts_work_on_an_external_floor(name):
+    """The three parts that used to write y=0 regardless: bench them with floor=False standing on a separate floor."""
+    c, blocks, _ = L.bench(name, params={"floor": False})
+    have = {(b[0], b[1], b[2]) for b in blocks}
+    x1, _, z1, x2, _, z2 = c.bbox
+    floor = [[x, 0, z, "minecraft:stone"] for x in range(x1, x2 + 1) for z in range(z1, z2 + 1) if (x, 0, z) not in have]
+    func, inv, detail = L.env_pass(c, blocks + floor)
+    assert func and inv, detail
+
+
+def test_t3_references_compile_to_the_stored_solutions_after_the_wire_path_upgrade():
+    """wire_path gained boxes, avoid sets, flat starts at components and junction-safe repeaters; the stored T3 references must not move."""
+    from env.tasks import author_t3 as A
+    from env.task import load_task
+    for plan in A.build_all():
+        plan.compile_solution()
+        stored = load_task(A.OUT / f"{plan.id}.json").solution
+        assert sorted(map(tuple, plan.solution)) == sorted(map(tuple, stored)), plan.id

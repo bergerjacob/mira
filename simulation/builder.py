@@ -817,39 +817,178 @@ def daylight_detector(inverted: bool = False) -> str:
     return block("daylight_detector", inverted=inverted)
 
 
-def wire_path(b: Part, a, z, support: Optional[str] = "minecraft:stone", repeat_every: int = 15) -> None:
-    """Run redstone wire from a to z (inclusive), routed along x then z at a's height; the y
-    difference is climbed one block per horizontal step at the start (needs support blocks).
-    Empty cells get wire over a `support` block (None: no supports); occupied cells (e.g. port
-    components) are left alone. A repeater replaces every `repeat_every`-th flat wire cell."""
+def _is_dust(state: Optional[str]) -> bool:
+    return state is not None and state.split("[", 1)[0] == "minecraft:redstone_wire"
+
+
+_THIN = ("redstone_wire", "repeater", "comparator", "redstone_torch", "redstone_wall_torch", "lever", "_button", "_pressure_plate", "rail", "air")
+
+
+def _conducts(state: Optional[str]) -> bool:
+    """Does this block (probably) conduct redstone, i.e. block the diagonal dust connection below it?"""
+    if state is None:
+        return False
+    name = state.split("[", 1)[0].split(":", 1)[-1]
+    if "slab" in name:
+        return "type=double" in state
+    return not any(name == t or name.endswith(t) for t in _THIN)
+
+
+def _plan_state(plan, pos):
+    for c, st in plan:
+        if tuple(c) == tuple(pos):
+            return st
+    return None
+
+
+def _inline_repeater(state: str, d_in: str, d_out: str) -> bool:
+    """A repeater already sitting in the route, flowing the way the route goes (a legitimate in-line cell, kept)."""
+    return (d_in == d_out and state.startswith("minecraft:repeater[") and f"facing={_OPPOSITE[d_out]}" in state.split("[", 1)[1].rstrip("]").split(","))
+
+
+def _cell_set(spec, what: str):
+    """`spec` = None | iterable of (x, y, z) cells and/or 6-tuples (x1, y1, z1, x2, y2, z2) boxes -> (cells set, boxes list)."""
+    cells, boxes = set(), []
+    for item in (spec or ()):
+        try:
+            if len(item) == 6:
+                x1, y1, z1, x2, y2, z2 = item
+                boxes.append((min(x1, x2), min(y1, y2), min(z1, z2), max(x1, x2), max(y1, y2), max(z1, z2)))
+            else:
+                cells.add(tuple(_pos(item, what)))
+        except TypeError:
+            raise BuilderError(f"{what} entries must be (x, y, z) cells or 6-tuple boxes, got {item!r}") from None
+    return cells, boxes
+
+
+def _in_boxes(c, boxes) -> bool:
+    return any(bx[0] <= c[0] <= bx[3] and bx[1] <= c[1] <= bx[4] and bx[2] <= c[2] <= bx[5] for bx in boxes)
+
+
+def wire_path(b: Part, a, z, support: Optional[str] = "minecraft:stone", repeat_every: int = 15, *, box=None, avoid=None,
+              start_exclusive: bool = False, end_exclusive: bool = False, floor_exists: bool = False, floor_y: int = 0,
+              taps=None, zfirst: bool = False, check_spacing: bool = False) -> List[P]:
+    """Run redstone wire from a to z (inclusive), routed along x then z at a's height; the y difference is climbed
+    one block per horizontal step (needs support blocks). Returns the list of path cells (a ... z).
+
+    Cells: an empty cell gets dust over a `support` block (None: no supports); a cell that already holds dust is
+    joined (left alone); an INTERIOR cell holding anything else raises BuilderError with its coordinates (nothing is
+    written then: the route is planned first and applied only if it is clean). The end cells a and z may hold any
+    component (lever, lamp, port dust ...): they are left alone.
+    * `avoid`: cells the builder does not know but the task fixes (cells and/or 6-tuple boxes). They are never written
+      (not even as supports: a support position inside `avoid` is assumed to exist); an end cell inside `avoid` is
+      treated like a known component, an interior cell inside `avoid` is an error.
+    * `start_exclusive` / `end_exclusive`: do not write a / z at all (they are fixed devices the builder cannot see:
+      the route ends on the cell next to the lamp, or starts on the cell next to the lever).
+    * `box`: the build box (x1, y1, z1, x2, y2, z2); any write outside it (dust, repeater, support) is an error.
+    * `floor_exists` (+ `floor_y`, default 0): the plane y == floor_y is already there, so no support is written below
+      dust at y == floor_y + 1 (otherwise the task would reject the write).
+    * Climbing: when an end cell is a component (not dust: a lever, a lamp, a repeater, anything fixed) the climb is
+      moved away from it, because dust only steps up or down from dust: one flat cell next to the lever/lamp. If there
+      are not enough horizontal steps for that, BuilderError.
+    * `check_spacing=True`: a newly written dust cell may not touch FOREIGN dust (dust that is not part of this route):
+      orthogonally on the same level, or diagonally one level up/down where dust would connect (nothing solid above
+      the lower dust). Touching dust joins the nets (a short), the most common silent routing bug. Off by default.
+    * `zfirst=True` routes along z first, then x (default: x first, then z), so a route can arrive at a port along the
+      axis the port faces.
+    * A repeater replaces every `repeat_every`-th flat, straight cell, never a turn, a climb, a cell next to foreign
+      dust/repeater (a branch) or a cell listed in `taps` (future branch points of your own); the next eligible cell
+      takes it instead."""
     a, z = _pos(a, "wire_path start"), _pos(z, "wire_path end")
     if repeat_every < 2:
         raise BuilderError("wire_path repeat_every must be >= 2")
+    box_t = None
+    if box is not None:
+        try:
+            x1, y1, z1, x2, y2, z2 = box
+        except (TypeError, ValueError):
+            raise BuilderError(f"wire_path box must be (x1, y1, z1, x2, y2, z2), got {box!r}") from None
+        box_t = (min(x1, x2), min(y1, y2), min(z1, z2), max(x1, x2), max(y1, y2), max(z1, z2))
+    av_cells, av_boxes = _cell_set(avoid, "wire_path avoid")
+    tap_cells, _ = _cell_set(taps, "wire_path taps")
+
+    def avoided(c):
+        return tuple(c) in av_cells or _in_boxes(c, av_boxes)
+
     dx, dy, dz = z.x - a.x, z.y - a.y, z.z - a.z
-    steps = [("east" if dx > 0 else "west")] * abs(dx) + [("south" if dz > 0 else "north")] * abs(dz)
-    if abs(dy) > len(steps):
-        raise BuilderError(f"wire_path: height change {dy} needs at least {abs(dy)} horizontal steps")
+    xs, zs = [("east" if dx > 0 else "west")] * abs(dx), [("south" if dz > 0 else "north")] * abs(dz)
+    steps = zs + xs if zfirst else xs + zs
+    n = len(steps)
+    a_fixed = start_exclusive or avoided(a)
+    z_fixed = end_exclusive or avoided(z)
+    a_comp = a_fixed or (b.get(a) is not None and not _is_dust(b.get(a)))
+    z_comp = z_fixed or (b.get(z) is not None and not _is_dust(b.get(z)))
+    lo = 1 if (dy and a_comp) else 0                     # first climbing step
+    hi = n - (1 if (dy and z_comp) else 0)               # climbing must be done before the last step
+    if abs(dy) > hi - lo:
+        need = abs(dy) + (lo + n - hi)
+        raise BuilderError(f"wire_path {tuple(a)} -> {tuple(z)}: height change {dy} needs at least {need} horizontal steps "
+                           f"({n} given; a component at an end needs one flat dust cell next to it)")
     cells, dirs, cur = [a], [], a
     for i, d in enumerate(steps):
         cur = cur.step(d)
-        if i < abs(dy):
+        if lo <= i < lo + abs(dy):
             cur = cur + (0, 1 if dy > 0 else -1, 0)
         cells.append(cur)
         dirs.append(d)
-    since = 0
+    last = len(cells) - 1
+    # --- plan
+    plan, problems, since = [], [], 0
+    on_path = set(cells)
     for i, c in enumerate(cells):
-        flat = 0 < i < len(cells) - 1 and cells[i - 1].y == c.y == cells[i + 1].y
         since += 1
-        if b.get(c) is not None:
+        end_cell = i in (0, last)
+        if (i == 0 and a_fixed) or (i == last and z_fixed):
             since = 0
             continue
-        if support is not None and b.get(c + (0, -1, 0)) is None:
-            b.set(c + (0, -1, 0), support)
-        if flat and since >= repeat_every:
-            b.set(c, repeater(flow=dirs[i]))
+        cur_state = b.get(c)
+        if avoided(c):
+            if not end_cell:
+                problems.append(f"route crosses the fixed cell {tuple(c)}")
+            since = 0
+            continue
+        if cur_state is not None:
+            if not end_cell and not _is_dust(cur_state) and not _inline_repeater(cur_state, dirs[i - 1], dirs[i]):
+                problems.append(f"would overwrite {cur_state} at {tuple(c)}")
+            since = 0
+            continue
+        flat = 0 < i < last and cells[i - 1].y == c.y == cells[i + 1].y and dirs[i - 1] == dirs[i]
+        junction = c in tap_cells or any(
+            (nb := c + (ddx, ddy, ddz)) not in on_path and b.get(nb) is not None and b.get(nb).split("[", 1)[0] in
+            ("minecraft:redstone_wire", "minecraft:repeater", "minecraft:comparator")
+            for ddx, ddz in ((1, 0), (-1, 0), (0, 1), (0, -1)) for ddy in (-1, 0, 1))
+        if flat and since >= repeat_every and not junction:
+            plan.append((c, repeater(flow=dirs[i])))
             since = 0
         else:
-            b.set(c, wire())
+            plan.append((c, wire()))
+        below = c + (0, -1, 0)
+        if support is not None and not (floor_exists and below.y <= floor_y) and b.get(below) is None and not avoided(below):
+            plan.append((below, support))
+    for c, st in plan:
+        if box_t is not None and not _in_boxes(c, [box_t]):
+            hint = " (pass floor_exists=True if the floor is fixed)" if st == support and support is not None and c.y <= floor_y else ""
+            problems.append(f"write of {st} at {tuple(c)} is outside the box {box_t}{hint}")
+    if check_spacing:
+        planned = {tuple(c) for c, st in plan}
+        for c, st in plan:
+            if st != wire():
+                continue
+            for ddx, ddz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                for ddy in (0, 1, -1):
+                    nb = c + (ddx, ddy, ddz)
+                    if nb in on_path or tuple(nb) in planned or not _is_dust(b.get(nb)):
+                        continue
+                    if ddy:                                  # diagonal: connects only if no conductor sits above the LOWER dust
+                        above = (c if ddy > 0 else nb) + (0, 1, 0)
+                        if _conducts(_plan_state(plan, above) or b.get(above)):
+                            continue
+                    problems.append(f"dust at {tuple(c)} would touch foreign dust at {tuple(nb)} (check_spacing)")
+    if problems:
+        raise BuilderError(f"wire_path {tuple(a)} -> {tuple(z)}: " + "; ".join(problems[:6]) + (f"; ... {len(problems)} problems" if len(problems) > 6 else ""))
+    for c, st in plan:
+        b.set(c, st)
+    return cells
 
 
 # --- Build ---------------------------------------------------------------------------

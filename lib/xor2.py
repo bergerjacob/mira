@@ -5,7 +5,8 @@ from simulation.builder import *
 
 @part
 def xor2(p, floor=True):
-    p.points(solid(), (0, 0, 1), (1, 0, 1), (0, 0, 2), (1, 0, 2), (3, 0, 1), (3, 0, 2), (3, 0, 3), (4, 0, 2), (1, 0, 3))
+    if floor:                                         # the y=0 plane; a task floor replaces it
+        p.points(solid(), (0, 0, 1), (1, 0, 1), (0, 0, 2), (1, 0, 2), (3, 0, 1), (3, 0, 2), (3, 0, 3), (4, 0, 2), (1, 0, 3))
     p.fill((2, 1, 1), (2, 1, 3), solid())            # X column: A hub, XOR block, B hub
     p.points(solid(), (4, 1, 3), (2, 1, 0))
     p.set((0, 1, 1), wire())                          # input A (port)

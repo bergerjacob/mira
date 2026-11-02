@@ -77,7 +77,7 @@ def test_json_matches_authoring_script():
 
 def test_door_task_matches_nekochu_spec_coordinates():
     c = load_task("t2_door_2x2").contract
-    cells = sorted(p.pos for p in c.ports if p.kind == "region")
+    cells = sorted({p.pos for p in c.ports if p.kind == "region"})  # D (block_in) and A (air) ports share cells
     assert cells == [(0, 2, 3), (0, 3, 3), (1, 2, 3), (1, 3, 3)]
     assert c.keep_clear == [[0, 2, -3, 1, 3, 2], [0, 2, 4, 1, 3, 9]]
     assert "minecraft:piston_head" in c.forbidden and "minecraft:moving_piston" in c.forbidden

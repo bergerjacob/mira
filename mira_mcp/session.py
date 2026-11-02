@@ -67,7 +67,7 @@ def clip(text: str, n: Optional[int] = None) -> str:
 def task_files():
     """{task id: path} for env/tasks/*.json and env/tasks/t3/*.json."""
     out = {}
-    for d in (TASK_DIR, TASK_DIR / "t3"):
+    for d in (TASK_DIR, TASK_DIR / "t3", TASK_DIR / "t4"):
         for p in sorted(d.glob("*.json")):
             if p.stem.endswith("_report") or p.stem in ("compile_track_report", "oracle_report"):
                 continue

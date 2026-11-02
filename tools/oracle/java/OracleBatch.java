@@ -25,6 +25,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
@@ -65,6 +66,7 @@ public final class OracleBatch {
     private OracleBatch() {}
 
     private static final int MARGIN = 4;
+    private static final int MAX_WARMUP = 600;
     private static BlockPos ORIGIN;
     private static Method tickServer, waitUntilNextTick;
     private static MinecraftServer server;
@@ -103,6 +105,24 @@ public final class OracleBatch {
 
         Files.createDirectories(outDir);
         JsonArray jobs = JsonParser.parseString(Files.readString(jobsPath)).getAsJsonArray();
+        // Chunk loading must be done for the UNION of all job regions before the first job runs (see warmChunks).
+        BlockPos unionMin = null, unionMax = null;
+        for (JsonElement el : jobs) {
+            try {
+                BlockPos[] r = region(el.getAsJsonObject());
+                unionMin = unionMin == null ? r[0] : min(unionMin, r[0]);
+                unionMax = unionMax == null ? r[1] : max(unionMax, r[1]);
+            } catch (Throwable e) {
+                // a malformed job fails on its own below
+            }
+        }
+        if (unionMin != null) {
+            try {
+                System.out.println("warm " + warmChunks(unionMin, unionMax) + " ticks");
+            } catch (Throwable e) {
+                System.out.println("warm-up failed: " + e);
+            }
+        }
         BlockPos dirtyMin = null, dirtyMax = null;
         for (JsonElement el : jobs) {
             JsonObject job = el.getAsJsonObject();
@@ -154,6 +174,64 @@ public final class OracleBatch {
                 Math.max(a.getZ(), b.getZ()));
     }
 
+
+    /** Structure-local region of a job: [ORIGIN - MARGIN, ORIGIN + size + MARGIN], as runJob uses it. */
+    private static BlockPos[] region(JsonObject job) throws Exception {
+        CompoundTag tag = TagParser.parseCompoundFully(job.get("snbt").getAsString());
+        net.minecraft.core.Vec3i size = readTemplate(tag).getSize();
+        return new BlockPos[] {ORIGIN.offset(-MARGIN, -MARGIN, -MARGIN),
+                ORIGIN.offset(size.getX() + MARGIN, size.getY() + MARGIN, size.getZ() + MARGIN)};
+    }
+
+    private static List<ChunkPos> chunksOf(BlockPos min, BlockPos max) {
+        List<ChunkPos> chunks = new ArrayList<>();
+        for (int cx = min.getX() >> 4; cx <= (max.getX() >> 4); cx++) {
+            for (int cz = min.getZ() >> 4; cz <= (max.getZ() >> 4); cz++) {
+                chunks.add(new ChunkPos(cx, cz));
+            }
+        }
+        return chunks;
+    }
+
+    private static boolean chunksTicking(BlockPos min, BlockPos max) {
+        return chunksOf(min, max).stream().allMatch(c -> level.isPositionTickingWithEntitiesLoaded(c.pack()));
+    }
+
+    /**
+     * Ticket, force-load and tick until every chunk of the box simulates; returns the ticks it took and throws if
+     * they never do.
+     *
+     * Root cause of the batch contamination (round-2 audit M1): the old code did this per job. Chunks that an
+     * earlier job had not needed and that were ticketed after the server had been ticking never reached ticking in
+     * a long-running JVM (chunk tasks stayed pending: 57-636 of them for 5000 ticks, also with real-time pacing, a
+     * synchronous getChunk, or no wipe; only the first batch of tickets, added right after boot, ever loaded), and
+     * the 600-tick warm-up cap then expired SILENTLY, so the job traced a world whose redstone never ran
+     * (t1_xor then t3_adder4: 53 failed checks instead of 8). Why the chunk scheduler stalls was not pinned down;
+     * ticketing the union of all job regions once before the first job avoids it for every job order, and a
+     * region that still does not tick is now an error, not a wrong trace.
+     */
+    private static int warmChunks(BlockPos min, BlockPos max) throws Exception {
+        for (int cx = (min.getX() >> 4) - 1; cx <= (max.getX() >> 4) + 1; cx++) {
+            for (int cz = (min.getZ() >> 4) - 1; cz <= (max.getZ() >> 4) + 1; cz++) {
+                ChunkPos chunk = new ChunkPos(cx, cz);
+                level.getChunkSource().addTicketWithRadius(
+                        net.minecraft.server.level.TicketType.PLAYER_SIMULATION, chunk, 2);
+                level.getChunkSource().addTicketWithRadius(
+                        net.minecraft.server.level.TicketType.FORCED, chunk, 2);
+                level.setChunkForced(cx, cz, true);
+            }
+        }
+        int warmup = 0;
+        while (warmup < MAX_WARMUP && !chunksTicking(min, max)) {
+            tick();
+            warmup++;
+        }
+        if (warmup >= MAX_WARMUP) {
+            throw new IllegalStateException("chunks " + min + " .. " + max + " not ticking after " + warmup + " ticks");
+        }
+        return warmup;
+    }
+
     private static void tick() throws Exception {
         tickServer.invoke(server, (BooleanSupplier) () -> true);
         waitUntilNextTick.invoke(server);
@@ -164,6 +242,12 @@ public final class OracleBatch {
         for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
         }
+        // Scheduled ticks (buttons wait 20-30 ticks, longer than --idle) and queued piston events fire on whatever
+        // block the next job puts at the same position, so drop them as /clone does.
+        BoundingBox area = BoundingBox.fromCorners(min, max);
+        level.getBlockTicks().clearArea(area);
+        level.getFluidTicks().clearArea(area);
+        level.clearBlockEvents(area);
         AABB box = new AABB(min.getX(), min.getY(), min.getZ(),
                 max.getX() + 1, max.getY() + 1, max.getZ() + 1);
         for (Entity e : level.getEntitiesOfClass(Entity.class, box)) {
@@ -201,28 +285,9 @@ public final class OracleBatch {
         BlockPos min = ORIGIN.offset(-MARGIN, -MARGIN, -MARGIN);
         BlockPos max = ORIGIN.offset(size.getX() + MARGIN, size.getY() + MARGIN, size.getZ() + MARGIN);
 
-        // Region must simulate, not merely load: ticket every chunk it touches (see TraceCapture).
-        List<ChunkPos> chunks = new ArrayList<>();
-        for (int cx = (min.getX() >> 4) - 1; cx <= (max.getX() >> 4) + 1; cx++) {
-            for (int cz = (min.getZ() >> 4) - 1; cz <= (max.getZ() >> 4) + 1; cz++) {
-                ChunkPos chunk = new ChunkPos(cx, cz);
-                if (cx >= (min.getX() >> 4) && cx <= (max.getX() >> 4)
-                        && cz >= (min.getZ() >> 4) && cz <= (max.getZ() >> 4)) {
-                    chunks.add(chunk);
-                }
-                level.getChunkSource().addTicketWithRadius(
-                        net.minecraft.server.level.TicketType.PLAYER_SIMULATION, chunk, 2);
-                level.getChunkSource().addTicketWithRadius(
-                        net.minecraft.server.level.TicketType.FORCED, chunk, 2);
-                level.setChunkForced(cx, cz, true);
-            }
-        }
-        int warmup = 0;
-        while (warmup < 600 && !chunks.stream()
-                .allMatch(c -> level.isPositionTickingWithEntitiesLoaded(c.pack()))) {
-            tick();
-            warmup++;
-        }
+        // Region must simulate, not merely load. warmChunks() normally ran for the union of all jobs already; if this
+        // job is not covered (it cannot be, unless the prepass failed) this throws instead of tracing a dead world.
+        int warmup = chunksTicking(min, max) ? 0 : warmChunks(min, max);
         for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
         }

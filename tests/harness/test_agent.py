@@ -83,7 +83,7 @@ def test_tool_result_footer_counts_turns_and_rounds(task):
     llm = reference_llm(t, "blocks", 3)
     run_episode(RunConfig("t0_lamp", "m", "blocks", 3), llm)
     last = [m["content"] for m in llm.calls[-1]["messages"] if m["role"] == "tool"][-1]
-    assert "[turn 3/19 | run_spec 1/3 used]" in last
+    assert "[turn 3/30 | run_spec 1/3 used]" in last
 
 
 # ------------------------------------------------------------------ scoring
@@ -126,8 +126,16 @@ def test_output_token_cap_ends_episode_and_scores(task):
     assert f["ended_by"] == "token_cap" and f["turns"] == 1 and f["full_pass"]
 
 
-def test_max_turns_default_scales_with_rounds():
-    assert RunConfig("t", "m", "blocks", 0).max_turns == 10 and RunConfig("t", "m", "blocks", 8).max_turns == 34
+def test_max_turns_default_is_fixed_and_independent_of_rounds():
+    assert [RunConfig("t", "m", "blocks", r).max_turns for r in (0, 3, 8, 25)] == [30, 30, 30, 30]
+
+
+def test_turns_mode_scaled_keeps_the_round_1_budget_and_explicit_cap_wins():
+    assert RunConfig("t", "m", "blocks", 0, turns_mode="scaled").max_turns == 10
+    assert RunConfig("t", "m", "blocks", 8, turns_mode="scaled").max_turns == 34
+    assert RunConfig("t", "m", "blocks", 8, turns_mode="scaled", max_turns=7).max_turns == 7
+    with pytest.raises(ValueError):
+        RunConfig("t", "m", "blocks", 0, turns_mode="elastic")
 
 
 def test_idle_replies_get_nudged_then_end(task):

@@ -8,8 +8,9 @@ from simulation.builder import *
 def half_adder(p, floor=True):
     cmp_e = comparator(flow=EAST, mode="subtract")
     cmp_w = comparator(flow=WEST, mode="subtract")
-    # supports / ground
-    p.points(solid(), (0, 0, 1), (1, 0, 1), (0, 0, 2), (1, 0, 2), (3, 0, 1), (3, 0, 2), (3, 0, 3), (4, 0, 2), (1, 0, 3))
+    # supports / ground (the y=0 plane only with floor=True; a task floor replaces it)
+    if floor:
+        p.points(solid(), (0, 0, 1), (1, 0, 1), (0, 0, 2), (1, 0, 2), (3, 0, 1), (3, 0, 2), (3, 0, 3), (4, 0, 2), (1, 0, 3))
     p.fill((2, 1, 1), (2, 1, 4), solid())           # column X: the shared block powered by both XOR comparators
     p.points(solid(), (4, 1, 3), (3, 1, 4), (4, 1, 4), (2, 1, 0))
     p.set((1, 1, 4), slab(type="top"))              # non-conducting support: a full block would be powered by the wire at (1,1,3)

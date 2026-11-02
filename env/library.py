@@ -183,6 +183,17 @@ def counter_tff(s, i, bits=2, down=False):
     return {f"Q{k}": (s.get("n", 0) >> k) & 1 for k in range(bits)}
 
 
+# --------------------------------------------------------------------------- reference models for T4
+@M.model("addsub")
+def addsub(s, i, bits=8):
+    """A + B (M=0) or A - B (M=1) as A + ~B + 1: S0..S{bits-1}, COUT (= no borrow when subtracting)."""
+    a, b, m = _bits(i, "A", bits), _bits(i, "B", bits), i["M"]
+    t = a + ((~b) & ((1 << bits) - 1) if m else b) + m
+    out = {f"S{k}": (t >> k) & 1 for k in range(bits)}
+    out["COUT"] = (t >> bits) & 1
+    return out
+
+
 # --------------------------------------------------------------------------- bench
 def rotated_ports(build, inst="dut"):
     """-> {port: {"pos": (x,y,z), "kind": in|out, "face": dir}} for the placed component."""

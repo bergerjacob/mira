@@ -683,3 +683,132 @@ def test_wire_path_with_repeaters_carries_signal_past_15_blocks():
     assert drive(b, ["in"], "out", [((1,), True), ((0,), False)]) == [(True, True), (False, False)]
     no_rep = run(src.replace("P(39,1,0))", "P(39,1,0), repeat_every=100)"))
     assert drive(no_rep, ["in"], "out", [((1,), False)])[0][0] is False  # dust alone decays before 39 blocks
+
+
+# --- wire_path: fixed cells, boxes, floors, lever climbs, junction repeaters, conflicts ------------
+
+def wp(body, **kw):
+    return run("def build(b):\n" + "".join(f" {line}\n" for line in body.strip().splitlines()), **kw)
+
+
+def dust(build):
+    return sorted(p for p, s in states(build).items() if "redstone_wire" in s)
+
+
+def test_wire_path_returns_the_cells_and_keeps_old_defaults():
+    b = wp("cells = wire_path(b, P(0,1,0), P(3,1,2))\nb.set((9,9,9), stone())\nassert len(cells) == 6 and cells[0] == (0,1,0) and cells[-1] == (3,1,2)")
+    assert b.ok, b.errors
+    assert dust(b)[0] == (0, 1, 0) and states(b)[(0, 0, 0)] == "minecraft:stone"
+
+
+def test_wire_path_avoid_end_exclusive_and_start_exclusive_write_nothing_on_the_fixed_cells():
+    b = wp("wire_path(b, P(0,1,0), P(5,1,0), avoid=[(0,1,0), (5,1,0)], floor_exists=True)")
+    assert b.ok and dust(b) == [(x, 1, 0) for x in range(1, 5)] and (0, 1, 0) not in states(b) and (5, 1, 0) not in states(b)
+    b = wp("wire_path(b, P(0,1,0), P(5,1,0), start_exclusive=True, end_exclusive=True, floor_exists=True)")
+    assert b.ok and dust(b) == [(x, 1, 0) for x in range(1, 5)]
+    assert not any(y == 0 for (_, y, _) in states(b))              # floor_exists: no supports below y=1
+    b = wp("wire_path(b, P(0,1,0), P(5,1,0))")
+    assert dust(b)[0] == (0, 1, 0) and dust(b)[-1] == (5, 1, 0)    # default unchanged: both end cells are dust
+
+
+def test_wire_path_avoid_boxes_and_crossing_a_fixed_cell_is_an_error_naming_it():
+    b = wp("wire_path(b, P(0,1,0), P(5,1,0), avoid=[(3,1,0,3,2,0)])")
+    assert not b.ok and "(3, 1, 0)" in b.errors[0].message and "fixed" in b.errors[0].message
+    assert b.blocks == []                                           # planned first: nothing written on error
+    b = wp("wire_path(b, P(0,1,0), P(4,1,0), avoid=[(0,0,0,4,0,0)])")   # supports inside avoid are assumed to exist
+    assert b.ok and not any(y == 0 for (_, y, _) in states(b))
+
+
+def test_wire_path_floor_exists_skips_only_the_floor_supports():
+    b = wp("wire_path(b, P(0,1,0), P(4,3,0), floor_exists=True)")
+    st = states(b)
+    assert not any(y == 0 for (_, y, _) in st) and any(y == 1 and s == "minecraft:stone" for (_, y, _), s in st.items())
+    b = wp("wire_path(b, P(0,5,0), P(4,5,0), floor_exists=True, floor_y=4)")
+    assert not any(y == 4 for (_, y, _) in states(b))
+    b = wp("wire_path(b, P(0,1,0), P(4,1,0), support=None)")
+    assert len(b.blocks) == 5
+
+
+def test_wire_path_box_rejects_writes_outside_with_coordinates_and_a_floor_hint():
+    b = wp("wire_path(b, P(0,1,0), P(4,1,0), box=(0,1,0,4,5,0))")
+    assert not b.ok and "(0, 0, 0)" in b.errors[0].message and "floor_exists" in b.errors[0].message
+    b = wp("wire_path(b, P(0,1,0), P(4,1,0), box=(0,1,0,4,5,0), floor_exists=True)")
+    assert b.ok and len(dust(b)) == 5
+    b = wp("wire_path(b, P(0,1,0), P(9,1,0), box=(0,1,0,4,5,0), floor_exists=True)")
+    assert not b.ok and "(5, 1, 0)" in b.errors[0].message and b.blocks == []
+
+
+def test_wire_path_from_a_lever_or_to_a_lamp_never_climbs_diagonally_off_the_component():
+    b = wp("b.set((0,1,0), lever(face='floor', facing=EAST))\ncells = wire_path(b, P(0,1,0), P(4,3,0))\n")
+    assert b.ok
+    assert (1, 1, 0) in states(b) and "redstone_wire" in states(b)[(1, 1, 0)]          # one flat cell next to the lever, then up
+    assert dust(b) == [(1, 1, 0), (2, 2, 0), (3, 3, 0), (4, 3, 0)]
+    b = wp("b.set((6,3,0), lamp())\nwire_path(b, P(0,1,0), P(6,3,0))")
+    assert b.ok and dust(b)[-1] == (5, 3, 0) and (4, 3, 0) in dust(b)                   # climbs early, arrives flat
+    b = wp("wire_path(b, P(0,1,0), P(6,3,0), end_exclusive=True)")
+    assert b.ok and dust(b)[-1] == (5, 3, 0)
+    b = wp("b.set((0,1,0), lever(face='floor', facing=EAST))\nwire_path(b, P(0,1,0), P(2,3,0))")
+    assert not b.ok and "flat" in b.errors[0].message                                   # not enough steps for a flat cell + 2 climbs
+    b = wp("wire_path(b, P(0,1,0), P(3,3,0))")                                          # a plain dust start still climbs at once
+    assert b.ok and dust(b) == [(0, 1, 0), (1, 2, 0), (2, 3, 0), (3, 3, 0)]
+
+
+def test_wire_path_repeater_never_goes_on_a_junction_a_turn_or_a_tap():
+    b = wp("wire_path(b, P(0,1,0), P(12,1,0), repeat_every=4)")
+    reps = [x for (x, y, z), s in states(b).items() if "repeater" in s]
+    assert reps == [3, 7, 11]
+    # a branch already hanging off cell 3: the repeater moves to the next flat cell
+    b = wp("b.set((3,1,1), wire())\nb.set((3,0,1), stone())\nwire_path(b, P(0,1,0), P(12,1,0), repeat_every=4)")
+    reps = [x for (x, y, z), s in states(b).items() if "repeater" in s and z == 0]
+    assert reps[0] == 4 and 3 not in reps
+    b = wp("wire_path(b, P(0,1,0), P(12,1,0), repeat_every=4, taps=[(3,1,0)])")
+    assert [x for (x, y, z), s in states(b).items() if "repeater" in s][0] == 4
+    # a turn is never a repeater: x first, then z; the corner is (4,1,0)
+    b = wp("wire_path(b, P(0,1,0), P(4,1,8), repeat_every=5)")
+    assert (4, 1, 0) in dust(b)                                     # the 5th cell is the corner: dust there, repeater further on
+    reps = [(x, z) for (x, y, z), s in states(b).items() if "repeater" in s]
+    assert reps and all(x == 4 and z > 0 for x, z in reps)
+
+
+def test_wire_path_overwriting_another_block_is_an_error_but_joining_dust_is_fine():
+    b = wp("b.set((2,1,0), stone())\nwire_path(b, P(0,1,0), P(4,1,0))")
+    assert not b.ok and "(2, 1, 0)" in b.errors[0].message and "stone" in b.errors[0].message
+    b = wp("b.set((2,1,0), wire())\nwire_path(b, P(0,1,0), P(4,1,0))")
+    assert b.ok and len(dust(b)) == 5
+    b = wp("b.set((2,1,0), repeater(flow=EAST))\nwire_path(b, P(0,1,0), P(4,1,0))")      # in-line repeater is kept
+    assert b.ok and "repeater" in states(b)[(2, 1, 0)]
+    b = wp("b.set((2,1,0), repeater(flow=SOUTH))\nwire_path(b, P(0,1,0), P(4,1,0))")      # across the route: error
+    assert not b.ok and "(2, 1, 0)" in b.errors[0].message
+    b = wp("b.set((0,1,0), lamp())\nb.set((4,1,0), lever(face='floor', facing=EAST))\nwire_path(b, P(0,1,0), P(4,1,0))")
+    assert b.ok                                                                              # end components are left alone
+
+
+def test_wire_path_error_lists_every_conflict_up_to_a_limit():
+    b = wp("b.fill((1,1,0),(8,1,0), stone())\nwire_path(b, P(0,1,0), P(9,1,0))")
+    assert not b.ok and "(1, 1, 0)" in b.errors[0].message and "problems" in b.errors[0].message
+
+
+def test_wire_path_zfirst_routes_along_z_then_x():
+    b = wp("wire_path(b, P(0,1,0), P(3,1,2), zfirst=True)")
+    assert dust(b) == [(0, 1, 0), (0, 1, 1), (0, 1, 2), (1, 1, 2), (2, 1, 2), (3, 1, 2)]
+    b = wp("wire_path(b, P(0,1,0), P(3,1,2))")
+    assert dust(b) == [(0, 1, 0), (1, 1, 0), (2, 1, 0), (3, 1, 0), (3, 1, 1), (3, 1, 2)]
+    b = wp("wire_path(b, P(0,1,0), P(0,1,-3), zfirst=True)")
+    assert [p[2] for p in dust(b)] == [-3, -2, -1, 0]
+
+
+def test_wire_path_check_spacing_rejects_touching_foreign_dust_but_allows_the_route_itself_and_blocked_diagonals():
+    b = wp("b.points(wire(), (3,1,1), (4,1,1))\nb.points(stone(), (3,0,1), (4,0,1))\nwire_path(b, P(0,1,0), P(8,1,0), check_spacing=True)")
+    assert not b.ok and "(3, 1, 0)" in b.errors[0].message and "foreign dust" in b.errors[0].message and "(3, 1, 1)" in b.errors[0].message
+    b = wp("b.points(wire(), (3,1,2), (4,1,2))\nwire_path(b, P(0,1,0), P(8,1,0), check_spacing=True)")     # one cell apart: fine
+    assert b.ok
+    b = wp("b.points(wire(), (3,1,1), (4,1,1))\nwire_path(b, P(0,1,0), P(8,1,0))")                         # default stays permissive
+    assert b.ok
+    # joining a port by ending ON it is the intended way: the port is a path cell, not foreign
+    b = wp("b.set((5,1,0), wire())\nwire_path(b, P(0,1,0), P(5,1,0), check_spacing=True)")
+    assert b.ok
+    # diagonal: foreign dust one level up beside the route connects down to it unless a conductor sits above the LOWER (route) dust
+    b = wp("b.set((3,2,1), wire())\nb.set((3,1,1), stone())\nwire_path(b, P(0,1,0), P(6,1,0), check_spacing=True)")
+    assert not b.ok and "(3, 2, 1)" in b.errors[0].message
+    b = wp("b.set((3,2,1), wire())\nb.set((3,1,1), stone())\nb.set((3,2,0), stone())\nwire_path(b, P(0,1,0), P(6,1,0), check_spacing=True)")
+    assert b.ok

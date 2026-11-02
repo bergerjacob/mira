@@ -62,6 +62,8 @@ def read_out(contract, state, pname):
             return int(all(air(c) for c in cells))
         if p.region_mode == "solid":
             return int(all(not air(c) for c in cells))
+        if p.region_mode == "block_in":
+            return int(all(parse(c)[0] in p.blocks for c in cells))
         return int(all(parse(c)[0] == p.block for c in cells))
     bid, props = parse(get(p.pos))
     name = bid.split(":")[-1]
@@ -141,6 +143,7 @@ def main():
     ap.add_argument("--broken", action="store_true",
                     help="also run each task's hand-written broken variants (negative controls: must fail)")
     ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--isolated", action="store_true", help="one JVM per capture (slow; the reference verdicts)")
     ap.add_argument("--tag", default=time.strftime("%Y%m%d_%H%M%S"))
     args = ap.parse_args()
     ids = args.tasks.split(",") if args.tasks else list_task_ids()
@@ -162,7 +165,7 @@ def main():
                 work.append((task, tid + vname, label, blocks, plan, checks, env_pass))
     t0 = time.perf_counter()
     oracle = gametest.capture_many([(f"{w[1]}__{w[2].replace(':', '_')}", w[3], w[4]) for w in work],
-                                   workers=args.workers)
+                                   workers=args.workers, isolated=args.isolated)
     wall = time.perf_counter() - t0
     rows, agree = [], 0
     print(f"{'capture':34s} {'sim==vanilla':14s} {'vanilla contract':18s} {'nucleation contract':20s} env")

@@ -2,7 +2,7 @@
 
 What exists now (all offline-testable, Nucleation only; the vanilla 26.2 oracle is the referee, numbers below were measured on it):
 
-* `lib/` - **16 hand-authored / adapted components** as sandbox-legal builder parts (`lib/<name>.py`), each with a generated sidecar
+* `lib/` - **17 hand-authored / adapted components** (16 + `d_flipflop`, 2026-11-02, see T4) as sandbox-legal builder parts (`lib/<name>.py`), each with a generated sidecar
   (`lib/<name>.meta.json`: ports, spec, timing, input strengths, verified rotations, oracle verdict, provenance). Specs: `lib/specs.py`.
   Plus **109 corpus circuits** promoted into `lib/corpus/` (MIT, verified in env + vanilla; `lib/corpus/index.json`).
 * `env/library.py` - loader (`prelude`, `compile_program`), bench generator, verifier (env + oracle), corpus scan/promotion, T3 reference models.
@@ -68,6 +68,7 @@ Delay = ticks from an input flip to the last change of an output cell (max over 
 | `edge_detector` (pulse limiter) | A (W), Y (E) | 9x2x3 | 43 | Y rises 4 ticks after A, lasts 4 ticks | 15 | 2 | 8/8 | 18/18 |
 | `sr_latch` (NOR) | R (W), S (E) -> Q (E) | 9x2x3 | 44 | - | - | 1 | 8/7 | 36/36 |
 | `t_flipflop` (master/slave) | T (W) -> Q (E) | 7x2x6 | 66 | Q toggles 6 ticks after the rising edge; edges >= 12-16 ticks apart toggle in Nucleation (spec/oracle use >= 50) | - | 3 | **6/6** (rot90 and rot90+mirror_x fail) | 27/27 |
+| `d_flipflop` (positive-edge D, master/slave locked by CLK) | CLK (W), D (W) -> Q (E) | 7x2x3 | 34 | Q changes ~6 ticks after the rising edge; D changing in the very tick of the edge is not captured | - | CLK 3, D 1 | **8/8** | 45/45 |
 
 `wire_link` variants: (6,0,0), (4,0,3), (-4,0,-3), (3,3,0), (4,-2,3), (3,2,-4), (0,0,6), (24,0,0) [repeater after 14 dust], (12,4,12).
 
@@ -85,9 +86,12 @@ Facts the verification forced (all measured; each cost at least one failed attem
    an `EN` lever (a decoder-with-enable, 74138 style) instead of a constant 1.
 5. Sequential cells are orientation-sensitive: `sr_latch` rot270 and `t_flipflop` rot90 (and rot90+mirror_x) fail (placement-order dependent rest states); `full_adder` is functional in all 8 but one orientation is not paste-stable.
    The vanilla oracle accepts the rot90 `t_flipflop` that env rejects, i.e. this is a simulator/placement effect, not a property of the circuit.
-6. `wire_path` (`simulation.builder`): starting a route at a lever with a height change climbs *diagonally from the lever*, which dust cannot connect to (add one flat cell first);
-   a repeater may land exactly on a junction cell (then the branch is dead), so branch points need `repeat_every` large or an explicit repeater placed first; routes ignore obstacles; it adds support
-   blocks that are powered by the dust above them and must not touch foreign dust.
+6. `wire_path` (`simulation.builder`) - **fixed 2026-11-02** (docs/BUILDER.md has the full parameter list): a route that starts at a lever / ends at a lamp and changes height now inserts the flat dust cell itself (dust cannot connect diagonally to a lever);
+   repeaters never land on turns, climbs, junctions (foreign dust/repeater/comparator next to the cell) or `taps=` cells; an interior cell holding another block raises `BuilderError` naming the coordinates (nothing is written);
+   `box=` / `avoid=` / `start_exclusive` / `end_exclusive` / `floor_exists` keep it off the task's fixed devices and floor; `check_spacing=True` rejects dust that would touch foreign dust. Supports are still powered by the dust above them.
+   All 12 stored T3 references recompile to byte-identical solutions (`tests/env/test_library.py::test_t3_references_compile_to_the_stored_solutions_after_the_wire_path_upgrade`).
+7. `floor=False` (2026-11-02): `full_adder`, `half_adder`, `xor2`, `wire_link` used to write y=0 supports anyway. Fixed; `tests/env/test_library.py::test_floor_false_writes_nothing_at_or_below_the_support_plane` covers every part and variant.
+   (`wire_link`'s origin is the dust level; its support plane is y=-1.)
 
 ## Corpus promotion (`lib/corpus/`, `env/library.py corpus`)
 
@@ -181,6 +185,10 @@ Findings:
 * Simulator fidelity: tick-level comparator timing differs from vanilla on simultaneous input changes (3to8 decoder, 8-bit adder), and pre-powered comparator cells are paste-unstable; an ALU rests with many enabled comparators, so either fix the settle path or add a "cold start" convention (all enables low at rest) to every T4 spec.
 * Throughput: an 8-bit adder reference is 993 blocks and 13 s per full env run (50 s oracle for a 40-row sample); a 1000-block ALU with 256 vectors is ~30 s per run per candidate, an addressed RAM several times that. The mutation gate (24 mutants) already needs `--jobs 12` and 3 minutes for T3.
 * Specs: program-level specs (load a ROM, run N cycles) need a clock port kind and a register-readout region (`reference_model` + `mode: seq` + chained state across public/hidden streams, see "Needs" 3).
+
+## T4 (2026-11-02)
+
+Four T4 tasks (861-1993 reference blocks) built from these parts live in `env/tasks/t4/` (single source `env/tasks/author_t4.py`); table, measurements and requests: **docs/T4.md**. New part for them: `d_flipflop`.
 
 ## Deviations from the audits / open problems
 

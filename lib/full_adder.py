@@ -14,16 +14,18 @@ def full_adder(p, floor=True):
     rep_w, rep_e = repeater(flow=WEST, delay=1), repeater(flow=EAST, delay=1)
     rep_n, rep_s = repeater(flow=NORTH, delay=1), repeater(flow=SOUTH, delay=1)
     st = solid()
-    # supports and conducting blocks
-    p.fill((1, 0, 4), (1, 0, 6), st)
-    p.fill((3, 0, 4), (3, 0, 6), st)
+    # supports and conducting blocks (the y=0 plane only with floor=True; a task floor replaces it)
+    if floor:
+        p.fill((1, 0, 4), (1, 0, 6), st)
+        p.fill((3, 0, 4), (3, 0, 6), st)
+        p.points(st, (0, 0, 5), (4, 0, 5), (4, 0, 6))
     p.fill((3, 1, 1), (3, 1, 3), st)
     p.fill((5, 1, 1), (5, 1, 3), st)
     p.fill((2, 1, 4), (2, 1, 6), st)
     p.fill((0, 2, 0), (2, 2, 0), st)
     p.fill((4, 2, 0), (6, 2, 0), st)
     p.fill((4, 2, 1), (4, 2, 3), st)
-    p.points(st, (0, 0, 5), (4, 0, 5), (4, 0, 6), (2, 1, 2), (6, 1, 2), (0, 1, 3), (1, 1, 3), (0, 1, 4),
+    p.points(st, (2, 1, 2), (6, 1, 2), (0, 1, 3), (1, 1, 3), (0, 1, 4),
              (0, 2, 1), (6, 2, 1), (2, 2, 3), (3, 3, 0))
     # level y=1
     p.set((1, 1, 4), rep_e)

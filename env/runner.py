@@ -106,6 +106,8 @@ def read_port(sim: Sim, port: Port) -> int:
             return int(all(B.is_air(c) for c in cells))
         if port.region_mode == "solid":
             return int(all(not B.is_air(c) for c in cells))
+        if port.region_mode == "block_in":
+            return int(all(parse(c)[0] in port.blocks for c in cells))
         return int(all(parse(c)[0] == port.block for c in cells))
     bid, props = parse(sim.get(port.pos))
     name = bid.split(":")[-1]

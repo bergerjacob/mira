@@ -10,7 +10,8 @@ from typing import Optional
 
 INPUT_KINDS = ("click", "pad")  # click: use_block on a lever/button; pad: redstone_block placed/removed in an empty cell
 OUTPUT_KINDS = ("lamp", "wire_power", "piston", "torch", "block_prop", "region")
-REGION_MODES = ("air", "solid", "block")  # output=1 iff all cells are air / non-air / the given block
+REGION_MODES = ("air", "solid", "block", "block_in")  # output=1 iff all cells are air / non-air / the given block / one of `blocks`
+# "solid" counts ANY non-air block, including piston_head / moving_piston; use "block_in" when the cells must hold a real pushed block
 DEFAULT_FORBIDDEN = ("minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block",
                      "minecraft:structure_block", "minecraft:jigsaw", "minecraft:test_block",
                      "minecraft:test_instance_block", "minecraft:barrier")
@@ -32,6 +33,7 @@ class Port:
     box: Optional[list] = None        # region: cells to test
     region_mode: str = "air"
     block: Optional[str] = None       # region_mode == "block"
+    blocks: Optional[list] = None     # region_mode == "block_in": block ids that count as 1 (allowlist; states ignored)
     doc: str = ""
 
     @property
@@ -300,6 +302,8 @@ class Contract:
                 errs.append(f"port {p.name}: region needs box and mode in {REGION_MODES}")
             if p.kind == "region" and p.region_mode == "block" and not p.block:
                 errs.append(f"port {p.name}: region_mode=block needs `block`")
+            if p.kind == "region" and p.region_mode == "block_in" and not p.blocks:
+                errs.append(f"port {p.name}: region_mode=block_in needs a non-empty `blocks` allowlist")
         if not any(p.is_input for p in self.ports):
             errs.append("no input ports")
         if not any(p.is_output for p in self.ports):

@@ -28,6 +28,8 @@ from harness import prompts
 from harness.llm import BudgetExceeded, InsufficientCredits, LLMError, normalise_message
 
 ARMS = ("blocks", "builder")
+TURNS_MODES = ("fixed", "scaled")
+FIXED_TURNS = 30                # turn cap independent of R (round-2 audit M2: 10 + 3R mixed feedback with turn budget)
 MAX_COMPILE_BLOCKS = 50_000     # builder arm: stop runaway programs early (the contract's own max_blocks is checked after)
 NUDGE = ("No tool call received. Use the tools: call build/set_blocks to place blocks, view to inspect, run_spec to simulate "
          "(if offered) and submit() when you are done.")
@@ -40,12 +42,14 @@ class RunConfig:
     arm: str
     rounds: int
     seed: int = 0
-    max_turns: Optional[int] = None          # default 10 + 3*R
+    max_turns: Optional[int] = None          # explicit cap; None = derived from turns_mode
+    turns_mode: str = "fixed"                # "fixed": FIXED_TURNS for every R (R then changes feedback only) | "scaled": 10 + 3*R (round-1 grid)
     max_tokens: int = 16384                  # per call (8192 truncated reasoning models before the first tool call; see docs/EXPERIMENT_01.md)
     max_output_tokens: int = 40_000          # per episode (completion tokens incl. reasoning)
     temperature: float = 0.7
     reasoning: Optional[str] = None          # OpenRouter reasoning.effort, None = provider default
     palette_hint: bool = True
+    blocks_examples: bool = True             # blocks arm: worked examples equal to the builder arm's (False = the round-1 prompt)
     keep_reasoning: bool = False             # echo provider reasoning_details in later turns (some thinking models need it)
     max_result_chars: int = 7000
     max_idle: int = 3                        # consecutive replies without tool calls before the episode is ended
@@ -55,8 +59,10 @@ class RunConfig:
             raise ValueError(f"arm must be one of {ARMS}")
         if self.rounds < 0:
             raise ValueError("rounds must be >= 0")
+        if self.turns_mode not in TURNS_MODES:
+            raise ValueError(f"turns_mode must be one of {TURNS_MODES}")
         if self.max_turns is None:
-            self.max_turns = 10 + 3 * self.rounds
+            self.max_turns = FIXED_TURNS if self.turns_mode == "fixed" else 10 + 3 * self.rounds
 
     @property
     def key(self) -> str:
@@ -154,7 +160,7 @@ class Episode:
         self.env = Env(self.task, seed=cfg.seed, max_rounds=cfg.rounds if cfg.rounds > 0 else 0)
         self.tools = build_tools(cfg.arm, cfg.rounds)
         self.tool_names = {t["function"]["name"] for t in self.tools}
-        self.system = prompts.system_prompt(cfg.arm)
+        self.system = prompts.system_prompt(cfg.arm, cfg.blocks_examples)
         self.user = prompts.task_prompt(self.task, cfg.arm, cfg.rounds, cfg.max_turns, cfg.palette_hint)
         self.stop_file = Path(stop_file) if stop_file else None
         self.log_path = None

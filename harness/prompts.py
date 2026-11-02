@@ -39,7 +39,63 @@ PALETTE = ("Typical palette: stone / smooth_stone (solid, conducts), glass (does
            "redstone_torch / redstone_wall_torch, redstone_block, lever, stone_button, observer, piston, sticky_piston, redstone_lamp, "
            "target, slab. Not every block can be simulated; the tools tell you when one is refused.")
 
-BLOCKS_SYSTEM = f"""\
+# Worked examples for the blocks arm: the SAME three circuits as the worked examples in evaluation/prompts/builder_system.md
+# (lamp, NOT gate, AND from three inverters), written as tool calls instead of builder code, so the two arms differ in
+# representation only. tests/harness/test_prompts.py compiles both sets and asserts that they place identical blocks.
+BLOCKS_EXAMPLES = """\
+## Worked examples
+Each of these is a valid sequence of tool calls, and the simulator confirms the stated behaviour. The coordinates belong to the
+example; in a task use the task's own coordinates and skip blocks the task already fixes.
+
+### 1. Lever -> wire -> lamp
+The lamp is lit exactly when the lever is on.
+```
+fill(0,0,0, 6,0,0, "minecraft:stone")                                   # floor
+set_blocks([[0,1,0,"minecraft:lever[face=floor,facing=east]"], [6,1,0,"minecraft:redstone_lamp"]])
+fill(1,1,0, 5,1,0, "minecraft:redstone_wire")
+```
+
+### 2. NOT gate
+The lamp is lit exactly when the lever is OFF. The lever powers a block; a torch on that block inverts it.
+```
+fill(0,0,0, 6,0,0, "minecraft:stone")                                   # floor under everything
+set_blocks([[1,1,0,"minecraft:stone"]])                                 # block the lever powers
+set_blocks([[0,1,0,"minecraft:lever[face=wall,facing=west]"]])          # sticks out west, mounted on (1,1,0)
+set_blocks([[2,1,0,"minecraft:redstone_wall_torch[facing=east]"]])      # sticks out east, mounted on (1,1,0)
+fill(3,1,0, 5,1,0, "minecraft:redstone_wire")
+set_blocks([[6,1,0,"minecraft:redstone_lamp"]])
+```
+
+### 3. AND gate from three inverters (NOR of NOTs)
+Levers `A` and `B` are at (-1,1,0) and (-1,1,4), the lamp `Q` is at (8,1,2); `Q` is lit only when both levers are on. An inverter is
+floor, dust, stone, wall torch, dust in a row along x; it is written out three times (z=0, z=4, and z=2 shifted east). The dust column
+at x=3 joins the two inverter outputs (an OR of the inverted inputs) and feeds the third inverter.
+```
+# inverter A (input dust at (0,1,0), output dust at (3,1,0))
+fill(0,0,0, 3,0,0, "minecraft:stone")
+set_blocks([[0,1,0,"minecraft:redstone_wire"], [1,1,0,"minecraft:stone"], [2,1,0,"minecraft:redstone_wall_torch[facing=east]"], [3,1,0,"minecraft:redstone_wire"]])
+# inverter B (same, 4 blocks south)
+fill(0,0,4, 3,0,4, "minecraft:stone")
+set_blocks([[0,1,4,"minecraft:redstone_wire"], [1,1,4,"minecraft:stone"], [2,1,4,"minecraft:redstone_wall_torch[facing=east]"], [3,1,4,"minecraft:redstone_wire"]])
+# OR of the inverted inputs: a dust column on stone between the two outputs
+fill(3,0,1, 3,0,3, "minecraft:stone")
+fill(3,1,1, 3,1,3, "minecraft:redstone_wire")
+# output inverter: NOT(OR(NOT a, NOT b)) = a AND b; its input dust (4,1,2) touches the column
+fill(4,0,2, 7,0,2, "minecraft:stone")
+set_blocks([[4,1,2,"minecraft:redstone_wire"], [5,1,2,"minecraft:stone"], [6,1,2,"minecraft:redstone_wall_torch[facing=east]"], [7,1,2,"minecraft:redstone_wire"]])
+# inputs and output
+set_blocks([[-1,0,0,"minecraft:stone"], [-1,0,4,"minecraft:stone"]])
+set_blocks([[-1,1,0,"minecraft:lever[face=floor,facing=east]"], [-1,1,4,"minecraft:lever[face=floor,facing=east]"]])
+set_blocks([[8,0,2,"minecraft:stone"], [8,1,2,"minecraft:redstone_lamp"]])
+```
+
+"""
+
+def _blocks_system(examples: bool = True) -> str:
+    return BLOCKS_SYSTEM_TEMPLATE.replace("@@EXAMPLES@@", BLOCKS_EXAMPLES if examples else "")
+
+
+BLOCKS_SYSTEM_TEMPLATE = f"""\
 You are an expert Minecraft redstone engineer. You build redstone contraptions in a deterministic simulator of vanilla Minecraft
 Java redstone by calling tools. A task gives you fixed devices (levers, lamps, pistons...), named ports, a build box and the
 behaviour to meet. You never write the test; you place blocks, and your build is scored on the stated behaviour (public example
@@ -57,7 +113,7 @@ Call tools; do not describe a build in prose only. The build is whatever blocks 
   an episode that ends without submit is scored as it stands.
 
 {PHYSICS}
-## Working style
+@@EXAMPLES@@## Working style
 Plan the signal path first (source -> transmission -> logic -> output), then write coordinates. Use few large set_blocks/fill calls
 rather than many tiny ones. Smaller, simpler builds score slightly higher once they are correct.
 """
@@ -87,9 +143,13 @@ def builder_system() -> str:
     return BUILDER_SYSTEM_PATH.read_text() + BUILDER_APPENDIX
 
 
-def system_prompt(arm: str) -> str:
+BLOCKS_SYSTEM = _blocks_system(True)
+BLOCKS_SYSTEM_NO_EXAMPLES = _blocks_system(False)     # the round-1 grid's blocks prompt, byte for byte
+
+
+def system_prompt(arm: str, blocks_examples: bool = True) -> str:
     if arm == "blocks":
-        return BLOCKS_SYSTEM
+        return BLOCKS_SYSTEM if blocks_examples else BLOCKS_SYSTEM_NO_EXAMPLES
     if arm == "builder":
         return builder_system()
     raise ValueError(f"unknown arm {arm!r}")
