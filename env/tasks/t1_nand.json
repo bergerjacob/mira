@@ -87,7 +87,7 @@
       "expect": {
        "Y": 1
       },
-      "public": false,
+      "public": true,
       "label": "01"
      },
      {

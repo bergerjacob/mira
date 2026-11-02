@@ -106,7 +106,7 @@
       "expect": {
        "Y": 0
       },
-      "public": false,
+      "public": true,
       "label": "001"
      },
      {
@@ -118,7 +118,7 @@
       "expect": {
        "Y": 0
       },
-      "public": false,
+      "public": true,
       "label": "010"
      },
      {
@@ -142,7 +142,7 @@
       "expect": {
        "Y": 0
       },
-      "public": false,
+      "public": true,
       "label": "100"
      },
      {
@@ -154,7 +154,7 @@
       "expect": {
        "Y": 0
       },
-      "public": false,
+      "public": true,
       "label": "101"
      },
      {

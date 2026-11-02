@@ -87,7 +87,7 @@
       "expect": {
        "Y": 0
       },
-      "public": false,
+      "public": true,
       "label": "01"
      },
      {
@@ -109,7 +109,7 @@
       "expect": {
        "Y": 0
       },
-      "public": false,
+      "public": true,
       "label": "11"
      },
      {

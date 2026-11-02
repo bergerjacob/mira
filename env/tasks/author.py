@@ -108,12 +108,12 @@ class Plan:
         self.solution.append([*pos, state])
 
     def table(self, ins, outs, fn, public_every=2, extra_hidden_repeat=True, shuffle=True, settle=100, reset_between=False):
-        """Exhaustive truth table from fn(**inputs)->tuple; public rows = every `public_every`th (all for 1 input),
+        """Exhaustive truth table from fn(**inputs)->tuple; public rows = every `public_every`th (all for <=3 inputs: the truth table is the spec),
         hidden = the rest plus a full second copy, so evaluation order/leftover state matters."""
         combos = list(itertools.product((0, 1), repeat=len(ins)))
         res = {c: fn(**dict(zip(ins, c))) for c in combos}
         res = {c: (r if isinstance(r, tuple) else (r,)) for c, r in res.items()}
-        public = {i for i in range(len(combos)) if len(ins) == 1 or i % public_every == 0}
+        public = {i for i in range(len(combos)) if len(ins) <= 3 or i % public_every == 0}
         for k in range(len(outs)):  # public rows must show both output values, or constant outputs would pass them
             for val in (0, 1):
                 if not any(res[combos[i]][k] == val for i in public):
