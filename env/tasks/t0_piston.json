@@ -1,0 +1,201 @@
+{
+ "contract": {
+  "id": "t0_piston",
+  "title": "Lever extends a piston",
+  "tier": "T0",
+  "description": "Flipping the lever must extend the piston (pointing up); switching the lever off must retract it.",
+  "bbox": [0, 0, 0, 6, 2, 2],
+  "build_box": [0, 1, 0, 6, 2, 2],
+  "ports": [
+   {
+    "name": "A",
+    "kind": "click",
+    "pos": [0, 1, 1],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "lever (click toggles)"
+   },
+   {
+    "name": "Y",
+    "kind": "piston",
+    "pos": [5, 1, 1],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "piston (output 1 = extended)"
+   }
+  ],
+  "fixed": [
+   {
+    "box": [0, 0, 0, 6, 0, 2],
+    "state": "minecraft:smooth_stone"
+   },
+   {
+    "box": [0, 1, 1, 0, 1, 1],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [5, 1, 1, 5, 1, 1],
+    "state": "minecraft:piston[extended=false,facing=up]"
+   }
+  ],
+  "behaviour": {
+   "truth_table": {
+    "rows": [
+     {
+      "inputs": {
+       "A": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": true,
+      "label": "0"
+     },
+     {
+      "inputs": {
+       "A": 1
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": true,
+      "label": "1"
+     },
+     {
+      "inputs": {
+       "A": 1
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": false,
+      "label": "1'"
+     },
+     {
+      "inputs": {
+       "A": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "0'"
+     }
+    ],
+    "settle": 100,
+    "extra": 2,
+    "shuffle": true,
+    "reset_between": false,
+    "order_independent": true
+   },
+   "sequences": [],
+   "reference_model": null
+  },
+  "invariants": {
+   "at_rest": true,
+   "paste_stable": true,
+   "deterministic": true,
+   "no_oscillation": true,
+   "no_forbidden": true,
+   "no_collateral": true,
+   "keep_clear": true,
+   "no_popoff": true,
+   "change_boxes": []
+  },
+  "budgets": {
+   "rest": 200,
+   "total": 20000,
+   "max_blocks": 2000
+  },
+  "forbidden": ["minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:structure_block", "minecraft:jigsaw", "minecraft:test_block", "minecraft:test_instance_block", "minecraft:barrier"],
+  "keep_clear": [],
+  "no_write": [],
+  "eval_seed": 4850,
+  "depends": {},
+  "reference": {
+   "blocks": 4,
+   "volume": 4
+  },
+  "hints": []
+ },
+ "broken": [
+  {
+   "name": "remove redstone_wire [4, 1, 1]",
+   "kind": "remove",
+   "edits": [
+    [
+     "remove",
+     [4, 1, 1]
+    ]
+   ]
+  },
+  {
+   "name": "shift redstone_wire [3, 1, 1] north",
+   "kind": "shift",
+   "edits": [
+    [
+     "remove",
+     [3, 1, 1]
+    ],
+    [
+     "set",
+     [3, 1, 0],
+     "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"
+    ]
+   ]
+  },
+  {
+   "name": "replace wire [2, 1, 1] with stone",
+   "kind": "swap",
+   "edits": [
+    [
+     "set",
+     [2, 1, 1],
+     "minecraft:stone"
+    ]
+   ]
+  },
+  {
+   "name": "remove redstone_wire [2, 1, 1]",
+   "kind": "remove",
+   "edits": [
+    [
+     "remove",
+     [2, 1, 1]
+    ]
+   ]
+  },
+  {
+   "name": "shift redstone_wire [4, 1, 1] north",
+   "kind": "shift",
+   "edits": [
+    [
+     "remove",
+     [4, 1, 1]
+    ],
+    [
+     "set",
+     [4, 1, 0],
+     "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"
+    ]
+   ]
+  }
+ ],
+ "notes": "",
+ "solution": [
+  [1, 1, 1, "minecraft:redstone_wire"],
+  [2, 1, 1, "minecraft:redstone_wire"],
+  [3, 1, 1, "minecraft:redstone_wire"],
+  [4, 1, 1, "minecraft:redstone_wire"]
+ ]
+}

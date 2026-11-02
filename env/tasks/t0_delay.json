@@ -1,0 +1,251 @@
+{
+ "contract": {
+  "id": "t0_delay",
+  "title": "Delay line",
+  "tier": "T0",
+  "description": "When the lever turns on, the lamp must NOT light for at least 10 ticks, but must be lit within 22 ticks. When the lever turns off the lamp goes off (lamps hold 4 ticks extra). Repeaters delay by 2 ticks per setting.",
+  "bbox": [0, 0, 0, 13, 2, 2],
+  "build_box": [0, 1, 0, 13, 2, 2],
+  "ports": [
+   {
+    "name": "A",
+    "kind": "click",
+    "pos": [0, 1, 1],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "lever (click toggles)"
+   },
+   {
+    "name": "Y",
+    "kind": "lamp",
+    "pos": [13, 1, 1],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "redstone lamp, output 1 = lit"
+   }
+  ],
+  "fixed": [
+   {
+    "box": [0, 0, 0, 13, 0, 2],
+    "state": "minecraft:smooth_stone"
+   },
+   {
+    "box": [0, 1, 1, 0, 1, 1],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [13, 1, 1, 13, 1, 1],
+    "state": "minecraft:redstone_lamp[lit=false]"
+   }
+  ],
+  "behaviour": {
+   "truth_table": null,
+   "sequences": [
+    {
+     "name": "on_delay",
+     "events": [
+      {
+       "t": 0,
+       "set": {
+        "A": 1
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Y",
+       "value": 0,
+       "t1": 0,
+       "t2": 9,
+       "mode": "all"
+      },
+      {
+       "port": "Y",
+       "value": 1,
+       "t1": 22,
+       "t2": 40,
+       "mode": "all"
+      }
+     ],
+     "duration": 40,
+     "public": true
+    },
+    {
+     "name": "off",
+     "events": [
+      {
+       "t": 0,
+       "set": {
+        "A": 1
+       }
+      },
+      {
+       "t": 40,
+       "set": {
+        "A": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Y",
+       "value": 1,
+       "t1": 30,
+       "t2": 40,
+       "mode": "all"
+      },
+      {
+       "port": "Y",
+       "value": 0,
+       "t1": 66,
+       "t2": 90,
+       "mode": "all"
+      }
+     ],
+     "duration": 90,
+     "public": false
+    },
+    {
+     "name": "pulse",
+     "events": [
+      {
+       "t": 0,
+       "set": {
+        "A": 1
+       }
+      },
+      {
+       "t": 6,
+       "set": {
+        "A": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Y",
+       "value": 0,
+       "t1": 0,
+       "t2": 9,
+       "mode": "all"
+      }
+     ],
+     "duration": 60,
+     "public": false
+    }
+   ],
+   "reference_model": null
+  },
+  "invariants": {
+   "at_rest": true,
+   "paste_stable": true,
+   "deterministic": true,
+   "no_oscillation": true,
+   "no_forbidden": true,
+   "no_collateral": true,
+   "keep_clear": true,
+   "no_popoff": true,
+   "change_boxes": []
+  },
+  "budgets": {
+   "rest": 200,
+   "total": 20000,
+   "max_blocks": 2000
+  },
+  "forbidden": ["minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:structure_block", "minecraft:jigsaw", "minecraft:test_block", "minecraft:test_instance_block", "minecraft:barrier"],
+  "keep_clear": [],
+  "no_write": [],
+  "eval_seed": 3697,
+  "depends": {},
+  "reference": {
+   "blocks": 12,
+   "volume": 12
+  },
+  "hints": []
+ },
+ "broken": [
+  {
+   "name": "turn repeater [4, 1, 1] west->north",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [4, 1, 1],
+     "minecraft:repeater[delay=3,facing=north,locked=false,powered=false]"
+    ]
+   ]
+  },
+  {
+   "name": "remove redstone_wire [7, 1, 1]",
+   "kind": "remove",
+   "edits": [
+    [
+     "remove",
+     [7, 1, 1]
+    ]
+   ]
+  },
+  {
+   "name": "shift redstone_wire [9, 1, 1] north",
+   "kind": "shift",
+   "edits": [
+    [
+     "remove",
+     [9, 1, 1]
+    ],
+    [
+     "set",
+     [9, 1, 0],
+     "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"
+    ]
+   ]
+  },
+  {
+   "name": "replace wire [8, 1, 1] with stone",
+   "kind": "swap",
+   "edits": [
+    [
+     "set",
+     [8, 1, 1],
+     "minecraft:stone"
+    ]
+   ]
+  },
+  {
+   "name": "turn repeater [2, 1, 1] west->north",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [2, 1, 1],
+     "minecraft:repeater[delay=4,facing=north,locked=false,powered=false]"
+    ]
+   ]
+  }
+ ],
+ "notes": "",
+ "solution": [
+  [1, 1, 1, "minecraft:redstone_wire"],
+  [2, 1, 1, "minecraft:repeater[facing=west,delay=4]"],
+  [3, 1, 1, "minecraft:redstone_wire"],
+  [4, 1, 1, "minecraft:repeater[facing=west,delay=3]"],
+  [5, 1, 1, "minecraft:redstone_wire"],
+  [6, 1, 1, "minecraft:redstone_wire"],
+  [7, 1, 1, "minecraft:redstone_wire"],
+  [8, 1, 1, "minecraft:redstone_wire"],
+  [9, 1, 1, "minecraft:redstone_wire"],
+  [10, 1, 1, "minecraft:redstone_wire"],
+  [11, 1, 1, "minecraft:redstone_wire"],
+  [12, 1, 1, "minecraft:redstone_wire"]
+ ]
+}

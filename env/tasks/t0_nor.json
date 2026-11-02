@@ -1,0 +1,270 @@
+{
+ "contract": {
+  "id": "t0_nor",
+  "title": "NOR gate",
+  "tier": "T0",
+  "description": "The lamp must be on only when both levers are off.",
+  "bbox": [0, 0, 0, 7, 2, 2],
+  "build_box": [0, 1, 0, 7, 2, 2],
+  "ports": [
+   {
+    "name": "A",
+    "kind": "click",
+    "pos": [0, 1, 0],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "lever (click toggles)"
+   },
+   {
+    "name": "B",
+    "kind": "click",
+    "pos": [0, 1, 2],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "lever (click toggles)"
+   },
+   {
+    "name": "Y",
+    "kind": "lamp",
+    "pos": [7, 1, 1],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "redstone lamp, output 1 = lit"
+   }
+  ],
+  "fixed": [
+   {
+    "box": [0, 0, 0, 7, 0, 2],
+    "state": "minecraft:smooth_stone"
+   },
+   {
+    "box": [0, 1, 0, 0, 1, 0],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [0, 1, 2, 0, 1, 2],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [7, 1, 1, 7, 1, 1],
+    "state": "minecraft:redstone_lamp[lit=false]"
+   }
+  ],
+  "behaviour": {
+   "truth_table": {
+    "rows": [
+     {
+      "inputs": {
+       "A": 0,
+       "B": 0
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": true,
+      "label": "00"
+     },
+     {
+      "inputs": {
+       "A": 0,
+       "B": 1
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "01"
+     },
+     {
+      "inputs": {
+       "A": 1,
+       "B": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": true,
+      "label": "10"
+     },
+     {
+      "inputs": {
+       "A": 1,
+       "B": 1
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "11"
+     },
+     {
+      "inputs": {
+       "A": 1,
+       "B": 1
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "11'"
+     },
+     {
+      "inputs": {
+       "A": 1,
+       "B": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "10'"
+     },
+     {
+      "inputs": {
+       "A": 0,
+       "B": 1
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "01'"
+     },
+     {
+      "inputs": {
+       "A": 0,
+       "B": 0
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": false,
+      "label": "00'"
+     }
+    ],
+    "settle": 100,
+    "extra": 2,
+    "shuffle": true,
+    "reset_between": false,
+    "order_independent": true
+   },
+   "sequences": [],
+   "reference_model": null
+  },
+  "invariants": {
+   "at_rest": true,
+   "paste_stable": true,
+   "deterministic": true,
+   "no_oscillation": true,
+   "no_forbidden": true,
+   "no_collateral": true,
+   "keep_clear": true,
+   "no_popoff": true,
+   "change_boxes": []
+  },
+  "budgets": {
+   "rest": 200,
+   "total": 20000,
+   "max_blocks": 2000
+  },
+  "forbidden": ["minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:structure_block", "minecraft:jigsaw", "minecraft:test_block", "minecraft:test_instance_block", "minecraft:barrier"],
+  "keep_clear": [],
+  "no_write": [],
+  "eval_seed": 2176,
+  "depends": {},
+  "reference": {
+   "blocks": 11,
+   "volume": 18
+  },
+  "hints": []
+ },
+ "broken": [
+  {
+   "name": "flip redstone_wall_torch [5, 1, 1] east->west",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [5, 1, 1],
+     "minecraft:redstone_wall_torch[facing=west,lit=true]"
+    ]
+   ]
+  },
+  {
+   "name": "remove stone [4, 1, 1]",
+   "kind": "remove",
+   "edits": [
+    [
+     "remove",
+     [4, 1, 1]
+    ]
+   ]
+  },
+  {
+   "name": "shift redstone_wall_torch [5, 1, 1] north",
+   "kind": "shift",
+   "edits": [
+    [
+     "remove",
+     [5, 1, 1]
+    ],
+    [
+     "set",
+     [5, 1, 0],
+     "minecraft:redstone_wall_torch[facing=east,lit=true]"
+    ]
+   ]
+  },
+  {
+   "name": "replace wire [1, 1, 2] with stone",
+   "kind": "swap",
+   "edits": [
+    [
+     "set",
+     [1, 1, 2],
+     "minecraft:stone"
+    ]
+   ]
+  },
+  {
+   "name": "turn redstone_wall_torch [5, 1, 1] east->south",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [5, 1, 1],
+     "minecraft:redstone_wall_torch[facing=south,lit=true]"
+    ]
+   ]
+  }
+ ],
+ "notes": "",
+ "solution": [
+  [1, 1, 0, "minecraft:redstone_wire"],
+  [2, 1, 0, "minecraft:redstone_wire"],
+  [1, 1, 2, "minecraft:redstone_wire"],
+  [2, 1, 2, "minecraft:redstone_wire"],
+  [2, 1, 0, "minecraft:redstone_wire"],
+  [2, 1, 1, "minecraft:redstone_wire"],
+  [2, 1, 2, "minecraft:redstone_wire"],
+  [3, 1, 1, "minecraft:redstone_wire"],
+  [4, 1, 1, "minecraft:stone"],
+  [5, 1, 1, "minecraft:redstone_wall_torch[facing=east]"],
+  [6, 1, 1, "minecraft:redstone_wire"]
+ ]
+}

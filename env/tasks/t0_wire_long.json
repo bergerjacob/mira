@@ -1,0 +1,214 @@
+{
+ "contract": {
+  "id": "t0_wire_long",
+  "title": "Signal over a long line",
+  "tier": "T0",
+  "description": "The lamp is 21 blocks from the lever. Redstone dust loses one signal level per block, so the signal must be boosted on the way. Light the lamp when the lever is on.",
+  "bbox": [0, 0, 0, 21, 2, 2],
+  "build_box": [0, 1, 0, 21, 2, 2],
+  "ports": [
+   {
+    "name": "A",
+    "kind": "click",
+    "pos": [0, 1, 1],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "lever (click toggles)"
+   },
+   {
+    "name": "Y",
+    "kind": "lamp",
+    "pos": [21, 1, 1],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "redstone lamp, output 1 = lit"
+   }
+  ],
+  "fixed": [
+   {
+    "box": [0, 0, 0, 21, 0, 2],
+    "state": "minecraft:smooth_stone"
+   },
+   {
+    "box": [0, 1, 1, 0, 1, 1],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [21, 1, 1, 21, 1, 1],
+    "state": "minecraft:redstone_lamp[lit=false]"
+   }
+  ],
+  "behaviour": {
+   "truth_table": {
+    "rows": [
+     {
+      "inputs": {
+       "A": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": true,
+      "label": "0"
+     },
+     {
+      "inputs": {
+       "A": 1
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": true,
+      "label": "1"
+     },
+     {
+      "inputs": {
+       "A": 1
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": false,
+      "label": "1'"
+     },
+     {
+      "inputs": {
+       "A": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "0'"
+     }
+    ],
+    "settle": 100,
+    "extra": 2,
+    "shuffle": true,
+    "reset_between": false,
+    "order_independent": true
+   },
+   "sequences": [],
+   "reference_model": null
+  },
+  "invariants": {
+   "at_rest": true,
+   "paste_stable": true,
+   "deterministic": true,
+   "no_oscillation": true,
+   "no_forbidden": true,
+   "no_collateral": true,
+   "keep_clear": true,
+   "no_popoff": true,
+   "change_boxes": []
+  },
+  "budgets": {
+   "rest": 200,
+   "total": 20000,
+   "max_blocks": 2000
+  },
+  "forbidden": ["minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:structure_block", "minecraft:jigsaw", "minecraft:test_block", "minecraft:test_instance_block", "minecraft:barrier"],
+  "keep_clear": [],
+  "no_write": [],
+  "eval_seed": 8177,
+  "depends": {},
+  "reference": {
+   "blocks": 20,
+   "volume": 20
+  },
+  "hints": []
+ },
+ "broken": [
+  {
+   "name": "turn repeater [10, 1, 1] west->north",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [10, 1, 1],
+     "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"
+    ]
+   ]
+  },
+  {
+   "name": "remove redstone_wire [13, 1, 1]",
+   "kind": "remove",
+   "edits": [
+    [
+     "remove",
+     [13, 1, 1]
+    ]
+   ]
+  },
+  {
+   "name": "shift repeater [10, 1, 1] north",
+   "kind": "shift",
+   "edits": [
+    [
+     "remove",
+     [10, 1, 1]
+    ],
+    [
+     "set",
+     [10, 1, 0],
+     "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"
+    ]
+   ]
+  },
+  {
+   "name": "replace wire [3, 1, 1] with stone",
+   "kind": "swap",
+   "edits": [
+    [
+     "set",
+     [3, 1, 1],
+     "minecraft:stone"
+    ]
+   ]
+  },
+  {
+   "name": "flip repeater [10, 1, 1] west->east",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [10, 1, 1],
+     "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"
+    ]
+   ]
+  }
+ ],
+ "notes": "",
+ "solution": [
+  [1, 1, 1, "minecraft:redstone_wire"],
+  [2, 1, 1, "minecraft:redstone_wire"],
+  [3, 1, 1, "minecraft:redstone_wire"],
+  [4, 1, 1, "minecraft:redstone_wire"],
+  [5, 1, 1, "minecraft:redstone_wire"],
+  [6, 1, 1, "minecraft:redstone_wire"],
+  [7, 1, 1, "minecraft:redstone_wire"],
+  [8, 1, 1, "minecraft:redstone_wire"],
+  [9, 1, 1, "minecraft:redstone_wire"],
+  [10, 1, 1, "minecraft:repeater[facing=west,delay=1]"],
+  [11, 1, 1, "minecraft:redstone_wire"],
+  [12, 1, 1, "minecraft:redstone_wire"],
+  [13, 1, 1, "minecraft:redstone_wire"],
+  [14, 1, 1, "minecraft:redstone_wire"],
+  [15, 1, 1, "minecraft:redstone_wire"],
+  [16, 1, 1, "minecraft:redstone_wire"],
+  [17, 1, 1, "minecraft:redstone_wire"],
+  [18, 1, 1, "minecraft:redstone_wire"],
+  [19, 1, 1, "minecraft:redstone_wire"],
+  [20, 1, 1, "minecraft:redstone_wire"]
+ ]
+}

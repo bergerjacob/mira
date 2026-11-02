@@ -1,0 +1,12 @@
+{
+  "_comment": "Candidate servers from docs/research/discord_servers.md. All disabled. Copy entries into config.local.json and enable only for servers the account has ALREADY joined (see discover_guilds.py output). Read each server's rules channel first. Open Redstone Engineers is deliberately absent: its rules forbid bulk collection of messages without opt-in consent.",
+  "servers": [
+    {"server_id": "748542142347083868", "name": "Storage Tech", "channels": "all", "channel_types": [11, 15], "enabled": false, "priority": 4, "note": "Storage Catalog publishes a JSON archive on GitHub (Storage-Tech-2/Archive); prefer that over scraping"},
+    {"server_id": "1375556143186837695", "name": "Storage Catalog", "channels": "all", "channel_types": [11, 15], "enabled": false, "priority": 4, "note": "same archive as above"},
+    {"server_id": "594920796867133446", "name": "Tech MC Archive", "channels": "all", "channel_types": [11, 15], "enabled": false, "priority": 4, "note": "unverified channel structure"},
+    {"server_id": "211786369951989762", "name": "SciCraft", "channels": "all", "channel_types": [11, 15], "enabled": false, "priority": 4, "note": "large technical SMP community; unverified channel structure"},
+    {"server_id": "959155788092424253", "name": "Computational Minecraft Archive", "channels": "all", "channel_types": [11, 15, 0], "enabled": false, "priority": 3, "note": "identity unverified"},
+    {"server_id": "806605286416318534", "name": "Cartchives", "channels": "all", "channel_types": [11, 15], "enabled": false, "priority": 3, "note": "content unverified"},
+    {"server_id": "810356854583459860", "name": "Minecraft Tech Discord Recollector", "channels": "all", "channel_types": [], "enabled": false, "priority": 2, "note": "directory server: use to find more archives, do not scrape"}
+  ]
+}

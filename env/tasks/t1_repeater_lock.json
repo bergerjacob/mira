@@ -1,0 +1,322 @@
+{
+ "contract": {
+  "id": "t1_repeater_lock",
+  "title": "Repeater-lock latch",
+  "tier": "T1",
+  "description": "Lamp Y follows lever A while the lock lever L is off. While L is on, Y must keep its last value even if A changes (repeaters can be locked by a powered repeater pointing into their side).",
+  "bbox": [0, 0, 0, 5, 2, 2],
+  "build_box": [0, 1, 0, 5, 2, 2],
+  "ports": [
+   {
+    "name": "A",
+    "kind": "click",
+    "pos": [0, 1, 2],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "lever (click toggles)"
+   },
+   {
+    "name": "L",
+    "kind": "click",
+    "pos": [1, 1, 0],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "lever (click toggles)"
+   },
+   {
+    "name": "Y",
+    "kind": "lamp",
+    "pos": [4, 1, 2],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "redstone lamp, output 1 = lit"
+   }
+  ],
+  "fixed": [
+   {
+    "box": [0, 0, 0, 5, 0, 2],
+    "state": "minecraft:smooth_stone"
+   },
+   {
+    "box": [0, 1, 2, 0, 1, 2],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [1, 1, 0, 1, 1, 0],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [4, 1, 2, 4, 1, 2],
+    "state": "minecraft:redstone_lamp[lit=false]"
+   }
+  ],
+  "behaviour": {
+   "truth_table": null,
+   "sequences": [
+    {
+     "name": "follow_then_hold",
+     "events": [
+      {
+       "t": 0,
+       "set": {
+        "A": 1
+       }
+      },
+      {
+       "t": 20,
+       "set": {
+        "L": 1
+       }
+      },
+      {
+       "t": 30,
+       "set": {
+        "A": 0
+       }
+      },
+      {
+       "t": 60,
+       "set": {
+        "L": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Y",
+       "value": 1,
+       "t1": 6,
+       "t2": 20,
+       "mode": "all"
+      },
+      {
+       "port": "Y",
+       "value": 1,
+       "t1": 36,
+       "t2": 59,
+       "mode": "all"
+      },
+      {
+       "port": "Y",
+       "value": 0,
+       "t1": 70,
+       "t2": 90,
+       "mode": "all"
+      }
+     ],
+     "duration": 90,
+     "public": true
+    },
+    {
+     "name": "lock_low",
+     "events": [
+      {
+       "t": 0,
+       "set": {
+        "L": 1
+       }
+      },
+      {
+       "t": 10,
+       "set": {
+        "A": 1
+       }
+      },
+      {
+       "t": 40,
+       "set": {
+        "L": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Y",
+       "value": 0,
+       "t1": 0,
+       "t2": 39,
+       "mode": "all"
+      },
+      {
+       "port": "Y",
+       "value": 1,
+       "t1": 50,
+       "t2": 70,
+       "mode": "all"
+      }
+     ],
+     "duration": 70,
+     "public": false
+    },
+    {
+     "name": "lock_high_then_drop",
+     "events": [
+      {
+       "t": 0,
+       "set": {
+        "A": 1
+       }
+      },
+      {
+       "t": 10,
+       "set": {
+        "L": 1
+       }
+      },
+      {
+       "t": 20,
+       "set": {
+        "A": 0
+       }
+      },
+      {
+       "t": 50,
+       "set": {
+        "A": 1
+       }
+      },
+      {
+       "t": 70,
+       "set": {
+        "A": 0
+       }
+      },
+      {
+       "t": 90,
+       "set": {
+        "L": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Y",
+       "value": 1,
+       "t1": 5,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "Y",
+       "value": 0,
+       "t1": 100,
+       "t2": 120,
+       "mode": "all"
+      }
+     ],
+     "duration": 120,
+     "public": false
+    }
+   ],
+   "reference_model": null
+  },
+  "invariants": {
+   "at_rest": true,
+   "paste_stable": true,
+   "deterministic": true,
+   "no_oscillation": true,
+   "no_forbidden": true,
+   "no_collateral": true,
+   "keep_clear": true,
+   "no_popoff": true,
+   "change_boxes": []
+  },
+  "budgets": {
+   "rest": 200,
+   "total": 20000,
+   "max_blocks": 2000
+  },
+  "forbidden": ["minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:structure_block", "minecraft:jigsaw", "minecraft:test_block", "minecraft:test_instance_block", "minecraft:barrier"],
+  "keep_clear": [],
+  "no_write": [],
+  "eval_seed": 14218,
+  "depends": {},
+  "reference": {
+   "blocks": 4,
+   "volume": 6
+  },
+  "hints": []
+ },
+ "broken": [
+  {
+   "name": "flip repeater [1, 1, 2] west->east",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [1, 1, 2],
+     "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"
+    ]
+   ]
+  },
+  {
+   "name": "remove redstone_wire [3, 1, 2]",
+   "kind": "remove",
+   "edits": [
+    [
+     "remove",
+     [3, 1, 2]
+    ]
+   ]
+  },
+  {
+   "name": "shift redstone_wire [2, 1, 2] north",
+   "kind": "shift",
+   "edits": [
+    [
+     "remove",
+     [2, 1, 2]
+    ],
+    [
+     "set",
+     [2, 1, 1],
+     "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"
+    ]
+   ]
+  },
+  {
+   "name": "replace wire [2, 1, 2] with stone",
+   "kind": "swap",
+   "edits": [
+    [
+     "set",
+     [2, 1, 2],
+     "minecraft:stone"
+    ]
+   ]
+  },
+  {
+   "name": "turn repeater [1, 1, 2] west->north",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [1, 1, 2],
+     "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"
+    ]
+   ]
+  }
+ ],
+ "notes": "",
+ "solution": [
+  [1, 1, 2, "minecraft:repeater[facing=west,delay=1]"],
+  [1, 1, 1, "minecraft:repeater[facing=north,delay=1]"],
+  [2, 1, 2, "minecraft:redstone_wire"],
+  [3, 1, 2, "minecraft:redstone_wire"]
+ ]
+}

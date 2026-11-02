@@ -1,0 +1,432 @@
+{
+ "contract": {
+  "id": "t1_rs_latch",
+  "title": "RS NOR latch",
+  "tier": "T1",
+  "description": "Build a latch that remembers which lever was switched on last: briefly switching S on makes lamp Q light and stay lit; briefly switching R on turns it off and it stays off. (S and R are never on together.)",
+  "bbox": [0, 0, 0, 7, 2, 4],
+  "build_box": [0, 1, 0, 7, 2, 4],
+  "ports": [
+   {
+    "name": "S",
+    "kind": "click",
+    "pos": [6, 1, 3],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "set"
+   },
+   {
+    "name": "R",
+    "kind": "click",
+    "pos": [0, 1, 2],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "reset"
+   },
+   {
+    "name": "Q",
+    "kind": "lamp",
+    "pos": [7, 1, 1],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "redstone lamp, output 1 = lit"
+   }
+  ],
+  "fixed": [
+   {
+    "box": [0, 0, 0, 7, 0, 4],
+    "state": "minecraft:smooth_stone"
+   },
+   {
+    "box": [6, 1, 3, 6, 1, 3],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [0, 1, 2, 0, 1, 2],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [7, 1, 1, 7, 1, 1],
+    "state": "minecraft:redstone_lamp[lit=false]"
+   }
+  ],
+  "behaviour": {
+   "truth_table": null,
+   "sequences": [
+    {
+     "name": "reset_set_hold",
+     "events": [
+      {
+       "t": 0,
+       "set": {
+        "R": 1
+       }
+      },
+      {
+       "t": 8,
+       "set": {
+        "R": 0
+       }
+      },
+      {
+       "t": 20,
+       "set": {
+        "S": 1
+       }
+      },
+      {
+       "t": 28,
+       "set": {
+        "S": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Q",
+       "value": 0,
+       "t1": 14,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q",
+       "value": 1,
+       "t1": 34,
+       "t2": 60,
+       "mode": "all"
+      }
+     ],
+     "duration": 60,
+     "public": true
+    },
+    {
+     "name": "set_reset_hold",
+     "events": [
+      {
+       "t": 0,
+       "set": {
+        "R": 1
+       }
+      },
+      {
+       "t": 8,
+       "set": {
+        "R": 0
+       }
+      },
+      {
+       "t": 20,
+       "set": {
+        "S": 1
+       }
+      },
+      {
+       "t": 28,
+       "set": {
+        "S": 0
+       }
+      },
+      {
+       "t": 50,
+       "set": {
+        "R": 1
+       }
+      },
+      {
+       "t": 58,
+       "set": {
+        "R": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Q",
+       "value": 1,
+       "t1": 34,
+       "t2": 49,
+       "mode": "all"
+      },
+      {
+       "port": "Q",
+       "value": 0,
+       "t1": 64,
+       "t2": 90,
+       "mode": "all"
+      }
+     ],
+     "duration": 90,
+     "public": true
+    },
+    {
+     "name": "set_first",
+     "events": [
+      {
+       "t": 0,
+       "set": {
+        "S": 1
+       }
+      },
+      {
+       "t": 8,
+       "set": {
+        "S": 0
+       }
+      },
+      {
+       "t": 30,
+       "set": {
+        "R": 1
+       }
+      },
+      {
+       "t": 38,
+       "set": {
+        "R": 0
+       }
+      },
+      {
+       "t": 60,
+       "set": {
+        "S": 1
+       }
+      },
+      {
+       "t": 68,
+       "set": {
+        "S": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Q",
+       "value": 1,
+       "t1": 14,
+       "t2": 29,
+       "mode": "all"
+      },
+      {
+       "port": "Q",
+       "value": 0,
+       "t1": 44,
+       "t2": 59,
+       "mode": "all"
+      },
+      {
+       "port": "Q",
+       "value": 1,
+       "t1": 74,
+       "t2": 100,
+       "mode": "all"
+      }
+     ],
+     "duration": 100,
+     "public": false
+    },
+    {
+     "name": "reset_twice",
+     "events": [
+      {
+       "t": 0,
+       "set": {
+        "S": 1
+       }
+      },
+      {
+       "t": 8,
+       "set": {
+        "S": 0
+       }
+      },
+      {
+       "t": 20,
+       "set": {
+        "R": 1
+       }
+      },
+      {
+       "t": 28,
+       "set": {
+        "R": 0
+       }
+      },
+      {
+       "t": 40,
+       "set": {
+        "R": 1
+       }
+      },
+      {
+       "t": 48,
+       "set": {
+        "R": 0
+       }
+      },
+      {
+       "t": 70,
+       "set": {
+        "S": 1
+       }
+      },
+      {
+       "t": 78,
+       "set": {
+        "S": 0
+       }
+      },
+      {
+       "t": 90,
+       "set": {
+        "S": 1
+       }
+      },
+      {
+       "t": 98,
+       "set": {
+        "S": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Q",
+       "value": 0,
+       "t1": 34,
+       "t2": 69,
+       "mode": "all"
+      },
+      {
+       "port": "Q",
+       "value": 1,
+       "t1": 84,
+       "t2": 120,
+       "mode": "all"
+      }
+     ],
+     "duration": 120,
+     "public": false
+    }
+   ],
+   "reference_model": null
+  },
+  "invariants": {
+   "at_rest": true,
+   "paste_stable": true,
+   "deterministic": true,
+   "no_oscillation": true,
+   "no_forbidden": true,
+   "no_collateral": true,
+   "keep_clear": true,
+   "no_popoff": true,
+   "change_boxes": []
+  },
+  "budgets": {
+   "rest": 200,
+   "total": 20000,
+   "max_blocks": 2000
+  },
+  "forbidden": ["minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:structure_block", "minecraft:jigsaw", "minecraft:test_block", "minecraft:test_instance_block", "minecraft:barrier"],
+  "keep_clear": [],
+  "no_write": [],
+  "eval_seed": 6810,
+  "depends": {},
+  "reference": {
+   "blocks": 13,
+   "volume": 18
+  },
+  "hints": []
+ },
+ "broken": [
+  {
+   "name": "turn redstone_wall_torch [4, 1, 1] east->south",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [4, 1, 1],
+     "minecraft:redstone_wall_torch[facing=south,lit=true]"
+    ]
+   ]
+  },
+  {
+   "name": "remove stone [3, 1, 3]",
+   "kind": "remove",
+   "edits": [
+    [
+     "remove",
+     [3, 1, 3]
+    ]
+   ]
+  },
+  {
+   "name": "shift redstone_wire [4, 1, 3] north",
+   "kind": "shift",
+   "edits": [
+    [
+     "remove",
+     [4, 1, 3]
+    ],
+    [
+     "set",
+     [4, 1, 2],
+     "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"
+    ]
+   ]
+  },
+  {
+   "name": "replace wire [1, 1, 2] with stone",
+   "kind": "swap",
+   "edits": [
+    [
+     "set",
+     [1, 1, 2],
+     "minecraft:stone"
+    ]
+   ]
+  },
+  {
+   "name": "flip redstone_wall_torch [4, 1, 1] east->west",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [4, 1, 1],
+     "minecraft:redstone_wall_torch[facing=west,lit=true]"
+    ]
+   ]
+  }
+ ],
+ "notes": "",
+ "solution": [
+  [3, 1, 1, "minecraft:stone"],
+  [4, 1, 1, "minecraft:redstone_wall_torch[facing=east]"],
+  [3, 1, 3, "minecraft:stone"],
+  [2, 1, 3, "minecraft:redstone_wall_torch[facing=west]"],
+  [5, 1, 1, "minecraft:redstone_wire"],
+  [6, 1, 1, "minecraft:redstone_wire"],
+  [5, 1, 2, "minecraft:redstone_wire"],
+  [5, 1, 3, "minecraft:redstone_wire"],
+  [4, 1, 3, "minecraft:redstone_wire"],
+  [1, 1, 3, "minecraft:redstone_wire"],
+  [1, 1, 2, "minecraft:redstone_wire"],
+  [1, 1, 1, "minecraft:redstone_wire"],
+  [2, 1, 1, "minecraft:redstone_wire"]
+ ]
+}
