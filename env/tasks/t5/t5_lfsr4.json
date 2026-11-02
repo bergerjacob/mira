@@ -1,0 +1,2749 @@
+{
+ "contract": {
+  "id": "t5_lfsr4",
+  "title": "4-bit LFSR (XNOR feedback)",
+  "tier": "T5",
+  "description": "Build a 4-bit linear feedback shift register. CLK is the clock lever; the lamps Q0..Q3 show the register (all off at the start). On every rising edge of CLK (switched ON) the register shifts by one place and the new Q0 is the XNOR of the old Q2 and Q3: Q0 := NOT(Q2 XOR Q3), Q1 := old Q0, Q2 := old Q1, Q3 := old Q2. Switching CLK off changes nothing. From all-off the register runs through 15 different states and then repeats. CLK stays on and off for at least 20 ticks each. Library hint (component tier only): D flip-flop, XOR gate and NOT gate cells are available.",
+  "bbox": [0, 0, 0, 52, 4, 17],
+  "build_box": [0, 1, 0, 52, 4, 17],
+  "ports": [
+   {
+    "name": "CLK",
+    "kind": "click",
+    "pos": [49, 1, 2],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "blocks": null,
+    "doc": "clock"
+   },
+   {
+    "name": "Q0",
+    "kind": "lamp",
+    "pos": [15, 1, 8],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "blocks": null,
+    "doc": "register place 0"
+   },
+   {
+    "name": "Q1",
+    "kind": "lamp",
+    "pos": [25, 1, 8],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "blocks": null,
+    "doc": "register place 1"
+   },
+   {
+    "name": "Q2",
+    "kind": "lamp",
+    "pos": [35, 1, 8],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "blocks": null,
+    "doc": "register place 2"
+   },
+   {
+    "name": "Q3",
+    "kind": "lamp",
+    "pos": [46, 1, 6],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "blocks": null,
+    "doc": "register place 3"
+   }
+  ],
+  "fixed": [
+   {
+    "box": [0, 0, 0, 52, 0, 17],
+    "state": "minecraft:smooth_stone"
+   },
+   {
+    "box": [49, 1, 2, 49, 1, 2],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [15, 1, 8, 15, 1, 8],
+    "state": "minecraft:redstone_lamp[lit=false]"
+   },
+   {
+    "box": [25, 1, 8, 25, 1, 8],
+    "state": "minecraft:redstone_lamp[lit=false]"
+   },
+   {
+    "box": [35, 1, 8, 35, 1, 8],
+    "state": "minecraft:redstone_lamp[lit=false]"
+   },
+   {
+    "box": [46, 1, 6, 46, 1, 6],
+    "state": "minecraft:redstone_lamp[lit=false]"
+   }
+  ],
+  "behaviour": {
+   "truth_table": null,
+   "sequences": [
+    {
+     "name": "first_6",
+     "events": [
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 50,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 90,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 120,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 160,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 190,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 230,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 260,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 300,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 330,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 370,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 400,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 60,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 60,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 60,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 60,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 130,
+       "t2": 159,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 130,
+       "t2": 159,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 130,
+       "t2": 159,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 130,
+       "t2": 159,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 200,
+       "t2": 229,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 200,
+       "t2": 229,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 200,
+       "t2": 229,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 200,
+       "t2": 229,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 270,
+       "t2": 299,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 270,
+       "t2": 299,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 270,
+       "t2": 299,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 270,
+       "t2": 299,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 340,
+       "t2": 369,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 340,
+       "t2": 369,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 340,
+       "t2": 369,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 340,
+       "t2": 369,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 410,
+       "t2": 459,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 410,
+       "t2": 459,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 410,
+       "t2": 459,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 410,
+       "t2": 459,
+       "mode": "all"
+      }
+     ],
+     "duration": 460,
+     "public": true
+    },
+    {
+     "name": "steady_4",
+     "events": [
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 50,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 90,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 120,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 160,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 190,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 230,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 260,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 60,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 60,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 60,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 60,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 130,
+       "t2": 159,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 130,
+       "t2": 159,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 130,
+       "t2": 159,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 130,
+       "t2": 159,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 200,
+       "t2": 229,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 200,
+       "t2": 229,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 200,
+       "t2": 229,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 200,
+       "t2": 229,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 270,
+       "t2": 319,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 270,
+       "t2": 319,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 270,
+       "t2": 319,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 270,
+       "t2": 319,
+       "mode": "all"
+      }
+     ],
+     "duration": 320,
+     "public": true
+    },
+    {
+     "name": "full_period_17",
+     "events": [
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 47,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 96,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 126,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 163,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 198,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 246,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 284,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 316,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 353,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 403,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 431,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 473,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 503,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 538,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 558,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 606,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 628,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 695,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 719,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 760,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 784,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 842,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 874,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 932,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 972,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 1019,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 1040,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 1085,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 1105,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 1149,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 1185,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 1226,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 1263,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 60,
+       "t2": 95,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 60,
+       "t2": 95,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 60,
+       "t2": 95,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 60,
+       "t2": 95,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 136,
+       "t2": 162,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 136,
+       "t2": 162,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 136,
+       "t2": 162,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 136,
+       "t2": 162,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 203,
+       "t2": 245,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 203,
+       "t2": 245,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 203,
+       "t2": 245,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 203,
+       "t2": 245,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 286,
+       "t2": 315,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 286,
+       "t2": 315,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 286,
+       "t2": 315,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 286,
+       "t2": 315,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 356,
+       "t2": 402,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 356,
+       "t2": 402,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 356,
+       "t2": 402,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 356,
+       "t2": 402,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 443,
+       "t2": 472,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 443,
+       "t2": 472,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 443,
+       "t2": 472,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 443,
+       "t2": 472,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 513,
+       "t2": 537,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 513,
+       "t2": 537,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 513,
+       "t2": 537,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 513,
+       "t2": 537,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 578,
+       "t2": 605,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 578,
+       "t2": 605,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 578,
+       "t2": 605,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 578,
+       "t2": 605,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 646,
+       "t2": 694,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 646,
+       "t2": 694,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 646,
+       "t2": 694,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 646,
+       "t2": 694,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 735,
+       "t2": 759,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 735,
+       "t2": 759,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 735,
+       "t2": 759,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 735,
+       "t2": 759,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 800,
+       "t2": 841,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 800,
+       "t2": 841,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 800,
+       "t2": 841,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 800,
+       "t2": 841,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 882,
+       "t2": 931,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 882,
+       "t2": 931,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 882,
+       "t2": 931,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 882,
+       "t2": 931,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 972,
+       "t2": 1018,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 972,
+       "t2": 1018,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 972,
+       "t2": 1018,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 972,
+       "t2": 1018,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 1059,
+       "t2": 1084,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 1059,
+       "t2": 1084,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 1059,
+       "t2": 1084,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 1059,
+       "t2": 1084,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 1125,
+       "t2": 1148,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 1125,
+       "t2": 1148,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 1125,
+       "t2": 1148,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 1125,
+       "t2": 1148,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 1189,
+       "t2": 1225,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 1189,
+       "t2": 1225,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 1189,
+       "t2": 1225,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 1189,
+       "t2": 1225,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 1266,
+       "t2": 1322,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 1266,
+       "t2": 1322,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 1266,
+       "t2": 1322,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 1266,
+       "t2": 1322,
+       "mode": "all"
+      }
+     ],
+     "duration": 1323,
+     "public": false
+    },
+    {
+     "name": "random_a",
+     "events": [
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 45,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 80,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 114,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 161,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 198,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 221,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 245,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 318,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 363,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 382,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 410,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 478,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 512,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 551,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 583,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 646,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 667,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 60,
+       "t2": 79,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 60,
+       "t2": 79,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 60,
+       "t2": 79,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 60,
+       "t2": 79,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 120,
+       "t2": 160,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 120,
+       "t2": 160,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 120,
+       "t2": 160,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 120,
+       "t2": 160,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 201,
+       "t2": 220,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 201,
+       "t2": 220,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 201,
+       "t2": 220,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 201,
+       "t2": 220,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 261,
+       "t2": 317,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 261,
+       "t2": 317,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 261,
+       "t2": 317,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 261,
+       "t2": 317,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 358,
+       "t2": 381,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 358,
+       "t2": 381,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 358,
+       "t2": 381,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 358,
+       "t2": 381,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 422,
+       "t2": 477,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 422,
+       "t2": 477,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 422,
+       "t2": 477,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 422,
+       "t2": 477,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 518,
+       "t2": 550,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 518,
+       "t2": 550,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 518,
+       "t2": 550,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 518,
+       "t2": 550,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 591,
+       "t2": 645,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 591,
+       "t2": 645,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 591,
+       "t2": 645,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 591,
+       "t2": 645,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 686,
+       "t2": 726,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 686,
+       "t2": 726,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 686,
+       "t2": 726,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 686,
+       "t2": 726,
+       "mode": "all"
+      }
+     ],
+     "duration": 727,
+     "public": false
+    },
+    {
+     "name": "random_b",
+     "events": [
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 48,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 89,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 116,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 168,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 189,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 229,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 261,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 301,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 334,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 373,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 408,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 443,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 478,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 519,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 549,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 598,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 628,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 662,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 683,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 730,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 765,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 804,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 838,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 60,
+       "t2": 88,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 60,
+       "t2": 88,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 60,
+       "t2": 88,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 60,
+       "t2": 88,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 129,
+       "t2": 167,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 129,
+       "t2": 167,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 129,
+       "t2": 167,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 129,
+       "t2": 167,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 208,
+       "t2": 228,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 208,
+       "t2": 228,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 208,
+       "t2": 228,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 208,
+       "t2": 228,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 269,
+       "t2": 300,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 269,
+       "t2": 300,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 269,
+       "t2": 300,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 269,
+       "t2": 300,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 341,
+       "t2": 372,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 341,
+       "t2": 372,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 341,
+       "t2": 372,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 341,
+       "t2": 372,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 413,
+       "t2": 442,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 413,
+       "t2": 442,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 413,
+       "t2": 442,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 413,
+       "t2": 442,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 483,
+       "t2": 518,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 483,
+       "t2": 518,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 483,
+       "t2": 518,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 483,
+       "t2": 518,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 559,
+       "t2": 597,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 559,
+       "t2": 597,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 559,
+       "t2": 597,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 559,
+       "t2": 597,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 638,
+       "t2": 661,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 638,
+       "t2": 661,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 638,
+       "t2": 661,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 638,
+       "t2": 661,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 702,
+       "t2": 729,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 702,
+       "t2": 729,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 702,
+       "t2": 729,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 702,
+       "t2": 729,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 770,
+       "t2": 803,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 770,
+       "t2": 803,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 770,
+       "t2": 803,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 770,
+       "t2": 803,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 844,
+       "t2": 897,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 844,
+       "t2": 897,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 844,
+       "t2": 897,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 844,
+       "t2": 897,
+       "mode": "all"
+      }
+     ],
+     "duration": 898,
+     "public": false
+    },
+    {
+     "name": "long_holds",
+     "events": [
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 123,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 270,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 381,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 435,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 543,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 640,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 734,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 864,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 975,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 60,
+       "t2": 269,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 60,
+       "t2": 269,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 60,
+       "t2": 269,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 60,
+       "t2": 269,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 310,
+       "t2": 434,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 310,
+       "t2": 434,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 0,
+       "t1": 310,
+       "t2": 434,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 310,
+       "t2": 434,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 475,
+       "t2": 639,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 475,
+       "t2": 639,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 475,
+       "t2": 639,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 0,
+       "t1": 475,
+       "t2": 639,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 0,
+       "t1": 680,
+       "t2": 863,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 1,
+       "t1": 680,
+       "t2": 863,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 680,
+       "t2": 863,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 680,
+       "t2": 863,
+       "mode": "all"
+      },
+      {
+       "port": "Q0",
+       "value": 1,
+       "t1": 904,
+       "t2": 1034,
+       "mode": "all"
+      },
+      {
+       "port": "Q1",
+       "value": 0,
+       "t1": 904,
+       "t2": 1034,
+       "mode": "all"
+      },
+      {
+       "port": "Q2",
+       "value": 1,
+       "t1": 904,
+       "t2": 1034,
+       "mode": "all"
+      },
+      {
+       "port": "Q3",
+       "value": 1,
+       "t1": 904,
+       "t2": 1034,
+       "mode": "all"
+      }
+     ],
+     "duration": 1035,
+     "public": false
+    }
+   ],
+   "reference_model": null
+  },
+  "invariants": {
+   "at_rest": true,
+   "paste_stable": true,
+   "deterministic": true,
+   "no_oscillation": true,
+   "no_forbidden": true,
+   "no_collateral": true,
+   "keep_clear": true,
+   "no_popoff": true,
+   "change_boxes": []
+  },
+  "budgets": {
+   "rest": 300,
+   "total": 60000,
+   "max_blocks": 1500
+  },
+  "forbidden": ["minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:structure_block", "minecraft:jigsaw", "minecraft:test_block", "minecraft:test_instance_block", "minecraft:barrier"],
+  "keep_clear": [],
+  "no_write": [],
+  "eval_seed": 3353,
+  "depends": {
+   "Q0": ["CLK"],
+   "Q1": ["CLK"],
+   "Q2": ["CLK"],
+   "Q3": ["CLK"]
+  },
+  "reference": {
+   "blocks": 199,
+   "volume": 1232
+  },
+  "hints": []
+ },
+ "broken": [
+  {
+   "name": "turn repeater [30, 1, 2] east->south",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [30, 1, 2],
+     "minecraft:repeater[delay=1,facing=south,locked=false,powered=false]"
+    ]
+   ]
+  },
+  {
+   "name": "remove redstone_wire [28, 1, 15]",
+   "kind": "remove",
+   "edits": [
+    [
+     "remove",
+     [28, 1, 15]
+    ]
+   ]
+  },
+  {
+   "name": "shift redstone_wire [8, 1, 2] north",
+   "kind": "shift",
+   "edits": [
+    [
+     "remove",
+     [8, 1, 2]
+    ],
+    [
+     "set",
+     [8, 1, 1],
+     "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"
+    ]
+   ]
+  },
+  {
+   "name": "replace wire [44, 1, 2] with stone",
+   "kind": "swap",
+   "edits": [
+    [
+     "set",
+     [44, 1, 2],
+     "minecraft:stone"
+    ]
+   ]
+  },
+  {
+   "name": "flip redstone_wall_torch [33, 1, 4] east->west",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [33, 1, 4],
+     "minecraft:redstone_wall_torch[facing=west,lit=true]"
+    ]
+   ]
+  }
+ ],
+ "notes": "",
+ "solution": [
+  [8, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [9, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 2, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [11, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [12, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [13, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [14, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [16, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [17, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [19, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [20, 1, 2, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [21, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [22, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [23, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [24, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [25, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [26, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [27, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [28, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [29, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [30, 1, 2, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [31, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [32, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [33, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [34, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [35, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [36, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [38, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [39, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [41, 1, 2, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [42, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [43, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [44, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [45, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [46, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [47, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [48, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [8, 1, 3, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 3, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [28, 1, 3, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [38, 1, 3, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [8, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [9, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [11, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [12, 1, 4, "minecraft:stone"],
+  [13, 1, 4, "minecraft:redstone_wall_torch[facing=east,lit=true]"],
+  [18, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [19, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [20, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [21, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [22, 1, 4, "minecraft:stone"],
+  [23, 1, 4, "minecraft:redstone_wall_torch[facing=east,lit=true]"],
+  [28, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [29, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [30, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [31, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [32, 1, 4, "minecraft:stone"],
+  [33, 1, 4, "minecraft:redstone_wall_torch[facing=east,lit=true]"],
+  [38, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [39, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [41, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [42, 1, 4, "minecraft:stone"],
+  [43, 1, 4, "minecraft:redstone_wall_torch[facing=east,lit=true]"],
+  [10, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [13, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [20, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [23, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [30, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [33, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [40, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [43, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [5, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [6, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [7, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [8, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [9, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 6, "minecraft:repeater[delay=3,facing=west,locked=false,powered=false]"],
+  [11, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [12, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [13, 1, 6, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [14, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [16, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [17, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [19, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [20, 1, 6, "minecraft:repeater[delay=3,facing=west,locked=false,powered=false]"],
+  [21, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [22, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [23, 1, 6, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [24, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [25, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [26, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [27, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [28, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [29, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [30, 1, 6, "minecraft:repeater[delay=3,facing=west,locked=false,powered=false]"],
+  [31, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [32, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [33, 1, 6, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [34, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [35, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [36, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [38, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [39, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 1, 6, "minecraft:repeater[delay=3,facing=west,locked=false,powered=false]"],
+  [41, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [42, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [43, 1, 6, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [44, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [45, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [5, 1, 7, "minecraft:repeater[delay=1,facing=south,locked=false,powered=false]"],
+  [15, 1, 7, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [25, 1, 7, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [35, 1, 7, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 1, 7, "minecraft:stone"],
+  [44, 1, 7, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [5, 1, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 1, 8, "minecraft:stone"],
+  [44, 1, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [5, 1, 9, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 1, 9, "minecraft:stone"],
+  [44, 1, 9, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [5, 1, 10, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 1, 10, "minecraft:stone"],
+  [38, 1, 10, "minecraft:stone"],
+  [39, 1, 10, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [40, 1, 10, "minecraft:stone"],
+  [41, 1, 10, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [44, 1, 10, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [5, 1, 11, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [38, 1, 11, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [39, 1, 11, "minecraft:comparator[facing=west,mode=subtract,powered=false]"],
+  [40, 1, 11, "minecraft:stone"],
+  [41, 1, 11, "minecraft:comparator[facing=east,mode=subtract,powered=false]"],
+  [42, 1, 11, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [44, 1, 11, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [5, 1, 12, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [39, 1, 12, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 1, 12, "minecraft:stone"],
+  [41, 1, 12, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [42, 1, 12, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [43, 1, 12, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [44, 1, 12, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [5, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 1, 13, "minecraft:stone"],
+  [5, 1, 14, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 1, 14, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [5, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [6, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [7, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [8, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [9, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 15, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [11, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [12, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [13, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [14, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [16, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [17, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 15, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [19, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [20, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [21, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [22, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [23, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [24, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [25, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [26, 1, 15, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [27, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [28, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [29, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [30, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [31, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [32, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [33, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [34, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [35, 1, 15, "minecraft:redstone_wall_torch[facing=west,lit=true]"],
+  [36, 1, 15, "minecraft:stone"],
+  [37, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [38, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [39, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 2, 7, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 2, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 2, 9, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 2, 10, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [38, 2, 10, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 2, 11, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 2, 12, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [40, 2, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"]
+ ]
+}

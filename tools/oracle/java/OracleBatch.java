@@ -59,15 +59,17 @@ import java.util.function.BooleanSupplier;
  * contents are emitted in full, and the region is wiped between jobs.
  *
  * usage: OracleBatch --universe DIR --jobs jobs.json --out DIR [--idle N]
- * job:   {id, snbt, ticks, preroll, settle: place|known_shape, seed, ops: [{tick, op: use|set, pos, block}]}
- * Positions are structure-local; the structure's min corner is placed at the printed origin.
+ * job:   {id, snbt, ticks, preroll, settle: place|known_shape, seed, ops: [{tick, op: use|set, pos, block}], origin?: [x,y,z]}
+ * Positions are structure-local; the structure's min corner is placed at the job's `origin` (absolute world position;
+ * default: spawn x/z, y=100). Jobs with different origins may share a JVM: every origin's region is warmed before the first job.
  */
 public final class OracleBatch {
     private OracleBatch() {}
 
     private static final int MARGIN = 4;
     private static final int MAX_WARMUP = 600;
-    private static BlockPos ORIGIN;
+    private static BlockPos SPAWN_ORIGIN;
+    private static BlockPos ORIGIN;     // origin of the job being run (set by runJob)
     private static Method tickServer, waitUntilNextTick;
     private static MinecraftServer server;
     private static ServerLevel level;
@@ -99,31 +101,33 @@ public final class OracleBatch {
         initServer.invoke(server);
         level = server.overworld();
         BlockPos spawn = level.getRespawnData().pos();
-        ORIGIN = new BlockPos(spawn.getX(), 100, spawn.getZ());
+        SPAWN_ORIGIN = new BlockPos(spawn.getX(), 100, spawn.getZ());
+        ORIGIN = SPAWN_ORIGIN;
         double bootMs = (System.nanoTime() - t0) / 1e6;
-        System.out.printf("boot %.0f ms, origin %s%n", bootMs, ORIGIN);
+        System.out.printf("boot %.0f ms, default origin %s%n", bootMs, SPAWN_ORIGIN);
 
         Files.createDirectories(outDir);
         JsonArray jobs = JsonParser.parseString(Files.readString(jobsPath)).getAsJsonArray();
-        // Chunk loading must be done for the UNION of all job regions before the first job runs (see warmChunks).
-        BlockPos unionMin = null, unionMax = null;
+        // Chunk loading must be done for the UNION of all job regions (one union per origin) before the first job runs
+        // (see warmChunks).
+        Map<BlockPos, BlockPos[]> unions = new java.util.LinkedHashMap<>();
         for (JsonElement el : jobs) {
             try {
-                BlockPos[] r = region(el.getAsJsonObject());
-                unionMin = unionMin == null ? r[0] : min(unionMin, r[0]);
-                unionMax = unionMax == null ? r[1] : max(unionMax, r[1]);
+                JsonObject job = el.getAsJsonObject();
+                BlockPos[] r = region(job);
+                unions.merge(jobOrigin(job), r, (a, b) -> new BlockPos[] {min(a[0], b[0]), max(a[1], b[1])});
             } catch (Throwable e) {
                 // a malformed job fails on its own below
             }
         }
-        if (unionMin != null) {
+        if (!unions.isEmpty()) {
             try {
-                System.out.println("warm " + warmChunks(unionMin, unionMax) + " ticks");
+                System.out.println("warm " + warmChunks(new ArrayList<>(unions.values())) + " ticks");
             } catch (Throwable e) {
                 System.out.println("warm-up failed: " + e);
             }
         }
-        BlockPos dirtyMin = null, dirtyMax = null;
+        Map<BlockPos, BlockPos[]> dirty = new java.util.LinkedHashMap<>();   // origin -> dirty box
         for (JsonElement el : jobs) {
             JsonObject job = el.getAsJsonObject();
             String id = job.get("id").getAsString();
@@ -131,8 +135,13 @@ public final class OracleBatch {
             JsonObject result;
             BlockPos[] box = null;
             try {
-                if (dirtyMin != null) {
-                    wipe(dirtyMin, dirtyMax, idle);
+                if (!dirty.isEmpty()) {
+                    for (BlockPos[] d : dirty.values()) {
+                        wipe(d[0], d[1], 0);
+                    }
+                    for (int i = 0; i < idle; i++) {
+                        tick();
+                    }
                 }
                 result = runJob(job, pace);
                 box = new BlockPos[] {
@@ -154,8 +163,7 @@ public final class OracleBatch {
             result.addProperty("boot_ms", bootMs);
             Files.writeString(outDir.resolve(id + ".json"), new Gson().toJson(result));
             if (box != null) {
-                dirtyMin = dirtyMin == null ? box[0] : min(dirtyMin, box[0]);
-                dirtyMax = dirtyMax == null ? box[1] : max(dirtyMax, box[1]);
+                dirty.merge(ORIGIN, box, (a, b) -> new BlockPos[] {min(a[0], b[0]), max(a[1], b[1])});
             }
             System.out.printf("job %s done in %.0f ms%n", id, (System.nanoTime() - j0) / 1e6);
         }
@@ -175,12 +183,21 @@ public final class OracleBatch {
     }
 
 
-    /** Structure-local region of a job: [ORIGIN - MARGIN, ORIGIN + size + MARGIN], as runJob uses it. */
+    private static BlockPos jobOrigin(JsonObject job) {
+        if (!job.has("origin") || job.get("origin").isJsonNull()) {
+            return SPAWN_ORIGIN;
+        }
+        JsonArray o = job.getAsJsonArray("origin");
+        return new BlockPos(o.get(0).getAsInt(), o.get(1).getAsInt(), o.get(2).getAsInt());
+    }
+
+    /** Region of a job: [origin - MARGIN, origin + size + MARGIN], as runJob uses it. */
     private static BlockPos[] region(JsonObject job) throws Exception {
         CompoundTag tag = TagParser.parseCompoundFully(job.get("snbt").getAsString());
         net.minecraft.core.Vec3i size = readTemplate(tag).getSize();
-        return new BlockPos[] {ORIGIN.offset(-MARGIN, -MARGIN, -MARGIN),
-                ORIGIN.offset(size.getX() + MARGIN, size.getY() + MARGIN, size.getZ() + MARGIN)};
+        BlockPos o = jobOrigin(job);
+        return new BlockPos[] {o.offset(-MARGIN, -MARGIN, -MARGIN),
+                o.offset(size.getX() + MARGIN, size.getY() + MARGIN, size.getZ() + MARGIN)};
     }
 
     private static List<ChunkPos> chunksOf(BlockPos min, BlockPos max) {
@@ -210,24 +227,27 @@ public final class OracleBatch {
      * ticketing the union of all job regions once before the first job avoids it for every job order, and a
      * region that still does not tick is now an error, not a wrong trace.
      */
-    private static int warmChunks(BlockPos min, BlockPos max) throws Exception {
-        for (int cx = (min.getX() >> 4) - 1; cx <= (max.getX() >> 4) + 1; cx++) {
-            for (int cz = (min.getZ() >> 4) - 1; cz <= (max.getZ() >> 4) + 1; cz++) {
-                ChunkPos chunk = new ChunkPos(cx, cz);
-                level.getChunkSource().addTicketWithRadius(
-                        net.minecraft.server.level.TicketType.PLAYER_SIMULATION, chunk, 2);
-                level.getChunkSource().addTicketWithRadius(
-                        net.minecraft.server.level.TicketType.FORCED, chunk, 2);
-                level.setChunkForced(cx, cz, true);
+    private static int warmChunks(List<BlockPos[]> boxes) throws Exception {
+        for (BlockPos[] b : boxes) {
+            BlockPos min = b[0], max = b[1];
+            for (int cx = (min.getX() >> 4) - 1; cx <= (max.getX() >> 4) + 1; cx++) {
+                for (int cz = (min.getZ() >> 4) - 1; cz <= (max.getZ() >> 4) + 1; cz++) {
+                    ChunkPos chunk = new ChunkPos(cx, cz);
+                    level.getChunkSource().addTicketWithRadius(
+                            net.minecraft.server.level.TicketType.PLAYER_SIMULATION, chunk, 2);
+                    level.getChunkSource().addTicketWithRadius(
+                            net.minecraft.server.level.TicketType.FORCED, chunk, 2);
+                    level.setChunkForced(cx, cz, true);
+                }
             }
         }
         int warmup = 0;
-        while (warmup < MAX_WARMUP && !chunksTicking(min, max)) {
+        while (warmup < MAX_WARMUP && !boxes.stream().allMatch(b -> chunksTicking(b[0], b[1]))) {
             tick();
             warmup++;
         }
         if (warmup >= MAX_WARMUP) {
-            throw new IllegalStateException("chunks " + min + " .. " + max + " not ticking after " + warmup + " ticks");
+            throw new IllegalStateException("chunks of " + boxes.size() + " regions not ticking after " + warmup + " ticks");
         }
         return warmup;
     }
@@ -282,12 +302,13 @@ public final class OracleBatch {
         }
         StructureTemplate template = readTemplate(tag);
         net.minecraft.core.Vec3i size = template.getSize();
+        ORIGIN = jobOrigin(job);
         BlockPos min = ORIGIN.offset(-MARGIN, -MARGIN, -MARGIN);
         BlockPos max = ORIGIN.offset(size.getX() + MARGIN, size.getY() + MARGIN, size.getZ() + MARGIN);
 
         // Region must simulate, not merely load. warmChunks() normally ran for the union of all jobs already; if this
         // job is not covered (it cannot be, unless the prepass failed) this throws instead of tracing a dead world.
-        int warmup = chunksTicking(min, max) ? 0 : warmChunks(min, max);
+        int warmup = chunksTicking(min, max) ? 0 : warmChunks(java.util.Collections.singletonList(new BlockPos[] {min, max}));
         for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
         }

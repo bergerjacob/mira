@@ -6,6 +6,8 @@
     python scripts/run_experiment.py --exp-id full1 --budget-usd 2.00 --tasks t0,t1 --models deepseek-v4-flash \
         --arms blocks,builder --rounds 0,3,8 --seeds 2
     python scripts/run_experiment.py --exp-id smoke --budget-usd 1 --mock        # scripted reference player, no network
+    /usr/bin/python3 scripts/run_experiment.py --exp-id local1 --budget-usd 1 --backend local --models qwen3-4b \
+        --tasks t0 --arms builder --rounds 0,3 --seeds 1 --time-budget-s 480    # local HF model on the GPU ($0, see docs/TRAINING.md)
 
 --budget-usd is REQUIRED (hard cap for this experiment; the shared ledger data/experiments/ledger.jsonl is also capped
 by --ledger-cap-usd). Re-running the same command resumes: finished runs are skipped. See docs/HARNESS.md.
@@ -16,6 +18,9 @@ import sys
 from pathlib import Path
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+if "--backend" in sys.argv:  # local backend: system python (torch) borrows nucleation etc. from the repo .venv
+    from training.local.paths import setup_paths
+    setup_paths()
 
 from harness.estimate import estimate_grid
 from harness.experiment import PILOT, pending, plan_grid, resolve_tasks, run_grid
@@ -56,6 +61,15 @@ def parse_args(argv=None):
     ap.add_argument("--reasoning-tokens-est", type=int, default=800, help="dry-run: assumed hidden reasoning tokens per turn")
     ap.add_argument("--exp-root", default=str(EXPERIMENTS_DIR))
     ap.add_argument("--ledger", default=None, help=f"ledger path (default {DEFAULT_LEDGER}; <exp>/ledger.jsonl with --mock)")
+    loc = ap.add_argument_group("local backend (harness/llm_local.py; run with /usr/bin/python3, which has torch)")
+    loc.add_argument("--backend", choices=["openrouter", "local"], default="openrouter")
+    loc.add_argument("--local-model", help="short name or hub id to load (default: the single --models entry)")
+    loc.add_argument("--adapter", help="LoRA adapter dir (training/local/lora.py) merged into the local model")
+    loc.add_argument("--thinking", action="store_true", help="Qwen3 hybrid models: enable_thinking=True")
+    loc.add_argument("--max-context", type=int, help="prompt+completion token limit (default: what fits the 12 GB GPU, "
+                     "training/local/models.MAX_CONTEXT)")
+    loc.add_argument("--time-budget-s", type=float, help="stop starting generations after this many seconds; unfinished episodes "
+                     "stay pending and replay their finished turns from <exp>/local_cache.jsonl on resume")
     return ap.parse_args(argv)
 
 
@@ -103,6 +117,8 @@ def main(argv=None):
     if not cfgs:
         print("empty grid")
         return 1
+    if a.backend == "local":
+        return run_local(a, cfgs, argv)
     print_plan(a, cfgs)
     if a.dry_run:
         return 0
@@ -119,6 +135,45 @@ def main(argv=None):
           f"{s['remaining']} still pending, spent ${s['spent_usd']:.3f}/${a.budget_usd:.2f}"
           + (f", stopped by {s['stopped_by']}" if s["stopped_by"] else ""))
     return 0 if not s["stopped_by"] or s["stopped_by"] == "budget" else 3
+
+
+def run_local(a, cfgs, argv):
+    """--backend local: one process, one model load, episodes in order (sequential), $0 ledger inside the experiment dir."""
+    import time
+    models = sorted({c.model for c in cfgs})
+    local = a.local_model or (models[0] if len(models) == 1 else None)
+    if local is None:
+        print("error: --backend local runs one model per invocation (pass one --models label or --local-model)")
+        return 2
+    exp_dir = Path(a.exp_root) / a.exp_id
+    todo = pending(cfgs, exp_dir)
+    print(f"experiment {a.exp_id}: {len(cfgs)} runs planned, {len(todo)} pending; local model {local}"
+          + (f" + adapter {a.adapter}" if a.adapter else "") + " ($0, sequential)")
+    if a.dry_run or not todo:
+        return 0
+    from harness.llm_local import local_factory
+    t0 = time.time()
+    deadline = t0 + a.time_budget_s if a.time_budget_s else None
+    factory = local_factory(local, exp_dir=exp_dir, adapter=a.adapter, enable_thinking=a.thinking, max_context=a.max_context)
+    print(f"  loaded {factory.load_info}")
+    if deadline is not None:
+        deadline += time.time() - t0          # the budget counts from after the model load
+        inner = factory
+
+        def factory(cfg, budget):            # noqa: F811 - do not start an episode in the last 60 s
+            if time.time() > deadline - 60:
+                (exp_dir / "STOP").write_text("local time budget")
+            llm = inner(cfg, budget)
+            llm.deadline = deadline
+            return llm
+    info = {"argv": argv if argv is not None else sys.argv[1:], "backend": "local", "local_model": local, "adapter": a.adapter,
+            "thinking": a.thinking}
+    s = run_grid(a.exp_id, cfgs, a.budget_usd, exp_root=a.exp_root, ledger=a.ledger or (exp_dir / "ledger.jsonl"),
+                 ledger_cap_usd=None, workers=1, info=info, inprocess_factory=factory)
+    print(f"done: {s['finished']} finished, {s['skipped_done']} already done, {s['incomplete']} incomplete, "
+          f"{s['remaining']} still pending" + (f", stopped by {s['stopped_by']}" if s["stopped_by"] else "")
+          + f" ({time.time() - t0:.0f} s)")
+    return 0 if s["stopped_by"] in (None, "stop_file") else 3
 
 
 if __name__ == "__main__":

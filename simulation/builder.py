@@ -580,6 +580,19 @@ class Part:
         return self._merge(res, name or pd.name, pd, _pos(at, "use position"), rot % 360, mirror,
                            self._ctx.line(), {})
 
+    def route(self, src, sinks, name: Optional[str] = None, need: Optional[int] = None, box=None, avoid=None,
+              keep_clear=None, floor_y: Optional[int] = None):
+        """3D router (simulation/router.py, docs/ROUTER.md): dust + supports + repeaters from src to every sink, around
+        everything already placed (no touching foreign dust/components, staircases for height, bridges over other nets).
+        src / sinks: 'inst.PORT', (x, y, z) or ((x, y, z), face); a list of sinks makes a tree. Lib input ports get their
+        measured minimum strength. Returns the Net (net.cells, net.repeaters, net.sink_level); BuilderError if unroutable."""
+        from simulation import router as R
+        try:
+            return R.part_route(self, src, sinks, name=name, need=need, box=box, avoid=avoid, keep_clear=keep_clear,
+                                floor_y=floor_y)
+        except R.RouteError as e:
+            raise BuilderError(f"route: {e}") from None
+
     # -- cell building / merging
     def _build_cell(self, pd: PartDef, params: dict) -> _PartResult:
         key = (id(pd), tuple(sorted(params.items())))

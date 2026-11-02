@@ -72,11 +72,12 @@ class Plan:
     probes: List[Pos] = field(default_factory=list)
     settle: str = "place"        # "place" (full update pass) | "known_shape" (quiet)
     preroll: int = 0
+    origin: Optional[Pos] = None  # absolute world position of the build's min corner (None: oracle default, spawn x/z, y=100)
 
     def to_json(self):
         return {"ticks": self.ticks, "ops": [o.to_json() for o in self.ops],
                 "probes": [list(p) for p in self.probes], "settle": self.settle,
-                "preroll": self.preroll}
+                "preroll": self.preroll, "origin": None if self.origin is None else list(self.origin)}
 
 
 def normalize_blocks(blocks: Iterable) -> List[Tuple[int, int, int, str, Optional[dict]]]:

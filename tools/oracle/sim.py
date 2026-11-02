@@ -87,14 +87,16 @@ def structure_snbt(blocks, data_version: int) -> Tuple[str, Pos]:
     return text, (-mn[0], -mn[1], -mn[2])
 
 
-def run_plan(blocks, plan: Plan, origin: Pos = DEFAULT_ORIGIN, shift_to_origin: bool = True) -> Trace:
+def run_plan(blocks, plan: Plan, origin: Optional[Pos] = None, shift_to_origin: bool = True) -> Trace:
     """Run blocks+plan in Nucleation's tick engine.
 
-    `origin` is the world position of the structure's min corner (use the oracle's).
+    `origin` is the world position of the structure's min corner (use the oracle's; default `plan.origin`, else
+    DEFAULT_ORIGIN).
     Sim coordinates are relative to the schematic min corner; traces are returned in
     the caller's frame.
     """
     t0 = time.perf_counter()
+    origin = origin if origin is not None else plan.origin if plan.origin is not None else DEFAULT_ORIGIN
     sch, shift = build_schematic(blocks)
     sim = TickSimulation.from_schematic(sch, _SETTLE[plan.settle], *origin, "")
     inv = lambda p: (p[0] - shift[0], p[1] - shift[1], p[2] - shift[2])    # sim -> caller

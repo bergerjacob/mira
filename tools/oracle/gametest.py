@@ -101,8 +101,11 @@ def _job_json(name: str, blocks, plan: Plan, seed: int = 0, source_dv: Optional[
     ops = [{"tick": o.tick, "op": o.op,
             "pos": [o.pos[0] + shift[0], o.pos[1] + shift[1], o.pos[2] + shift[2]], "block": o.block}
            for o in plan.ops]
-    return ({"id": name, "snbt": snbt, "ticks": plan.ticks, "preroll": plan.preroll,
-             "settle": plan.settle, "seed": seed, "ops": ops}, shift)
+    job = {"id": name, "snbt": snbt, "ticks": plan.ticks, "preroll": plan.preroll,
+           "settle": plan.settle, "seed": seed, "ops": ops}
+    if plan.origin is not None:
+        job["origin"] = [int(v) for v in plan.origin]
+    return job, shift
 
 
 def _to_trace(res: dict, shift: Pos, plan: Plan, wall_ms: float) -> Trace:

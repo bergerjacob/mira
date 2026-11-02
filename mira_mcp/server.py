@@ -182,6 +182,110 @@ def explain_block(block_id: str) -> str:
     return knowledge.explain_block(block_id)
 
 
+# --------------------------------------------------------------------------- project mode (docs/PRODUCT.md)
+# A project is a directory (name -> data/projects/<name>, or a path): build.py + modules/ + spec.json + NOTES.md + .mira/.
+# Edit the files with your own file tools, then call these; they mirror `scripts/mira.py` subcommands.
+
+def _proj(project: str, cmd: str, **kw) -> str:
+    from mira_mcp import project as PJ
+    return PJ.clip(PJ.run(project, cmd, **kw))
+
+
+@mcp.tool()
+def project_init(name: str, path: str = "", from_task: str = "", from_litematic: str = "", program: str = "") -> str:
+    """Create a project (build.py, modules/, NOTES.md, .mira/; spec.json when from_task is given). path: directory (default
+    data/projects/<name>). from_litematic: decompile a schematic into build.py. program: copy a Part API program into build.py."""
+    return _proj(name, "init", name=name, path=path or None, from_task=from_task or None,
+                 from_litematic=from_litematic or None, program=program or None)
+
+
+@mcp.tool()
+def project_build(project: str, message: str = "") -> str:
+    """Compile build.py (+ `from modules.X import ...` / `from lib.X import ...`) in the sandbox and store a revision.
+    Errors come back as file:line; on success: blocks, bbox, palette, blocks per source file and per instance group."""
+    return _proj(project, "build", message=message)
+
+
+@mcp.tool()
+def project_overview(project: str, rev: str = "") -> str:
+    """Multi-resolution summary of the latest (or given) revision, under ~80 lines for any size: modules, ports, top-down
+    class map + module-letter map, side elevation, pointers to detail commands."""
+    return _proj(project, "overview", rev=rev or None)
+
+
+@mcp.tool()
+def project_view(project: str, layer: int, box: Optional[list[int]] = None, rev: str = "") -> str:
+    """Full-resolution ASCII slice of layer y (scenery from spec.json included). box = [x0, z0, x1, z1]; clipped with a notice."""
+    return _proj(project, "view", layer=layer, box=box, rev=rev or None)
+
+
+@mcp.tool()
+def project_find(project: str, pattern: str) -> str:
+    """Spec ports, build ports, labels, instances/parts, source files and block ids matching a substring or glob, with coordinates."""
+    return _proj(project, "find", pattern=pattern)
+
+
+@mcp.tool()
+def project_query(project: str, x: int, y: int, z: int, radius: int = 0) -> str:
+    """Block states around a point and the source file:line (and instance) that wrote each block."""
+    return _proj(project, "query", x=x, y=y, z=z, radius=radius)
+
+
+@mcp.tool()
+def project_diff(project: str, rev_a: str = "", rev_b: str = "", examples: int = 10) -> str:
+    """Block-level diff between two revisions (default previous -> latest), summarised by module and region, with examples."""
+    return _proj(project, "diff", a=rev_a or None, b=rev_b or None, examples=examples)
+
+
+@mcp.tool()
+def project_test(project: str, module: str = "", public_only: bool = False, fast: bool = False) -> str:
+    """Run spec.json (or modules/<module>.spec.json) in the simulator: verdict, failing vectors with first divergence and
+    waveforms, invariants (at rest, paste-stable, ...). Rebuilds first when the sources changed."""
+    return _proj(project, "test", module=module or None, public_only=public_only, fast=fast)
+
+
+@mcp.tool()
+def project_trace(project: str, signals: Optional[list[str]] = None, ticks: Optional[int] = None, seq: str = "", sets: str = "",
+                  vector: Optional[int] = None, module: str = "") -> str:
+    """ASCII timing diagram of spec ports, build ports or "x,y,z" blocks under the last test's stimulus (vectors in the test's
+    order), a named sequence (seq), custom vectors (sets="A=1,B=0;A=0") or an idle run (ticks). vector=K shows only vector K."""
+    return _proj(project, "trace", signals=signals or [], ticks=ticks, seq=seq or None, sets=sets or None, vector=vector,
+                 module=module or None)
+
+
+@mcp.tool()
+def project_notes_check(project: str) -> str:
+    """Lint NOTES.md: port:/label:/module:/inst:/part: references, coordinates (x, y, z) and backticked names must still exist."""
+    return _proj(project, "notes-check")
+
+
+@mcp.tool()
+def project_export(project: str, litematic: str = "", nbt: str = "", include_fixed: bool = True, force: bool = False) -> str:
+    """Write the settled at-rest world (build + spec scenery) as .litematic (default .mira/exports/) and optionally a vanilla
+    structure .nbt; reports whether the build is placement-path sensitive."""
+    return _proj(project, "export", litematic=litematic or None, nbt=nbt or None, include_fixed=include_fixed, force=force)
+
+
+@mcp.tool()
+def project_paste_check(project: str, file: str = "", ticks: int = 40) -> str:
+    """Paste the export into vanilla Minecraft 26.2 (oracle; quiet and full-update placement), idle `ticks`, read every block
+    back and diff against the file -> receipt (.mira/paste_receipt.json). Exports first when needed."""
+    return _proj(project, "paste-check", file=file or None, ticks=ticks)
+
+
+@mcp.tool()
+def project_init_module(project: str, name: str, part: str = "") -> str:
+    """modules/<name>.py template and, once the part compiles, a modules/<name>.spec.json skeleton derived from its ports
+    (pad inputs one cell outside each 'in' port, wire_power outputs); fill in the truth table, then project_test(module=name)."""
+    return _proj(project, "init-module", name=name, part=part or None)
+
+
+@mcp.tool()
+def project_log(project: str, n: int = 20) -> str:
+    """Revisions with time, hash, block count, test verdicts and build messages."""
+    return _proj(project, "log", n=n)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--sessions-dir", help="session store (default data/sessions; env MIRA_SESSIONS_DIR)")

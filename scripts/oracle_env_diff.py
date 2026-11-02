@@ -18,108 +18,18 @@ import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from env import runner
-from env.contract import box_cells
 from env.task import list_task_ids, load_task
-from env.sim import parse
-from tools.oracle import gametest
+from tools.oracle import envplan, gametest
 from tools.oracle.diff import diff_traces
+from tools.oracle.envplan import Levels, evaluate, read_out  # noqa: F401  (re-exported for older callers)
 from tools.oracle.sim import run_plan
-from tools.oracle.trace import Plan, put, use
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "data", "oracle")
 
 
-class Levels:
-    """Builds ops from port-value assignments, mirroring env.runner.Driver (levers start off)."""
-
-    def __init__(self, contract):
-        self.ports = {p.name: p for p in contract.ports}
-        self.lv = {}
-        self.ops = []
-
-    def set(self, tick, name, value):
-        p, value = self.ports[name], int(value)
-        if p.kind == "pad":
-            if self.lv.get(name, 0) != value:
-                self.ops.append(put(tick, p.pos, "redstone_block" if value else "air"))
-        elif p.pulse:
-            if value:
-                self.ops.append(use(tick, p.pos))
-            return
-        elif self.lv.get(name, 0) != value:
-            self.ops.append(use(tick, p.pos))
-        self.lv[name] = value
-
-
-def read_out(contract, state, pname):
-    """Output port value from a {pos: state} map (same rules as runner.read_port)."""
-    p = contract.port(pname)
-    get = lambda pos: state.get(tuple(pos), "minecraft:air")
-    if p.kind == "region":
-        cells = [get(c) for c in box_cells(p.box)]
-        air = lambda s: s.startswith("minecraft:air")
-        if p.region_mode == "air":
-            return int(all(air(c) for c in cells))
-        if p.region_mode == "solid":
-            return int(all(not air(c) for c in cells))
-        if p.region_mode == "block_in":
-            return int(all(parse(c)[0] in p.blocks for c in cells))
-        return int(all(parse(c)[0] == p.block for c in cells))
-    bid, props = parse(get(p.pos))
-    name = bid.split(":")[-1]
-    return {"lamp": int(name == "redstone_lamp" and props.get("lit") == "true"),
-            "wire_power": int(name == "redstone_wire" and int(props.get("power", "0")) >= p.min_power),
-            "piston": int(name in ("piston", "sticky_piston") and props.get("extended") == "true"),
-            "torch": int(name in ("redstone_torch", "redstone_wall_torch") and props.get("lit") == "true"),
-            "block_prop": int(props.get((p.prop or {}).get("prop")) == str((p.prop or {}).get("value")))
-            }.get(p.kind, -1)
-
-
 def captures(contract, hold, preroll):
-    """-> [(label, Plan, checks)], checks = [(read_index, port, expected_or_None)]; expected may be init/!init."""
-    outs = [p.name for p in contract.outputs]
-    probes = [tuple(p.pos) for p in contract.outputs if p.pos]
-    jobs = []
-    vecs = contract.vectors()
-    if vecs:
-        lv, checks = Levels(contract), []
-        for i, v in enumerate(vecs):
-            for k, val in v.inputs.items():
-                lv.set(i * hold, k, val)
-            for k, e in v.expect.items():
-                if e is not None:
-                    checks.append(((i + 1) * hold, k, e, f"vec{i}:{v.label}"))
-        jobs.append(("vectors", Plan(len(vecs) * hold, lv.ops, probes, "place", preroll), checks))
-    for s in contract.behaviour.sequences:
-        lv, checks = Levels(contract), []
-        for e in sorted(s.events, key=lambda e: e.t):
-            for k, val in e.set.items():
-                lv.set(e.t, k, val)
-        for e in s.expect:
-            for t in range(e.t1, e.t2 + 1) if e.mode == "all" else [None]:
-                checks.append((t, e.port, e.value, f"{s.name}[{e.t1}-{e.t2},{e.mode}]", e))
-        jobs.append((f"seq:{s.name}", Plan(s.duration + 1, lv.ops, probes, "place", preroll), checks))
-    return jobs
-
-
-def evaluate(contract, trace, checks):
-    """Failed check labels. Handles 'init'/'!init' and mode=any windows."""
-    outs = [p.name for p in contract.outputs]
-    rd = lambda idx, port: read_out(contract, trace.state_at(idx - 1), port)
-    init = {p: read_out(contract, trace.state_at(-1), p) for p in outs}
-    res = lambda v, port: init[port] if v == "init" else 1 - init[port] if v == "!init" else v
-    bad, any_seen = [], {}
-    for chk in checks:
-        t, port, val, label = chk[:4]
-        want = res(val, port)
-        if len(chk) == 5 and chk[4].mode == "any":
-            e = chk[4]
-            if any(rd(i, port) == want for i in range(e.t1, min(e.t2, trace.n_ticks) + 1)):
-                continue
-            bad.append(label)
-        elif t <= trace.n_ticks and rd(t, port) != want:
-            bad.append(f"{label}@{t}")
-    return sorted(set(bad))
+    """-> [(label, Plan, checks)]: authoring order, every vector held `hold` ticks (see tools/oracle/envplan.py)."""
+    return envplan.captures(contract, hold, preroll)
 
 
 def apply_edits(solution, edits):
@@ -144,6 +54,9 @@ def main():
                     help="also run each task's hand-written broken variants (negative controls: must fail)")
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--isolated", action="store_true", help="one JVM per capture (slow; the reference verdicts)")
+    ap.add_argument("--env-mirror", action="store_true",
+                    help="replay as env scores: the env's at-rest (handover) world, env vector order and per-vector ticks "
+                         "(tools/oracle/envplan.py); default is the raw block list, authoring order, fixed --hold")
     ap.add_argument("--tag", default=time.strftime("%Y%m%d_%H%M%S"))
     args = ap.parse_args()
     ids = args.tasks.split(",") if args.tasks else list_task_ids()
@@ -159,9 +72,16 @@ def main():
                 print(f"{tid}{vname}: prepare errors {pr.errors[:2]}")
                 continue
             blocks = [(*p, s, pr.nbt.get(p)) for p, s in pr.world.items()]
-            rr = runner.run(task.contract, sol, seed=0)
+            rr = runner.run(task.contract, sol, seed=None if args.env_mirror else 0)
             env_pass = bool(all(v.ok for v in rr.vectors) and all(s.ok for s in rr.sequences) and rr.compiled)
-            for label, plan, checks in captures(task.contract, args.hold, args.preroll):
+            caps = None
+            if args.env_mirror:
+                try:
+                    blocks = envplan.handover_world(task.contract, pr)
+                    caps = envplan.env_captures(task.contract, rr, args.preroll, world=blocks)
+                except ValueError as e:      # never at rest: fall back to the raw list and fixed hold
+                    print(f"{tid}{vname}: {e}; raw world, hold {args.hold}")
+            for label, plan, checks in caps or captures(task.contract, args.hold, args.preroll):
                 work.append((task, tid + vname, label, blocks, plan, checks, env_pass))
     t0 = time.perf_counter()
     oracle = gametest.capture_many([(f"{w[1]}__{w[2].replace(':', '_')}", w[3], w[4]) for w in work],

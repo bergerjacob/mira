@@ -40,18 +40,23 @@ def task_from_dict(d, path=None):
     return Task(c, [list(b) for b in d["solution"]], d.get("broken", []), d.get("notes", ""), path)
 
 
-def load_task(task_id_or_path):
+def load_task(task_id_or_path, variant=None):
+    """`variant` = seed of a rotated / mirrored / translated copy (env/variants.py; 0 or None = the task as stored)."""
     p = Path(task_id_or_path)
     if not p.suffix:
         p = TASK_DIR / f"{task_id_or_path}.json"
-        for sub in ("t3", "t4"):
+        for sub in ("t3", "t4", "t5"):
             if not p.exists():
                 p = TASK_DIR / sub / f"{task_id_or_path}.json"
-    return task_from_dict(json.loads(p.read_text()), p)
+    t = task_from_dict(json.loads(p.read_text()), p)
+    if variant:
+        from env.variants import variant_of
+        t = variant_of(t, variant)
+    return t
 
 
 def list_task_ids(tier=None):
-    ids = sorted(p.stem for p in [*TASK_DIR.glob("*.json"), *TASK_DIR.glob("t3/t3_*.json"), *TASK_DIR.glob("t4/t4_*.json")])
+    ids = sorted(p.stem for p in [*TASK_DIR.glob("*.json"), *TASK_DIR.glob("t3/t3_*.json"), *TASK_DIR.glob("t4/t4_*.json"), *TASK_DIR.glob("t5/t5_*.json")])
     if tier:
         ids = [i for i in ids if i.startswith(tier.lower() + "_")]
     return ids
