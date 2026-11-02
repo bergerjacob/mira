@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import pytest
+from env.task import list_task_ids
 
 from harness.agent import RunConfig, final_of, safe_name
 from harness.estimate import estimate_grid, estimate_run, measure
@@ -27,7 +28,7 @@ def small_grid(**kw):
 
 # ------------------------------------------------------------------ planning
 def test_resolve_tasks_tiers_and_ids():
-    assert len(resolve_tasks("all")) == 22
+    assert len(resolve_tasks("all")) == len(list_task_ids())
     assert resolve_tasks("t2") == ["t2_door_2x2"]
     assert resolve_tasks("t0,t1_xor")[-1] == "t1_xor" and len(resolve_tasks("t0")) == 10
     with pytest.raises(ValueError):

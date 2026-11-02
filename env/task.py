@@ -44,13 +44,14 @@ def load_task(task_id_or_path):
     p = Path(task_id_or_path)
     if not p.suffix:
         p = TASK_DIR / f"{task_id_or_path}.json"
-        if not p.exists():
-            p = TASK_DIR / "t3" / f"{task_id_or_path}.json"
+        for sub in ("t3", "t4"):
+            if not p.exists():
+                p = TASK_DIR / sub / f"{task_id_or_path}.json"
     return task_from_dict(json.loads(p.read_text()), p)
 
 
 def list_task_ids(tier=None):
-    ids = sorted(p.stem for p in [*TASK_DIR.glob("*.json"), *TASK_DIR.glob("t3/t3_*.json")])
+    ids = sorted(p.stem for p in [*TASK_DIR.glob("*.json"), *TASK_DIR.glob("t3/t3_*.json"), *TASK_DIR.glob("t4/t4_*.json")])
     if tier:
         ids = [i for i in ids if i.startswith(tier.lower() + "_")]
     return ids

@@ -41,7 +41,7 @@ class RunConfig:
     rounds: int
     seed: int = 0
     max_turns: Optional[int] = None          # default 10 + 3*R
-    max_tokens: int = 8192                   # per call
+    max_tokens: int = 16384                  # per call (8192 truncated reasoning models before the first tool call; see docs/EXPERIMENT_01.md)
     max_output_tokens: int = 40_000          # per episode (completion tokens incl. reasoning)
     temperature: float = 0.7
     reasoning: Optional[str] = None          # OpenRouter reasoning.effort, None = provider default

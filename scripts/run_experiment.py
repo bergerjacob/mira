@@ -43,7 +43,7 @@ def parse_args(argv=None):
     ap.add_argument("--dry-run", action="store_true", help="print the planned grid and a conservative cost estimate, run nothing")
     ap.add_argument("--mock", action="store_true", help="scripted reference-solution player instead of a real model (no network, $0)")
     ap.add_argument("--max-turns", type=int, help="override max assistant turns (default 10 + 3R)")
-    ap.add_argument("--max-tokens", type=int, default=8192, help="max output tokens per call")
+    ap.add_argument("--max-tokens", type=int, default=16384, help="max output tokens per call")
     ap.add_argument("--max-output-tokens", type=int, default=40000, help="episode cap on completion tokens")
     ap.add_argument("--temperature", type=float, default=0.7)
     ap.add_argument("--reasoning", choices=["low", "medium", "high"], help="OpenRouter reasoning.effort (default: provider default)")

@@ -53,7 +53,7 @@ python scripts/analyze_experiment.py --exp-id lift1 --out docs/experiments/lift1
 ```
 
 Useful flags: `--workers 6` (default), `--limit N` (first N runs of the ordered grid), `--arms blocks`, `--rounds 0,3,8`,
-`--seeds N`, `--max-turns`, `--max-tokens` (per call, default 8192), `--max-output-tokens` (per episode, default 40000),
+`--seeds N`, `--max-turns`, `--max-tokens` (per call, default 16384), `--max-output-tokens` (per episode, default 40000),
 `--temperature` (0.7), `--reasoning low|medium|high`, `--keep-reasoning`, `--no-palette-hint`, `--no-require-params`,
 `--ledger-cap-usd` (default 3.00), `--exp-root`. **`--budget-usd` has no default and is required.**
 Stop a running experiment gracefully with `touch data/experiments/<exp>/STOP` (episodes end after their current turn; they are
@@ -82,7 +82,7 @@ One episode = one `(task, model, arm, R, seed)`. The model gets a system prompt 
 * **Scoring.** `submit()` calls `Env.submit()`: hidden vectors, all invariants, `env.score` R0-R4 (`reward = 0.1 R0 + 0.1 R1 + 0.1 R2
   + 0.6 R3[R1=1] + 0.1 R4[R3=1]`). **Pass = `full_pass`** (all vectors and invariants, R1 = 1; implies R3 == 1.0).
   An episode that ends any other way is scored as it stands through the same call: `max_turns` (default `10 + 3R`),
-  `token_cap` (completion tokens, default 40k per episode; `--max-tokens` 8192 per call), `no_tool_calls` (3 consecutive replies
+  `token_cap` (completion tokens, default 40k per episode; `--max-tokens` 16384 per call), `no_tool_calls` (3 consecutive replies
   without a tool call, each answered with a nudge), `budget` / `no_credits` / `api_error` / `stopped`. Only the first group is
   `complete: true`; the last group is `complete: false`, stays pending, and is redone on resume (analysis ignores them but counts them).
   A run whose very first call is refused by the budget leaves no transcript at all.
