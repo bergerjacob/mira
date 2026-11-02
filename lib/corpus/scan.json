@@ -1,0 +1,4086 @@
+[
+{
+"path": "data/corpus/converted/claudestone/and/and_comparator_1wide_bus.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/and/and_comparator_3input.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/and/and_comparator_lightless.litematic",
+"source": "converted/claudestone",
+"blocks": 5,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/and/and_comparator_lightless_x2.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/and/and_gate.litematic",
+"source": "converted/claudestone",
+"blocks": 26,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/and/and_piston_gate.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/and/and_torch_1wide.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/and/and_torch_1wide_x2.litematic",
+"source": "converted/claudestone",
+"blocks": 24,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/and/and_torch_3input.litematic",
+"source": "converted/claudestone",
+"blocks": 23,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/and/and_torch_flat.litematic",
+"source": "converted/claudestone",
+"blocks": 11,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/binary_decoder/dec_2to4_2gt.litematic",
+"source": "converted/claudestone",
+"blocks": 19,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/binary_decoder/dec_2to4_compact.litematic",
+"source": "converted/claudestone",
+"blocks": 26,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/builds/button_lamp.litematic",
+"source": "converted/claudestone",
+"blocks": 4,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/builds/lever_lamp.litematic",
+"source": "converted/claudestone",
+"blocks": 4,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/builds/probe_cells.litematic",
+"source": "converted/claudestone",
+"blocks": 51,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/builds/route_chain.litematic",
+"source": "converted/claudestone",
+"blocks": 44,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/builds/steps_probe.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_comparator_dust.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_comparator_repeater.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_comparator_stack.litematic",
+"source": "converted/claudestone",
+"blocks": 24,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_hopper_cascade.litematic",
+"source": "converted/claudestone",
+"blocks": 52,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_hopper_piston.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_hopper_ring.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_minecart_shuttle.litematic",
+"source": "converted/claudestone",
+"blocks": 14,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_observer_column.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_observer_pair.litematic",
+"source": "converted/claudestone",
+"blocks": 2,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_observer_pulse.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_observer_vertical.litematic",
+"source": "converted/claudestone",
+"blocks": 2,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_odd_period_3gt.litematic",
+"source": "converted/claudestone",
+"blocks": 24,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_repeater_ring.litematic",
+"source": "converted/claudestone",
+"blocks": 17,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/clock/clock_torch_repeater.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/counter/count_bulb_ripple_bus.litematic",
+"source": "converted/claudestone",
+"blocks": 48,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/counter/count_bulb_ripple_down.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/counter/count_bulb_ripple_up.litematic",
+"source": "converted/claudestone",
+"blocks": 28,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/counter/count_bulb_sync.litematic",
+"source": "converted/claudestone",
+"blocks": 78,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/counter/count_bulb_sync_compact.litematic",
+"source": "converted/claudestone",
+"blocks": 37,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/counter/count_dropper_updown.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/counter/count_hopper_reset.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/cpu_parts/cpu_regs_cell.litematic",
+"source": "converted/claudestone",
+"blocks": 38,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_alternating_bus.litematic",
+"source": "converted/claudestone",
+"blocks": 30,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_analog_compact.litematic",
+"source": "converted/claudestone",
+"blocks": 19,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_analog_underpass.litematic",
+"source": "converted/claudestone",
+"blocks": 69,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_diode_grid.litematic",
+"source": "converted/claudestone",
+"blocks": 36,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_flat_comparator.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_flat_observer.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_instant_bridge.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_instant_bus.litematic",
+"source": "converted/claudestone",
+"blocks": 32,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_instant_bus_dense.litematic",
+"source": "converted/claudestone",
+"blocks": 72,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_instant_column.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_instant_dip.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_underpass.litematic",
+"source": "converted/claudestone",
+"blocks": 7,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_underpass_bus.litematic",
+"source": "converted/claudestone",
+"blocks": 27,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_underpass_inline.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/crossing/cross_underpass_stack.litematic",
+"source": "converted/claudestone",
+"blocks": 14,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/d_flip_flop/dl_dff_dual_edge.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/d_flip_flop/dl_dff_falling.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/d_flip_flop/dl_dff_hopper_register.litematic",
+"source": "converted/claudestone",
+"blocks": 24,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/d_flip_flop/dl_dff_hopper_register_x2.litematic",
+"source": "converted/claudestone",
+"blocks": 58,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/d_flip_flop/dl_dff_rising.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/d_flip_flop/dl_dff_rising_12.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/d_latch/dl_analog_ring.litematic",
+"source": "converted/claudestone",
+"blocks": 39,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/d_latch/dl_hopper_register.litematic",
+"source": "converted/claudestone",
+"blocks": 14,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/d_latch/dl_hopper_register_x3.litematic",
+"source": "converted/claudestone",
+"blocks": 42,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/d_latch/dl_lock_pair.litematic",
+"source": "converted/claudestone",
+"blocks": 4,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/d_latch/dl_lock_stack.litematic",
+"source": "converted/claudestone",
+"blocks": 22,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/d_latch/dl_subtract_lock.litematic",
+"source": "converted/claudestone",
+"blocks": 5,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/d_latch/latch.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_comparator_analog.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "skipped",
+"reason": "output 'c1': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_fall_only.litematic",
+"source": "converted/claudestone",
+"blocks": 26,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_hopper_timer.litematic",
+"source": "converted/claudestone",
+"blocks": 21,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_observer_cube.litematic",
+"source": "converted/claudestone",
+"blocks": 27,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_observer_line.litematic",
+"source": "converted/claudestone",
+"blocks": 4,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_observer_tower.litematic",
+"source": "converted/claudestone",
+"blocks": 4,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_piston_odd_tick.litematic",
+"source": "converted/claudestone",
+"blocks": 7,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_piston_sequencer.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_pulse_preserving.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_repeater_line.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_rise_only.litematic",
+"source": "converted/claudestone",
+"blocks": 21,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_selectable.litematic",
+"source": "converted/claudestone",
+"blocks": 37,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_serpentine.litematic",
+"source": "converted/claudestone",
+"blocks": 44,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/delay/delay_torch_tower.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/demux/mux_demux_comparator.litematic",
+"source": "converted/claudestone",
+"blocks": 13,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/demux/mux_demux_lock_latch.litematic",
+"source": "converted/claudestone",
+"blocks": 21,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/demux/mux_demux_piston_instant.litematic",
+"source": "converted/claudestone",
+"blocks": 14,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/door/door16_band_kick2.litematic",
+"source": "converted/claudestone",
+"blocks": 74,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/door/door16_band_same_side.litematic",
+"source": "converted/claudestone",
+"blocks": 60,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/door/door16_band_stack.litematic",
+"source": "converted/claudestone",
+"blocks": 62,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/door/door16_carrier_segment.litematic",
+"source": "converted/claudestone",
+"blocks": 33,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/door/door16_engine_b.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/door/door16_shuttle_band.litematic",
+"source": "converted/claudestone",
+"blocks": 28,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/door/door_2x2_flush_harness_check.litematic",
+"source": "converted/claudestone",
+"blocks": 57,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/dual_edge/door_lever_sticky_input.litematic",
+"source": "converted/claudestone",
+"blocks": 21,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/dual_edge/pulse_dual_edge_instant.litematic",
+"source": "converted/claudestone",
+"blocks": 23,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/dual_edge/pulse_dual_observer.litematic",
+"source": "converted/claudestone",
+"blocks": 1,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/dual_edge/pulse_dual_observer_repeater.litematic",
+"source": "converted/claudestone",
+"blocks": 3,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/encoder/dec_enc_4to2_instant.litematic",
+"source": "converted/claudestone",
+"blocks": 13,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/encoder/dec_enc_8to3_instant.litematic",
+"source": "converted/claudestone",
+"blocks": 33,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/encoder/dec_enc_analog.litematic",
+"source": "converted/claudestone",
+"blocks": 52,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/encoder/dec_enc_bcd_instant.litematic",
+"source": "converted/claudestone",
+"blocks": 40,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/encoder/dec_prio_4to2.litematic",
+"source": "converted/claudestone",
+"blocks": 17,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/falling_edge/pulse_falling_comparator.litematic",
+"source": "converted/claudestone",
+"blocks": 11,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/falling_edge/pulse_falling_observer_lock.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/falling_edge/pulse_falling_torch_1wide.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/full_adder/add_carry_cancel_cell.litematic",
+"source": "converted/claudestone",
+"blocks": 59,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/half_adder/add_half_2gt.litematic",
+"source": "converted/claudestone",
+"blocks": 51,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/half_adder/add_half_comparator_flat.litematic",
+"source": "converted/claudestone",
+"blocks": 51,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/input/button_switch.litematic",
+"source": "converted/claudestone",
+"blocks": 7,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/input/lever_switch.litematic",
+"source": "converted/claudestone",
+"blocks": 7,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/amethyst_resonance_relay.litematic",
+"source": "converted/claudestone",
+"blocks": 30,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/armor_stand_presses_stone_plate.litematic",
+"source": "converted/claudestone",
+"blocks": 17,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/arrow_holds_wooden_button.litematic",
+"source": "converted/claudestone",
+"blocks": 11,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/calibrated_sculk_frequency_filter.litematic",
+"source": "converted/claudestone",
+"blocks": 30,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/chiseled_bookshelf_last_slot_counter.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/comparator_block_state_constants.litematic",
+"source": "converted/claudestone",
+"blocks": 38,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/comparator_nonstackable_item_steps.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/comparator_side_input_sources.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/comparator_through_block_keeps_dust_level.litematic",
+"source": "converted/claudestone",
+"blocks": 62,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/composter_pie_counter_ready_delay.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/copper_bulb_instant_toggle.litematic",
+"source": "converted/claudestone",
+"blocks": 31,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/copper_golem_statue_pose_selector.litematic",
+"source": "converted/claudestone",
+"blocks": 28,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/copper_oxidation_fires_observers.litematic",
+"source": "converted/claudestone",
+"blocks": 24,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/crafter_slot_count_comparator.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/decorated_pot_single_slot_fullness.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/detector_rail_reads_cart_container.litematic",
+"source": "converted/claudestone",
+"blocks": 17,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/diode_side_input_tick_priority.litematic",
+"source": "converted/claudestone",
+"blocks": 42,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/dropper_qc_crafter_no_qc.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/dust_diagonal_cut_needs_conductor.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/dust_diagonal_step_powers_step_block.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/dust_dot_vs_cross_isolated.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/dust_emits_no_light.litematic",
+"source": "converted/claudestone",
+"blocks": 71,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/dust_powers_block_below.litematic",
+"source": "converted/claudestone",
+"blocks": 39,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/dust_redirect_by_signal_sources.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/dust_transparent_step_one_way.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "skipped",
+"reason": "output 'low': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/falling_block_update_and_break.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/hopper_chain_first_hop_cooldown.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/hopper_chain_rate_container_steps.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/hopper_lock_instant_accepts_input.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/hopper_minecart_through_floor_and_lock.litematic",
+"source": "converted/claudestone",
+"blocks": 32,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/inverted_daylight_detector_constant.litematic",
+"source": "converted/claudestone",
+"blocks": 39,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/item_frame_rotation_through_block.litematic",
+"source": "converted/claudestone",
+"blocks": 67,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/jukebox_disc_timer_and_id.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/lamp_off_delay_4_ticks.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/lectern_page_signal_and_pulse.litematic",
+"source": "converted/claudestone",
+"blocks": 11,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/lightning_rod_strike_pulse.litematic",
+"source": "converted/claudestone",
+"blocks": 23,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/moved_observer_pulses.litematic",
+"source": "converted/claudestone",
+"blocks": 14,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/note_block_trumpet_copper_oxidation.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/observer_chain_pulse_merge.litematic",
+"source": "converted/claudestone",
+"blocks": 3,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/observer_dual_edge_powered_state.litematic",
+"source": "converted/claudestone",
+"blocks": 29,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/piston_glazed_terracotta_slime_barrier.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/piston_ignores_power_from_face.litematic",
+"source": "converted/claudestone",
+"blocks": 14,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/piston_landed_powered_extends_next_tick.litematic",
+"source": "converted/claudestone",
+"blocks": 71,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/piston_one_tick_instant_transport.litematic",
+"source": "converted/claudestone",
+"blocks": 33,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/piston_qc_shared_side_input.litematic",
+"source": "converted/claudestone",
+"blocks": 33,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/piston_quasi_connectivity_bud.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/piston_redstone_block_chain_instant_off.litematic",
+"source": "converted/claudestone",
+"blocks": 25,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/piston_same_tick_pulse_ignored.litematic",
+"source": "converted/claudestone",
+"blocks": 2,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/piston_zero_tick_chain_same_tick.litematic",
+"source": "converted/claudestone",
+"blocks": 51,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/potent_sulfur_geyser_clock.litematic",
+"source": "converted/claudestone",
+"blocks": 37,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/powered_rail_chain_limit_isolation.litematic",
+"source": "converted/claudestone",
+"blocks": 51,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/powered_rail_park_and_launch.litematic",
+"source": "converted/claudestone",
+"blocks": 36,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/pull_origin_air_at_event.litematic",
+"source": "converted/claudestone",
+"blocks": 23,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/redstone_block_corner_feeds_diagonal.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/repeater_extends_short_pulses.litematic",
+"source": "converted/claudestone",
+"blocks": 32,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/repeater_lock_discards_pending_tick.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/respawn_anchor_dispenser_charge.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/sculk_detects_ice_melt.litematic",
+"source": "converted/claudestone",
+"blocks": 24,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/sculk_note_block_frequency_link.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/sculk_output_strength_by_distance.litematic",
+"source": "converted/claudestone",
+"blocks": 25,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/shelf_slot_bitmask_comparator.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/shulker_box_loader_mechanics.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/spat_piston_fires_same_tick.litematic",
+"source": "converted/claudestone",
+"blocks": 73,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/sticky_piston_short_pulse_drops_block.litematic",
+"source": "converted/claudestone",
+"blocks": 2,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/sulfur_cube_tnt_priming.litematic",
+"source": "converted/claudestone",
+"blocks": 78,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/target_block_accuracy_strength.litematic",
+"source": "converted/claudestone",
+"blocks": 14,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/tnt_explodes_false_vanishes.litematic",
+"source": "converted/claudestone",
+"blocks": 23,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/torch_burnout_one_shot.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/torch_hard_powers_block_above.litematic",
+"source": "converted/claudestone",
+"blocks": 37,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/tripwire_fast_entity_path_trigger.litematic",
+"source": "converted/claudestone",
+"blocks": 22,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/tripwire_retrigger_and_chunk_order.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/weak_powered_block_skips_dust.litematic",
+"source": "converted/claudestone",
+"blocks": 46,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/weighted_plate_entity_count.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/wind_charge_toggles_unpowered_only.litematic",
+"source": "converted/claudestone",
+"blocks": 28,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mechanics/wool_occludes_and_dampens_vibrations.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/mux/mux_4to1_comparator.litematic",
+"source": "converted/claudestone",
+"blocks": 55,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/mux/mux_comparator_2to1.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/mux/mux_dustcut_instant.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/mux/mux_piston_instant.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/mux/mux_torch_2to1.litematic",
+"source": "converted/claudestone",
+"blocks": 30,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/mux/mux_torch_lane.litematic",
+"source": "converted/claudestone",
+"blocks": 21,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/mux/mux_torch_lane_x2.litematic",
+"source": "converted/claudestone",
+"blocks": 42,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/nand/and_nand_comparator.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/nand/and_nand_torch.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/nor/or_nor_1wide_tileable.litematic",
+"source": "converted/claudestone",
+"blocks": 7,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/nor/or_nor_comparator.litematic",
+"source": "converted/claudestone",
+"blocks": 3,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/nor/or_nor_comparator_any_strength.litematic",
+"source": "converted/claudestone",
+"blocks": 33,
+"status": "skipped",
+"reason": "output 'weak': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/nor/or_nor_item_frame.litematic",
+"source": "converted/claudestone",
+"blocks": 3,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/nor/or_nor_torch_compact.litematic",
+"source": "converted/claudestone",
+"blocks": 3,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/nor/or_nor_torch_isolated.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "skipped",
+"reason": "output 'ia': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/nor/or_nor_vertical.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "skipped",
+"reason": "output 'ia': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/nor/or_nor_wide_lightless.litematic",
+"source": "converted/claudestone",
+"blocks": 21,
+"status": "skipped",
+"reason": "output 'ia': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/nor/or_nor_wide_torch.litematic",
+"source": "converted/claudestone",
+"blocks": 20,
+"status": "skipped",
+"reason": "output 'ia': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_bus_staggered.litematic",
+"source": "converted/claudestone",
+"blocks": 11,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_bus_tileable.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_comparator_1wide_bus.litematic",
+"source": "converted/claudestone",
+"blocks": 7,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_comparator_stack.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_comparator_subtract.litematic",
+"source": "converted/claudestone",
+"blocks": 3,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_comparator_threshold.litematic",
+"source": "converted/claudestone",
+"blocks": 21,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_frame_threshold.litematic",
+"source": "converted/claudestone",
+"blocks": 23,
+"status": "skipped",
+"reason": "output 'reach8': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_gate.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_piston_fast_off.litematic",
+"source": "converted/claudestone",
+"blocks": 4,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_piston_fast_on.litematic",
+"source": "converted/claudestone",
+"blocks": 7,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_rail_redirect_instant.litematic",
+"source": "converted/claudestone",
+"blocks": 7,
+"status": "skipped",
+"reason": "output 'out': unsupported probe block powered_rail",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_target_tap.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "output 'thru': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_torch_compact.litematic",
+"source": "converted/claudestone",
+"blocks": 3,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_torch_down.litematic",
+"source": "converted/claudestone",
+"blocks": 5,
+"status": "skipped",
+"reason": "output 't': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/not/not_torch_tower.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/or/or_block_repeater.litematic",
+"source": "converted/claudestone",
+"blocks": 7,
+"status": "skipped",
+"reason": "output 'ia': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/or/or_comparator_analog.litematic",
+"source": "converted/claudestone",
+"blocks": 40,
+"status": "skipped",
+"reason": "output 'far': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/or/or_dust_merge.litematic",
+"source": "converted/claudestone",
+"blocks": 2,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/or/or_gate.litematic",
+"source": "converted/claudestone",
+"blocks": 14,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/or/or_glass_diode.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "skipped",
+"reason": "output 'ia': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/or/or_vertical_spiral.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "skipped",
+"reason": "output 'ia': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/or/or_wide_instant.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "skipped",
+"reason": "output 'ia': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/or/or_wide_repeater.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/pulse_extender/pulse_extender_cauldron_ring.litematic",
+"source": "converted/claudestone",
+"blocks": 17,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/pulse_extender/pulse_extender_comparator_ring.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/pulse_extender/pulse_extender_repeater_1wide.litematic",
+"source": "converted/claudestone",
+"blocks": 19,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/pulse_limiter/pulse_limiter_comparator.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/pulse_limiter/pulse_limiter_instant_piston.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/pulse_limiter/t2_a_qc_breaker.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/pulse_limiter/t2_b_observer_gate.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/pulse_limiter/t2_b_sand_breaker.litematic",
+"source": "converted/claudestone",
+"blocks": 8,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/register/shift_piso4_pulse.litematic",
+"source": "converted/claudestone",
+"blocks": 57,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/register/shift_reg4_lock.litematic",
+"source": "converted/claudestone",
+"blocks": 59,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/rising_edge/pulse_rising_comparator.litematic",
+"source": "converted/claudestone",
+"blocks": 11,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rising_edge/pulse_rising_instant_piston.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rising_edge/pulse_rising_observer_lock.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rising_edge/pulse_rising_torch_1wide.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/door_close_starter_arming.litematic",
+"source": "converted/claudestone",
+"blocks": 46,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/door_relay_rearm.litematic",
+"source": "converted/claudestone",
+"blocks": 28,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_comparator_1wide.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "skipped",
+"reason": "input 's': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_comparator_ring.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_copper_bulb.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_copper_bulb_compact.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "skipped",
+"reason": "output 'q': unsupported probe block waxed_copper_bulb",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_dropper_bus.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_dropper_pair.litematic",
+"source": "converted/claudestone",
+"blocks": 4,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_hopper_pair.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_piston_block.litematic",
+"source": "converted/claudestone",
+"blocks": 5,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_piston_instant.litematic",
+"source": "converted/claudestone",
+"blocks": 13,
+"status": "skipped",
+"reason": "output 'q': unsupported probe block powered_rail",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_repeater_lock.litematic",
+"source": "converted/claudestone",
+"blocks": 11,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_ring_reset_priority.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_ring_stack.litematic",
+"source": "converted/claudestone",
+"blocks": 24,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/rs_latch/rs_torch_nor.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "skipped",
+"reason": "output 'nq': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/seven_segment/digit.litematic",
+"source": "converted/claudestone",
+"blocks": 59,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/seven_segment/digit_one.litematic",
+"source": "converted/claudestone",
+"blocks": 49,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/seven_segment/seg_bulb_3x5.litematic",
+"source": "converted/claudestone",
+"blocks": 22,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/seven_segment/seg_floor_dust.litematic",
+"source": "converted/claudestone",
+"blocks": 53,
+"status": "skipped",
+"reason": "output 'a0': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/seven_segment/seg_floor_rail.litematic",
+"source": "converted/claudestone",
+"blocks": 56,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/seven_segment/seg_lamp_3x5.litematic",
+"source": "converted/claudestone",
+"blocks": 31,
+"status": "skipped",
+"reason": "output 'tl': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/seven_segment/seg_lamp_3x5_x2.litematic",
+"source": "converted/claudestone",
+"blocks": 73,
+"status": "skipped",
+"reason": "output 'tbl': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/seven_segment/seg_lamp_5x9.litematic",
+"source": "converted/claudestone",
+"blocks": 65,
+"status": "skipped",
+"reason": "output 'a0': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/seven_segment/seg_piston_3x5.litematic",
+"source": "converted/claudestone",
+"blocks": 38,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/seven_segment/seg_trapdoor_3x5.litematic",
+"source": "converted/claudestone",
+"blocks": 23,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/shift_register/shift_hopper.litematic",
+"source": "converted/claudestone",
+"blocks": 29,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/shift_register/shift_hopper_1wide.litematic",
+"source": "converted/claudestone",
+"blocks": 22,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/shift_register/shift_hopper_bus2.litematic",
+"source": "converted/claudestone",
+"blocks": 49,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/shift_register/shift_pulse_lock.litematic",
+"source": "converted/claudestone",
+"blocks": 53,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/shift_register/shift_pulse_tower.litematic",
+"source": "converted/claudestone",
+"blocks": 59,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_abs_diff.litematic",
+"source": "converted/claudestone",
+"blocks": 27,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_add.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_change_pulse.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_compare_ge.litematic",
+"source": "converted/claudestone",
+"blocks": 13,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_const_container.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_const_item_frame.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "skipped",
+"reason": "output 'through': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_const_lectern.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_dac.litematic",
+"source": "converted/claudestone",
+"blocks": 30,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_double.litematic",
+"source": "converted/claudestone",
+"blocks": 17,
+"status": "skipped",
+"reason": "input 'a_max': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_invert.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_lift_down.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_lift_up.litematic",
+"source": "converted/claudestone",
+"blocks": 15,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_max_block.litematic",
+"source": "converted/claudestone",
+"blocks": 20,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_max_dust.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_min.litematic",
+"source": "converted/claudestone",
+"blocks": 19,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_peak_hold.litematic",
+"source": "converted/claudestone",
+"blocks": 21,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/signal_strength/analog_subtract.litematic",
+"source": "converted/claudestone",
+"blocks": 13,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/storage/box_loader_2x_accessible.litematic",
+"source": "converted/claudestone",
+"blocks": 30,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/storage/corner_cart_unloader_4x.litematic",
+"source": "converted/claudestone",
+"blocks": 50,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/storage/crafter_compactor_9to1.litematic",
+"source": "converted/claudestone",
+"blocks": 23,
+"status": "skipped",
+"reason": "output 'feed': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/survival/ingot_reserve_bank.litematic",
+"source": "converted/claudestone",
+"blocks": 74,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/survival/shelf_auto_label.litematic",
+"source": "converted/claudestone",
+"blocks": 11,
+"status": "skipped",
+"reason": "output 'feed': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_bulb_bus.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_bulb_counter.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_bulb_falling.litematic",
+"source": "converted/claudestone",
+"blocks": 6,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_copper_bulb.litematic",
+"source": "converted/claudestone",
+"blocks": 3,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_dropper_hold.litematic",
+"source": "converted/claudestone",
+"blocks": 16,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_hopper_fast.litematic",
+"source": "converted/claudestone",
+"blocks": 25,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_hopper_pulse.litematic",
+"source": "converted/claudestone",
+"blocks": 19,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_lightless_compact.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_lightless_lock.litematic",
+"source": "converted/claudestone",
+"blocks": 24,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_piston_1wide.litematic",
+"source": "converted/claudestone",
+"blocks": 7,
+"status": "skipped",
+"reason": "input 't': multi-position bus",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_sticky_spit.litematic",
+"source": "converted/claudestone",
+"blocks": 17,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/t_flip_flop/tff_torch_repeater.litematic",
+"source": "converted/claudestone",
+"blocks": 22,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_glass_zigzag_long.litematic",
+"source": "converted/claudestone",
+"blocks": 60,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_glass_zigzag_up.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_observer_bulb_down.litematic",
+"source": "converted/claudestone",
+"blocks": 11,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_observer_bulb_up.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_observer_down.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_observer_up.litematic",
+"source": "converted/claudestone",
+"blocks": 20,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_sculk_wireless.litematic",
+"source": "converted/claudestone",
+"blocks": 9,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_spiral.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_staircase.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_staircase_bus.litematic",
+"source": "converted/claudestone",
+"blocks": 36,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_torch_ladder_down.litematic",
+"source": "converted/claudestone",
+"blocks": 14,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_torch_tower_bus.litematic",
+"source": "converted/claudestone",
+"blocks": 20,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/vertical_wire/vwire_torch_tower_up.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/wire/door_reset_east.litematic",
+"source": "converted/claudestone",
+"blocks": 68,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/wire/door_reset_west.litematic",
+"source": "converted/claudestone",
+"blocks": 49,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/wire/t3_a_probe_ref.litematic",
+"source": "converted/claudestone",
+"blocks": 11,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/wire/wire_analog_comparator.litematic",
+"source": "converted/claudestone",
+"blocks": 72,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/wire/wire_diagonal.litematic",
+"source": "converted/claudestone",
+"blocks": 64,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/wire/wire_dust_run.litematic",
+"source": "converted/claudestone",
+"blocks": 30,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/wire/wire_observer_bus.litematic",
+"source": "converted/claudestone",
+"blocks": 32,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/wire/wire_piston_instant.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/wire/wire_repeater_line.litematic",
+"source": "converted/claudestone",
+"blocks": 64,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/wire/wire_sculk_wireless.litematic",
+"source": "converted/claudestone",
+"blocks": 39,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/xnor/xor_xnor_bridge_2gt.litematic",
+"source": "converted/claudestone",
+"blocks": 3,
+"status": "skipped",
+"reason": "output 'out': unsupported probe block waxed_copper_bulb",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/xnor/xor_xnor_comparator_bridge.litematic",
+"source": "converted/claudestone",
+"blocks": 21,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/xnor/xor_xnor_comparator_flat.litematic",
+"source": "converted/claudestone",
+"blocks": 36,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/xnor/xor_xnor_observer_bulb.litematic",
+"source": "converted/claudestone",
+"blocks": 5,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/xnor/xor_xnor_torch_fast.litematic",
+"source": "converted/claudestone",
+"blocks": 53,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/xnor/xor_xnor_torch_flat.litematic",
+"source": "converted/claudestone",
+"blocks": 46,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/xor/xor_comparator_bridge.litematic",
+"source": "converted/claudestone",
+"blocks": 18,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/xor/xor_comparator_bridge_stack2.litematic",
+"source": "converted/claudestone",
+"blocks": 36,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/xor/xor_comparator_flat.litematic",
+"source": "converted/claudestone",
+"blocks": 34,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/xor/xor_gate.litematic",
+"source": "converted/claudestone",
+"blocks": 58,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/xor/xor_observer_bulb.litematic",
+"source": "converted/claudestone",
+"blocks": 5,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/xor/xor_observer_bulb_bus2.litematic",
+"source": "converted/claudestone",
+"blocks": 10,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/claudestone/xor/xor_piston_switch.litematic",
+"source": "converted/claudestone",
+"blocks": 12,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/xor/xor_piston_switch_stack2.litematic",
+"source": "converted/claudestone",
+"blocks": 24,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/claudestone/xor/xor_torch_flat.litematic",
+"source": "converted/claudestone",
+"blocks": 45,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/and2/cand_comparator.litematic",
+"source": "converted/redstone-verify",
+"blocks": 17,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/and2/cand_hillclimb.litematic",
+"source": "converted/redstone-verify",
+"blocks": 16,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/and2/mutants_long_side_wire.litematic",
+"source": "converted/redstone-verify",
+"blocks": 19,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/redstone-verify/and2/seed.litematic",
+"source": "converted/redstone-verify",
+"blocks": 25,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/c17/cand_comparators.litematic",
+"source": "converted/redstone-verify",
+"blocks": 41,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/redstone-verify/dec2to4/cand_comparators.litematic",
+"source": "converted/redstone-verify",
+"blocks": 27,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/redstone-verify/full_adder/cand_comparators.litematic",
+"source": "converted/redstone-verify",
+"blocks": 71,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/half_adder/cand_comparators.litematic",
+"source": "converted/redstone-verify",
+"blocks": 34,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/imply2/cand_levers_on_blocks.litematic",
+"source": "converted/redstone-verify",
+"blocks": 5,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/imply2/seed.litematic",
+"source": "converted/redstone-verify",
+"blocks": 23,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/maj3/cand_comparators.litematic",
+"source": "converted/redstone-verify",
+"blocks": 30,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/maj3/cand_hillclimb.litematic",
+"source": "converted/redstone-verify",
+"blocks": 29,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/mux2/cand_comparators.litematic",
+"source": "converted/redstone-verify",
+"blocks": 18,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/redstone-verify/mux2/seed.litematic",
+"source": "converted/redstone-verify",
+"blocks": 43,
+"status": "skipped",
+"reason": "no combinational truth table",
+"passes_with_reset_between": null,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/redstone-verify/nand2/cand_levers_on_blocks.litematic",
+"source": "converted/redstone-verify",
+"blocks": 7,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/nand2/seed.litematic",
+"source": "converted/redstone-verify",
+"blocks": 21,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/not/cand_lever_on_block.litematic",
+"source": "converted/redstone-verify",
+"blocks": 4,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/not/seed.litematic",
+"source": "converted/redstone-verify",
+"blocks": 9,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/or17/cand_folded.litematic",
+"source": "converted/redstone-verify",
+"blocks": 57,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/redstone-verify/or17/cand_hillclimb.litematic",
+"source": "converted/redstone-verify",
+"blocks": 56,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/redstone-verify/or17/mutants_no_repeater.litematic",
+"source": "converted/redstone-verify",
+"blocks": 73,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/redstone-verify/or17/seed.litematic",
+"source": "converted/redstone-verify",
+"blocks": 73,
+"status": "env_fail",
+"reason": null,
+"passes_with_reset_between": false,
+"oracle": null
+},
+{
+"path": "data/corpus/converted/redstone-verify/xnor2/cand_comparators.litematic",
+"source": "converted/redstone-verify",
+"blocks": 34,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/xnor2/cand_hillclimb.litematic",
+"source": "converted/redstone-verify",
+"blocks": 32,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/xnor2/seed.litematic",
+"source": "converted/redstone-verify",
+"blocks": 53,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/xor2/cand_agent.litematic",
+"source": "converted/redstone-verify",
+"blocks": 35,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/xor2/cand_comparators.litematic",
+"source": "converted/redstone-verify",
+"blocks": 33,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/xor2/cand_hillclimb.litematic",
+"source": "converted/redstone-verify",
+"blocks": 31,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+},
+{
+"path": "data/corpus/converted/redstone-verify/xor2/seed.litematic",
+"source": "converted/redstone-verify",
+"blocks": 51,
+"status": "env_pass",
+"reason": null,
+"passes_with_reset_between": null,
+"oracle": {
+"vanilla_pass": true,
+"nucleation_pass": true,
+"retried": null,
+"tick_identical": true,
+"error": null,
+"vanilla_failures": []
+}
+}
+]

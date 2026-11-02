@@ -1,0 +1,444 @@
+{
+ "name": "sr_latch",
+ "title": "RS latch",
+ "description": "NOR latch: pulse on S sets Q, pulse on R clears it (S and R never together).",
+ "requires": [],
+ "params": {
+  "floor": true
+ },
+ "kind": "seq",
+ "ports": {
+  "Q": {
+   "dir": "out",
+   "pos": [
+    7,
+    1,
+    1
+   ],
+   "face": "east"
+  },
+  "R": {
+   "dir": "in",
+   "pos": [
+    0,
+    1,
+    2
+   ],
+   "face": "west"
+  },
+  "S": {
+   "dir": "in",
+   "pos": [
+    8,
+    1,
+    3
+   ],
+   "face": "east"
+  }
+ },
+ "footprint": {
+  "size": [
+   9,
+   2,
+   3
+  ],
+  "blocks": 44
+ },
+ "timing_ticks": null,
+ "notes": "Q is undefined before the first pulse (the latch comes up in whatever state the placement order leaves), so every use starts with a reset pulse.",
+ "spec": {
+  "inputs": [
+   "R",
+   "S"
+  ],
+  "outputs": [
+   "Q"
+  ],
+  "rows": null,
+  "sequences": [
+   {
+    "name": "reset_set_hold",
+    "events": [
+     [
+      0,
+      {
+       "R": 1
+      }
+     ],
+     [
+      8,
+      {
+       "R": 0
+      }
+     ],
+     [
+      20,
+      {
+       "S": 1
+      }
+     ],
+     [
+      28,
+      {
+       "S": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      0,
+      14,
+      19
+     ],
+     [
+      "Q",
+      1,
+      34,
+      60
+     ]
+    ],
+    "duration": 60
+   },
+   {
+    "name": "set_reset_hold",
+    "events": [
+     [
+      0,
+      {
+       "R": 1
+      }
+     ],
+     [
+      8,
+      {
+       "R": 0
+      }
+     ],
+     [
+      20,
+      {
+       "S": 1
+      }
+     ],
+     [
+      28,
+      {
+       "S": 0
+      }
+     ],
+     [
+      50,
+      {
+       "R": 1
+      }
+     ],
+     [
+      58,
+      {
+       "R": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      1,
+      34,
+      49
+     ],
+     [
+      "Q",
+      0,
+      64,
+      90
+     ]
+    ],
+    "duration": 90
+   },
+   {
+    "name": "set_first",
+    "events": [
+     [
+      0,
+      {
+       "S": 1
+      }
+     ],
+     [
+      8,
+      {
+       "S": 0
+      }
+     ],
+     [
+      30,
+      {
+       "R": 1
+      }
+     ],
+     [
+      38,
+      {
+       "R": 0
+      }
+     ],
+     [
+      60,
+      {
+       "S": 1
+      }
+     ],
+     [
+      68,
+      {
+       "S": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      1,
+      14,
+      29
+     ],
+     [
+      "Q",
+      0,
+      44,
+      59
+     ],
+     [
+      "Q",
+      1,
+      74,
+      100
+     ]
+    ],
+    "duration": 100
+   },
+   {
+    "name": "reset_twice",
+    "events": [
+     [
+      0,
+      {
+       "S": 1
+      }
+     ],
+     [
+      8,
+      {
+       "S": 0
+      }
+     ],
+     [
+      20,
+      {
+       "R": 1
+      }
+     ],
+     [
+      28,
+      {
+       "R": 0
+      }
+     ],
+     [
+      40,
+      {
+       "R": 1
+      }
+     ],
+     [
+      48,
+      {
+       "R": 0
+      }
+     ],
+     [
+      70,
+      {
+       "S": 1
+      }
+     ],
+     [
+      78,
+      {
+       "S": 0
+      }
+     ],
+     [
+      90,
+      {
+       "S": 1
+      }
+     ],
+     [
+      98,
+      {
+       "S": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      0,
+      34,
+      69
+     ],
+     [
+      "Q",
+      1,
+      84,
+      120
+     ]
+    ],
+    "duration": 120
+   }
+  ]
+ },
+ "verified": {
+  "env": {
+   "rot0": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270": {
+    "lead0": {
+     "func": true,
+     "inv": false
+    },
+    "lead14": {
+     "func": true,
+     "inv": false
+    }
+   },
+   "rot0+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   }
+  },
+  "env_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "func_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "paste_stable_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "min_in_strength": 1,
+  "min_in_strength_per_port": {
+   "R": 1,
+   "S": 1
+  },
+  "oracle_captures": 36,
+  "oracle_tick_identical": 36,
+  "oracle_vanilla_pass": true,
+  "oracle_nucleation_pass": true,
+  "oracle_ok": true
+ },
+ "provenance": {
+  "origin": "layout of this repo's env task (env/tasks/author.py), dust ports added",
+  "licence": "repo licence",
+  "redistributable": true
+ },
+ "orientation_failures": [
+  {
+   "orientation": "rot270",
+   "lead": 0,
+   "func": true,
+   "inv": false
+  },
+  {
+   "orientation": "rot270",
+   "lead": 14,
+   "func": true,
+   "inv": false
+  }
+ ]
+}

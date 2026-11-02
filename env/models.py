@@ -73,3 +73,10 @@ def sr_latch(s, i):
         q = 0
     s["q"] = q
     return {"Q": q}
+
+
+# T3 reference models live next to the component library; registered on import.
+try:
+    from env import library  # noqa: F401,E402
+except ImportError:  # library not present or circular import during its own load
+    pass

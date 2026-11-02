@@ -8,3 +8,4 @@ requests
 nbtlib
 nucleation
 pyyaml
+mcp

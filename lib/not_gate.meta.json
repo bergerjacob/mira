@@ -1,0 +1,201 @@
+{
+ "name": "not_gate",
+ "title": "NOT gate",
+ "description": "Torch inverter: Y = !A.",
+ "requires": [],
+ "params": {
+  "floor": true
+ },
+ "kind": "comb",
+ "ports": {
+  "A": {
+   "dir": "in",
+   "pos": [
+    0,
+    1,
+    0
+   ],
+   "face": "west"
+  },
+  "Y": {
+   "dir": "out",
+   "pos": [
+    3,
+    1,
+    0
+   ],
+   "face": "east"
+  }
+ },
+ "footprint": {
+  "size": [
+   4,
+   2,
+   1
+  ],
+  "blocks": 8
+ },
+ "timing_ticks": {
+  "rise": 2,
+  "fall": 2,
+  "out_strength": {
+   "Y": 15
+  }
+ },
+ "notes": "",
+ "spec": {
+  "inputs": [
+   "A"
+  ],
+  "outputs": [
+   "Y"
+  ],
+  "rows": [
+   [
+    [
+     0
+    ],
+    [
+     1
+    ]
+   ],
+   [
+    [
+     1
+    ],
+    [
+     0
+    ]
+   ]
+  ],
+  "sequences": null
+ },
+ "verified": {
+  "env": {
+   "rot0": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot0+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   }
+  },
+  "env_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "func_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "paste_stable_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "min_in_strength": 1,
+  "min_in_strength_per_port": {
+   "A": 1
+  },
+  "oracle_captures": 9,
+  "oracle_tick_identical": 9,
+  "oracle_vanilla_pass": true,
+  "oracle_nucleation_pass": true,
+  "oracle_ok": true
+ },
+ "provenance": {
+  "origin": "hand-authored for MIRA",
+  "licence": "repo licence (not third-party)",
+  "redistributable": true
+ }
+}

@@ -1,0 +1,497 @@
+{
+ "contract": {
+  "id": "t3_majority3",
+  "title": "3-input majority",
+  "tier": "T3",
+  "description": "Build a majority voter: the lamp Y must be lit exactly when at least two of the three levers I0, I1, I2 are on. Library hint (component tier only): a full-adder cell has a majority output.",
+  "bbox": [0, 0, 0, 29, 5, 17],
+  "build_box": [0, 1, 0, 29, 5, 17],
+  "ports": [
+   {
+    "name": "I0",
+    "kind": "click",
+    "pos": [10, 1, 16],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "input"
+   },
+   {
+    "name": "I1",
+    "kind": "click",
+    "pos": [18, 1, 16],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "input"
+   },
+   {
+    "name": "I2",
+    "kind": "click",
+    "pos": [24, 1, 5],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "input"
+   },
+   {
+    "name": "Y",
+    "kind": "lamp",
+    "pos": [7, 1, 6],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "doc": "majority"
+   }
+  ],
+  "fixed": [
+   {
+    "box": [0, 0, 0, 29, 0, 17],
+    "state": "minecraft:smooth_stone"
+   },
+   {
+    "box": [10, 1, 16, 10, 1, 16],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [18, 1, 16, 18, 1, 16],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [24, 1, 5, 24, 1, 5],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [7, 1, 6, 7, 1, 6],
+    "state": "minecraft:redstone_lamp[lit=false]"
+   }
+  ],
+  "behaviour": {
+   "truth_table": {
+    "rows": [
+     {
+      "inputs": {
+       "I0": 0,
+       "I1": 0,
+       "I2": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": true,
+      "label": "0"
+     },
+     {
+      "inputs": {
+       "I0": 0,
+       "I1": 0,
+       "I2": 1
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "1"
+     },
+     {
+      "inputs": {
+       "I0": 0,
+       "I1": 1,
+       "I2": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": true,
+      "label": "2"
+     },
+     {
+      "inputs": {
+       "I0": 0,
+       "I1": 1,
+       "I2": 1
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": false,
+      "label": "3"
+     },
+     {
+      "inputs": {
+       "I0": 1,
+       "I1": 0,
+       "I2": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": true,
+      "label": "4"
+     },
+     {
+      "inputs": {
+       "I0": 1,
+       "I1": 0,
+       "I2": 1
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": false,
+      "label": "5"
+     },
+     {
+      "inputs": {
+       "I0": 1,
+       "I1": 1,
+       "I2": 0
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": true,
+      "label": "6"
+     },
+     {
+      "inputs": {
+       "I0": 1,
+       "I1": 1,
+       "I2": 1
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": false,
+      "label": "7"
+     },
+     {
+      "inputs": {
+       "I0": 1,
+       "I1": 1,
+       "I2": 1
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": false,
+      "label": "7'"
+     },
+     {
+      "inputs": {
+       "I0": 1,
+       "I1": 1,
+       "I2": 0
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": false,
+      "label": "6'"
+     },
+     {
+      "inputs": {
+       "I0": 1,
+       "I1": 0,
+       "I2": 1
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": false,
+      "label": "5'"
+     },
+     {
+      "inputs": {
+       "I0": 1,
+       "I1": 0,
+       "I2": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "4'"
+     },
+     {
+      "inputs": {
+       "I0": 0,
+       "I1": 1,
+       "I2": 1
+      },
+      "expect": {
+       "Y": 1
+      },
+      "public": false,
+      "label": "3'"
+     },
+     {
+      "inputs": {
+       "I0": 0,
+       "I1": 1,
+       "I2": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "2'"
+     },
+     {
+      "inputs": {
+       "I0": 0,
+       "I1": 0,
+       "I2": 1
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "1'"
+     },
+     {
+      "inputs": {
+       "I0": 0,
+       "I1": 0,
+       "I2": 0
+      },
+      "expect": {
+       "Y": 0
+      },
+      "public": false,
+      "label": "0'"
+     }
+    ],
+    "settle": 200,
+    "extra": 2,
+    "shuffle": true,
+    "reset_between": false,
+    "order_independent": true
+   },
+   "sequences": [],
+   "reference_model": {
+    "fn": "majority",
+    "inputs": ["I0", "I1", "I2"],
+    "outputs": ["Y"],
+    "n_public": 2,
+    "n_hidden": 8,
+    "public_seed": 51,
+    "hidden_seed": 52,
+    "mode": "comb",
+    "settle": 200,
+    "extra": 2,
+    "reset_between": false,
+    "p_one": 0.5,
+    "params": {
+     "n": 3
+    }
+   }
+  },
+  "invariants": {
+   "at_rest": true,
+   "paste_stable": true,
+   "deterministic": true,
+   "no_oscillation": true,
+   "no_forbidden": true,
+   "no_collateral": true,
+   "keep_clear": true,
+   "no_popoff": true,
+   "change_boxes": []
+  },
+  "budgets": {
+   "rest": 150,
+   "total": 20000,
+   "max_blocks": 600
+  },
+  "forbidden": ["minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:structure_block", "minecraft:jigsaw", "minecraft:test_block", "minecraft:test_instance_block", "minecraft:barrier"],
+  "keep_clear": [],
+  "no_write": [],
+  "eval_seed": 7797,
+  "depends": {
+   "Y": ["I0", "I1", "I2"]
+  },
+  "reference": {
+   "blocks": 99,
+   "volume": 576
+  },
+  "hints": []
+ },
+ "broken": [
+  {
+   "name": "flip repeater [18, 3, 5] south->north",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [18, 3, 5],
+     "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"
+    ]
+   ]
+  },
+  {
+   "name": "remove redstone_wire [16, 3, 4]",
+   "kind": "remove",
+   "edits": [
+    [
+     "remove",
+     [16, 3, 4]
+    ]
+   ]
+  },
+  {
+   "name": "shift redstone_wire [11, 1, 6] north",
+   "kind": "shift",
+   "edits": [
+    [
+     "remove",
+     [11, 1, 6]
+    ],
+    [
+     "set",
+     [11, 1, 5],
+     "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"
+    ]
+   ]
+  },
+  {
+   "name": "replace wire [12, 2, 6] with stone",
+   "kind": "swap",
+   "edits": [
+    [
+     "set",
+     [12, 2, 6],
+     "minecraft:stone"
+    ]
+   ]
+  },
+  {
+   "name": "flip repeater [17, 2, 7] west->east",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [17, 2, 7],
+     "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"
+    ]
+   ]
+  }
+ ],
+ "notes": "",
+ "solution": [
+  [17, 1, 5, "minecraft:stone"],
+  [19, 1, 5, "minecraft:stone"],
+  [22, 1, 5, "minecraft:stone"],
+  [23, 1, 5, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [8, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [9, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [11, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [12, 1, 6, "minecraft:stone"],
+  [13, 1, 6, "minecraft:stone"],
+  [14, 1, 6, "minecraft:stone"],
+  [16, 1, 6, "minecraft:stone"],
+  [17, 1, 6, "minecraft:stone"],
+  [19, 1, 6, "minecraft:stone"],
+  [20, 1, 6, "minecraft:stone"],
+  [14, 1, 7, "minecraft:stone"],
+  [15, 1, 7, "minecraft:stone"],
+  [17, 1, 7, "minecraft:stone"],
+  [19, 1, 7, "minecraft:stone"],
+  [10, 1, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [11, 1, 8, "minecraft:stone"],
+  [12, 1, 8, "minecraft:stone"],
+  [13, 1, 8, "minecraft:stone"],
+  [14, 1, 8, "minecraft:stone"],
+  [15, 1, 8, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [16, 1, 8, "minecraft:stone"],
+  [17, 1, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 9, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [14, 1, 9, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 1, 9, "minecraft:comparator[facing=west,mode=subtract,powered=false]"],
+  [16, 1, 9, "minecraft:stone"],
+  [17, 1, 9, "minecraft:comparator[facing=east,mode=subtract,powered=false]"],
+  [18, 1, 9, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 10, "minecraft:repeater[delay=1,facing=south,locked=false,powered=false]"],
+  [15, 1, 10, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [16, 1, 10, "minecraft:stone"],
+  [17, 1, 10, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [18, 1, 10, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 11, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 11, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 12, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 12, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 14, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 14, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 15, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [14, 2, 4, "minecraft:stone"],
+  [15, 2, 4, "minecraft:stone"],
+  [16, 2, 4, "minecraft:stone"],
+  [18, 2, 4, "minecraft:stone"],
+  [19, 2, 4, "minecraft:stone"],
+  [20, 2, 4, "minecraft:stone"],
+  [14, 2, 5, "minecraft:stone"],
+  [17, 2, 5, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 2, 5, "minecraft:stone"],
+  [19, 2, 5, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [20, 2, 5, "minecraft:stone"],
+  [21, 2, 5, "minecraft:stone"],
+  [22, 2, 5, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [12, 2, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [13, 2, 6, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [14, 2, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [16, 2, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [17, 2, 6, "minecraft:comparator[facing=west,mode=subtract,powered=false]"],
+  [18, 2, 6, "minecraft:stone"],
+  [19, 2, 6, "minecraft:comparator[facing=east,mode=subtract,powered=false]"],
+  [20, 2, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [14, 2, 7, "minecraft:comparator[facing=south,mode=subtract,powered=false]"],
+  [15, 2, 7, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [16, 2, 7, "minecraft:stone"],
+  [17, 2, 7, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [18, 2, 7, "minecraft:stone"],
+  [19, 2, 7, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [11, 2, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [12, 2, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [13, 2, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [14, 2, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [16, 2, 8, "minecraft:repeater[delay=1,facing=south,locked=false,powered=false]"],
+  [16, 2, 9, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 2, 9, "minecraft:stone"],
+  [18, 2, 10, "minecraft:stone"],
+  [14, 3, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 3, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [16, 3, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [17, 3, 4, "minecraft:stone"],
+  [18, 3, 4, "minecraft:comparator[facing=east,mode=subtract,powered=false]"],
+  [19, 3, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [20, 3, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [14, 3, 5, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 3, 5, "minecraft:repeater[delay=1,facing=south,locked=false,powered=false]"],
+  [20, 3, 5, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [21, 3, 5, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 3, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 3, 7, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [18, 3, 8, "minecraft:stone"],
+  [18, 3, 9, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [18, 3, 10, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"]
+ ]
+}

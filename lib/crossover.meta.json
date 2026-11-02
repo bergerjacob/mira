@@ -1,0 +1,247 @@
+{
+ "name": "crossover",
+ "title": "Two-signal crossover",
+ "description": "XE = XW and ZS = ZN, independently (the Z line hops over the X line at y=3).",
+ "requires": [],
+ "params": {
+  "floor": true
+ },
+ "kind": "comb",
+ "ports": {
+  "XE": {
+   "dir": "out",
+   "pos": [
+    4,
+    1,
+    2
+   ],
+   "face": "east"
+  },
+  "XW": {
+   "dir": "in",
+   "pos": [
+    0,
+    1,
+    2
+   ],
+   "face": "west"
+  },
+  "ZN": {
+   "dir": "in",
+   "pos": [
+    2,
+    1,
+    -1
+   ],
+   "face": "north"
+  },
+  "ZS": {
+   "dir": "out",
+   "pos": [
+    2,
+    1,
+    5
+   ],
+   "face": "south"
+  }
+ },
+ "footprint": {
+  "size": [
+   5,
+   4,
+   7
+  ],
+  "blocks": 52
+ },
+ "timing_ticks": {
+  "rise": 2,
+  "fall": 2,
+  "out_strength": {
+   "XE": 11,
+   "ZS": 13
+  }
+ },
+ "notes": "Both lines tolerate weak input; Z leaves at full strength (repeater), X keeps its strength minus 4.",
+ "spec": {
+  "inputs": [
+   "XW",
+   "ZN"
+  ],
+  "outputs": [
+   "XE",
+   "ZS"
+  ],
+  "rows": [
+   [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   [
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ]
+   ]
+  ],
+  "sequences": null
+ },
+ "verified": {
+  "env": {
+   "rot0": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead10": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead10": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead10": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead10": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot0+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead10": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead10": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead10": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead10": {
+     "func": true,
+     "inv": true
+    }
+   }
+  },
+  "env_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "func_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "paste_stable_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "min_in_strength": 5,
+  "min_in_strength_per_port": {
+   "XW": 5,
+   "ZN": 3
+  },
+  "oracle_captures": 9,
+  "oracle_tick_identical": 9,
+  "oracle_vanilla_pass": true,
+  "oracle_nucleation_pass": true,
+  "oracle_ok": true
+ },
+ "provenance": {
+  "origin": "hand-authored for MIRA",
+  "licence": "repo licence (not third-party)",
+  "redistributable": true
+ }
+}

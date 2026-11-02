@@ -1,0 +1,250 @@
+{
+ "name": "half_adder",
+ "title": "Half adder",
+ "description": "S = A ^ B, C = A & B (comparator XOR).",
+ "requires": [],
+ "params": {
+  "floor": true
+ },
+ "kind": "comb",
+ "ports": {
+  "A": {
+   "dir": "in",
+   "pos": [
+    0,
+    1,
+    1
+   ],
+   "face": "west"
+  },
+  "B": {
+   "dir": "in",
+   "pos": [
+    4,
+    2,
+    3
+   ],
+   "face": "east"
+  },
+  "C": {
+   "dir": "out",
+   "pos": [
+    0,
+    2,
+    4
+   ],
+   "face": "west"
+  },
+  "S": {
+   "dir": "out",
+   "pos": [
+    2,
+    2,
+    0
+   ],
+   "face": "north"
+  }
+ },
+ "footprint": {
+  "size": [
+   5,
+   3,
+   5
+  ],
+  "blocks": 38
+ },
+ "timing_ticks": {
+  "rise": 10,
+  "fall": 10,
+  "out_strength": {
+   "S": 15,
+   "C": 15
+  }
+ },
+ "notes": "",
+ "spec": {
+  "inputs": [
+   "A",
+   "B"
+  ],
+  "outputs": [
+   "S",
+   "C"
+  ],
+  "rows": [
+   [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   [
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   [
+    [
+     1,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ]
+  ],
+  "sequences": null
+ },
+ "verified": {
+  "env": {
+   "rot0": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot0+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   }
+  },
+  "env_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "func_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "paste_stable_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "min_in_strength": 3,
+  "min_in_strength_per_port": {
+   "A": 2,
+   "B": 3
+  },
+  "oracle_captures": 9,
+  "oracle_tick_identical": 9,
+  "oracle_vanilla_pass": true,
+  "oracle_nucleation_pass": true,
+  "oracle_ok": true
+ },
+ "provenance": {
+  "origin": "adapted from formalized-si/redstone-verify (MIT): layout, lever/lamp interface replaced by dust ports and re-verified",
+  "upstream": "https://github.com/formalized-si/redstone-verify",
+  "upstream_commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+  "licence": "MIT (keep the upstream notice when redistributing)",
+  "redistributable": true,
+  "upstream_layout": "circuits/half_adder/cand_comparators.rsl"
+ }
+}

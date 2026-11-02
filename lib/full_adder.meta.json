@@ -1,0 +1,315 @@
+{
+ "name": "full_adder",
+ "title": "1-bit full adder",
+ "description": "S = A ^ B ^ CIN, COUT = majority(A, B, CIN).",
+ "requires": [],
+ "params": {
+  "floor": true
+ },
+ "kind": "comb",
+ "ports": {
+  "A": {
+   "dir": "in",
+   "pos": [
+    0,
+    2,
+    4
+   ],
+   "face": "west"
+  },
+  "B": {
+   "dir": "in",
+   "pos": [
+    4,
+    1,
+    6
+   ],
+   "face": "south"
+  },
+  "CIN": {
+   "dir": "in",
+   "pos": [
+    6,
+    3,
+    1
+   ],
+   "face": "east"
+  },
+  "COUT": {
+   "dir": "out",
+   "pos": [
+    -2,
+    2,
+    2
+   ],
+   "face": "west"
+  },
+  "S": {
+   "dir": "out",
+   "pos": [
+    4,
+    3,
+    6
+   ],
+   "face": "south"
+  }
+ },
+ "footprint": {
+  "size": [
+   9,
+   4,
+   7
+  ],
+  "blocks": 80
+ },
+ "timing_ticks": {
+  "rise": 14,
+  "fall": 16,
+  "out_strength": {
+   "S": 15,
+   "COUT": 15
+  }
+ },
+ "notes": "",
+ "spec": {
+  "inputs": [
+   "A",
+   "B",
+   "CIN"
+  ],
+  "outputs": [
+   "S",
+   "COUT"
+  ],
+  "rows": [
+   [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     1,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   [
+    [
+     1,
+     0,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     1,
+     0
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     1,
+     1
+    ],
+    [
+     1,
+     1
+    ]
+   ]
+  ],
+  "sequences": null
+ },
+ "verified": {
+  "env": {
+   "rot0": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead8": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead8": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead8": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead8": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot0+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead8": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead8": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead8": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead8": {
+     "func": true,
+     "inv": false
+    }
+   }
+  },
+  "env_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "func_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "paste_stable_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "min_in_strength": 7,
+  "min_in_strength_per_port": {
+   "A": 2,
+   "B": 2,
+   "CIN": 7
+  },
+  "oracle_captures": 9,
+  "oracle_tick_identical": 9,
+  "oracle_vanilla_pass": true,
+  "oracle_nucleation_pass": true,
+  "oracle_ok": true
+ },
+ "provenance": {
+  "origin": "adapted from formalized-si/redstone-verify (MIT): layout, lever/lamp interface replaced by dust ports and re-verified",
+  "upstream": "https://github.com/formalized-si/redstone-verify",
+  "upstream_commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+  "licence": "MIT (keep the upstream notice when redistributing)",
+  "redistributable": true,
+  "upstream_layout": "circuits/full_adder/cand_comparators.rsl"
+ },
+ "orientation_failures": [
+  {
+   "orientation": "rot270+mirror_x",
+   "lead": 8,
+   "func": true,
+   "inv": false
+  }
+ ]
+}

@@ -1,0 +1,232 @@
+{
+ "name": "or2",
+ "title": "OR gate",
+ "description": "Y = A | B (dust merge + repeater restore).",
+ "requires": [],
+ "params": {
+  "floor": true
+ },
+ "kind": "comb",
+ "ports": {
+  "A": {
+   "dir": "in",
+   "pos": [
+    0,
+    1,
+    0
+   ],
+   "face": "west"
+  },
+  "B": {
+   "dir": "in",
+   "pos": [
+    0,
+    1,
+    2
+   ],
+   "face": "west"
+  },
+  "Y": {
+   "dir": "out",
+   "pos": [
+    4,
+    1,
+    1
+   ],
+   "face": "east"
+  }
+ },
+ "footprint": {
+  "size": [
+   5,
+   2,
+   3
+  ],
+  "blocks": 24
+ },
+ "timing_ticks": {
+  "rise": 4,
+  "fall": 4,
+  "out_strength": {
+   "Y": 15
+  }
+ },
+ "notes": "",
+ "spec": {
+  "inputs": [
+   "A",
+   "B"
+  ],
+  "outputs": [
+   "Y"
+  ],
+  "rows": [
+   [
+    [
+     0,
+     0
+    ],
+    [
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     1
+    ],
+    [
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     0
+    ],
+    [
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     1
+    ],
+    [
+     1
+    ]
+   ]
+  ],
+  "sequences": null
+ },
+ "verified": {
+  "env": {
+   "rot0": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot0+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot180+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead14": {
+     "func": true,
+     "inv": true
+    }
+   }
+  },
+  "env_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "func_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "paste_stable_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x",
+   "rot90",
+   "rot90+mirror_x"
+  ],
+  "min_in_strength": 1,
+  "min_in_strength_per_port": {
+   "A": 1,
+   "B": 1
+  },
+  "oracle_captures": 9,
+  "oracle_tick_identical": 9,
+  "oracle_vanilla_pass": true,
+  "oracle_nucleation_pass": true,
+  "oracle_ok": true
+ },
+ "provenance": {
+  "origin": "hand-authored for MIRA",
+  "licence": "repo licence (not third-party)",
+  "redistributable": true
+ }
+}

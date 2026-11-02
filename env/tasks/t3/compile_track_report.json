@@ -1,0 +1,447 @@
+[
+ {
+  "design": "ha",
+  "compile": {
+   "seconds": 0.02,
+   "blocks": 702,
+   "bounds": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     32,
+     7,
+     34
+    ]
+   ],
+   "volume": 9240,
+   "prims": 2,
+   "levels": 1,
+   "est_delay_rt_max": 2,
+   "block_kinds": {
+    "gray_concrete": 140,
+    "purple_concrete": 12,
+    "red_concrete": 30,
+    "magenta_concrete": 116,
+    "lever": 2,
+    "repeater": 26,
+    "redstone_wire": 298,
+    "stone": 2,
+    "redstone_torch": 19,
+    "lime_concrete": 35,
+    "orange_concrete": 14,
+    "yellow_concrete": 8
+   }
+  },
+  "reference": {
+   "ref": "lib/half_adder",
+   "blocks": 38,
+   "volume": 75
+  },
+  "footprint_ratio": {
+   "blocks": 18.5,
+   "volume": 123.2
+  },
+  "vectors": 4,
+  "executor": {
+   "ok": false,
+   "stage": "set_input",
+   "error": "NucleationError: NucleationErrorCode.Simulation",
+   "pass": 0,
+   "total": 4
+  },
+  "tick_sim": {
+   "pass": 4,
+   "total": 4,
+   "seconds": 0.0
+  },
+  "contract_errors": [],
+  "prepare_errors": [],
+  "env": {
+   "seconds": 1.8,
+   "compiled": true,
+   "vectors_pass": 4,
+   "vectors": 4,
+   "invariants": {
+    "no_forbidden": true,
+    "no_popoff": true,
+    "at_rest": true,
+    "paste_stable": true,
+    "order_independent": true,
+    "no_oscillation": true,
+    "no_collateral": true
+   },
+   "invariant_failures": {},
+   "place_errors": [],
+   "ticks_per_vector_max": 26,
+   "unsettled": []
+  },
+  "mutants": {
+   "tried": 4,
+   "caught": 4
+  },
+  "oracle": {
+   "captures": 1,
+   "agree": 1,
+   "vanilla_failures": [],
+   "nucleation_failures": [],
+   "first_divergence": null,
+   "vanilla_pass": true,
+   "nucleation_pass": true,
+   "seconds": 3.7,
+   "hold": 56
+  }
+ },
+ {
+  "design": "add2",
+  "compile": {
+   "seconds": 0.09,
+   "blocks": 3488,
+   "bounds": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     117,
+     7,
+     86
+    ]
+   ],
+   "volume": 82128,
+   "prims": 11,
+   "levels": 3,
+   "est_delay_rt_max": 6,
+   "block_kinds": {
+    "gray_concrete": 844,
+    "purple_concrete": 24,
+    "red_concrete": 120,
+    "magenta_concrete": 493,
+    "lever": 4,
+    "repeater": 129,
+    "redstone_wire": 1519,
+    "stone": 4,
+    "redstone_torch": 70,
+    "lime_concrete": 196,
+    "orange_concrete": 52,
+    "yellow_concrete": 33
+   }
+  },
+  "reference": {
+   "ref": "t3_adder2",
+   "blocks": 243,
+   "volume": 1248
+  },
+  "footprint_ratio": {
+   "blocks": 14.4,
+   "volume": 65.8
+  },
+  "vectors": 16,
+  "executor": {
+   "ok": false,
+   "stage": "set_input",
+   "error": "NucleationError: NucleationErrorCode.Simulation",
+   "pass": 0,
+   "total": 8
+  },
+  "tick_sim": {
+   "pass": 16,
+   "total": 16,
+   "seconds": 0.2
+  },
+  "contract_errors": [],
+  "prepare_errors": [],
+  "env": {
+   "seconds": 13.6,
+   "compiled": true,
+   "vectors_pass": 16,
+   "vectors": 16,
+   "invariants": {
+    "no_forbidden": true,
+    "no_popoff": true,
+    "at_rest": true,
+    "paste_stable": true,
+    "order_independent": true,
+    "no_oscillation": true,
+    "no_collateral": true
+   },
+   "invariant_failures": {},
+   "place_errors": [],
+   "ticks_per_vector_max": 66,
+   "unsettled": []
+  },
+  "mutants": {
+   "tried": 6,
+   "caught": 6
+  },
+  "oracle": {
+   "captures": 1,
+   "agree": 1,
+   "vanilla_failures": [],
+   "nucleation_failures": [],
+   "first_divergence": null,
+   "vanilla_pass": true,
+   "nucleation_pass": true,
+   "seconds": 34.0,
+   "hold": 96
+  }
+ },
+ {
+  "design": "add3",
+  "compile": {
+   "seconds": 0.186,
+   "blocks": 7446,
+   "bounds": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     185,
+     7,
+     128
+    ]
+   ],
+   "volume": 191952,
+   "prims": 24,
+   "levels": 4,
+   "est_delay_rt_max": 8,
+   "block_kinds": {
+    "gray_concrete": 1831,
+    "purple_concrete": 36,
+    "red_concrete": 234,
+    "magenta_concrete": 1130,
+    "lever": 6,
+    "repeater": 276,
+    "redstone_wire": 3265,
+    "stone": 6,
+    "redstone_torch": 134,
+    "lime_concrete": 364,
+    "orange_concrete": 100,
+    "yellow_concrete": 64
+   }
+  },
+  "reference": {
+   "ref": "t3_adder3",
+   "blocks": 368,
+   "volume": 1872
+  },
+  "footprint_ratio": {
+   "blocks": 20.2,
+   "volume": 102.5
+  },
+  "vectors": 32,
+  "executor": {
+   "ok": false,
+   "stage": "set_input",
+   "error": "NucleationError: NucleationErrorCode.Simulation",
+   "pass": 0,
+   "total": 8
+  },
+  "tick_sim": {
+   "pass": 32,
+   "total": 32,
+   "seconds": 0.8
+  },
+  "contract_errors": [],
+  "prepare_errors": [],
+  "env": {
+   "seconds": 44.1,
+   "compiled": true,
+   "vectors_pass": 32,
+   "vectors": 32,
+   "invariants": {
+    "no_forbidden": true,
+    "no_popoff": true,
+    "at_rest": true,
+    "paste_stable": true,
+    "order_independent": true,
+    "no_oscillation": true,
+    "no_collateral": true
+   },
+   "invariant_failures": {},
+   "place_errors": [],
+   "ticks_per_vector_max": 90,
+   "unsettled": []
+  },
+  "mutants": {
+   "tried": 6,
+   "caught": 6
+  },
+  "oracle": {
+   "captures": 1,
+   "agree": 1,
+   "vanilla_failures": [],
+   "nucleation_failures": [],
+   "first_divergence": null,
+   "vanilla_pass": true,
+   "nucleation_pass": true,
+   "seconds": 179.3,
+   "hold": 120
+  }
+ },
+ {
+  "design": "add4",
+  "compile": {
+   "seconds": 0.329,
+   "blocks": 12870,
+   "bounds": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     253,
+     7,
+     170
+    ]
+   ],
+   "volume": 347472,
+   "prims": 41,
+   "levels": 5,
+   "est_delay_rt_max": 10,
+   "block_kinds": {
+    "gray_concrete": 3216,
+    "purple_concrete": 48,
+    "red_concrete": 360,
+    "magenta_concrete": 1955,
+    "lever": 8,
+    "repeater": 487,
+    "redstone_wire": 5670,
+    "stone": 8,
+    "redstone_torch": 206,
+    "lime_concrete": 657,
+    "orange_concrete": 156,
+    "yellow_concrete": 99
+   }
+  },
+  "reference": {
+   "ref": "t3_adder4",
+   "blocks": 493,
+   "volume": 2496
+  },
+  "footprint_ratio": {
+   "blocks": 26.1,
+   "volume": 139.2
+  },
+  "vectors": 16,
+  "executor": {
+   "ok": false,
+   "stage": "set_input",
+   "error": "NucleationError: NucleationErrorCode.Simulation",
+   "pass": 0,
+   "total": 8
+  },
+  "tick_sim": {
+   "pass": 256,
+   "total": 256,
+   "seconds": 8.5
+  },
+  "contract_errors": [],
+  "prepare_errors": [],
+  "env": {
+   "seconds": 98.6,
+   "compiled": true,
+   "vectors_pass": 16,
+   "vectors": 16,
+   "invariants": {
+    "no_forbidden": true,
+    "no_popoff": true,
+    "at_rest": true,
+    "paste_stable": true,
+    "order_independent": true,
+    "no_oscillation": true,
+    "no_collateral": true
+   },
+   "invariant_failures": {},
+   "place_errors": [],
+   "ticks_per_vector_max": 116,
+   "unsettled": []
+  },
+  "mutants": {
+   "tried": 6,
+   "caught": 6
+  },
+  "oracle": {
+   "captures": 1,
+   "agree": 1,
+   "vanilla_failures": [],
+   "nucleation_failures": [],
+   "first_divergence": null,
+   "vanilla_pass": true,
+   "nucleation_pass": true,
+   "seconds": 221.0,
+   "hold": 146
+  }
+ },
+ {
+  "design": "add8",
+  "compile": {
+   "seconds": 1.097,
+   "blocks": 42162,
+   "bounds": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     440,
+     7,
+     332
+    ]
+   ],
+   "volume": 1174824,
+   "prims": 149,
+   "levels": 9,
+   "est_delay_rt_max": 18,
+   "block_kinds": {
+    "gray_concrete": 10688,
+    "purple_concrete": 96,
+    "red_concrete": 984,
+    "magenta_concrete": 7190,
+    "lever": 16,
+    "repeater": 1612,
+    "redstone_wire": 18707,
+    "stone": 16,
+    "redstone_torch": 574,
+    "lime_concrete": 1540,
+    "orange_concrete": 460,
+    "yellow_concrete": 279
+   }
+  },
+  "reference": {
+   "ref": "t3_adder8",
+   "blocks": 993,
+   "volume": 4992
+  },
+  "footprint_ratio": {
+   "blocks": 42.5,
+   "volume": 235.3
+  },
+  "vectors": 4,
+  "executor": {
+   "ok": false,
+   "stage": "set_input",
+   "error": "NucleationError: NucleationErrorCode.Simulation",
+   "pass": 0,
+   "total": 4
+  },
+  "tick_sim": {
+   "pass": 48,
+   "total": 48,
+   "seconds": 8.0
+  },
+  "env": {
+   "skipped": "42162 blocks > --skip-env-above 20000"
+  },
+  "oracle": {
+   "skipped": "42162 blocks > --skip-env-above 20000"
+  }
+ }
+]

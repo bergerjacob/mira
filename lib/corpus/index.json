@@ -1,0 +1,7032 @@
+[
+ {
+  "name": "claudestone__and__and_comparator_lightless",
+  "file": "corpus/claudestone__and__and_comparator_lightless.litematic",
+  "blocks": 5,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "b": [
+     [
+      1,
+      1,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/and/and_comparator_lightless.litematic",
+   "upstream_spec": "data/external/claudestone/library/and/and_comparator_lightless.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__and__and_comparator_lightless_x2",
+  "file": "corpus/claudestone__and__and_comparator_lightless_x2.litematic",
+  "blocks": 10,
+  "inputs": [
+   "a0",
+   "b0",
+   "a1",
+   "b1"
+  ],
+  "outputs": [
+   "out0",
+   "out1"
+  ],
+  "truth_table_rows": 22,
+  "ports": {
+   "inputs": {
+    "a0": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "b0": [
+     [
+      1,
+      1,
+      -1
+     ]
+    ],
+    "a1": [
+     [
+      0,
+      3,
+      -1
+     ]
+    ],
+    "b1": [
+     [
+      1,
+      3,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "out0": [
+     [
+      0,
+      1,
+      0
+     ]
+    ],
+    "out1": [
+     [
+      0,
+      3,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/and/and_comparator_lightless_x2.litematic",
+   "upstream_spec": "data/external/claudestone/library/and/and_comparator_lightless_x2.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__and__and_gate",
+  "file": "corpus/claudestone__and__and_gate.litematic",
+  "blocks": 26,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      7,
+      1,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/and/and_gate.litematic",
+   "upstream_spec": "data/external/claudestone/library/and/and_gate.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__and__and_piston_gate",
+  "file": "corpus/claudestone__and__and_piston_gate.litematic",
+  "blocks": 6,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      0,
+      2,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      1,
+      2,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/and/and_piston_gate.litematic",
+   "upstream_spec": "data/external/claudestone/library/and/and_piston_gate.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__and__and_torch_1wide",
+  "file": "corpus/claudestone__and__and_torch_1wide.litematic",
+  "blocks": 12,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "b": [
+     [
+      0,
+      2,
+      7
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      0,
+      2,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/and/and_torch_1wide.litematic",
+   "upstream_spec": "data/external/claudestone/library/and/and_torch_1wide.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__and__and_torch_1wide_x2",
+  "file": "corpus/claudestone__and__and_torch_1wide_x2.litematic",
+  "blocks": 24,
+  "inputs": [
+   "a0",
+   "b0",
+   "a1",
+   "b1"
+  ],
+  "outputs": [
+   "out0",
+   "out1"
+  ],
+  "truth_table_rows": 22,
+  "ports": {
+   "inputs": {
+    "a0": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "a1": [
+     [
+      1,
+      1,
+      -1
+     ]
+    ],
+    "b0": [
+     [
+      0,
+      2,
+      7
+     ]
+    ],
+    "b1": [
+     [
+      1,
+      2,
+      7
+     ]
+    ]
+   },
+   "outputs": {
+    "out0": [
+     [
+      0,
+      2,
+      1
+     ]
+    ],
+    "out1": [
+     [
+      1,
+      2,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/and/and_torch_1wide_x2.litematic",
+   "upstream_spec": "data/external/claudestone/library/and/and_torch_1wide_x2.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__and__and_torch_3input",
+  "file": "corpus/claudestone__and__and_torch_3input.litematic",
+  "blocks": 23,
+  "inputs": [
+   "a",
+   "b",
+   "c"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 17,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ],
+    "c": [
+     [
+      -1,
+      1,
+      4
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      4,
+      0,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/and/and_torch_3input.litematic",
+   "upstream_spec": "data/external/claudestone/library/and/and_torch_3input.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__and__and_torch_flat",
+  "file": "corpus/claudestone__and__and_torch_flat.litematic",
+  "blocks": 11,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      3,
+      0,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/and/and_torch_flat.litematic",
+   "upstream_spec": "data/external/claudestone/library/and/and_torch_flat.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__binary_decoder__dec_2to4_2gt",
+  "file": "corpus/claudestone__binary_decoder__dec_2to4_2gt.litematic",
+  "blocks": 19,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "o0",
+   "o1",
+   "o2",
+   "o3"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      1,
+      1,
+      1
+     ]
+    ],
+    "b": [
+     [
+      3,
+      1,
+      1
+     ]
+    ]
+   },
+   "outputs": {
+    "o0": [
+     [
+      1,
+      0,
+      1
+     ]
+    ],
+    "o2": [
+     [
+      1,
+      1,
+      0
+     ]
+    ],
+    "o1": [
+     [
+      3,
+      1,
+      0
+     ]
+    ],
+    "o3": [
+     [
+      2,
+      1,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/binary_decoder/dec_2to4_2gt.litematic",
+   "upstream_spec": "data/external/claudestone/library/binary_decoder/dec_2to4_2gt.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__builds__route_chain",
+  "file": "corpus/claudestone__builds__route_chain.litematic",
+  "blocks": 44,
+  "inputs": [
+   "A.a"
+  ],
+  "outputs": [
+   "B.out"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "A.a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "B.out": [
+     [
+      15,
+      1,
+      6
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/builds/route_chain.litematic",
+   "upstream_spec": "data/external/claudestone/library/builds/route_chain.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_alternating_bus",
+  "file": "corpus/claudestone__crossing__cross_alternating_bus.litematic",
+  "blocks": 30,
+  "inputs": [
+   "a",
+   "b0",
+   "b1",
+   "b2",
+   "b3"
+  ],
+  "outputs": [
+   "a_out",
+   "b0_out",
+   "b1_out",
+   "b2_out",
+   "b3_out"
+  ],
+  "truth_table_rows": 32,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      1
+     ]
+    ],
+    "b0": [
+     [
+      0,
+      2,
+      -1
+     ]
+    ],
+    "b2": [
+     [
+      2,
+      2,
+      -1
+     ]
+    ],
+    "b1": [
+     [
+      1,
+      2,
+      3
+     ]
+    ],
+    "b3": [
+     [
+      3,
+      2,
+      3
+     ]
+    ]
+   },
+   "outputs": {
+    "a_out": [
+     [
+      4,
+      1,
+      1
+     ]
+    ],
+    "b1_out": [
+     [
+      1,
+      2,
+      0
+     ]
+    ],
+    "b3_out": [
+     [
+      3,
+      2,
+      0
+     ]
+    ],
+    "b0_out": [
+     [
+      0,
+      2,
+      2
+     ]
+    ],
+    "b2_out": [
+     [
+      2,
+      2,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_alternating_bus.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_alternating_bus.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_analog_compact",
+  "file": "corpus/claudestone__crossing__cross_analog_compact.litematic",
+  "blocks": 19,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "a_out",
+   "b_out"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      2,
+      1,
+      4
+     ]
+    ],
+    "b": [
+     [
+      3,
+      3,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "a_out": [
+     [
+      4,
+      1,
+      3
+     ]
+    ],
+    "b_out": [
+     [
+      3,
+      2,
+      5
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_analog_compact.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_analog_compact.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_analog_underpass",
+  "file": "corpus/claudestone__crossing__cross_analog_underpass.litematic",
+  "blocks": 69,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "a_on",
+   "a_off",
+   "b_on",
+   "b_off"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      10
+     ]
+    ],
+    "b": [
+     [
+      0,
+      2,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "a_on": [
+     [
+      14,
+      1,
+      10
+     ]
+    ],
+    "a_off": [
+     [
+      15,
+      1,
+      10
+     ]
+    ],
+    "b_on": [
+     [
+      0,
+      2,
+      17
+     ]
+    ],
+    "b_off": [
+     [
+      0,
+      2,
+      18
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_analog_underpass.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_analog_underpass.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_diode_grid",
+  "file": "corpus/claudestone__crossing__cross_diode_grid.litematic",
+  "blocks": 36,
+  "inputs": [
+   "b0",
+   "b1",
+   "b2",
+   "a0",
+   "a1"
+  ],
+  "outputs": [
+   "b0_out",
+   "b1_out",
+   "b2_out",
+   "a0_out",
+   "a1_out"
+  ],
+  "truth_table_rows": 32,
+  "ports": {
+   "inputs": {
+    "b0": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "b1": [
+     [
+      1,
+      1,
+      -1
+     ]
+    ],
+    "b2": [
+     [
+      2,
+      1,
+      -1
+     ]
+    ],
+    "a0": [
+     [
+      -1,
+      2,
+      1
+     ]
+    ],
+    "a1": [
+     [
+      -1,
+      2,
+      3
+     ]
+    ]
+   },
+   "outputs": {
+    "b0_out": [
+     [
+      0,
+      1,
+      4
+     ]
+    ],
+    "b1_out": [
+     [
+      1,
+      1,
+      4
+     ]
+    ],
+    "b2_out": [
+     [
+      2,
+      1,
+      4
+     ]
+    ],
+    "a0_out": [
+     [
+      2,
+      2,
+      1
+     ]
+    ],
+    "a1_out": [
+     [
+      2,
+      2,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_diode_grid.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_diode_grid.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_flat_comparator",
+  "file": "corpus/claudestone__crossing__cross_flat_comparator.litematic",
+  "blocks": 18,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "a_out",
+   "b_out"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "inputs": {
+    "b": [
+     [
+      3,
+      1,
+      -1
+     ]
+    ],
+    "a": [
+     [
+      -1,
+      1,
+      1
+     ]
+    ]
+   },
+   "outputs": {
+    "a_out": [
+     [
+      4,
+      1,
+      1
+     ]
+    ],
+    "b_out": [
+     [
+      3,
+      1,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_flat_comparator.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_flat_comparator.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_instant_bridge",
+  "file": "corpus/claudestone__crossing__cross_instant_bridge.litematic",
+  "blocks": 12,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "a_out",
+   "b_out"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "inputs": {
+    "b": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "a": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "a_out": [
+     [
+      0,
+      1,
+      2
+     ]
+    ],
+    "b_out": [
+     [
+      0,
+      1,
+      4
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_instant_bridge.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_instant_bridge.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_instant_bus",
+  "file": "corpus/claudestone__crossing__cross_instant_bus.litematic",
+  "blocks": 32,
+  "inputs": [
+   "b0",
+   "b1",
+   "a0",
+   "a1"
+  ],
+  "outputs": [
+   "b0_out",
+   "b1_out",
+   "a0_out",
+   "a1_out"
+  ],
+  "truth_table_rows": 16,
+  "ports": {
+   "inputs": {
+    "b0": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "b1": [
+     [
+      2,
+      1,
+      -1
+     ]
+    ],
+    "a0": [
+     [
+      -1,
+      3,
+      0
+     ]
+    ],
+    "a1": [
+     [
+      -1,
+      3,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "b0_out": [
+     [
+      0,
+      1,
+      3
+     ]
+    ],
+    "b1_out": [
+     [
+      2,
+      1,
+      3
+     ]
+    ],
+    "a0_out": [
+     [
+      3,
+      3,
+      0
+     ]
+    ],
+    "a1_out": [
+     [
+      3,
+      3,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_instant_bus.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_instant_bus.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_instant_bus_dense",
+  "file": "corpus/claudestone__crossing__cross_instant_bus_dense.litematic",
+  "blocks": 72,
+  "inputs": [
+   "b0",
+   "b1",
+   "b2",
+   "b3",
+   "a0",
+   "a1",
+   "a2",
+   "a3"
+  ],
+  "outputs": [
+   "b0_out",
+   "b1_out",
+   "b2_out",
+   "b3_out",
+   "a0_out",
+   "a1_out",
+   "a2_out",
+   "a3_out"
+  ],
+  "truth_table_rows": 28,
+  "ports": {
+   "inputs": {
+    "a0": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "a2": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ],
+    "a1": [
+     [
+      -1,
+      2,
+      1
+     ]
+    ],
+    "a3": [
+     [
+      -1,
+      2,
+      3
+     ]
+    ],
+    "b0": [
+     [
+      0,
+      3,
+      -1
+     ]
+    ],
+    "b2": [
+     [
+      2,
+      3,
+      -1
+     ]
+    ],
+    "b1": [
+     [
+      1,
+      5,
+      -1
+     ]
+    ],
+    "b3": [
+     [
+      3,
+      5,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "a0_out": [
+     [
+      3,
+      1,
+      0
+     ]
+    ],
+    "a2_out": [
+     [
+      3,
+      1,
+      2
+     ]
+    ],
+    "a1_out": [
+     [
+      3,
+      2,
+      1
+     ]
+    ],
+    "a3_out": [
+     [
+      3,
+      2,
+      3
+     ]
+    ],
+    "b0_out": [
+     [
+      0,
+      4,
+      3
+     ]
+    ],
+    "b2_out": [
+     [
+      2,
+      4,
+      3
+     ]
+    ],
+    "b1_out": [
+     [
+      1,
+      5,
+      3
+     ]
+    ],
+    "b3_out": [
+     [
+      3,
+      5,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_instant_bus_dense.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_instant_bus_dense.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_instant_column",
+  "file": "corpus/claudestone__crossing__cross_instant_column.litematic",
+  "blocks": 8,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "a_out",
+   "b_out"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      1
+     ]
+    ],
+    "b": [
+     [
+      0,
+      3,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "a_out": [
+     [
+      0,
+      1,
+      1
+     ]
+    ],
+    "b_out": [
+     [
+      0,
+      3,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_instant_column.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_instant_column.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_instant_dip",
+  "file": "corpus/claudestone__crossing__cross_instant_dip.litematic",
+  "blocks": 16,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "a_out",
+   "b_out"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "inputs": {
+    "b": [
+     [
+      2,
+      2,
+      -1
+     ]
+    ],
+    "a": [
+     [
+      -1,
+      2,
+      1
+     ]
+    ]
+   },
+   "outputs": {
+    "a_out": [
+     [
+      4,
+      2,
+      1
+     ]
+    ],
+    "b_out": [
+     [
+      2,
+      2,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_instant_dip.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_instant_dip.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_underpass",
+  "file": "corpus/claudestone__crossing__cross_underpass.litematic",
+  "blocks": 7,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "a_out",
+   "b_out"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      1
+     ]
+    ],
+    "b": [
+     [
+      0,
+      2,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "a_out": [
+     [
+      0,
+      1,
+      1
+     ]
+    ],
+    "b_out": [
+     [
+      0,
+      2,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_underpass.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_underpass.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_underpass_bus",
+  "file": "corpus/claudestone__crossing__cross_underpass_bus.litematic",
+  "blocks": 27,
+  "inputs": [
+   "a",
+   "b0",
+   "b1",
+   "b2"
+  ],
+  "outputs": [
+   "a_out",
+   "b0_out",
+   "b1_out",
+   "b2_out"
+  ],
+  "truth_table_rows": 16,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      1
+     ]
+    ],
+    "b0": [
+     [
+      0,
+      2,
+      -1
+     ]
+    ],
+    "b1": [
+     [
+      2,
+      2,
+      -1
+     ]
+    ],
+    "b2": [
+     [
+      4,
+      2,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "a_out": [
+     [
+      5,
+      1,
+      1
+     ]
+    ],
+    "b0_out": [
+     [
+      0,
+      2,
+      2
+     ]
+    ],
+    "b1_out": [
+     [
+      2,
+      2,
+      2
+     ]
+    ],
+    "b2_out": [
+     [
+      4,
+      2,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_underpass_bus.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_underpass_bus.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_underpass_inline",
+  "file": "corpus/claudestone__crossing__cross_underpass_inline.litematic",
+  "blocks": 12,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "a_out",
+   "b_out"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "inputs": {
+    "b": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "a": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "a_out": [
+     [
+      0,
+      1,
+      2
+     ]
+    ],
+    "b_out": [
+     [
+      0,
+      1,
+      4
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_underpass_inline.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_underpass_inline.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__crossing__cross_underpass_stack",
+  "file": "corpus/claudestone__crossing__cross_underpass_stack.litematic",
+  "blocks": 14,
+  "inputs": [
+   "a0",
+   "b0",
+   "a1",
+   "b1"
+  ],
+  "outputs": [
+   "a0_out",
+   "b0_out",
+   "a1_out",
+   "b1_out"
+  ],
+  "truth_table_rows": 16,
+  "ports": {
+   "inputs": {
+    "a0": [
+     [
+      -1,
+      1,
+      1
+     ]
+    ],
+    "b0": [
+     [
+      0,
+      2,
+      -1
+     ]
+    ],
+    "a1": [
+     [
+      -1,
+      4,
+      1
+     ]
+    ],
+    "b1": [
+     [
+      0,
+      5,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "a0_out": [
+     [
+      0,
+      1,
+      1
+     ]
+    ],
+    "b0_out": [
+     [
+      0,
+      2,
+      2
+     ]
+    ],
+    "a1_out": [
+     [
+      0,
+      4,
+      1
+     ]
+    ],
+    "b1_out": [
+     [
+      0,
+      5,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/crossing/cross_underpass_stack.litematic",
+   "upstream_spec": "data/external/claudestone/library/crossing/cross_underpass_stack.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__d_latch__dl_lock_pair",
+  "file": "corpus/claudestone__d_latch__dl_lock_pair.litematic",
+  "blocks": 4,
+  "inputs": [
+   "d"
+  ],
+  "outputs": [
+   "q"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "d": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "hold": [
+     [
+      0,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "q": [
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/d_latch/dl_lock_pair.litematic",
+   "upstream_spec": "data/external/claudestone/library/d_latch/dl_lock_pair.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__d_latch__dl_lock_stack",
+  "file": "corpus/claudestone__d_latch__dl_lock_stack.litematic",
+  "blocks": 22,
+  "inputs": [
+   "d0",
+   "d1",
+   "d2"
+  ],
+  "outputs": [
+   "q0",
+   "q1",
+   "q2"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "inputs": {
+    "d0": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "hold": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ],
+    "d1": [
+     [
+      -1,
+      3,
+      0
+     ]
+    ],
+    "d2": [
+     [
+      -1,
+      5,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "q0": [
+     [
+      0,
+      1,
+      0
+     ]
+    ],
+    "q1": [
+     [
+      0,
+      3,
+      0
+     ]
+    ],
+    "q2": [
+     [
+      0,
+      5,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/d_latch/dl_lock_stack.litematic",
+   "upstream_spec": "data/external/claudestone/library/d_latch/dl_lock_stack.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__d_latch__dl_subtract_lock",
+  "file": "corpus/claudestone__d_latch__dl_subtract_lock.litematic",
+  "blocks": 5,
+  "inputs": [
+   "e",
+   "d"
+  ],
+  "outputs": [
+   "q"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "d": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "e": [
+     [
+      -1,
+      1,
+      1
+     ]
+    ]
+   },
+   "outputs": {
+    "q": [
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/d_latch/dl_subtract_lock.litematic",
+   "upstream_spec": "data/external/claudestone/library/d_latch/dl_subtract_lock.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__d_latch__latch",
+  "file": "corpus/claudestone__d_latch__latch.litematic",
+  "blocks": 15,
+  "inputs": [
+   "e",
+   "d"
+  ],
+  "outputs": [
+   "q"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "d": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "e": [
+     [
+      -1,
+      1,
+      3
+     ]
+    ]
+   },
+   "outputs": {
+    "q": [
+     [
+      3,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/d_latch/latch.litematic",
+   "upstream_spec": "data/external/claudestone/library/d_latch/latch.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__delay__delay_piston_sequencer",
+  "file": "corpus/claudestone__delay__delay_piston_sequencer.litematic",
+  "blocks": 8,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "t0",
+   "t1",
+   "t2"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      1
+     ]
+    ]
+   },
+   "outputs": {
+    "t0": [
+     [
+      0,
+      1,
+      0
+     ]
+    ],
+    "t1": [
+     [
+      4,
+      1,
+      1
+     ]
+    ],
+    "t2": [
+     [
+      0,
+      1,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/delay/delay_piston_sequencer.litematic",
+   "upstream_spec": "data/external/claudestone/library/delay/delay_piston_sequencer.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__delay__delay_pulse_preserving",
+  "file": "corpus/claudestone__delay__delay_pulse_preserving.litematic",
+  "blocks": 10,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      4,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/delay/delay_pulse_preserving.litematic",
+   "upstream_spec": "data/external/claudestone/library/delay/delay_pulse_preserving.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__delay__delay_repeater_line",
+  "file": "corpus/claudestone__delay__delay_repeater_line.litematic",
+  "blocks": 8,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      3,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/delay/delay_repeater_line.litematic",
+   "upstream_spec": "data/external/claudestone/library/delay/delay_repeater_line.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__delay__delay_selectable",
+  "file": "corpus/claudestone__delay__delay_selectable.litematic",
+  "blocks": 37,
+  "inputs": [
+   "a",
+   "sel"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      0
+     ]
+    ],
+    "sel": [
+     [
+      4,
+      1,
+      1
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      5,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/delay/delay_selectable.litematic",
+   "upstream_spec": "data/external/claudestone/library/delay/delay_selectable.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__delay__delay_serpentine",
+  "file": "corpus/claudestone__delay__delay_serpentine.litematic",
+  "blocks": 44,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      0,
+      1,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/delay/delay_serpentine.litematic",
+   "upstream_spec": "data/external/claudestone/library/delay/delay_serpentine.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__delay__delay_torch_tower",
+  "file": "corpus/claudestone__delay__delay_torch_tower.litematic",
+  "blocks": 10,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      1,
+      8,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/delay/delay_torch_tower.litematic",
+   "upstream_spec": "data/external/claudestone/library/delay/delay_torch_tower.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__demux__mux_demux_comparator",
+  "file": "corpus/claudestone__demux__mux_demux_comparator.litematic",
+  "blocks": 13,
+  "inputs": [
+   "s",
+   "d"
+  ],
+  "outputs": [
+   "out0",
+   "out1"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "s": [
+     [
+      2,
+      1,
+      1
+     ]
+    ],
+    "d": [
+     [
+      2,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out0": [
+     [
+      3,
+      1,
+      0
+     ]
+    ],
+    "out1": [
+     [
+      0,
+      1,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/demux/mux_demux_comparator.litematic",
+   "upstream_spec": "data/external/claudestone/library/demux/mux_demux_comparator.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__demux__mux_demux_piston_instant",
+  "file": "corpus/claudestone__demux__mux_demux_piston_instant.litematic",
+  "blocks": 14,
+  "inputs": [
+   "s",
+   "d"
+  ],
+  "outputs": [
+   "out0",
+   "out1"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "d": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ],
+    "s": [
+     [
+      3,
+      2,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out0": [
+     [
+      0,
+      2,
+      0
+     ]
+    ],
+    "out1": [
+     [
+      1,
+      2,
+      4
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/demux/mux_demux_piston_instant.litematic",
+   "upstream_spec": "data/external/claudestone/library/demux/mux_demux_piston_instant.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__encoder__dec_enc_4to2_instant",
+  "file": "corpus/claudestone__encoder__dec_enc_4to2_instant.litematic",
+  "blocks": 13,
+  "inputs": [
+   "d1",
+   "d2",
+   "d3"
+  ],
+  "outputs": [
+   "bit1",
+   "bit0"
+  ],
+  "truth_table_rows": 6,
+  "ports": {
+   "inputs": {
+    "d1": [
+     [
+      0,
+      1,
+      1
+     ]
+    ],
+    "d3": [
+     [
+      1,
+      1,
+      1
+     ]
+    ],
+    "d2": [
+     [
+      2,
+      1,
+      1
+     ]
+    ]
+   },
+   "outputs": {
+    "bit0": [
+     [
+      0,
+      1,
+      0
+     ]
+    ],
+    "bit1": [
+     [
+      2,
+      1,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/encoder/dec_enc_4to2_instant.litematic",
+   "upstream_spec": "data/external/claudestone/library/encoder/dec_enc_4to2_instant.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__encoder__dec_enc_8to3_instant",
+  "file": "corpus/claudestone__encoder__dec_enc_8to3_instant.litematic",
+  "blocks": 33,
+  "inputs": [
+   "d1",
+   "d2",
+   "d3",
+   "d4",
+   "d5",
+   "d6",
+   "d7"
+  ],
+  "outputs": [
+   "bit2",
+   "bit1",
+   "bit0"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "d1": [
+     [
+      2,
+      1,
+      0
+     ]
+    ],
+    "d3": [
+     [
+      3,
+      1,
+      1
+     ]
+    ],
+    "d2": [
+     [
+      4,
+      1,
+      1
+     ]
+    ],
+    "d5": [
+     [
+      1,
+      1,
+      2
+     ]
+    ],
+    "d7": [
+     [
+      2,
+      1,
+      2
+     ]
+    ],
+    "d6": [
+     [
+      3,
+      1,
+      3
+     ]
+    ],
+    "d4": [
+     [
+      2,
+      1,
+      4
+     ]
+    ]
+   },
+   "outputs": {
+    "bit0": [
+     [
+      0,
+      1,
+      1
+     ]
+    ],
+    "bit1": [
+     [
+      4,
+      1,
+      2
+     ]
+    ],
+    "bit2": [
+     [
+      0,
+      1,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/encoder/dec_enc_8to3_instant.litematic",
+   "upstream_spec": "data/external/claudestone/library/encoder/dec_enc_8to3_instant.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__encoder__dec_enc_analog",
+  "file": "corpus/claudestone__encoder__dec_enc_analog.litematic",
+  "blocks": 52,
+  "inputs": [
+   "d1",
+   "d2",
+   "d3",
+   "d4",
+   "d5",
+   "d6",
+   "d7",
+   "d8"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "d8": [
+     [
+      2,
+      1,
+      0
+     ]
+    ],
+    "d7": [
+     [
+      3,
+      1,
+      0
+     ]
+    ],
+    "d6": [
+     [
+      4,
+      1,
+      0
+     ]
+    ],
+    "d5": [
+     [
+      5,
+      1,
+      0
+     ]
+    ],
+    "d4": [
+     [
+      6,
+      1,
+      0
+     ]
+    ],
+    "d3": [
+     [
+      7,
+      1,
+      0
+     ]
+    ],
+    "d2": [
+     [
+      8,
+      1,
+      0
+     ]
+    ],
+    "d1": [
+     [
+      9,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      0,
+      1,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/encoder/dec_enc_analog.litematic",
+   "upstream_spec": "data/external/claudestone/library/encoder/dec_enc_analog.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__encoder__dec_enc_bcd_instant",
+  "file": "corpus/claudestone__encoder__dec_enc_bcd_instant.litematic",
+  "blocks": 40,
+  "inputs": [
+   "d1",
+   "d2",
+   "d3",
+   "d4",
+   "d5",
+   "d6",
+   "d7",
+   "d8",
+   "d9"
+  ],
+  "outputs": [
+   "bit3",
+   "bit2",
+   "bit1",
+   "bit0"
+  ],
+  "truth_table_rows": 12,
+  "ports": {
+   "inputs": {
+    "d1": [
+     [
+      3,
+      1,
+      0
+     ]
+    ],
+    "d9": [
+     [
+      1,
+      1,
+      1
+     ]
+    ],
+    "d3": [
+     [
+      4,
+      1,
+      1
+     ]
+    ],
+    "d2": [
+     [
+      5,
+      1,
+      1
+     ]
+    ],
+    "d8": [
+     [
+      0,
+      1,
+      2
+     ]
+    ],
+    "d5": [
+     [
+      2,
+      1,
+      2
+     ]
+    ],
+    "d7": [
+     [
+      3,
+      1,
+      2
+     ]
+    ],
+    "d6": [
+     [
+      4,
+      1,
+      3
+     ]
+    ],
+    "d4": [
+     [
+      3,
+      1,
+      4
+     ]
+    ]
+   },
+   "outputs": {
+    "bit3": [
+     [
+      0,
+      1,
+      0
+     ]
+    ],
+    "bit0": [
+     [
+      2,
+      1,
+      0
+     ]
+    ],
+    "bit1": [
+     [
+      5,
+      1,
+      2
+     ]
+    ],
+    "bit2": [
+     [
+      1,
+      1,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/encoder/dec_enc_bcd_instant.litematic",
+   "upstream_spec": "data/external/claudestone/library/encoder/dec_enc_bcd_instant.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__encoder__dec_prio_4to2",
+  "file": "corpus/claudestone__encoder__dec_prio_4to2.litematic",
+  "blocks": 17,
+  "inputs": [
+   "d3",
+   "d2",
+   "d1"
+  ],
+  "outputs": [
+   "y1",
+   "y0"
+  ],
+  "truth_table_rows": 12,
+  "ports": {
+   "inputs": {
+    "d1": [
+     [
+      0,
+      1,
+      0
+     ]
+    ],
+    "d2": [
+     [
+      1,
+      1,
+      1
+     ]
+    ],
+    "d3": [
+     [
+      2,
+      1,
+      1
+     ]
+    ]
+   },
+   "outputs": {
+    "y0": [
+     [
+      3,
+      1,
+      0
+     ]
+    ],
+    "y1": [
+     [
+      2,
+      1,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/encoder/dec_prio_4to2.litematic",
+   "upstream_spec": "data/external/claudestone/library/encoder/dec_prio_4to2.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__full_adder__add_carry_cancel_cell",
+  "file": "corpus/claudestone__full_adder__add_carry_cancel_cell.litematic",
+  "blocks": 59,
+  "inputs": [
+   "cin",
+   "g",
+   "k"
+  ],
+  "outputs": [
+   "cout",
+   "cp"
+  ],
+  "truth_table_rows": 12,
+  "ports": {
+   "inputs": {
+    "cin": [
+     [
+      4,
+      2,
+      2
+     ]
+    ],
+    "k": [
+     [
+      2,
+      4,
+      0
+     ]
+    ],
+    "g": [
+     [
+      1,
+      4,
+      4
+     ]
+    ]
+   },
+   "outputs": {
+    "cout": [
+     [
+      0,
+      2,
+      2
+     ]
+    ],
+    "cp": [
+     [
+      3,
+      2,
+      5
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/full_adder/add_carry_cancel_cell.litematic",
+   "upstream_spec": "data/external/claudestone/library/full_adder/add_carry_cancel_cell.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__half_adder__add_half_2gt",
+  "file": "corpus/claudestone__half_adder__add_half_2gt.litematic",
+  "blocks": 51,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "sum",
+   "carry"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      1,
+      1,
+      4
+     ]
+    ],
+    "b": [
+     [
+      3,
+      1,
+      4
+     ]
+    ]
+   },
+   "outputs": {
+    "sum": [
+     [
+      2,
+      1,
+      2
+     ]
+    ],
+    "carry": [
+     [
+      2,
+      1,
+      4
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/half_adder/add_half_2gt.litematic",
+   "upstream_spec": "data/external/claudestone/library/half_adder/add_half_2gt.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__half_adder__add_half_comparator_flat",
+  "file": "corpus/claudestone__half_adder__add_half_comparator_flat.litematic",
+  "blocks": 51,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "sum",
+   "carry"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      3,
+      2,
+      1
+     ]
+    ],
+    "b": [
+     [
+      2,
+      2,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "sum": [
+     [
+      3,
+      1,
+      4
+     ]
+    ],
+    "carry": [
+     [
+      5,
+      1,
+      4
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/half_adder/add_half_comparator_flat.litematic",
+   "upstream_spec": "data/external/claudestone/library/half_adder/add_half_comparator_flat.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__mux__mux_4to1_comparator",
+  "file": "corpus/claudestone__mux__mux_4to1_comparator.litematic",
+  "blocks": 55,
+  "inputs": [
+   "s1",
+   "s0",
+   "d0",
+   "d1",
+   "d2",
+   "d3"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 73,
+  "ports": {
+   "inputs": {
+    "s0": [
+     [
+      3,
+      1,
+      3
+     ]
+    ],
+    "d0": [
+     [
+      3,
+      2,
+      -1
+     ]
+    ],
+    "d2": [
+     [
+      1,
+      2,
+      1
+     ]
+    ],
+    "d1": [
+     [
+      5,
+      2,
+      1
+     ]
+    ],
+    "d3": [
+     [
+      3,
+      2,
+      3
+     ]
+    ],
+    "s1": [
+     [
+      3,
+      3,
+      3
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      3,
+      3,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/mux/mux_4to1_comparator.litematic",
+   "upstream_spec": "data/external/claudestone/library/mux/mux_4to1_comparator.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__mux__mux_comparator_2to1",
+  "file": "corpus/claudestone__mux__mux_comparator_2to1.litematic",
+  "blocks": 10,
+  "inputs": [
+   "s",
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 14,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      2,
+      1,
+      0
+     ]
+    ],
+    "s": [
+     [
+      1,
+      1,
+      1
+     ]
+    ],
+    "b": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      2,
+      1,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/mux/mux_comparator_2to1.litematic",
+   "upstream_spec": "data/external/claudestone/library/mux/mux_comparator_2to1.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__mux__mux_dustcut_instant",
+  "file": "corpus/claudestone__mux__mux_dustcut_instant.litematic",
+  "blocks": 10,
+  "inputs": [
+   "s",
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 14,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      2,
+      -1
+     ]
+    ],
+    "s": [
+     [
+      3,
+      2,
+      1
+     ]
+    ],
+    "b": [
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      0,
+      1,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/mux/mux_dustcut_instant.litematic",
+   "upstream_spec": "data/external/claudestone/library/mux/mux_dustcut_instant.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__mux__mux_piston_instant",
+  "file": "corpus/claudestone__mux__mux_piston_instant.litematic",
+  "blocks": 12,
+  "inputs": [
+   "s",
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 14,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      1,
+      2,
+      -1
+     ]
+    ],
+    "s": [
+     [
+      4,
+      2,
+      1
+     ]
+    ],
+    "b": [
+     [
+      2,
+      2,
+      3
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      0,
+      1,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/mux/mux_piston_instant.litematic",
+   "upstream_spec": "data/external/claudestone/library/mux/mux_piston_instant.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__mux__mux_torch_2to1",
+  "file": "corpus/claudestone__mux__mux_torch_2to1.litematic",
+  "blocks": 30,
+  "inputs": [
+   "s",
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 14,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      2
+     ]
+    ],
+    "b": [
+     [
+      2,
+      1,
+      2
+     ]
+    ],
+    "s": [
+     [
+      1,
+      4,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      1,
+      4,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/mux/mux_torch_2to1.litematic",
+   "upstream_spec": "data/external/claudestone/library/mux/mux_torch_2to1.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__mux__mux_torch_lane",
+  "file": "corpus/claudestone__mux__mux_torch_lane.litematic",
+  "blocks": 21,
+  "inputs": [
+   "s",
+   "s_rear",
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 14,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "s": [
+     [
+      1,
+      1,
+      3
+     ]
+    ],
+    "s_rear": [
+     [
+      1,
+      2,
+      7
+     ]
+    ],
+    "b": [
+     [
+      0,
+      3,
+      6
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      0,
+      4,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/mux/mux_torch_lane.litematic",
+   "upstream_spec": "data/external/claudestone/library/mux/mux_torch_lane.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__mux__mux_torch_lane_x2",
+  "file": "corpus/claudestone__mux__mux_torch_lane_x2.litematic",
+  "blocks": 42,
+  "inputs": [
+   "s",
+   "s_rear",
+   "a0",
+   "b0",
+   "a1",
+   "b1"
+  ],
+  "outputs": [
+   "out0",
+   "out1"
+  ],
+  "truth_table_rows": 38,
+  "ports": {
+   "inputs": {
+    "a0": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "a1": [
+     [
+      1,
+      1,
+      -1
+     ]
+    ],
+    "s": [
+     [
+      2,
+      1,
+      3
+     ]
+    ],
+    "s_rear": [
+     [
+      2,
+      2,
+      7
+     ]
+    ],
+    "b0": [
+     [
+      0,
+      3,
+      6
+     ]
+    ],
+    "b1": [
+     [
+      1,
+      3,
+      6
+     ]
+    ]
+   },
+   "outputs": {
+    "out0": [
+     [
+      0,
+      4,
+      1
+     ]
+    ],
+    "out1": [
+     [
+      1,
+      4,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/mux/mux_torch_lane_x2.litematic",
+   "upstream_spec": "data/external/claudestone/library/mux/mux_torch_lane_x2.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__nand__and_nand_torch",
+  "file": "corpus/claudestone__nand__and_nand_torch.litematic",
+  "blocks": 10,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 10,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      2,
+      1,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/nand/and_nand_torch.litematic",
+   "upstream_spec": "data/external/claudestone/library/nand/and_nand_torch.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__nor__or_nor_torch_compact",
+  "file": "corpus/claudestone__nor__or_nor_torch_compact.litematic",
+  "blocks": 3,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/nor/or_nor_torch_compact.litematic",
+   "upstream_spec": "data/external/claudestone/library/nor/or_nor_torch_compact.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__not__not_bus_staggered",
+  "file": "corpus/claudestone__not__not_bus_staggered.litematic",
+  "blocks": 11,
+  "inputs": [
+   "a",
+   "b",
+   "c"
+  ],
+  "outputs": [
+   "x",
+   "y",
+   "z"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "c": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ],
+    "b": [
+     [
+      -1,
+      2,
+      1
+     ]
+    ]
+   },
+   "outputs": {
+    "x": [
+     [
+      1,
+      0,
+      0
+     ]
+    ],
+    "z": [
+     [
+      1,
+      0,
+      2
+     ]
+    ],
+    "y": [
+     [
+      1,
+      1,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/not/not_bus_staggered.litematic",
+   "upstream_spec": "data/external/claudestone/library/not/not_bus_staggered.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__not__not_bus_tileable",
+  "file": "corpus/claudestone__not__not_bus_tileable.litematic",
+  "blocks": 12,
+  "inputs": [
+   "a",
+   "b",
+   "c"
+  ],
+  "outputs": [
+   "x",
+   "y",
+   "z"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      -1,
+      1,
+      1
+     ]
+    ],
+    "c": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "x": [
+     [
+      2,
+      1,
+      0
+     ]
+    ],
+    "y": [
+     [
+      2,
+      1,
+      1
+     ]
+    ],
+    "z": [
+     [
+      2,
+      1,
+      2
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/not/not_bus_tileable.litematic",
+   "upstream_spec": "data/external/claudestone/library/not/not_bus_tileable.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__not__not_gate",
+  "file": "corpus/claudestone__not__not_gate.litematic",
+  "blocks": 8,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      3,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/not/not_gate.litematic",
+   "upstream_spec": "data/external/claudestone/library/not/not_gate.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__not__not_piston_fast_off",
+  "file": "corpus/claudestone__not__not_piston_fast_off.litematic",
+  "blocks": 4,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      2,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      1,
+      1,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/not/not_piston_fast_off.litematic",
+   "upstream_spec": "data/external/claudestone/library/not/not_piston_fast_off.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__not__not_piston_fast_on",
+  "file": "corpus/claudestone__not__not_piston_fast_on.litematic",
+  "blocks": 7,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      5,
+      2,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      2,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/not/not_piston_fast_on.litematic",
+   "upstream_spec": "data/external/claudestone/library/not/not_piston_fast_on.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__not__not_torch_compact",
+  "file": "corpus/claudestone__not__not_torch_compact.litematic",
+  "blocks": 3,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/not/not_torch_compact.litematic",
+   "upstream_spec": "data/external/claudestone/library/not/not_torch_compact.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__not__not_torch_tower",
+  "file": "corpus/claudestone__not__not_torch_tower.litematic",
+  "blocks": 8,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      2,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      1,
+      6,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/not/not_torch_tower.litematic",
+   "upstream_spec": "data/external/claudestone/library/not/not_torch_tower.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__or__or_dust_merge",
+  "file": "corpus/claudestone__or__or_dust_merge.litematic",
+  "blocks": 2,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/or/or_dust_merge.litematic",
+   "upstream_spec": "data/external/claudestone/library/or/or_dust_merge.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__or__or_gate",
+  "file": "corpus/claudestone__or__or_gate.litematic",
+  "blocks": 14,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      3,
+      1,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/or/or_gate.litematic",
+   "upstream_spec": "data/external/claudestone/library/or/or_gate.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__or__or_wide_repeater",
+  "file": "corpus/claudestone__or__or_wide_repeater.litematic",
+  "blocks": 18,
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 16,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      2
+     ]
+    ],
+    "b": [
+     [
+      1,
+      1,
+      2
+     ]
+    ],
+    "c": [
+     [
+      2,
+      1,
+      2
+     ]
+    ],
+    "d": [
+     [
+      3,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      4,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/or/or_wide_repeater.litematic",
+   "upstream_spec": "data/external/claudestone/library/or/or_wide_repeater.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__register__shift_reg4_lock",
+  "file": "corpus/claudestone__register__shift_reg4_lock.litematic",
+  "blocks": 59,
+  "inputs": [
+   "d0",
+   "d1",
+   "d2",
+   "d3"
+  ],
+  "outputs": [
+   "q0",
+   "q1",
+   "q2",
+   "q3"
+  ],
+  "truth_table_rows": 5,
+  "ports": {
+   "inputs": {
+    "d0": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "d1": [
+     [
+      -1,
+      1,
+      3
+     ]
+    ],
+    "d2": [
+     [
+      -1,
+      1,
+      6
+     ]
+    ],
+    "d3": [
+     [
+      -1,
+      1,
+      9
+     ]
+    ],
+    "hold": [
+     [
+      2,
+      2,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "q0": [
+     [
+      0,
+      1,
+      0
+     ]
+    ],
+    "q1": [
+     [
+      0,
+      1,
+      3
+     ]
+    ],
+    "q2": [
+     [
+      0,
+      1,
+      6
+     ]
+    ],
+    "q3": [
+     [
+      0,
+      1,
+      9
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/register/shift_reg4_lock.litematic",
+   "upstream_spec": "data/external/claudestone/library/register/shift_reg4_lock.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__signal_strength__analog_compare_ge",
+  "file": "corpus/claudestone__signal_strength__analog_compare_ge.litematic",
+  "blocks": 13,
+  "inputs": [
+   "a_max",
+   "b_max"
+  ],
+  "outputs": [
+   "ge"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "b_max": [
+     [
+      0,
+      2,
+      2
+     ]
+    ],
+    "a_max": [
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   },
+   "outputs": {
+    "ge": [
+     [
+      0,
+      1,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/signal_strength/analog_compare_ge.litematic",
+   "upstream_spec": "data/external/claudestone/library/signal_strength/analog_compare_ge.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__signal_strength__analog_max_block",
+  "file": "corpus/claudestone__signal_strength__analog_max_block.litematic",
+  "blocks": 20,
+  "inputs": [
+   "a_max",
+   "b_max",
+   "c_max"
+  ],
+  "outputs": [
+   "max"
+  ],
+  "truth_table_rows": 5,
+  "ports": {
+   "inputs": {
+    "a_max": [
+     [
+      1,
+      2,
+      2
+     ]
+    ],
+    "c_max": [
+     [
+      2,
+      2,
+      3
+     ]
+    ],
+    "b_max": [
+     [
+      1,
+      2,
+      4
+     ]
+    ]
+   },
+   "outputs": {
+    "max": [
+     [
+      0,
+      1,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/signal_strength/analog_max_block.litematic",
+   "upstream_spec": "data/external/claudestone/library/signal_strength/analog_max_block.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__signal_strength__analog_max_dust",
+  "file": "corpus/claudestone__signal_strength__analog_max_dust.litematic",
+  "blocks": 12,
+  "inputs": [
+   "n",
+   "s"
+  ],
+  "outputs": [
+   "max"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "n": [
+     [
+      2,
+      2,
+      0
+     ]
+    ],
+    "s": [
+     [
+      2,
+      2,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "max": [
+     [
+      2,
+      1,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/signal_strength/analog_max_dust.litematic",
+   "upstream_spec": "data/external/claudestone/library/signal_strength/analog_max_dust.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__signal_strength__analog_subtract",
+  "file": "corpus/claudestone__signal_strength__analog_subtract.litematic",
+  "blocks": 13,
+  "inputs": [
+   "a_max",
+   "b_max"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "b_max": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ],
+    "a_max": [
+     [
+      1,
+      1,
+      4
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      0,
+      1,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/signal_strength/analog_subtract.litematic",
+   "upstream_spec": "data/external/claudestone/library/signal_strength/analog_subtract.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__vertical_wire__vwire_glass_zigzag_long",
+  "file": "corpus/claudestone__vertical_wire__vwire_glass_zigzag_long.litematic",
+  "blocks": 60,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "o"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "o": [
+     [
+      0,
+      29,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/vertical_wire/vwire_glass_zigzag_long.litematic",
+   "upstream_spec": "data/external/claudestone/library/vertical_wire/vwire_glass_zigzag_long.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__vertical_wire__vwire_glass_zigzag_up",
+  "file": "corpus/claudestone__vertical_wire__vwire_glass_zigzag_up.litematic",
+  "blocks": 18,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "o"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "t": [
+     [
+      0,
+      10,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "o": [
+     [
+      0,
+      9,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/vertical_wire/vwire_glass_zigzag_up.litematic",
+   "upstream_spec": "data/external/claudestone/library/vertical_wire/vwire_glass_zigzag_up.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__vertical_wire__vwire_spiral",
+  "file": "corpus/claudestone__vertical_wire__vwire_spiral.litematic",
+  "blocks": 18,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "o"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "t": [
+     [
+      0,
+      9,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "o": [
+     [
+      0,
+      9,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/vertical_wire/vwire_spiral.litematic",
+   "upstream_spec": "data/external/claudestone/library/vertical_wire/vwire_spiral.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__vertical_wire__vwire_staircase",
+  "file": "corpus/claudestone__vertical_wire__vwire_staircase.litematic",
+  "blocks": 18,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "o"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "t": [
+     [
+      0,
+      9,
+      9
+     ]
+    ]
+   },
+   "outputs": {
+    "o": [
+     [
+      0,
+      9,
+      8
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/vertical_wire/vwire_staircase.litematic",
+   "upstream_spec": "data/external/claudestone/library/vertical_wire/vwire_staircase.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__vertical_wire__vwire_staircase_bus",
+  "file": "corpus/claudestone__vertical_wire__vwire_staircase_bus.litematic",
+  "blocks": 36,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "o",
+   "p"
+  ],
+  "truth_table_rows": 6,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "b": [
+     [
+      1,
+      3,
+      -1
+     ]
+    ],
+    "t": [
+     [
+      0,
+      9,
+      9
+     ]
+    ],
+    "u": [
+     [
+      1,
+      11,
+      9
+     ]
+    ]
+   },
+   "outputs": {
+    "o": [
+     [
+      0,
+      9,
+      8
+     ]
+    ],
+    "p": [
+     [
+      1,
+      11,
+      8
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/vertical_wire/vwire_staircase_bus.litematic",
+   "upstream_spec": "data/external/claudestone/library/vertical_wire/vwire_staircase_bus.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__vertical_wire__vwire_torch_ladder_down",
+  "file": "corpus/claudestone__vertical_wire__vwire_torch_ladder_down.litematic",
+  "blocks": 14,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "o"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      9,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "o": [
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/vertical_wire/vwire_torch_ladder_down.litematic",
+   "upstream_spec": "data/external/claudestone/library/vertical_wire/vwire_torch_ladder_down.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__vertical_wire__vwire_torch_tower_bus",
+  "file": "corpus/claudestone__vertical_wire__vwire_torch_tower_bus.litematic",
+  "blocks": 20,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "o",
+   "p"
+  ],
+  "truth_table_rows": 6,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "b": [
+     [
+      1,
+      1,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "o": [
+     [
+      0,
+      8,
+      1
+     ]
+    ],
+    "p": [
+     [
+      1,
+      8,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/vertical_wire/vwire_torch_tower_bus.litematic",
+   "upstream_spec": "data/external/claudestone/library/vertical_wire/vwire_torch_tower_bus.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__vertical_wire__vwire_torch_tower_up",
+  "file": "corpus/claudestone__vertical_wire__vwire_torch_tower_up.litematic",
+  "blocks": 10,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "o"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "o": [
+     [
+      0,
+      8,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/vertical_wire/vwire_torch_tower_up.litematic",
+   "upstream_spec": "data/external/claudestone/library/vertical_wire/vwire_torch_tower_up.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__wire__wire_analog_comparator",
+  "file": "corpus/claudestone__wire__wire_analog_comparator.litematic",
+  "blocks": 72,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "o5",
+   "o6",
+   "o13",
+   "o14"
+  ],
+  "truth_table_rows": 5,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      8,
+      1,
+      1
+     ]
+    ]
+   },
+   "outputs": {
+    "o5": [
+     [
+      26,
+      1,
+      0
+     ]
+    ],
+    "o6": [
+     [
+      27,
+      1,
+      0
+     ]
+    ],
+    "o13": [
+     [
+      34,
+      1,
+      0
+     ]
+    ],
+    "o14": [
+     [
+      35,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/wire/wire_analog_comparator.litematic",
+   "upstream_spec": "data/external/claudestone/library/wire/wire_analog_comparator.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__wire__wire_diagonal",
+  "file": "corpus/claudestone__wire__wire_diagonal.litematic",
+  "blocks": 64,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      16,
+      1,
+      15
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/wire/wire_diagonal.litematic",
+   "upstream_spec": "data/external/claudestone/library/wire/wire_diagonal.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__wire__wire_dust_run",
+  "file": "corpus/claudestone__wire__wire_dust_run.litematic",
+  "blocks": 30,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      14,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/wire/wire_dust_run.litematic",
+   "upstream_spec": "data/external/claudestone/library/wire/wire_dust_run.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__wire__wire_repeater_line",
+  "file": "corpus/claudestone__wire__wire_repeater_line.litematic",
+  "blocks": 64,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      31,
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/wire/wire_repeater_line.litematic",
+   "upstream_spec": "data/external/claudestone/library/wire/wire_repeater_line.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__xnor__xor_xnor_torch_fast",
+  "file": "corpus/claudestone__xnor__xor_xnor_torch_fast.litematic",
+  "blocks": 53,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "b": [
+     [
+      4,
+      1,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      2,
+      3,
+      5
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/xnor/xor_xnor_torch_fast.litematic",
+   "upstream_spec": "data/external/claudestone/library/xnor/xor_xnor_torch_fast.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__xnor__xor_xnor_torch_flat",
+  "file": "corpus/claudestone__xnor__xor_xnor_torch_flat.litematic",
+  "blocks": 46,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "b": [
+     [
+      4,
+      1,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      2,
+      1,
+      5
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/xnor/xor_xnor_torch_flat.litematic",
+   "upstream_spec": "data/external/claudestone/library/xnor/xor_xnor_torch_flat.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__xor__xor_comparator_bridge",
+  "file": "corpus/claudestone__xor__xor_comparator_bridge.litematic",
+  "blocks": 18,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      2,
+      1,
+      1
+     ]
+    ],
+    "b": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/xor/xor_comparator_bridge.litematic",
+   "upstream_spec": "data/external/claudestone/library/xor/xor_comparator_bridge.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__xor__xor_comparator_bridge_stack2",
+  "file": "corpus/claudestone__xor__xor_comparator_bridge_stack2.litematic",
+  "blocks": 36,
+  "inputs": [
+   "a0",
+   "b0",
+   "a1",
+   "b1"
+  ],
+  "outputs": [
+   "out0",
+   "out1"
+  ],
+  "truth_table_rows": 16,
+  "ports": {
+   "inputs": {
+    "a0": [
+     [
+      2,
+      1,
+      1
+     ]
+    ],
+    "b0": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ],
+    "a1": [
+     [
+      2,
+      5,
+      1
+     ]
+    ],
+    "b1": [
+     [
+      -1,
+      5,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out0": [
+     [
+      1,
+      2,
+      3
+     ]
+    ],
+    "out1": [
+     [
+      1,
+      6,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/xor/xor_comparator_bridge_stack2.litematic",
+   "upstream_spec": "data/external/claudestone/library/xor/xor_comparator_bridge_stack2.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__xor__xor_comparator_flat",
+  "file": "corpus/claudestone__xor__xor_comparator_flat.litematic",
+  "blocks": 34,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      3,
+      2,
+      1
+     ]
+    ],
+    "b": [
+     [
+      2,
+      2,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      3,
+      1,
+      4
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/xor/xor_comparator_flat.litematic",
+   "upstream_spec": "data/external/claudestone/library/xor/xor_comparator_flat.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__xor__xor_gate",
+  "file": "corpus/claudestone__xor__xor_gate.litematic",
+  "blocks": 58,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      -1,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      8,
+      1,
+      1
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/xor/xor_gate.litematic",
+   "upstream_spec": "data/external/claudestone/library/xor/xor_gate.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__xor__xor_piston_switch",
+  "file": "corpus/claudestone__xor__xor_piston_switch.litematic",
+  "blocks": 12,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b": [
+     [
+      4,
+      1,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      2,
+      1,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/xor/xor_piston_switch.litematic",
+   "upstream_spec": "data/external/claudestone/library/xor/xor_piston_switch.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__xor__xor_piston_switch_stack2",
+  "file": "corpus/claudestone__xor__xor_piston_switch_stack2.litematic",
+  "blocks": 24,
+  "inputs": [
+   "a0",
+   "b0",
+   "a1",
+   "b1"
+  ],
+  "outputs": [
+   "out0",
+   "out1"
+  ],
+  "truth_table_rows": 16,
+  "ports": {
+   "inputs": {
+    "a0": [
+     [
+      -1,
+      1,
+      0
+     ]
+    ],
+    "b0": [
+     [
+      4,
+      1,
+      2
+     ]
+    ],
+    "a1": [
+     [
+      -1,
+      3,
+      0
+     ]
+    ],
+    "b1": [
+     [
+      4,
+      3,
+      2
+     ]
+    ]
+   },
+   "outputs": {
+    "out0": [
+     [
+      2,
+      1,
+      3
+     ]
+    ],
+    "out1": [
+     [
+      2,
+      3,
+      3
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/xor/xor_piston_switch_stack2.litematic",
+   "upstream_spec": "data/external/claudestone/library/xor/xor_piston_switch_stack2.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "claudestone__xor__xor_torch_flat",
+  "file": "corpus/claudestone__xor__xor_torch_flat.litematic",
+  "blocks": 45,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "out"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "inputs": {
+    "a": [
+     [
+      0,
+      1,
+      -1
+     ]
+    ],
+    "b": [
+     [
+      4,
+      1,
+      -1
+     ]
+    ]
+   },
+   "outputs": {
+    "out": [
+     [
+      2,
+      1,
+      4
+     ]
+    ]
+   }
+  },
+  "provenance": {
+   "source": "converted/claudestone",
+   "path": "data/corpus/converted/claudestone/xor/xor_torch_flat.litematic",
+   "upstream_spec": "data/external/claudestone/library/xor/xor_torch_flat.redstone.yaml",
+   "commit": "5844e0706c632546896b8f86529b1fad5344b8ac",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__and2__cand_comparator",
+  "file": "corpus/redstone-verify__and2__cand_comparator.litematic",
+  "blocks": 17,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     0
+    ],
+    "b": [
+     0,
+     1,
+     3
+    ]
+   },
+   "out": {
+    "y": [
+     4,
+     1,
+     0
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/and2/cand_comparator.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/and2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__and2__cand_hillclimb",
+  "file": "corpus/redstone-verify__and2__cand_hillclimb.litematic",
+  "blocks": 16,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     0
+    ],
+    "b": [
+     0,
+     1,
+     3
+    ]
+   },
+   "out": {
+    "y": [
+     4,
+     1,
+     0
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/and2/cand_hillclimb.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/and2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__and2__seed",
+  "file": "corpus/redstone-verify__and2__seed.litematic",
+  "blocks": 25,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     0
+    ],
+    "b": [
+     0,
+     1,
+     2
+    ]
+   },
+   "out": {
+    "y": [
+     9,
+     1,
+     1
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/and2/seed.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/and2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__full_adder__cand_comparators",
+  "file": "corpus/redstone-verify__full_adder__cand_comparators.litematic",
+  "blocks": 71,
+  "inputs": [
+   "b",
+   "a",
+   "cin"
+  ],
+  "outputs": [
+   "cout",
+   "s"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "in": {
+    "b": [
+     4,
+     1,
+     6
+    ],
+    "a": [
+     0,
+     2,
+     4
+    ],
+    "cin": [
+     6,
+     3,
+     1
+    ]
+   },
+   "out": {
+    "cout": [
+     0,
+     2,
+     2
+    ],
+    "s": [
+     4,
+     3,
+     4
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/full_adder/cand_comparators.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/full_adder/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__half_adder__cand_comparators",
+  "file": "corpus/redstone-verify__half_adder__cand_comparators.litematic",
+  "blocks": 34,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "s",
+   "c"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     1
+    ],
+    "b": [
+     4,
+     2,
+     3
+    ]
+   },
+   "out": {
+    "s": [
+     2,
+     2,
+     0
+    ],
+    "c": [
+     1,
+     2,
+     4
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/half_adder/cand_comparators.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/half_adder/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__imply2__cand_levers_on_blocks",
+  "file": "corpus/redstone-verify__imply2__cand_levers_on_blocks.litematic",
+  "blocks": 5,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     0
+    ],
+    "b": [
+     2,
+     1,
+     0
+    ]
+   },
+   "out": {
+    "y": [
+     2,
+     0,
+     0
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/imply2/cand_levers_on_blocks.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/imply2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__imply2__seed",
+  "file": "corpus/redstone-verify__imply2__seed.litematic",
+  "blocks": 23,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     0
+    ],
+    "b": [
+     0,
+     1,
+     2
+    ]
+   },
+   "out": {
+    "y": [
+     6,
+     1,
+     1
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/imply2/seed.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/imply2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__maj3__cand_comparators",
+  "file": "corpus/redstone-verify__maj3__cand_comparators.litematic",
+  "blocks": 30,
+  "inputs": [
+   "b",
+   "a",
+   "c"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "in": {
+    "b": [
+     2,
+     2,
+     0
+    ],
+    "a": [
+     0,
+     2,
+     2
+    ],
+    "c": [
+     4,
+     2,
+     2
+    ]
+   },
+   "out": {
+    "y": [
+     2,
+     1,
+     2
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/maj3/cand_comparators.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/maj3/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__maj3__cand_hillclimb",
+  "file": "corpus/redstone-verify__maj3__cand_hillclimb.litematic",
+  "blocks": 29,
+  "inputs": [
+   "b",
+   "a",
+   "c"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 8,
+  "ports": {
+   "in": {
+    "b": [
+     2,
+     2,
+     0
+    ],
+    "a": [
+     0,
+     2,
+     2
+    ],
+    "c": [
+     4,
+     2,
+     2
+    ]
+   },
+   "out": {
+    "y": [
+     2,
+     1,
+     2
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/maj3/cand_hillclimb.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/maj3/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__nand2__cand_levers_on_blocks",
+  "file": "corpus/redstone-verify__nand2__cand_levers_on_blocks.litematic",
+  "blocks": 7,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     0
+    ],
+    "b": [
+     4,
+     1,
+     0
+    ]
+   },
+   "out": {
+    "y": [
+     2,
+     0,
+     0
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/nand2/cand_levers_on_blocks.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/nand2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__nand2__seed",
+  "file": "corpus/redstone-verify__nand2__seed.litematic",
+  "blocks": 21,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     0
+    ],
+    "b": [
+     0,
+     1,
+     2
+    ]
+   },
+   "out": {
+    "y": [
+     6,
+     1,
+     1
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/nand2/seed.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/nand2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__not__cand_lever_on_block",
+  "file": "corpus/redstone-verify__not__cand_lever_on_block.litematic",
+  "blocks": 4,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     0
+    ]
+   },
+   "out": {
+    "y": [
+     2,
+     0,
+     0
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/not/cand_lever_on_block.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/not/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__not__seed",
+  "file": "corpus/redstone-verify__not__seed.litematic",
+  "blocks": 9,
+  "inputs": [
+   "a"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 2,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     0
+    ]
+   },
+   "out": {
+    "y": [
+     5,
+     1,
+     0
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/not/seed.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/not/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__xnor2__cand_comparators",
+  "file": "corpus/redstone-verify__xnor2__cand_comparators.litematic",
+  "blocks": 34,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     2
+    ],
+    "b": [
+     5,
+     2,
+     2
+    ]
+   },
+   "out": {
+    "y": [
+     2,
+     1,
+     2
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/xnor2/cand_comparators.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/xnor2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__xnor2__cand_hillclimb",
+  "file": "corpus/redstone-verify__xnor2__cand_hillclimb.litematic",
+  "blocks": 32,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     2
+    ],
+    "b": [
+     5,
+     2,
+     2
+    ]
+   },
+   "out": {
+    "y": [
+     2,
+     1,
+     2
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/xnor2/cand_hillclimb.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/xnor2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__xnor2__seed",
+  "file": "corpus/redstone-verify__xnor2__seed.litematic",
+  "blocks": 53,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     2
+    ],
+    "b": [
+     2,
+     1,
+     5
+    ]
+   },
+   "out": {
+    "y": [
+     10,
+     1,
+     3
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/xnor2/seed.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/xnor2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__xor2__cand_agent",
+  "file": "corpus/redstone-verify__xor2__cand_agent.litematic",
+  "blocks": 35,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     3,
+     2,
+     0
+    ],
+    "b": [
+     0,
+     2,
+     4
+    ]
+   },
+   "out": {
+    "y": [
+     2,
+     1,
+     2
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/xor2/cand_agent.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/xor2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__xor2__cand_comparators",
+  "file": "corpus/redstone-verify__xor2__cand_comparators.litematic",
+  "blocks": 33,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     2
+    ],
+    "b": [
+     4,
+     1,
+     2
+    ]
+   },
+   "out": {
+    "y": [
+     2,
+     1,
+     2
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/xor2/cand_comparators.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/xor2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__xor2__cand_hillclimb",
+  "file": "corpus/redstone-verify__xor2__cand_hillclimb.litematic",
+  "blocks": 31,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     2
+    ],
+    "b": [
+     4,
+     1,
+     2
+    ]
+   },
+   "out": {
+    "y": [
+     2,
+     1,
+     2
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/xor2/cand_hillclimb.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/xor2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ },
+ {
+  "name": "redstone-verify__xor2__seed",
+  "file": "corpus/redstone-verify__xor2__seed.litematic",
+  "blocks": 51,
+  "inputs": [
+   "a",
+   "b"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "truth_table_rows": 4,
+  "ports": {
+   "in": {
+    "a": [
+     0,
+     1,
+     2
+    ],
+    "b": [
+     2,
+     1,
+     5
+    ]
+   },
+   "out": {
+    "y": [
+     8,
+     1,
+     3
+    ]
+   },
+   "probe": {}
+  },
+  "provenance": {
+   "source": "converted/redstone-verify",
+   "path": "data/corpus/converted/redstone-verify/xor2/seed.litematic",
+   "upstream_spec": "data/external/redstone-verify/circuits/xor2/spec.v",
+   "commit": "0fbd001b3324ac6e4cc7744b9027413912a32fa0",
+   "licence": "MIT",
+   "redistributable": true,
+   "note": "converted by scripts/corpus_convert.py; MIT-licensed upstream, keep the licence notice"
+  },
+  "verified": {
+   "env": true,
+   "oracle_vanilla": true,
+   "oracle_tick_identical": true,
+   "oracle_mc": "26.2",
+   "nucleation": "0.12.0"
+  }
+ }
+]

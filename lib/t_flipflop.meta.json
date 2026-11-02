@@ -1,0 +1,409 @@
+{
+ "name": "t_flipflop",
+ "title": "T flip-flop",
+ "description": "Q toggles on every rising edge of T.",
+ "requires": [],
+ "params": {
+  "floor": true
+ },
+ "kind": "seq",
+ "ports": {
+  "Q": {
+   "dir": "out",
+   "pos": [
+    7,
+    1,
+    3
+   ],
+   "face": "east"
+  },
+  "T": {
+   "dir": "in",
+   "pos": [
+    1,
+    1,
+    0
+   ],
+   "face": "west"
+  }
+ },
+ "footprint": {
+  "size": [
+   7,
+   2,
+   6
+  ],
+  "blocks": 66
+ },
+ "timing_ticks": null,
+ "notes": "Q changes 6 ticks after the rising edge of T. Nucleation: pulses 2..20 ticks wide toggle correctly and rising edges 12 (4-tick pulses) / 16 (10-tick pulses) ticks apart still toggle; the sequences here and the oracle runs use edges >= 50 ticks apart, so closer spacing is not verified against vanilla.",
+ "spec": {
+  "inputs": [
+   "T"
+  ],
+  "outputs": [
+   "Q"
+  ],
+  "rows": null,
+  "sequences": [
+   {
+    "name": "toggle",
+    "events": [
+     [
+      0,
+      {
+       "T": 1
+      }
+     ],
+     [
+      20,
+      {
+       "T": 0
+      }
+     ],
+     [
+      60,
+      {
+       "T": 1
+      }
+     ],
+     [
+      80,
+      {
+       "T": 0
+      }
+     ],
+     [
+      120,
+      {
+       "T": 1
+      }
+     ],
+     [
+      140,
+      {
+       "T": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      "init",
+      0,
+      0
+     ],
+     [
+      "Q",
+      "!init",
+      25,
+      55
+     ],
+     [
+      "Q",
+      "init",
+      85,
+      115
+     ],
+     [
+      "Q",
+      "!init",
+      145,
+      180
+     ]
+    ],
+    "duration": 180
+   },
+   {
+    "name": "toggle4",
+    "events": [
+     [
+      0,
+      {
+       "T": 1
+      }
+     ],
+     [
+      20,
+      {
+       "T": 0
+      }
+     ],
+     [
+      50,
+      {
+       "T": 1
+      }
+     ],
+     [
+      70,
+      {
+       "T": 0
+      }
+     ],
+     [
+      100,
+      {
+       "T": 1
+      }
+     ],
+     [
+      120,
+      {
+       "T": 0
+      }
+     ],
+     [
+      150,
+      {
+       "T": 1
+      }
+     ],
+     [
+      170,
+      {
+       "T": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      "!init",
+      25,
+      45
+     ],
+     [
+      "Q",
+      "init",
+      75,
+      95
+     ],
+     [
+      "Q",
+      "!init",
+      125,
+      145
+     ],
+     [
+      "Q",
+      "init",
+      175,
+      200
+     ]
+    ],
+    "duration": 200
+   },
+   {
+    "name": "short_pulses",
+    "events": [
+     [
+      0,
+      {
+       "T": 1
+      }
+     ],
+     [
+      10,
+      {
+       "T": 0
+      }
+     ],
+     [
+      60,
+      {
+       "T": 1
+      }
+     ],
+     [
+      70,
+      {
+       "T": 0
+      }
+     ],
+     [
+      120,
+      {
+       "T": 1
+      }
+     ],
+     [
+      130,
+      {
+       "T": 0
+      }
+     ]
+    ],
+    "expect": [
+     [
+      "Q",
+      "!init",
+      25,
+      55
+     ],
+     [
+      "Q",
+      "init",
+      85,
+      115
+     ],
+     [
+      "Q",
+      "!init",
+      145,
+      180
+     ]
+    ],
+    "duration": 180
+   }
+  ]
+ },
+ "verified": {
+  "env": {
+   "rot0": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90": {
+    "lead0": {
+     "func": false,
+     "inv": false
+    },
+    "lead12": {
+     "func": false,
+     "inv": false
+    }
+   },
+   "rot180": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot0+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot90+mirror_x": {
+    "lead0": {
+     "func": false,
+     "inv": false
+    },
+    "lead12": {
+     "func": false,
+     "inv": false
+    }
+   },
+   "rot180+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   },
+   "rot270+mirror_x": {
+    "lead0": {
+     "func": true,
+     "inv": true
+    },
+    "lead12": {
+     "func": true,
+     "inv": true
+    }
+   }
+  },
+  "env_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x"
+  ],
+  "func_ok_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x"
+  ],
+  "paste_stable_orientations": [
+   "rot0",
+   "rot0+mirror_x",
+   "rot180",
+   "rot180+mirror_x",
+   "rot270",
+   "rot270+mirror_x"
+  ],
+  "min_in_strength": 3,
+  "min_in_strength_per_port": {
+   "T": 3
+  },
+  "oracle_captures": 27,
+  "oracle_tick_identical": 27,
+  "oracle_vanilla_pass": true,
+  "oracle_nucleation_pass": true,
+  "oracle_ok": true
+ },
+ "provenance": {
+  "origin": "layout of this repo's env task (env/tasks/author.py), dust ports added",
+  "licence": "repo licence",
+  "redistributable": true
+ },
+ "orientation_failures": [
+  {
+   "orientation": "rot90",
+   "lead": 0,
+   "func": false,
+   "inv": false
+  },
+  {
+   "orientation": "rot90",
+   "lead": 12,
+   "func": false,
+   "inv": false
+  },
+  {
+   "orientation": "rot90+mirror_x",
+   "lead": 0,
+   "func": false,
+   "inv": false
+  },
+  {
+   "orientation": "rot90+mirror_x",
+   "lead": 12,
+   "func": false,
+   "inv": false
+  }
+ ]
+}
