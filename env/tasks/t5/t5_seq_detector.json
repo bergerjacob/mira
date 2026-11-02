@@ -1,0 +1,2494 @@
+{
+ "contract": {
+  "id": "t5_seq_detector",
+  "title": "serial pattern detector (1011, overlapping)",
+  "tier": "T5",
+  "description": "Build a serial pattern detector. DIN is the data lever and CLK the clock lever. On every rising edge of CLK (switched ON) the circuit takes in the value DIN had just before the edge. The lamp MATCH is lit exactly while the last four bits taken in were 1, 0, 1, 1 (oldest first; overlapping matches count: 1011011 matches twice). Before four bits have been taken in, the missing older bits count as 0, so MATCH is off at the start. Switching CLK off changes nothing. DIN is changed at least 14 ticks before an edge; CLK stays on and off for at least 20 ticks each. Library hint (component tier only): D flip-flop and NOT gate cells are available.",
+  "bbox": [0, 0, 0, 55, 4, 15],
+  "build_box": [0, 1, 0, 55, 4, 15],
+  "ports": [
+   {
+    "name": "CLK",
+    "kind": "click",
+    "pos": [49, 1, 2],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "blocks": null,
+    "doc": "clock"
+   },
+   {
+    "name": "DIN",
+    "kind": "click",
+    "pos": [3, 1, 6],
+    "facing": "east",
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "blocks": null,
+    "doc": "serial data in"
+   },
+   {
+    "name": "MATCH",
+    "kind": "lamp",
+    "pos": [53, 1, 13],
+    "facing": null,
+    "pulse": false,
+    "min_power": 1,
+    "prop": null,
+    "box": null,
+    "region_mode": "air",
+    "block": null,
+    "blocks": null,
+    "doc": "lit while the last four bits are 1011"
+   }
+  ],
+  "fixed": [
+   {
+    "box": [0, 0, 0, 55, 0, 15],
+    "state": "minecraft:smooth_stone"
+   },
+   {
+    "box": [49, 1, 2, 49, 1, 2],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [3, 1, 6, 3, 1, 6],
+    "state": "minecraft:lever[face=floor,facing=east,powered=false]"
+   },
+   {
+    "box": [53, 1, 13, 53, 1, 13],
+    "state": "minecraft:redstone_lamp[lit=false]"
+   }
+  ],
+  "behaviour": {
+   "truth_table": null,
+   "sequences": [
+    {
+     "name": "one_match",
+     "events": [
+      {
+       "t": 6,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 50,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 76,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 90,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 120,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 146,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 160,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 190,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 230,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 260,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 286,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 300,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 330,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 60,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 130,
+       "t2": 159,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 200,
+       "t2": 229,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 1,
+       "t1": 270,
+       "t2": 299,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 340,
+       "t2": 389,
+       "mode": "all"
+      }
+     ],
+     "duration": 390,
+     "public": true
+    },
+    {
+     "name": "overlap",
+     "events": [
+      {
+       "t": 6,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 50,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 76,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 90,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 120,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 146,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 160,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 190,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 230,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 260,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 286,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 300,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 330,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 356,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 370,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 400,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 440,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 470,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 60,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 130,
+       "t2": 159,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 200,
+       "t2": 229,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 1,
+       "t1": 270,
+       "t2": 299,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 340,
+       "t2": 369,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 410,
+       "t2": 439,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 1,
+       "t1": 480,
+       "t2": 529,
+       "mode": "all"
+      }
+     ],
+     "duration": 530,
+     "public": true
+    },
+    {
+     "name": "near_misses",
+     "events": [
+      {
+       "t": 6,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 57,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 66,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 80,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 108,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 156,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 193,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 207,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 221,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 244,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 289,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 323,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 356,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 384,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 429,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 443,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 478,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 519,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 533,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 557,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 594,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 608,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 630,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 658,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 672,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 705,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 738,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 766,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 807,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 832,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 60,
+       "t2": 79,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 120,
+       "t2": 155,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 196,
+       "t2": 220,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 261,
+       "t2": 288,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 329,
+       "t2": 355,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 396,
+       "t2": 442,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 483,
+       "t2": 532,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 573,
+       "t2": 607,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 648,
+       "t2": 671,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 712,
+       "t2": 737,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 1,
+       "t1": 778,
+       "t2": 806,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 847,
+       "t2": 891,
+       "mode": "all"
+      }
+     ],
+     "duration": 892,
+     "public": false
+    },
+    {
+     "name": "ones",
+     "events": [
+      {
+       "t": 6,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 56,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 104,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 139,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 177,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 198,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 242,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 267,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 313,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 337,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 377,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 401,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 448,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 472,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 495,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 509,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 535,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 563,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 577,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 613,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 665,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 693,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 60,
+       "t2": 103,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 144,
+       "t2": 176,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 217,
+       "t2": 241,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 282,
+       "t2": 312,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 353,
+       "t2": 376,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 417,
+       "t2": 447,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 488,
+       "t2": 508,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 549,
+       "t2": 576,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 617,
+       "t2": 664,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 1,
+       "t1": 705,
+       "t2": 752,
+       "mode": "all"
+      }
+     ],
+     "duration": 753,
+     "public": false
+    },
+    {
+     "name": "random0",
+     "events": [
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 45,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 97,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 111,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 145,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 176,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 190,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 224,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 257,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 271,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 295,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 352,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 386,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 413,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 457,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 490,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 504,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 527,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 555,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 569,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 613,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 669,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 691,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 754,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 768,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 792,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 845,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 871,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 907,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 943,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 989,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 1003,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 1041,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 1083,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 1097,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 1130,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 60,
+       "t2": 110,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 151,
+       "t2": 189,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 230,
+       "t2": 270,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 311,
+       "t2": 351,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 1,
+       "t1": 392,
+       "t2": 412,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 453,
+       "t2": 503,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 544,
+       "t2": 568,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 609,
+       "t2": 668,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 1,
+       "t1": 709,
+       "t2": 767,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 808,
+       "t2": 844,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 885,
+       "t2": 906,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 947,
+       "t2": 1002,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 1043,
+       "t2": 1096,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 1137,
+       "t2": 1189,
+       "mode": "all"
+      }
+     ],
+     "duration": 1190,
+     "public": false
+    },
+    {
+     "name": "random1",
+     "events": [
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 65,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 90,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 111,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 159,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 200,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 225,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 239,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 264,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 311,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 325,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 352,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 376,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 390,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 421,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 487,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 516,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 567,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 590,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 634,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 673,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 728,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 760,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 810,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 824,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 862,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 903,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 917,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 947,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 966,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 980,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 1002,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 1037,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 1051,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 1093,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 60,
+       "t2": 89,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 130,
+       "t2": 158,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 199,
+       "t2": 238,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 279,
+       "t2": 324,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 365,
+       "t2": 389,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 430,
+       "t2": 486,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 1,
+       "t1": 527,
+       "t2": 566,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 607,
+       "t2": 633,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 674,
+       "t2": 727,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 768,
+       "t2": 823,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 864,
+       "t2": 916,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 957,
+       "t2": 979,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 1020,
+       "t2": 1050,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 1091,
+       "t2": 1152,
+       "mode": "all"
+      }
+     ],
+     "duration": 1153,
+     "public": false
+    },
+    {
+     "name": "random2",
+     "events": [
+      {
+       "t": 6,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 63,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 98,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 112,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 143,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 167,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 181,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 220,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 266,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 280,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 310,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 342,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 356,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 401,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 431,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 476,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 499,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 539,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 583,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 597,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 629,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 643,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 657,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 700,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 707,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 721,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 758,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 781,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 795,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 828,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 872,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 886,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 914,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 980,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 1009,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 1066,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 1080,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 1122,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 60,
+       "t2": 111,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 152,
+       "t2": 180,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 221,
+       "t2": 279,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 320,
+       "t2": 355,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 396,
+       "t2": 430,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 1,
+       "t1": 471,
+       "t2": 498,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 539,
+       "t2": 596,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 637,
+       "t2": 656,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 697,
+       "t2": 720,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 761,
+       "t2": 794,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 835,
+       "t2": 885,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 926,
+       "t2": 979,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 1020,
+       "t2": 1079,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 1120,
+       "t2": 1181,
+       "mode": "all"
+      }
+     ],
+     "duration": 1182,
+     "public": false
+    },
+    {
+     "name": "random3",
+     "events": [
+      {
+       "t": 6,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 20,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 51,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 75,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 89,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 125,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 182,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 202,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 231,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 245,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 268,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 342,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 373,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 417,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 438,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 494,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 538,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 547,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 561,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 596,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 614,
+       "set": {
+        "DIN": 1
+       }
+      },
+      {
+       "t": 628,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 660,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 705,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 735,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 765,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 788,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 825,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 853,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 905,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 934,
+       "set": {
+        "CLK": 0
+       }
+      },
+      {
+       "t": 979,
+       "set": {
+        "DIN": 0
+       }
+      },
+      {
+       "t": 993,
+       "set": {
+        "CLK": 1
+       }
+      },
+      {
+       "t": 1038,
+       "set": {
+        "CLK": 0
+       }
+      }
+     ],
+     "expect": [
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 0,
+       "t2": 19,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 60,
+       "t2": 88,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 129,
+       "t2": 181,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 222,
+       "t2": 244,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 285,
+       "t2": 341,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 382,
+       "t2": 416,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 457,
+       "t2": 493,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 534,
+       "t2": 560,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 601,
+       "t2": 627,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 668,
+       "t2": 704,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 1,
+       "t1": 745,
+       "t2": 764,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 805,
+       "t2": 824,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 865,
+       "t2": 904,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 945,
+       "t2": 992,
+       "mode": "all"
+      },
+      {
+       "port": "MATCH",
+       "value": 0,
+       "t1": 1033,
+       "t2": 1097,
+       "mode": "all"
+      }
+     ],
+     "duration": 1098,
+     "public": false
+    }
+   ],
+   "reference_model": null
+  },
+  "invariants": {
+   "at_rest": true,
+   "paste_stable": true,
+   "deterministic": true,
+   "no_oscillation": true,
+   "no_forbidden": true,
+   "no_collateral": true,
+   "keep_clear": true,
+   "no_popoff": true,
+   "change_boxes": []
+  },
+  "budgets": {
+   "rest": 300,
+   "total": 60000,
+   "max_blocks": 1500
+  },
+  "forbidden": ["minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:structure_block", "minecraft:jigsaw", "minecraft:test_block", "minecraft:test_instance_block", "minecraft:barrier"],
+  "keep_clear": [],
+  "no_write": [],
+  "eval_seed": 12755,
+  "depends": {
+   "MATCH": ["CLK", "DIN"]
+  },
+  "reference": {
+   "blocks": 181,
+   "volume": 588
+  },
+  "hints": []
+ },
+ "broken": [
+  {
+   "name": "turn redstone_wall_torch [45, 1, 11] south->west",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [45, 1, 11],
+     "minecraft:redstone_wall_torch[facing=west,lit=true]"
+    ]
+   ]
+  },
+  {
+   "name": "remove repeater [30, 1, 5]",
+   "kind": "remove",
+   "edits": [
+    [
+     "remove",
+     [30, 1, 5]
+    ]
+   ]
+  },
+  {
+   "name": "shift repeater [20, 1, 2] north",
+   "kind": "shift",
+   "edits": [
+    [
+     "remove",
+     [20, 1, 2]
+    ],
+    [
+     "set",
+     [20, 1, 1],
+     "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"
+    ]
+   ]
+  },
+  {
+   "name": "replace wire [20, 1, 13] with stone",
+   "kind": "swap",
+   "edits": [
+    [
+     "set",
+     [20, 1, 13],
+     "minecraft:stone"
+    ]
+   ]
+  },
+  {
+   "name": "flip repeater [43, 1, 5] north->south",
+   "kind": "facing",
+   "edits": [
+    [
+     "set",
+     [43, 1, 5],
+     "minecraft:repeater[delay=1,facing=south,locked=false,powered=false]"
+    ]
+   ]
+  }
+ ],
+ "notes": "",
+ "solution": [
+  [8, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [9, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 2, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [11, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [12, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [13, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [14, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [16, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [17, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [19, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [20, 1, 2, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [21, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [22, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [23, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [24, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [25, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [26, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [27, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [28, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [29, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [30, 1, 2, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [31, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [32, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [33, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [34, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [35, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [36, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [38, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [39, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [41, 1, 2, "minecraft:repeater[delay=1,facing=east,locked=false,powered=false]"],
+  [42, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [43, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [44, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [45, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [46, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [47, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [48, 1, 2, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [8, 1, 3, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 3, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [28, 1, 3, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [38, 1, 3, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [8, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [9, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [11, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [12, 1, 4, "minecraft:stone"],
+  [13, 1, 4, "minecraft:redstone_wall_torch[facing=east,lit=true]"],
+  [18, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [19, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [20, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [21, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [22, 1, 4, "minecraft:stone"],
+  [23, 1, 4, "minecraft:redstone_wall_torch[facing=east,lit=true]"],
+  [28, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [29, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [30, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [31, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [32, 1, 4, "minecraft:stone"],
+  [33, 1, 4, "minecraft:redstone_wall_torch[facing=east,lit=true]"],
+  [38, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [39, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [41, 1, 4, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [42, 1, 4, "minecraft:stone"],
+  [43, 1, 4, "minecraft:redstone_wall_torch[facing=east,lit=true]"],
+  [10, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [13, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [20, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [23, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [30, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [33, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [40, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [43, 1, 5, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [4, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [5, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [6, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [7, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [8, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [9, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [10, 1, 6, "minecraft:repeater[delay=3,facing=west,locked=false,powered=false]"],
+  [11, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [12, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [13, 1, 6, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [14, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [16, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [17, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [19, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [20, 1, 6, "minecraft:repeater[delay=3,facing=west,locked=false,powered=false]"],
+  [21, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [22, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [23, 1, 6, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [24, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [25, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [26, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [27, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [28, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [29, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [30, 1, 6, "minecraft:repeater[delay=3,facing=west,locked=false,powered=false]"],
+  [31, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [32, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [33, 1, 6, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [34, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [35, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [36, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [38, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [39, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 1, 6, "minecraft:repeater[delay=3,facing=west,locked=false,powered=false]"],
+  [41, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [42, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [43, 1, 6, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [44, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [45, 1, 6, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 1, 7, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [25, 1, 7, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [35, 1, 7, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [45, 1, 7, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 1, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [25, 1, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [35, 1, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [45, 1, 8, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 1, 9, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [25, 1, 9, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [35, 1, 9, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [45, 1, 9, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 1, 10, "minecraft:stone"],
+  [25, 1, 10, "minecraft:stone"],
+  [35, 1, 10, "minecraft:stone"],
+  [45, 1, 10, "minecraft:stone"],
+  [15, 1, 11, "minecraft:redstone_wall_torch[facing=south,lit=true]"],
+  [25, 1, 11, "minecraft:redstone_wall_torch[facing=south,lit=true]"],
+  [35, 1, 11, "minecraft:repeater[delay=1,facing=north,locked=false,powered=false]"],
+  [45, 1, 11, "minecraft:redstone_wall_torch[facing=south,lit=true]"],
+  [15, 1, 12, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [25, 1, 12, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [35, 1, 12, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [45, 1, 12, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [15, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [16, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [17, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [18, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [19, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [20, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [21, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [22, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [23, 1, 13, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [24, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [25, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [26, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [27, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [28, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [29, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [30, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [31, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [32, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [33, 1, 13, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [34, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [35, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [36, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [37, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [38, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [39, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [40, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [41, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [42, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [43, 1, 13, "minecraft:repeater[delay=1,facing=west,locked=false,powered=false]"],
+  [44, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [45, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [46, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [47, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [48, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [49, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"],
+  [50, 1, 13, "minecraft:stone"],
+  [51, 1, 13, "minecraft:redstone_wall_torch[facing=east,lit=true]"],
+  [52, 1, 13, "minecraft:redstone_wire[east=none,north=none,power=0,south=none,west=none]"]
+ ]
+}

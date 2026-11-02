@@ -269,9 +269,216 @@ def t5_lock4():
     return p
 
 
+# =========================================================================== combinational helpers: public rows + held-out rows + random multi-input stream
+def comb_rows(fn, ins, outs, n_public=6, n_stream=24, seed=0):
+    """Exhaustive table split into public rows (a seeded subset showing both values of every output) and HIDDEN rows that were never
+    published, plus a seeded random stream of `n_stream` hidden vectors (several inputs change at once). fn(**inputs) -> {out: v}."""
+    import itertools
+    rng = random.Random(seed)
+    combos = list(itertools.product((0, 1), repeat=len(ins)))
+    res = {c: fn(**dict(zip(ins, c))) for c in combos}
+    order = combos[:]
+    rng.shuffle(order)
+    public = set(order[:n_public])
+    for o in outs:                                       # every output shown in both states
+        for val in (0, 1):
+            if not any(res[c][o] == val for c in public):
+                public.add(next(c for c in order if res[c][o] == val))
+    rows = [Vector(dict(zip(ins, c)), {o: res[c][o] for o in outs}, c in public, "".join(map(str, c))) for c in combos]
+    for k in range(n_stream):
+        c = rng.choice(combos)
+        rows.append(Vector(dict(zip(ins, c)), {o: res[c][o] for o in outs}, False, f"rnd{k}"))
+    return rows
+
+
+# =========================================================================== t5_mul2x2: 2x2-bit multiplier
+@model("mul2x2")
+def mul2x2(s, i):
+    p = (i["A0"] + 2 * i["A1"]) * (i["B0"] + 2 * i["B1"])
+    return {f"P{k}": (p >> k) & 1 for k in range(4)}
+
+
+MU_A, MU_ZL = 6, 32                             # lever row: A0, B0, A1, B1 at x = a, a+2, a+4, a+6, z = ZL
+
+
+def mul_body():
+    return f"""
+a = {MU_A}
+ZL = {MU_ZL}
+ZG = ZL + 28                                    # south AND gate (A0 B1) input row
+ZX = ZL + 11                                    # xor row
+ZP, ZQ = 20, 9                                  # north AND gates (P3, P2) input rows
+
+
+def build(b):
+    # every lever feeds one gate on its north side and one on its south side: north A0B0, A1B1; south B0A1, A0B1
+    g00 = b.place(and2, at=(a, 0, ZL - 1), rot=270, floor=False, name="g00")          # inputs from the south, output north
+    g11 = b.place(and2, at=(a + 4, 0, ZL - 1), rot=270, floor=False, name="g11")
+    g10 = b.place(and2, at=(a + 4, 0, ZL + 1), rot=90, floor=False, name="g10")       # inputs from the north, output south
+    g01 = b.place(and2, at=(a + 2, 0, ZG), rot=270, floor=False, name="g01")
+    route(b, DEV["A0"], P(a - 2, 1, ZL))                                             # A0 and B1 go round the south gate
+    route(b, P(a - 2, 1, ZL), P(a - 2, 1, ZG + 2), zfirst=True)
+    route(b, P(a - 2, 1, ZG + 2), P(a + 2, 1, ZG + 2))
+    route(b, P(a + 2, 1, ZG + 2), g01["A"], zfirst=True)
+    route(b, DEV["B1"], P(a + 8, 1, ZL))
+    route(b, P(a + 8, 1, ZL), P(a + 8, 1, ZG + 2), zfirst=True)
+    route(b, P(a + 8, 1, ZG + 2), P(a + 4, 1, ZG + 2))
+    route(b, P(a + 4, 1, ZG + 2), g01["B"], zfirst=True)
+    # P1 = (A1 B0) xor (A0 B1); its lamp sits inside the A0 / B1 loop
+    xr = b.place(xor2, at=(a + 4, 0, ZX), rot=90, floor=False, name="xr")             # A from the north, B from the south, Y east
+    route(b, g10["Y"], xr["A"], zfirst=True)
+    route(b, g01["Y"], xr["B"])
+    # north: P0 = A0 B0, P3 = P0 and A1B1, P2 = A1B1 and not P0
+    c1, c2 = a + 1, a + 7
+    route(b, g11["Y"], P(a + 5, 1, ZL - 9), zfirst=True)
+    route(b, P(a + 5, 1, ZL - 9), P(c2, 1, ZL - 9))
+    route(b, P(c2, 1, ZL - 9), P(c2, 1, ZQ + 1), zfirst=True)
+    route(b, g00["Y"], P(c1, 1, ZP + 1), zfirst=True)
+    route(b, P(c1, 1, ZL - 9), DEV["P0"])
+    g3 = b.place(and2, at=(c1 + 2, 0, ZP), rot=270, floor=False, name="g3")
+    route(b, P(c1, 1, ZP + 1), g3["A"])
+    route(b, P(c2, 1, ZP + 1), g3["B"])
+    route(b, g3["Y"], DEV["P3"])
+    nt = b.place(not_gate, at=(c1, 0, ZP - 2), rot=270, floor=False, name="inv")
+    route(b, P(c1, 1, ZP + 1), nt["A"], zfirst=True)
+    route(b, nt["Y"], P(c1, 1, ZQ + 1), zfirst=True)
+    g2 = b.place(and2, at=(c1 + 2, 0, ZQ), rot=270, floor=False, name="g2")
+    route(b, P(c1, 1, ZQ + 1), g2["A"])
+    route(b, P(c2, 1, ZQ + 1), g2["B"])
+    route(b, g2["Y"], DEV["P2"])
+"""
+
+
+def t5_mul2x2():
+    a, zl = MU_A, MU_ZL
+    p = Plan5("t5_mul2x2", "2x2-bit multiplier", (a + 11, 6, zl + 32),
+              "Build a 2-bit by 2-bit multiplier. Levers A1 A0 and B1 B0 are two 2-bit numbers (bit 0 = least significant); the lamps "
+              "P3 P2 P1 P0 show the 4-bit product A * B. Note where the lamps are: P1 sits south of the lever row, between the inputs. "
+              "Library hint (component tier only): AND, XOR and NOT cells are available.")
+    for k, n in enumerate(["A0", "B0", "A1", "B1"]):
+        p.dev_lever(n, (a + 2 * k, 1, zl), f"input {n}")
+    p.dev_lamp("P0", (a - 2, 1, zl - 9), "product bit 0")
+    p.dev_lamp("P1", (a + 5, 2, zl + 11 + 2), "product bit 1 (floating lamp at y=2)")
+    p.dev_lamp("P2", (a + 4, 1, 1), "product bit 2")
+    p.dev_lamp("P3", (a + 4, 1, 12), "product bit 3")
+    p.program(["and2", "xor2", "not_gate"], mul_body())
+    ins, outs = ["A0", "A1", "B0", "B1"], ["P0", "P1", "P2", "P3"]
+    rows = comb_rows(lambda **v: mul2x2({}, v), ins, outs, n_public=6, n_stream=24, seed=2202)
+    p.behaviour.truth_table = TruthTable(rows, settle=150, shuffle=True, reset_between=False, order_independent=True)
+    p.budgets.rest = 200
+    p.budgets.total = 40000
+    p.budgets.max_blocks = 1500
+    return p
+
+
+# =========================================================================== t5_seq_detector: overlapping serial pattern detector (last four bits 1011)
+SD_PATTERN = (1, 0, 1, 1)                        # oldest .. newest
+SD_PX, SD_X0, SD_Z0, SD_ZI = 10, 8, 4, 9
+
+
+@model("seq_detector")
+def seq_detector(s, i, pattern=SD_PATTERN):
+    """One rising clock edge: shift DIN into the 4-bit history; MATCH = the last four bits (oldest first) equal `pattern`."""
+    h = s.setdefault("h", [0] * len(pattern))
+    if i.get("CLK") and not s.get("clk"):
+        s["h"] = h = h[1:] + [i.get("DIN", 0)]
+    s["clk"] = i.get("CLK", 0)
+    return {"MATCH": int(tuple(h) == tuple(pattern))}
+
+
+def seqdet_body():
+    return f"""
+N = 4
+PAT = {SD_PATTERN!r}                                                      # oldest .. newest = Q3 .. Q0
+PX = {SD_PX}
+X0 = {SD_X0}
+Z0 = {SD_Z0}
+ZI = {SD_ZI}                                                              # inverter row; the OR line runs along ZI + 4
+
+
+def build(b):
+    ff = b.array(d_flipflop, n=N, step=(PX, 0, 0), at=(X0, 0, Z0), floor=False, name="ff")
+    route(b, DEV["DIN"], ff[0]["D"])
+    for i in range(N):
+        ox = ff[i].at.x
+        if i < N - 1:
+            route(b, ff[i]["Q"], ff[i + 1]["D"], 6)                        # Q_i -> D_(i+1)
+        route(b, P(ox, 1, Z0 - 2), ff[i]["CLK"], 4, zfirst=True)          # clock tap
+    route(b, ff[N - 1]["Q"], P(ff[N - 1].at.x + 7, 1, Z0 + 2))
+    taps = [P(ff[i].at.x, 1, Z0 - 2) for i in range(N)]
+    route(b, DEV["CLK"], P(ff[0].at.x, 1, Z0 - 2), 8, taps=taps)          # clock bus runs WEST: last place clocked first
+    # MATCH = NOR over the places that differ from the pattern: !Q where the bit must be 1, Q (through a diode) where it must be 0
+    js = []
+    for i in range(N):
+        tx = ff[i].at.x + 7
+        route(b, P(tx, 1, Z0 + 2), P(tx, 1, ZI), zfirst=True)
+        if PAT[N - 1 - i]:
+            inv = b.place(not_gate, at=(tx, 0, ZI), rot=90, floor=False, name="inv" + str(i))   # from the north, out south
+            out = inv["Y"]
+        else:
+            b.set(P(tx, 1, ZI + 1), solid())
+            b.set(P(tx, 1, ZI + 2), repeater(flow=SOUTH, delay=1))
+            out = P(tx, 1, ZI + 3)
+            b.set(out, wire())
+        route(b, out, P(tx, 1, ZI + 4))
+        js.append(P(tx, 1, ZI + 4))
+    xe = js[-1].x + 4
+    for a_, z_ in zip(js, js[1:] + [P(xe, 1, ZI + 4)]):
+        route(b, a_, z_, 8)                                               # the OR line, repeaters flow east
+    nt = b.place(not_gate, at=(xe, 0, ZI + 4), floor=False, name="out")
+    route(b, nt["Y"], DEV["MATCH"])
+"""
+
+
+def t5_seq_detector():
+    xe = SD_X0 + SD_PX * 3 + 7 + 4
+    p = Plan5("t5_seq_detector", "serial pattern detector (1011, overlapping)", (xe + 7, 5, SD_ZI + 7),
+              "Build a serial pattern detector. DIN is the data lever and CLK the clock lever. On every rising edge of CLK (switched ON) the "
+              "circuit takes in the value DIN had just before the edge. The lamp MATCH is lit exactly while the last four bits taken in were "
+              "1, 0, 1, 1 (oldest first; overlapping matches count: 1011011 matches twice). Before four bits have been taken in, the missing "
+              "older bits count as 0, so MATCH is off at the start. Switching CLK off changes nothing. DIN is changed at least 14 ticks before "
+              "an edge; CLK stays on and off for at least 20 ticks each. "
+              "Library hint (component tier only): D flip-flop and NOT gate cells are available.")
+    p.dev_lever("CLK", (SD_X0 + SD_PX * 4 + 1, 1, SD_Z0 - 2), "clock")
+    p.dev_lever("DIN", (SD_X0 - 5, 1, SD_Z0 + 2), "serial data in")
+    p.dev_lamp("MATCH", (xe + 4, 1, SD_ZI + 4), "lit while the last four bits are 1011")
+    p.program(["d_flipflop", "not_gate"], seqdet_body())
+
+    def step(state, sets):
+        if sets is None:
+            return seq_detector(state, {"CLK": 0})
+        state["din"] = sets.get("DIN", state.get("din", 0))
+        seq_detector(state, {"CLK": 0, "DIN": state["din"]})
+        return seq_detector(state, {"CLK": 1, "DIN": state["din"]})
+
+    rng = random.Random(1011)
+
+    def stream(bits, period=(70, 70), high=(30, 30)):
+        t, out, cur = 20, [], 0
+        for bit in bits:
+            out.append((t, rng.randint(*high), {"DIN": bit} if bit != cur else {}))
+            cur = bit
+            t += rng.randint(*period)
+        return out
+    seqs = [("one_match", stream([1, 0, 1, 1, 0]), True), ("overlap", stream([1, 0, 1, 1, 0, 1, 1]), True),
+            ("near_misses", stream([1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1], (60, 90), (20, 40)), False),
+            ("ones", stream([1] * 7 + [0, 1, 1], (60, 90), (20, 40)), False)]
+    for j in range(4):
+        bits = [rng.randrange(2) for _ in range(10)]
+        k = rng.randrange(0, 7)
+        bits[k:k] = [1, 0, 1, 1]                                          # every random stream contains at least one match
+        seqs.append((f"random{j}", stream(bits, (60, 100), (20, 45)), False))
+    clocked_sequences(p, seqs, ["MATCH"], step, lat=40)
+    p.depends = {"MATCH": ["CLK", "DIN"]}
+    p.budgets.rest = 300
+    p.budgets.total = 60000
+    p.budgets.max_blocks = 1500
+    return p
+
+
 # =========================================================================== registry / CLI
-BUILDERS = {"t5_lfsr4": t5_lfsr4, "t5_lock4": t5_lock4}
-STORED = ["t5_lfsr4"]
+BUILDERS = {"t5_lfsr4": t5_lfsr4, "t5_lock4": t5_lock4, "t5_mul2x2": t5_mul2x2, "t5_seq_detector": t5_seq_detector}
+STORED = ["t5_lfsr4", "t5_lock4", "t5_mul2x2", "t5_seq_detector"]
 
 
 def validate_one(args):

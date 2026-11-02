@@ -323,7 +323,7 @@ including Python start-up.
 | `71k_coral_farm_v2` | 152 | 8x7x7 | 25 | 966 | 268 | 175 | 0.17 s | 0.22 s |
 | `t4_addsub8` project (2 module groups, spec) | 1485 (+2724 scenery) | 132x3x18 | 31 | 2861 | 795 | 157 | 0.14 s | 0.09 s |
 | `lazy_never4get_power_5` | 1502 | 197x23x198 | 39 | 3417 | 949 | 153 | 0.22 s | 0.20 s |
-| `Witch_Hut_GMF_Phazer_1.2.1` (needs `--lenient`) | 5001 | 43x131x39 | 32 | 1913 | 531 | 169 | ~0.3 s | ~0.2 s |
+| `Witch_Hut_GMF_Phazer_1.2.1` (needs `--lenient`) | 5001 | 43x131x39 | 32 | 1926 | 535 | 169 | 0.14 s | 0.07 s |
 | `2m-cobble` | 19427 | 37x30x37 | 32 | 1755 | 488 | 180 | 1.0 s | 0.40 s |
 | `600w--QQDT` | 101223 | 168x62x75 | 34 | 2286 | 635 | 179 | 4.2 s | 1.8 s |
 | synthetic: 360 instances in 30 groups + floor (test) | >100k | 201x?x301 | <= 80 (asserted) | | | <= 200 (asserted) | | |

@@ -207,6 +207,25 @@ def check_task(args):
     return out
 
 
+def oracle_variants(pairs, jobs=4):
+    """Vanilla 26.2 verdict (one JVM per capture) for [(task_id, seed)] -> {"id@vS": {...oracle_task result}}."""
+    from env import library as L
+    from env.task import load_task
+    from scripts.t4_oracle import capture_many_isolated
+    from tools.oracle import gametest
+    gametest.capture_many = lambda js, workers=4, **kw: capture_many_isolated(js, jobs, **kw)
+    out = {}
+    for tid, s in pairs:
+        t0 = time.time()
+        r = L.oracle_task(variant_of(load_task(tid), s), workers=jobs)
+        r = {k: r[k] for k in ("vanilla_pass", "nucleation_pass", "agree", "captures", "hold") if k in r} | {
+            "vanilla_failures": r.get("vanilla_failures", [])[:3], "elem": elem_name(s), "seconds": round(time.time() - t0, 1)}
+        out[f"{tid}@v{s}"] = r
+        print(f"{tid}@v{s:<3} {elem_name(s):16} vanilla={'pass' if r['vanilla_pass'] else 'FAIL'} nucleation={'pass' if r['nucleation_pass'] else 'FAIL'} "
+              f"tick-identical={r['agree']}/{r['captures']} {r['seconds']}s", flush=True)
+    return out
+
+
 def main(argv=None):
     import argparse
     from concurrent.futures import ProcessPoolExecutor
@@ -217,9 +236,17 @@ def main(argv=None):
     ap.add_argument("--broken", type=int, default=5, help="stored broken variants checked per seed")
     ap.add_argument("--jobs", type=int, default=8)
     ap.add_argument("--write", action="store_true", help=f"merge results into {REPORT.relative_to(REPORT.parents[3])}")
+    ap.add_argument("--oracle", action="store_true", help="vanilla verdict of each (id, seed) instead of the env check (needs tools/oracle)")
     a = ap.parse_args(argv)
     seeds = list(range(int(a.seeds.split("-")[0]), int(a.seeds.split("-")[1]) + 1)) if "-" in a.seeds else [int(s) for s in a.seeds.split(",")]
     ids = a.ids or list_task_ids()
+    if a.oracle:
+        res = oracle_variants([(t, s) for t in ids for s in seeds], a.jobs)
+        if a.write:
+            rep = json.loads(REPORT.read_text()) if REPORT.exists() else {"tasks": {}}
+            rep.setdefault("vanilla", {}).update(res)
+            REPORT.write_text(json.dumps(rep, indent=1, sort_keys=True) + "\n")
+        return 0 if all(r["vanilla_pass"] for r in res.values()) else 1
     with ProcessPoolExecutor(max(1, a.jobs)) as ex:                 # one job per (task, seed): big tasks spread over the pool
         parts = list(ex.map(check_task, [(t, [s], a.broken) for t in ids for s in seeds]))
     reps = []
