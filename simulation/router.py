@@ -26,7 +26,7 @@ import itertools
 import json
 import os
 import weakref
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Dict, List, Optional, Tuple
 
 from simulation.blockstates import normalize
@@ -139,6 +139,7 @@ class Pin:
     need: int = 1
     level: int = 15
     name: str = ""
+    any_side: bool = False     # also allow the other horizontal sides (set by the router's fallback for dust pins)
 
     def __post_init__(self):
         self.pos = tuple(int(v) for v in self.pos)
@@ -151,7 +152,9 @@ class Pin:
         return self.name or str(self.pos)
 
     def sides(self) -> List[str]:
-        return [self.face] if self.face else list(DIRS)
+        if self.face and not self.any_side:
+            return [self.face]
+        return ([self.face] if self.face else []) + [d for d in DIRS if d != self.face]
 
 
 @dataclass
@@ -169,6 +172,7 @@ class Net:
     sink_level: Dict[str, int] = field(default_factory=dict)
     delay: Dict[str, int] = field(default_factory=dict)     # repeater ticks from the source to each sink
     explored: int = 0
+    note: str = ""
 
     @property
     def repeaters(self) -> List[Pos]:
@@ -194,19 +198,22 @@ class Router:
     floor_y: the plane y == floor_y is a solid floor that exists (not written; nothing below it is used)."""
 
     def __init__(self, world=None, box=None, keep_clear=(), reserved=(), floor_y=None, turn_cost=0.4, step_cost=1.5,
-                 slab_cost=0.3, support_cost=0.5, near_cost=0.15, zone_cost=3.0, max_states=400_000):
+                 slab_cost=0.3, support_cost=0.5, near_cost=0.15, zone_cost=3.0, max_states=400_000, first_try_states=40_000):
         self.world: Dict[Pos, str] = {tuple(p): s for p, s in (world or {}).items()}
         self.owner: Dict[Pos, str] = {}
         self.box = _box(box) if box is not None else None
         self.keep_clear = [_box(b) for b in keep_clear]
         self.air = {tuple(p) for p in reserved}
+        self.reserved = set(self.air)
+        self.ban: set = set()                   # cells no new route may use (paste-stability repair)
+        self.paste_issues: List[str] = []
         self.floor_y = floor_y
         self.turn_cost, self.step_cost, self.slab_cost, self.near_cost = turn_cost, step_cost, slab_cost, near_cost
         self.support_cost = support_cost
-        self.max_states = max_states
+        self.max_states, self.first_try_states = max_states, first_try_states
         self.nets: Dict[str, Net] = {}
         self._current = ""
-        self.zone: Dict[Pos, set] = {}          # cells around pins of nets not routed yet -> those nets (soft keep-out)
+        self.zone: Dict[Pos, dict] = {}         # cells around pins of nets not routed yet -> {net: weight} (soft keep-out)
         self.zone_cost = zone_cost
         self.hot: set = set()
         for p, s in self.world.items():
@@ -244,7 +251,7 @@ class Router:
         return not any(_inside(p, b) for b in self.keep_clear)
 
     def free(self, p, extra=()) -> bool:
-        return self.state(p) is None and p not in self.air and p not in extra and self.writable(p)
+        return self.state(p) is None and p not in self.air and p not in extra and p not in self.ban and self.writable(p)
 
     # -- the move rules
     def _dust_ok(self, n, prev, pins, net_cells, slab_support) -> bool:
@@ -295,8 +302,8 @@ class Router:
     def _near(self, n, net_name) -> float:
         c = 0.0
         z = self.zone.get(n)
-        if z and (len(z) > 1 or net_name not in z):
-            c += self.zone_cost
+        if z:
+            c += self.zone_cost * max((w for k, w in z.items() if k != net_name), default=0.0)
         if self.near_cost:
             for dx, dy, dz in itertools.product((-1, 0, 1), repeat=3):
                 q = (n[0] + dx, n[1] + dy, n[2] + dz)
@@ -304,17 +311,27 @@ class Router:
                     return c + self.near_cost
         return c
 
-    def reserve_pins(self, name: str, pins: List[Pin]):
-        """Announce the pins of a net that will be routed later: other nets pay `zone_cost` to pass right next to them
-        (keeps the attach cells of pending nets usable). Cleared when the net is routed."""
+    def reserve_pins(self, name: str, pins: List[Pin], weight: float = 1.0, radius: int = 2):
+        """Announce the pins of a net that will be routed later: other nets pay `zone_cost * weight * f` to pass within
+        `radius` cells of them (f = 3 next to the pin, 1.5 two cells away, halved two levels up): dust there would take
+        the attach cells of the pending net (dust may not touch foreign dust). Cleared when the net is routed."""
         for pin in pins:
-            for dx, dz in itertools.product((-1, 0, 1), repeat=2):
-                for dy in (0, 1):
-                    self.zone.setdefault((pin.pos[0] + dx, pin.pos[1] + dy, pin.pos[2] + dz), set()).add(name)
+            for dx, dz in itertools.product(range(-radius, radius + 1), repeat=2):
+                for dy in (0, 1, 2):
+                    f = (3.0 if max(abs(dx), abs(dz)) <= 1 else 1.5) * (0.5 if dy == 2 else 1.0)
+                    zz = self.zone.setdefault((pin.pos[0] + dx, pin.pos[1] + dy, pin.pos[2] + dz), {})
+                    zz[name] = max(zz.get(name, 0.0), weight * f)
+            if pin.face:      # a one-sided port: keep the cells around its attach cell free (dust there would block it)
+                at = add(pin.pos, DIRS[pin.face])
+                for dx, dy, dz in itertools.product((-1, 0, 1), repeat=3):
+                    q = (at[0] + dx, at[1] + dy, at[2] + dz)
+                    if q != pin.pos:
+                        zz = self.zone.setdefault(q, {})
+                        zz[name] = max(zz.get(name, 0.0), weight * 5.0)
 
     def _release(self, name: str):
         for p in [p for p, v in self.zone.items() if name in v]:
-            self.zone[p].discard(name)
+            del self.zone[p][name]
             if not self.zone[p]:
                 del self.zone[p]
 
@@ -433,7 +450,25 @@ class Router:
         net = Net(name, src, list(sinks))
         self._current = name
         try:
-            self._route(net)
+            cap = self.max_states
+            self.max_states = min(cap, self.first_try_states) if any(p.kind == "dust" and p.face for p in [src, *sinks]) else cap
+            try:
+                self._route(net)
+            except RouteError as e1:
+                self.max_states = cap
+                # fallback: a dust port may also be joined from another side (its face is only the preferred side)
+                pins = [src] + list(sinks)
+                if not any(p.kind == "dust" and p.face and not p.any_side for p in pins):
+                    raise
+                relax = [replace(p, any_side=True) if p.kind == "dust" else p for p in pins]
+                net = Net(name, relax[0], relax[1:])
+                try:
+                    self._route(net)
+                except RouteError as e2:
+                    raise RouteError(f"{e1} (other sides of the dust ports: {e2})") from None
+                net.note = "a dust port was joined from a side other than its face"
+            finally:
+                self.max_states = cap
             net.ok = True
         except RouteError as e:
             net.ok, net.reason, net.cells, net.parent, net.air = False, str(e), {}, {}, set()
@@ -448,6 +483,64 @@ class Router:
             self._release(name)
         self.nets[name] = net
         return net
+
+    def unroute(self, name: str) -> Net:
+        """Rip up a routed net: its cells leave the world, its staircase air cells are released."""
+        net = self.nets.pop(name)
+        for p in net.cells:
+            if self.owner.get(p) == name:
+                del self.owner[p]
+                self.world.pop(p, None)
+        self.air = set(self.reserved).union(*[n.air for n in self.nets.values() if n.ok])
+        self.hot = set()
+        for p, st in self.world.items():
+            self._note_hot(p, st)
+        return net
+
+    def world_with_floor(self) -> Dict[Pos, str]:
+        w = dict(self.world)
+        if self.floor_y is not None:
+            for x, _, z in list(w):
+                w.setdefault((x, self.floor_y, z), FLOOR)
+        return w
+
+    def repair_paste(self, extra=None, rounds: int = 3, radius: int = 3) -> Tuple[bool, List[str]]:
+        """Nucleation's engine placement (env/sim.compile_cells, y-x-z order) mis-shapes some dust next to dust placed
+        later at dx +1..+3, dz +-1..2 (docs/ROUTER.md), and then the env's paste_stable invariant (R1) fails. Check the
+        whole world; for every cell that does not come back unchanged, rip up the nets owning route cells within
+        `radius` of it, ban those cells and route the nets again (old route restored if that fails). -> (ok, details)."""
+        details: List[str] = []
+        for _ in range(rounds + 1):
+            w = self.world_with_floor()
+            if extra:
+                w.update(extra)
+            ok, details, cells = paste_diff(w)
+            if ok:
+                self.paste_issues = []
+                return True, []
+            hit: Dict[str, set] = {}
+            for c in cells:
+                for p, o in self.owner.items():
+                    if o in self.nets and abs(p[0] - c[0]) <= radius and abs(p[2] - c[2]) <= radius and abs(p[1] - c[1]) <= 1 \
+                            and p in self.nets[o].parent:
+                        hit.setdefault(o, set()).add(p)
+            if not hit:
+                break
+            for name, near in hit.items():
+                old = self.unroute(name)
+                self.ban |= near
+                new = self.route(name, old.src, old.sinks)
+                self.ban -= near
+                if not new.ok:      # keep the old route rather than losing the net
+                    self.unroute(name)
+                    self.nets[name] = old
+                    for p, st in old.cells.items():
+                        self.world[p] = st
+                        self.owner[p] = name
+                        self._note_hot(p, st)
+                    self.air |= old.air
+        self.paste_issues = details
+        return False, details
 
     def _route(self, net: Net):
         src = net.src
@@ -905,9 +998,9 @@ def check_nets(router: Router, extra_world=None, isolated: bool = True) -> Dict[
     return {name: chk.check(n) for name, n in router.nets.items()}
 
 
-def paste_stable(world: Dict[Pos, str], settle: int = 400) -> Tuple[bool, List[str]]:
+def paste_diff(world: Dict[Pos, str], settle: int = 400) -> Tuple[bool, List[str], List[Pos]]:
     """The env's paste_stable invariant (env/runner.py) on a plain world: place through the engine, settle, save the raw
-    at-rest states, reload them InWorld and as Placement; every cell must come back unchanged. -> (ok, details)."""
+    at-rest states, reload them InWorld and as Placement; every cell must come back unchanged. -> (ok, details, cells)."""
     from env.sim import Sim, compile_cells
     sc, corner, errs = compile_cells(world)
     sim = Sim(sc, corner, "inworld")
@@ -915,13 +1008,21 @@ def paste_stable(world: Dict[Pos, str], settle: int = 400) -> Tuple[bool, List[s
     base = sim.snapshot()
     details = [] if ok else ["never quiescent after placement"]
     raw, corner2, _ = compile_cells(base, engine_place=False)
+    cells: set = set()
     for mode in ("inworld", "placement"):
         s2 = Sim(raw, corner2, mode)
         _, ok2 = s2.settle(settle)
         snap = s2.snapshot()
         diff = sorted(p for p in set(snap) | set(base) if snap.get(p) != base.get(p))
+        cells.update(diff)
         if diff or not ok2:
             details.append(f"{mode}: {len(diff)} cells differ" + (f", e.g. {diff[0]} {name_of(base.get(diff[0], 'air'))} "
                                                                  f"{_diffprops(base.get(diff[0], 'air'), snap.get(diff[0], 'air'))}" if diff else "")
                            + ("" if ok2 else ", never quiescent"))
-    return not details, details
+    return not details, details, sorted(cells)
+
+
+def paste_stable(world: Dict[Pos, str], settle: int = 400) -> Tuple[bool, List[str]]:
+    """paste_diff without the cell list -> (ok, details)."""
+    ok, details, _ = paste_diff(world, settle)
+    return ok, details

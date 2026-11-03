@@ -36,6 +36,12 @@ class PortDef:
     level: int = 15       # output strength
 
 
+# lib cells whose output strength follows an input strength (measured, docs/ROUTER.md): mux2's comparators pass the A/B
+# strength through to Y (A at 9 -> Y at 9). Their data inputs must arrive strong, and Y is only as strong as that.
+ANALOG = {"mux2": {"Y": ("A", "B")}}
+ANALOG_NEED = 13
+
+
 class Module:
     """A Part with declared ports and an optional spec ({inputs, outputs, rows: [[ins], [outs]]} or fn(**ins) -> outs)."""
 
@@ -53,6 +59,10 @@ class Module:
         needs = meta.get("verified", {}).get("min_in_strength_per_port", {})
         ports = {k: PortDef(k, tuple(v["pos"]), v.get("face"), "in" if v["dir"] == "in" else "out", int(needs.get(k, 1)))
                  for k, v in meta["ports"].items()}
+        for out, ins in ANALOG.get(name, {}).items():
+            ports[out].level = ANALOG_NEED
+            for i in ins:
+                ports[i].need = max(ports[i].need, ANALOG_NEED)
         spec = meta.get("spec")
         if spec and not spec.get("rows"):
             spec = None
@@ -241,9 +251,11 @@ class Design:
         pos, face = inst.ports[pname]
         return R.Pin(pos, face, "dust", need=pd.need, level=pd.level, name=ref)
 
-    def build(self, order: str = "declared", passes: int = 3) -> DesignBuild:
+    def build(self, order: str = "declared", passes: int = 3, repair: bool = True) -> DesignBuild:
         """Place the instances and route every net. order: 'declared' or 'short' (shortest nets first). A net that fails
-        is moved to the front and everything is re-routed, up to `passes` times (simple rip-up and retry)."""
+        is moved to the front and everything is re-routed, up to `passes` times (simple rip-up and retry). repair=True
+        then runs the env's paste_stable check on the whole design and re-routes nets next to cells that do not come
+        back unchanged (Router.repair_paste; errors list what is left)."""
         root, owner, errors = self._place()
         world = dict(self.fixed)
         world.update({p: c[0] for p, c in root._cells.items()})
@@ -255,19 +267,28 @@ class Design:
                 errors.append(f"net {nm}: {e}")
         if order == "short":
             specs.sort(key=lambda t: sum(R._dist(t[1].pos, k.pos) for k in t[2]))
-        router = None
+        router, best, weight = None, None, {}
         for _ in range(max(1, passes)):
             router = R.Router(world, box=self.box, keep_clear=self.keep_clear, reserved=self.reserved,
                               floor_y=self.floor_y, **self.router_kw)
             router.owner.update(owner)
             for nm, sp, kp in specs:
-                router.reserve_pins(nm, [sp] + kp)
+                router.reserve_pins(nm, [sp] + kp, weight.get(nm, 1.0))
             for nm, sp, kp in specs:
                 router.route(nm, sp, kp)
             failed = [t for t in specs if not router.nets[t[0]].ok]
+            if best is None or len(failed) < best[1]:
+                best = (router, len(failed))
             if not failed:
                 break
+            for t in failed:
+                weight[t[0]] = weight.get(t[0], 1.0) * 3
             specs = failed + [t for t in specs if router.nets[t[0]].ok]
+        router = best[0]
+        if repair and not errors:
+            ok, det = router.repair_paste()
+            if not ok:
+                errors.append("paste_stable (env R1) fails after repair: " + "; ".join(det))
         for net in router.nets.values():
             for p, s in net.cells.items():
                 root.set(p, s)
@@ -293,9 +314,11 @@ class Design:
                     w.setdefault((x, self.floor_y, z), R.FLOOR)
         return w
 
-    def design_contract(self, fn: Optional[Callable] = None, settle: int = 300, name: str = "design"):
+    def design_contract(self, fn: Optional[Callable] = None, settle: int = 300, name: str = "design",
+                        max_rows: Optional[int] = None, seed: int = 0):
         """An env Contract for the design: pad inputs, wire_power outputs (the output ports), the truth table from fn
-        (exhaustive over the inputs, hidden reversed repeat), the floor as fixed scenery. -> (contract, blocks)."""
+        (exhaustive over the inputs, or `max_rows` seeded random rows; hidden reversed repeat), the floor as fixed
+        scenery. -> (contract, blocks)."""
         from env.contract import Behaviour, Budgets, Contract, DEFAULT_FORBIDDEN, Invariants, Port, TruthTable, Vector
         fn = fn or self.spec_fn
         res = self.result or self.build()
@@ -308,7 +331,7 @@ class Design:
             pos = self.pin(ref, "out").pos if isinstance(ref, str) else ref.pos
             ports.append(Port(n, "wire_power" if isinstance(ref, str) else "lamp", pos, min_power=1, doc="design output"))
         vecs = []
-        for combo in itertools.product((0, 1), repeat=len(names_in)):
+        for combo in sample_rows(len(names_in), max_rows, seed):
             ins = dict(zip(names_in, combo))
             vecs.append(Vector(ins, {k: int(v) for k, v in fn(**ins).items()}, True, "".join(map(str, combo))))
         vecs += [Vector(v.inputs, v.expect, False, v.label + "'") for v in reversed(vecs)]
@@ -429,6 +452,18 @@ class Design:
             if exp is not None and exp != got:
                 findings.append(f"module {inst.name} ({m.name}): inputs {ins} -> outputs {got}, spec says {exp}")
         return findings or ["no module or net contradicts its spec at this vector (timing? output read too early?)"]
+
+
+def sample_rows(n_inputs: int, max_rows: Optional[int] = None, seed: int = 0) -> List[Tuple[int, ...]]:
+    """All input combinations, or `max_rows` distinct seeded random ones (always including all-0 and all-1)."""
+    if max_rows is None or 2 ** n_inputs <= max_rows:
+        return list(itertools.product((0, 1), repeat=n_inputs))
+    import random
+    rnd = random.Random(seed)
+    picked = {0, 2 ** n_inputs - 1}
+    while len(picked) < max_rows:
+        picked.add(rnd.randrange(2 ** n_inputs))
+    return [tuple((k >> (n_inputs - 1 - j)) & 1 for j in range(n_inputs)) for k in sorted(picked, key=lambda _: rnd.random())]
 
 
 @dataclass
@@ -583,7 +618,7 @@ def alu4_design():
 
 
 def bench_random(n: int = 50, seed: int = 0, size=(32, 8, 32), obstacles: float = 0.08, passes: int = 1, max_states: int = 60_000,
-                 gap: int = 2):
+                 gap: int = 2, repair: bool = True):
     """(a) n random 2-pin nets in a box with random obstacles, routed one after another in one session; every routed net is
     then checked in the simulator in isolation. -> dict of numbers."""
     import random
@@ -620,12 +655,12 @@ def bench_random(n: int = 50, seed: int = 0, size=(32, 8, 32), obstacles: float 
     for a, z in pins:
         r1 = R.Router(dict(base[0]), box=(0, 1, 0, sx - 1, sy - 1, sz - 1), floor_y=0, max_states=max_states)
         alone += r1.route("x", R.Pin(a, None, "device"), [R.Pin(z, None, "device")]).ok
-    passes_used = 0
-    for _ in range(passes):           # rip-up and retry: failed nets first
+    passes_used, weight, best = 0, {i: 1.0 for i in range(n)}, None
+    for _ in range(passes):           # rip-up and retry: failed nets first, their pin zones weigh more (negotiated congestion)
         passes_used += 1
         rt = R.Router(dict(base[0]), box=(0, 1, 0, sx - 1, sy - 1, sz - 1), floor_y=0, max_states=max_states)
         for i in order:
-            rt.reserve_pins(f"n{i}", [R.Pin(pins[i][0]), R.Pin(pins[i][1])])
+            rt.reserve_pins(f"n{i}", [R.Pin(pins[i][0]), R.Pin(pins[i][1])], weight[i], 2 if weight[i] == 1 else 3)
         times = []
         for i in order:
             a, z = pins[i]
@@ -633,21 +668,32 @@ def bench_random(n: int = 50, seed: int = 0, size=(32, 8, 32), obstacles: float 
             rt.route(f"n{i}", R.Pin(a, None, "device"), [R.Pin(z, None, "device")])
             times.append(time.time() - t)
         failed = [i for i in order if not rt.nets[f"n{i}"].ok]
+        if best is None or len(failed) < best[1]:
+            best = (rt, len(failed), list(times))
         if not failed:
             break
+        for i in failed:
+            weight[i] *= 3
         order = failed + [i for i in order if i not in failed]
+    rt, _, times = best                 # keep the pass that routed the most nets
+    routed_first = sum(nt.ok for nt in rt.nets.values())
+    paste_first = R.paste_stable(rt.world_with_floor())[0]
     t = time.time()
-    checks = R.check_nets(rt, isolated=False)
+    paste_ok, paste_detail = rt.repair_paste() if repair else (paste_first, [])
+    trep = time.time() - t
+    t = time.time()
+    floor = {p: s for p, s in rt.world_with_floor().items() if p[1] == 0}
+    checks = R.check_nets(rt, extra_world=floor, isolated=False)
     tchk = time.time() - t
-    paste_ok, paste_detail = R.paste_stable({p: s for p, s in rt.world.items()})
     ok = [nm for nm, nt in rt.nets.items() if nt.ok]
-    return {"nets": n, "routable_alone": alone, "routed": len(ok), "passes_used": passes_used, "checked_ok": sum(checks[nm].ok for nm in ok),
+    return {"nets": n, "routable_alone": alone, "routed_before_repair": routed_first, "routed": len(ok), "passes_used": passes_used, "checked_ok": sum(checks[nm].ok for nm in ok),
             "check_fail": [checks[nm].summary() for nm in ok if not checks[nm].ok][:5],
             "unrouted": [rt.nets[nm].reason for nm in rt.nets if not rt.nets[nm].ok][:5],
             "route_s_total": round(sum(times), 2), "route_s_max": round(max(times), 3), "check_s": round(tchk, 1),
             "blocks": len(rt.blocks()), "repeaters": sum(len(nt.repeaters) for nt in rt.nets.values()),
             "manhattan": sum(R._dist(a, z) for a, z in pins), "route_cells": sum(len(nt.parent) for nt in rt.nets.values() if nt.ok),
-            "paste_stable": paste_ok, "paste_detail": paste_detail[:2]}
+            "paste_stable_first": paste_first, "paste_stable": paste_ok, "paste_detail": paste_detail[:2],
+            "repair_s": round(trep, 1)}
 
 
 def main(argv=None):
@@ -659,6 +705,7 @@ def main(argv=None):
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--n", type=int, default=50)
     ap.add_argument("--obstacles", type=float, default=0.08)
+    ap.add_argument("--rows", type=int, default=128, help="sampled truth-table rows for designs with many inputs")
     ap.add_argument("--passes", type=int, default=1, help="rip-up-and-retry passes (random)")
     ap.add_argument("--gap", type=int, default=2, help="min Chebyshev distance between random pins")
     a = ap.parse_args(argv)
@@ -674,13 +721,15 @@ def main(argv=None):
     print(res.summary())
     print(f"build+route {tb:.1f}s, {len(res.build.blocks)} blocks, {sum(len(n.repeaters) for n in res.nets.values())} repeaters")
     t = time.time()
-    rep = d.check(nets=True, modules=False)
+    names_in = list(d.ins)
+    vec = [dict(zip(names_in, c)) for c in sample_rows(len(names_in), a.rows, a.seed)]
+    rep = d.check(vectors=vec, nets=True, modules=a.what == "alu4")
     print(rep.summary())
     print(f"net checks {time.time() - t:.1f}s")
     if d.contract is not None:
         c, blocks = d.contract, res.blocks()
     else:
-        c, blocks = d.design_contract()
+        c, blocks = d.design_contract(max_rows=a.rows, seed=a.seed)
     t = time.time()
     r = run(c, blocks)
     sc = score(c, r)
