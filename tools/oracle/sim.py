@@ -87,13 +87,15 @@ def structure_snbt(blocks, data_version: int) -> Tuple[str, Pos]:
     return text, (-mn[0], -mn[1], -mn[2])
 
 
-def run_plan(blocks, plan: Plan, origin: Optional[Pos] = None, shift_to_origin: bool = True) -> Trace:
+def run_plan(blocks, plan: Plan, origin: Optional[Pos] = None, shift_to_origin: bool = True,
+             full_scan: bool = False) -> Trace:
     """Run blocks+plan in Nucleation's tick engine.
 
     `origin` is the world position of the structure's min corner (use the oracle's; default `plan.origin`, else
     DEFAULT_ORIGIN).
     Sim coordinates are relative to the schematic min corner; traces are returned in
-    the caller's frame.
+    the caller's frame. Per tick only the cells in Nucleation's change log are re-read (`full_scan=True` diffs a
+    whole-world snapshot every tick instead: same trace, tested in tests/oracle, ~10-50x slower on big builds).
     """
     t0 = time.perf_counter()
     origin = origin if origin is not None else plan.origin if plan.origin is not None else DEFAULT_ORIGIN
@@ -111,6 +113,7 @@ def run_plan(blocks, plan: Plan, origin: Optional[Pos] = None, shift_to_origin: 
         sim.step()
     initial = snap() if plan.preroll else dict(placed)
     prev = initial
+    sim.clear_changes()
     by_tick = {}
     for o in plan.ops:
         by_tick.setdefault(o.tick, []).append(o)
@@ -121,14 +124,27 @@ def run_plan(blocks, plan: Plan, origin: Optional[Pos] = None, shift_to_origin: 
             fx, fy, fz = fwd(o.pos)
             if o.op == "use":
                 sim.use_block(fx, fy, fz)
-            elif o.op == "set":
+            elif o.op in ("set", "place"):
                 sim.place_block(fx, fy, fz, o.block)
             else:
                 raise ValueError(f"unknown op {o.op}")
         sim.step()
-        cur = snap()
+        if full_scan:
+            cur = snap()
+            cells = set(prev) | set(cur)
+        else:
+            touched = {tuple(c["pos"]) for c in json.loads(sim.changes_json())}
+            sim.clear_changes()
+            cur = dict(prev)
+            for q in touched:
+                st = canon_state(sim.get_block(*q))
+                if st.startswith(air):
+                    cur.pop(inv(q), None)
+                else:
+                    cur[inv(q)] = st
+            cells = {inv(q) for q in touched}
         diff = []
-        for p in sorted(set(prev) | set(cur)):
+        for p in sorted(cells):
             a, b = prev.get(p, air), cur.get(p, air)
             if a != b:
                 diff.append((p, a, b))

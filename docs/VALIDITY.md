@@ -125,3 +125,88 @@ No env/vanilla verdict disagreement. This says the passes are real *physics*; it
 * **Single run per cell, one model family, four distinct strong-agent tasks, mostly combinational** (M3): no strong agent has run the timing/state tasks, the T3 counters, adder8, or decoder3to8 without the library.
 * `oracle_env_diff.py` with its fixed hold 40 reports T3 adder references as vanilla failures in both modes (hold too short); use `oracle_sessions.py --hold auto` logic for T3.
 * The chunk-scheduler stall behind M1 is avoided, not understood; the guard (error on a non-ticking region) is what protects against a recurrence.
+
+## 9. t3_counter4: env pass, old replay fail - root cause (2026-11-02, A5)
+
+`data/oracle/sessions_r3.json` had the strong-agent counter4 build (`…af52`) passing env (hidden 60/60) and failing the old
+`oracle_sessions.py` replay (hold 61) in both Nucleation and vanilla (tick-identical), at vec0@61 and vec10-14.
+
+**Cause: the replay pasted a different world, not a timing problem.** The old replay placed the RAW `final_blocks.json` (all repeaters
+`locked=false,powered=false`, lamps off) as a structure (Nucleation `Placement` / vanilla `placeInWorld`). env builds the same blocks one by one
+through Nucleation's engine placement in (y,x,z) order and settles InWorld. The build's locked-repeater T flip-flops are bistable, so the two
+procedures boot into different states: env -> count 0, raw paste -> Q1..Q3 lit (count 14), 86 cells differ at rest. Replaying env's at-rest
+world (the handover, = `export_litematic`) passes in Nucleation and in vanilla, tick-identical. Measured (`tests/oracle/test_envplan.py`,
+`test_robustness_live.py`): handover + env timing: pass; raw + env timing: fails from vec0@18; the old fixed hold (61) on the handover also passes.
+The build is **not timing-marginal**: env's longest vector needs 42 ticks (4-bit ripple), hold 20 fails (vec17), 40+ passes.
+
+| aspect | env/runner.py | old replay | replay now (`tools/oracle/envplan.py`) |
+|---|---|---|---|
+| world | engine hand placement (y,x,z, `{simulate=true}`) + InWorld settle <= `budgets.rest` | raw block list, structure placement + 20 preroll | env's at-rest world (raw list as a diagnostic column) |
+| absolute position | min corner at engine (0,0,0) | (0,100,0) | env's cells (per-job origin in OracleBatch) |
+| vector order | seq: authoring; comb: shuffled with `eval_seed` (+ a second order pass, not replayed) | authoring | env's first pass |
+| timing | per vector: inputs, step to quiescence (<= settle), + `extra`, read | fixed hold (auto = 1.25 x max + 8) | env's per-vector tick counts |
+| public / hidden | one sim, all vectors (seq: 40 public then 60 hidden) | one capture | one capture |
+| levers | `Driver` toggles if the lever's `powered` differs | assumed all off | read from the world |
+| sequences | from the at-rest checkpoint | own capture | own capture |
+
+**Which side is right?** For timing the env is right (the replay now copies it). For the world, neither is "the" vanilla answer: the power-on state of a
+bistable circuit depends on how it is placed, also in vanilla. The handover `.litematic` carries env's at-rest state and pastes exactly (section 12), so a
+user gets a working counter at 0. But env's placement procedure is order-dependent and goes through a Nucleation bug (section 10), so the env accepts a build whose
+initial state is an artefact of that procedure: under the canonical placement proposed below this session build **fails** (count 14 at rest), while all
+references and the other 7 non-T4 session builds keep their verdicts. Decision needed (parent): keep "env's at-rest world is the product" (then the handover
+must always be the baked world, never the program output; true today) or require that the program output itself boots correctly under the canonical placement
+(stricter; the counter4 agent would have to write explicit latch states or add a reset).
+
+**Absolute position matters for timing-tight builds.** `t3_adder2 …4b87` passes with env timing at env's cells and fails at (0,100,0), (1000,100,7) and
+(-1003,70,-2005) in Nucleation (it passed the old replay with the longer auto hold): its settle time depends on the position-hashed update order and env reads
+2 ticks after quiescence measured at one position. All 42 references keep their verdict at 3 origins (ORACLE.md); 6 adders show position-dependent transients.
+
+## 10. Rotation / mirror non-invariance: classification and proposal
+
+A3 found 10 of 38 T0-T4 references failing some of the 8 dihedral variants (`env/tasks/t5/variants_report.json`); A4 found the dust repro.
+**Classification: (b) + (c), not (a).**
+* (b) Nucleation bug: `{simulate=true}` placement corrupts dust shapes (ORACLE.md bug 6; vanilla hand placement in the same order disagrees with env and agrees
+  with the canonical placement on t1_xor v4/v6, t3_parity4 v2 and the repeater_lock variant below, apart from my two marker cells).
+* (c) env's procedure is ill-defined for state circuits: hand placement in (y,x,z) order is order-dependent in vanilla too (vanilla pops wall torches placed
+  before their support; latches boot by order: on t1_clock v2, t1_t_flipflop v1, t3_counter2 v2 vanilla hand placement in env's order differs from env in 12-36 cells and from canonical in 9-20).
+* (a) is ruled out for the verdicts: all T3 (48/48) and T4 (12/12, shift32 not run) rotations pass in vanilla (structure paste, env-mirrored timing; my run),
+  and A3 reports the failing T1/T5 mirror/rotation variants passing in vanilla (their run, not repeated here).
+
+**Prototype** (`tools/oracle/placement.py`, env/ untouched, `scripts/oracle_robustness.py placement`): write every state raw, every `redstone_wire` as a cross
+(`east/north/south/west=side, power=0`, the state a hand placement starts from), load with `TickSettleMode.Placement` (keep the scheduled ticks; baking right
+after the load loses them and breaks clocks/latches), then env's normal settle. This is what vanilla structure placement (and a Litematica paste) does, and
+Nucleation `Placement` is tick-identical to vanilla on every reference.
+
+| set (8 dihedral variants each) | references passing: env | canonical | stored broken variants passing: env | canonical |
+|---|---|---|---|---|
+| T0-T2 (22 tasks) | 168/176 | **176/176** | 0/880 | 8/880 |
+| T3 (12) + T5 (4) | 106/128 | **125/128** | 0/640 | 0/640 |
+| T3/T4 at 4 rotations (vanilla run) | T3 41/48, T4 9/12 | T3 47/48, T4 12/12 | | |
+
+* The 3 canonical failures are `t3_adder8` v2/v5/v6 (and r180): "tick budget of 20000 exceeded"; with the budget raised the same variants pass with
+  2460-2520 vector ticks (identity 2460). The budget is marginal, not the circuit.
+* The 8 broken passes are all `t1_repeater_lock` "replace wire [2,1,2] with stone": it leaves an isolated dust that env keeps as a dot (powers nothing sideways)
+  while a player's hand placement makes it a cross, and then the circuit works (vanilla `place` op confirms the cross). The stored variant is not a real negative.
+* Sessions (8 non-T4): verdicts unchanged except `t3_counter4 …af52` (pass -> FAIL, section 9).
+
+**Requests (env/ is frozen for me):**
+1. `env/sim.py::compile_cells(engine_place=True)`: replace the per-block `{simulate=true}` placement by raw states with dust written as a cross
+   (`tools/oracle/placement.py::canonical_compile`), and have the build `Sim` created with mode `"placement"` (runner `_run` line `Sim(sc, origin, "inworld")` and
+   `export_litematic`); keep `paste_stable` as is (it re-loads the baked world InWorld and Placement). Then re-run `python env/variants.py --write` and the oracle
+   gates. Expected: references 301/304 over all dihedral variants (adder8 budget aside), rotations no longer need an allowlist.
+2. `env/tasks/t3_adder8.json` (task owner): `budgets.total` 20000 -> 30000 (or do not count R2 connectivity probes against it).
+3. `env/tasks/t1_repeater_lock.json` (task owner): replace the "replace wire [2,1,2] with stone" broken variant (works when hand-built).
+4. Decide section 9 (handover-state vs program-boots-correctly); if the latter, add an invariant "the program output, placed canonically, reaches the same
+   at-rest outputs as the env world".
+5. Optional: `env/runner.py` vector reads are taken 2 ticks after quiescence measured at one absolute position; for timing-tight builds run the hidden vectors
+   at a second origin in Nucleation (`TickSimulation.from_schematic(..., x, y, z)`) or require outputs stable for k ticks.
+
+## 11. Offsets
+42/42 T0-T5 references pass in vanilla at env's cells, (1007,70,519) and (-2003,30,-1037); 6 ripple adders show different transient glitches per origin
+(ORACLE.md "Offsets"). Gate: never quote a timing-tight pass from one origin only (section 9).
+
+## 12. 1.21.0 paste receipt
+All 8 strong-agent session builds and the 4 T4 references (plus t0_and) paste into the Fabric+Carpet 1.21.0 server exactly: every cell matches when read back
+frozen, no state is rejected, nothing changes in 3 s of ticking after unfreezing; a Carpet fake player drives t0_and (8/8 rows) and t1_clock (`stop` sequence)
+correctly (`docs/ORACLE.md`, `data/oracle/paste_receipt_server*.json`). The pasted world is env's handover (at-rest) world; pasting the raw program output of
+the counter4 session would boot at count 14 (section 9). Not verified: the Litematica client mod reading our DataVersion-5023 `.litematic` on 1.21.0.

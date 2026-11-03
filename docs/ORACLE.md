@@ -185,3 +185,79 @@ Machine: 16 cores, 62 GB RAM (~45 GB used by other tenants at the time), OpenJDK
   crafter `triggered` difference at tick 1. Not a measured rate.
 - Position-hashed update order depends on absolute position: the oracle origin is fixed at (spawn x, 100, spawn z) = `(0,100,0)` and the simulator is given the same origin.
 - Latest release is 26.3 (DataVersion 5023); the oracle pins 26.2 as the audits require. Re-run setup with `MC_VERSION=26.3` to compare when Nucleation moves.
+
+## Day 2 additions (2026-11-02, phase A5)
+
+### New pieces
+| path | what |
+|---|---|
+| `tools/oracle/envplan.py` | env contract -> oracle replay that mirrors `env/runner.py`: the env's at-rest **handover world** (`handover_world`, = what `runner.export_litematic` saves), env vector order (`eval_seed` shuffle for comb, authoring order for seq), env's per-vector tick counts (quiescence + extra), public + hidden in one capture, levers' initial level read from the world, and the build placed at **env's absolute cells** (`env_origin`). Also `read_out` / `evaluate` (one pass per trace; the old `state_at` per check was quadratic and took minutes on T4 sequences) |
+| `tools/oracle/placement.py` | prototype of an order-independent build placement for env (raw states, every dust a cross, Nucleation `Placement` load); `patched_env()` routes `env.runner` through it in-process without touching env/ |
+| `OracleBatch.java` | per-job absolute `origin` (`Plan.origin`; default still spawn x/z, y=100), every origin's region warmed before the first job; new op `place` = hand placement of a full state (dust: `getConnectionState(crossState)` as `getStateForPlacement`; others `updateFromNeighbourShapes`; flag 3; `setPlacedBy`) |
+| `tools/oracle/sim.py` | `run_plan` re-reads only the cells in Nucleation's change log per tick (20-60x faster on T4 builds; equal to the full snapshot diff on 37 captures, tested); honours `Plan.origin`; `place` ops map to `place_block` (which refuses `redstone_wire`: NotFound) |
+| `scripts/oracle_sessions.py` | rewritten: replays the handover world with env timing (`--hold env`, default) and the raw program output as a diagnostic column; sessions from `data/sessions` and `data/sandbox/*/session` (identical copies once); env results cached in `data/oracle/_cache` (`--prepare-only`) |
+| `scripts/oracle_env_diff.py` | `--env-mirror` (handover world + env schedule); captures/evaluate now come from envplan |
+| `scripts/oracle_robustness.py` | `placement` (env vs canonical placement over the 8 dihedral variants), `offsets` (3 absolute origins in vanilla), `rotations` (T3/T4 at 4 rotations in vanilla) |
+| `scripts/paste_receipt_server.py` | Litematica-style paste into the Fabric+Carpet **1.21.0** server, full read-back receipt, Carpet fake-player stimulus |
+| `tests/oracle/test_envplan.py`, `test_placement.py`, `test_paste_receipt.py` (offline, 46 + 1 strict xfail), `test_robustness_live.py` (3, vanilla) | |
+
+### Bug 6: Nucleation engine placement corrupts dust shapes (env's `compile_cells` path)
+`Schematic.set_block("minecraft:redstone_wire{simulate=true}")` (what `env/sim.compile_cells` does for every block, bottom-up y,x,z)
+turns the END of a dust line into a cross when a later dust is placed two cells further along x and 1-2 cells off in z.
+Repro: stone floor x 0..5, z 0..8; lever (0,1,3); dust (1,1,3), (2,1,3); unrelated dust (4,1,4) (also (4,1,1), (4,1,2), (4,1,5)).
+Nucleation: (2,1,3) = `east=side,north=side,south=side,west=side`; without the unrelated dust: `east=side,west=side`.
+**Vanilla 26.2**, same blocks hand-placed in the same order (`place` op): (2,1,3) stays `east=side,west=side`
+(`tests/oracle/test_robustness_live.py::test_vanilla_hand_placement_keeps_line_end`). Nucleation's `Placement` load of the raw states
+gives the vanilla result. Classification: **Nucleation bug in the `{simulate=true}` placement path**, exposed by env's placement
+choice; env verdicts on such builds fail `paste_stable` (the at-rest world re-loads differently) or, for state circuits, start in another state.
+Strict xfail: `tests/oracle/test_placement.py::test_engine_placement_unrelated_dust_keeps_line_end`.
+
+### Results (vanilla 26.2, one JVM per capture unless noted)
+**Sessions** (`data/oracle/sessions_r4.json`, `--hold env`; 13 distinct sessions, sandbox copies identical to `data/sessions`):
+
+| session | stored | env now | vanilla (handover) | nuc==van | raw paste (vanilla) | ticks |
+|---|---|---|---|---|---|---|
+| t1_clock …1226 | pass | pass | pass | identical | pass | 323 |
+| t1_edge_detector …6bad | pass | pass | pass | identical | pass | 252 |
+| t1_pulse_extender …5e5f | pass | pass | pass | identical | pass | 373 |
+| t2_door_2x2 …685c | pass | FAIL (spec fixed) | FAIL | identical | FAIL | 1082 |
+| t3_adder2 …0dae | pass | pass | pass | identical | pass | 1500 |
+| t3_adder2 …4b87 | pass | pass | pass | identical | pass | 1188 |
+| t3_adder4 …798b | pass | pass | pass | identical | pass | 1998 |
+| **t3_counter4 …af52** | pass | pass | **pass** | identical | **FAIL** (86 cells differ at rest) | 1050 |
+| t3_decoder2to4 …e26a | pass | pass | pass | identical | pass | 504 |
+| t4_accum4 …eb33 | pass | pass | pass | identical | pass | 13709 |
+| t4_adder16 …f690 | pass | pass | pass | identical | pass | 3364 |
+| t4_addsub8 …bf70 | pass | pass | pass | identical | pass | 3494 |
+| t4_shift32 …959d | pass | pass | pass | identical | not run in vanilla (Nucleation: raw == handover at rest) | 31688 |
+
+env / vanilla verdict disagreements: **0 of 13**. Wall: 62 s for the 9 T1-T3 sessions (4 JVMs), 60-175 s per T4 session (env runs of 1.5-4 min each come on top; machine load ~26 on 16 cores).
+
+**Offsets** (`data/oracle/robustness_offsets_*.json`, every T0-T5 reference, env-mirrored replay, build min corner at env's cells, at (1007,70,519) and at (-2003,30,-1037); batched, 4 JVMs):
+all **42 references pass in vanilla at all 3 origins**. Traces are position-independent for 36; the 6 ripple adders (t3_adder2/3/4/8, t4_addsub8,
+t4_adder16) show **different transient lamp glitches** at different origins (e.g. adder2 tick 441 (9,1,4); adder16 tick 117 (265,1,15)) but the same verdict:
+vanilla update order really depends on absolute position, and only the in-between ticks differ. Nucleation == vanilla at every origin except
+the known transient divergences of t3_adder3, t3_decoder3to8, t4_addsub8 (verdicts agree).
+
+**Rotations** (`data/oracle/robustness_rotations_*.json`, `env.variants.variant_of(rot=0/90/180/270)`, vanilla on the structure paste of the
+reference, env-mirrored timing from the canonical-placement env run): T3 48/48 and T4 12/12 (accum4, addsub8, adder16; shift32 not run, time) **pass in vanilla**,
+Nucleation == vanilla tick for tick except the known transients. env itself fails 7/48 T3 and 3/12 T4 rotations (paste_stable or all vectors) and the
+canonical placement prototype fails 1 (adder8 r180: tick budget). See docs/VALIDITY.md section 10.
+
+### 1.21.0 server paste (`scripts/paste_receipt_server.py`, `data/oracle/paste_receipt_server*.json`)
+Fabric 1.21 + Carpet 1.4.147 (`system_info('game_version')` = 1.21), started and stopped by the script (`--start-server`). Per build: export the env
+handover with `runner.export_litematic`, load the `.litematic` back with Nucleation, paste at x=3000+400k, y=100, z=3000: forceload, clear box+2,
+`tick freeze`, `carpet fillUpdates false`, bottom-up `setblock`/`fill` runs (<=64 commands per 50 ms), `data merge` for block entities; read back
+EVERY cell (scarpet, one row of 40 per RCON call) while frozen, then unfreeze + fillUpdates true, 3 s of ticking, read back again.
+
+| build | blocks | commands | paste | read-back (frozen) | rejected states | after 3 s unfrozen |
+|---|---|---|---|---|---|---|
+| 8 strong-agent sessions (t1_clock … t4_shift32) | 38 - 6524 | 11 - 1547 | 0.1 - 6.6 s | **all cells match** (48 - 18360 cells each) | 0 | 0 cells differ |
+| 4 T4 references + t0_and | 46 - 6633 | 19 - 1554 | 0.1 - 6.4 s | all cells match | 0 | 0 |
+
+None of the states (validated against the 1.21 tables, scored in a 26.x simulator) is rejected by 1.21.0. No build has block entities (0/0).
+**Fake player:** `/player mira_bot spawn` on a pasted block next to the lever, `look at` lever, `use once` (lever state read back after each click):
+t0_and reference truth table 8/8 rows right; t1_clock session `stop` sequence: lamp toggles at game ticks 3,17,22,37,43,57 after the enable click
+(env trace: 4,18,24,38,44,58; RCON polling and click latency are 1-2 ticks), stays off 70-120 after the disable click at t=53 (`ok`); t1_clock reference also passes.
+Not verified: pasting the `.litematic` FILE with the Litematica client mod (the file carries DataVersion 5023, newer than 1.21.0; the receipt pastes its
+states by command, which is what Litematica's server paste mode sends).

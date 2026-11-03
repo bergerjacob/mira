@@ -28,6 +28,7 @@ import hashlib
 import json
 import math
 import os
+import pickle
 import sys
 import time
 from pathlib import Path
@@ -69,6 +70,22 @@ def session_dirs(roots, want=None):
     return out
 
 
+CACHE = ROOT / "data/oracle/_cache"
+
+
+def cached_env_run(d: Path, contract, blocks, task_file=None):
+    """env.runner.run(contract, blocks) at eval_seed, pickled per (session, blocks, task file) under data/oracle/_cache
+    (T4 env runs take minutes; the oracle replay can then run in a separate process)."""
+    key = hashlib.sha1(json.dumps(blocks).encode() + (Path(task_file).read_bytes() if task_file else b"")).hexdigest()[:16]
+    f = CACHE / f"{d.name}_{key}.pkl"
+    if f.exists():
+        return pickle.loads(f.read_bytes())
+    rr = runner.run(contract, blocks)
+    CACHE.mkdir(parents=True, exist_ok=True)
+    f.write_bytes(pickle.dumps(rr))
+    return rr
+
+
 def auto_hold(run_result) -> int:
     longest = max([v.ticks for v in run_result.vectors] or [0])
     return max(40, math.ceil(longest * 1.25) + 8)
@@ -85,12 +102,13 @@ def prepare_session(d: Path, hold_arg: str, preroll: int, worlds=("handover", "r
     if blocks is None:
         row["note"] = "no final_blocks.json (empty build)" if not st.get("cells") else "no final_blocks.json"
         return row, None, []
-    contract = load_task(st.get("task_ref") or st["task_id"]).contract
+    task = load_task(st.get("task_ref") or st["task_id"])
+    contract = task.contract
     pr = runner.prepare(contract, blocks)
     if pr.errors:
         row["note"] = "prepare errors: " + "; ".join(pr.errors[:2])
         return row, None, []
-    rr = runner.run(contract, blocks)                    # seed=None -> contract.eval_seed, as Env.submit
+    rr = cached_env_run(d, contract, blocks, getattr(task, "path", None))   # seed=None -> eval_seed, as Env.submit
     row["env_now"] = bool(score(contract, rr).full_pass)
     row["env_max_vector_ticks"] = max([v.ticks for v in rr.vectors] or [0])
     jobs = []
@@ -161,6 +179,7 @@ def main():
     ap.add_argument("--workers", type=int, default=3, help="JVMs at a time")
     ap.add_argument("--batched", action="store_true", help="share JVMs between captures instead of one JVM per capture")
     ap.add_argument("--json", help="write rows here (default data/oracle/sessions_<timestamp>.json)")
+    ap.add_argument("--prepare-only", action="store_true", help="only run env (fills the cache) and exit")
     args = ap.parse_args()
     if not gametest.available():
         sys.exit("vanilla oracle not installed: bash scripts/oracle_setup.sh")
@@ -176,6 +195,10 @@ def main():
         row, contract, jobs = prepare_session(d, args.hold, args.preroll, worlds, name)
         rows.append(row)
         work += [(len(rows) - 1, contract, *j) for j in jobs]
+        if args.prepare_only:
+            print(f"prepared {row['session']}: env {row['env_now']}, {len(jobs)} captures")
+    if args.prepare_only:
+        return
     t0 = time.perf_counter()
     jobs = [(w[3], w[4], w[5]) for w in work]
     traces = gametest.capture_many(jobs, workers=args.workers, isolated=not args.batched) if jobs else []

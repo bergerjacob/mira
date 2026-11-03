@@ -23,10 +23,16 @@ from env.sim import Sim, compile_cells, corner_of, parse
 from tools.oracle.trace import Plan, put, use
 
 
-def handover_world(contract, prepared):
-    """-> [(x,y,z,state,nbt)] of the env's at-rest world (absolute coords), or raise ValueError if it never rests."""
-    sc, corner, _ = compile_cells(prepared.world, prepared.nbt)
-    sim = Sim(sc, corner)
+def handover_world(contract, prepared, canonical=False):
+    """-> [(x,y,z,state,nbt)] of the env's at-rest world (absolute coords), or raise ValueError if it never rests.
+    canonical=True builds it with the order-independent placement prototype (tools/oracle/placement.py) instead."""
+    if canonical:
+        from tools.oracle.placement import canonical_compile
+        sc, corner, _ = canonical_compile(prepared.world, prepared.nbt)
+        sim = Sim(sc, corner, "placement")
+    else:
+        sc, corner, _ = compile_cells(prepared.world, prepared.nbt)
+        sim = Sim(sc, corner)
     _, rest = sim.settle(contract.budgets.rest)
     if not rest:
         raise ValueError("build never comes to rest")
@@ -160,11 +166,28 @@ def read_out(contract, state, pname):
             }.get(p.kind, -1)
 
 
+def port_series(contract, trace):
+    """{port: [value at read index 0..n_ticks]} for every output; index i = state after tick i-1 (0 = initial). One pass
+    over the trace (Trace.state_at per check is quadratic on long captures)."""
+    outs = [p.name for p in contract.outputs]
+    cur = dict(trace.initial)
+    series = {p: [read_out(contract, cur, p)] for p in outs}
+    for t in range(trace.n_ticks):
+        for pos, _was, now in trace.changes.get(t, ()):
+            if now.startswith("minecraft:air"):
+                cur.pop(pos, None)
+            else:
+                cur[pos] = now
+        for p in outs:
+            series[p].append(read_out(contract, cur, p))
+    return series
+
+
 def evaluate(contract, trace, checks):
     """Failed check labels. Handles 'init'/'!init' and mode=any windows."""
-    outs = [p.name for p in contract.outputs]
-    rd = lambda idx, port: read_out(contract, trace.state_at(idx - 1), port)
-    init = {p: read_out(contract, trace.state_at(-1), p) for p in outs}
+    ser = port_series(contract, trace)
+    rd = lambda idx, port: ser[port][idx]
+    init = {p: v[0] for p, v in ser.items()}
     res = lambda v, port: init[port] if v == "init" else 1 - init[port] if v == "!init" else v
     bad = []
     for chk in checks:

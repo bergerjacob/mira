@@ -59,7 +59,10 @@ import java.util.function.BooleanSupplier;
  * contents are emitted in full, and the region is wiped between jobs.
  *
  * usage: OracleBatch --universe DIR --jobs jobs.json --out DIR [--idle N]
- * job:   {id, snbt, ticks, preroll, settle: place|known_shape, seed, ops: [{tick, op: use|set, pos, block}], origin?: [x,y,z]}
+ * job:   {id, snbt, ticks, preroll, settle: place|known_shape, seed, ops: [{tick, op: use|set|place, pos, block}], origin?: [x,y,z]}
+ * op `set` writes a block's default state (flag 3); `place` writes a full state string the way a player places it (dust:
+ * connection state computed from the neighbours as getStateForPlacement does; other blocks: updateFromNeighbourShapes),
+ * flag 3, then setPlacedBy.
  * Positions are structure-local; the structure's min corner is placed at the job's `origin` (absolute world position;
  * default: spawn x/z, y=100). Jobs with different origins may share a JVM: every origin's region is warmed before the first job.
  */
@@ -360,6 +363,7 @@ public final class OracleBatch {
                         p.getAsJsonArray().get(1).getAsInt(), p.getAsJsonArray().get(2).getAsInt());
                 switch (o.get("op").getAsString()) {
                     case "use" -> useBlock(pos);
+                    case "place" -> placeLikePlayer(pos, o.get("block").getAsString());
                     case "set" -> level.setBlock(pos, BuiltInRegistries.BLOCK
                             .getValue(Identifier.parse(o.get("block").getAsString()))
                             .defaultBlockState(), 3);
@@ -531,6 +535,24 @@ public final class OracleBatch {
             a.add(o);
         }
         return a;
+    }
+
+    /** Hand placement of a full block state (see the job format above). */
+    private static void placeLikePlayer(BlockPos pos, String text) throws Exception {
+        BlockState st = net.minecraft.commands.arguments.blocks.BlockStateParser.parseForBlock(
+                server.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.BLOCK), text, false).blockState();
+        if (st.getBlock() instanceof net.minecraft.world.level.block.RedStoneWireBlock wire) {
+            java.lang.reflect.Field cross = net.minecraft.world.level.block.RedStoneWireBlock.class.getDeclaredField("crossState");
+            Method conn = net.minecraft.world.level.block.RedStoneWireBlock.class.getDeclaredMethod("getConnectionState",
+                    net.minecraft.world.level.BlockGetter.class, BlockState.class, BlockPos.class);
+            cross.setAccessible(true);
+            conn.setAccessible(true);
+            st = (BlockState) conn.invoke(wire, level, cross.get(wire), pos);
+        } else {
+            st = net.minecraft.world.level.block.Block.updateFromNeighbourShapes(st, level, pos);
+        }
+        level.setBlock(pos, st, 3);
+        st.getBlock().setPlacedBy(level, pos, st, null, ItemStack.EMPTY);
     }
 
     /** Right-click with an empty hand; GameTestHelper.useBlock verbatim (see TraceCapture). */

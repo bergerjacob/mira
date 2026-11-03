@@ -45,7 +45,7 @@ def block_name(state: str) -> str:
 
 @dataclass(frozen=True)
 class Op:
-    """One stimulus: `use` right-clicks pos; `set` writes `block` (registry id, default state)."""
+    """One stimulus: `use` right-clicks pos; `set` writes `block` (registry id, default state); `place` hand-places a state."""
     tick: int
     op: str
     pos: Pos
@@ -57,6 +57,11 @@ class Op:
 
 def use(tick: int, pos: Pos) -> Op:
     return Op(tick, "use", tuple(pos))
+
+
+def place(tick: int, pos: Pos, state: str) -> Op:
+    """Hand-place a full block state (vanilla: player placement rules for the block's own shape; Nucleation: place_block)."""
+    return Op(tick, "place", tuple(pos), canon_state(state))
 
 
 def put(tick: int, pos: Pos, block: str) -> Op:
