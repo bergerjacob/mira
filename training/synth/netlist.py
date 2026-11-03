@@ -15,6 +15,7 @@ Layout (x east, z south; y=0 is the task's fixed floor, logic at y=1):
 """
 import itertools
 import random
+import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -239,6 +240,30 @@ def layout(nl):
     return {"body": "\n".join(L) + "\n", "uses": uses, "levers": levers, "lamps": lamps, "size": size}
 
 
+def layout_routed(nl):
+    """Same placement as layout(), but every net is ONE `b.route(src, [sinks])` call of the 3D router (simulation/router.py,
+    being written in parallel: optional, used with make_task(router=True)). Needs a taller build box (bridges)."""
+    lay = layout(nl)
+    sigs = nl.signals()
+    sidx = {s: i for i, s in enumerate(sigs)}
+    sinks = {s: [] for s in sigs}
+    for gi, g in enumerate(nl.gates):
+        for port, s in zip(GATES[g.kind]["ins"], g.ins):
+            sinks[s].append(f'"{g.name}.{port}"')
+    for o, s in nl.outputs.items():
+        sinks[s].append(str(lay["lamps"][o]))
+    head = [ln for ln in lay["body"].split("\n") if ln.startswith("#")]
+    lay = {**lay, "body": re.sub(r", bus \d+", "", lay["body"])}
+    body = [ln for ln in lay["body"].split("\n")[lay["body"].split("\n").index("def build(b):"):] if not re.match(r"\s+(bus|tap|out)\(b", ln)]
+    sx, sy, sz = lay["size"]
+    box = (0, 1, 0, sx - 1, sy + 1, sz - 1)
+    for s in sigs:
+        kind = next((g.kind for g in nl.gates if g.name == s), None)
+        src = str(lay["levers"][s]) if kind is None else f'"{s}_not.Y"' if kind == "nand" else f'"{s}.Y"'
+        body.append(f"    b.route({src}, [{', '.join(sinks[s])}], name=\"{s}\", box={box}, floor_y=0)   # net {s}")
+    return {**lay, "body": "\n".join(head) + "\n\n\n" + "\n".join(body) + "\n", "size": (sx, sy + 2, sz)}
+
+
 # --------------------------------------------------------------------------- task
 def truth_rows(nl, rng, exhaustive_max=4, n_public=8, n_hidden=16):
     """Exhaustive (k <= exhaustive_max: public = about half, always showing both values of every output, plus a hidden reversed
@@ -251,6 +276,10 @@ def truth_rows(nl, rng, exhaustive_max=4, n_public=8, n_hidden=16):
         public = set(idx[::2]) if len(nl.inputs) > 2 else set(idx)
     else:
         idx = rng.sample(range(len(tab)), min(len(tab), n_public + n_hidden))
+        for o in outs:                          # the sample must contain both values of every output (else the spec is vacuous)
+            for val in (0, 1):
+                if not any(tab[i][1][o] == val for i in idx):
+                    idx.append(next(i for i in range(len(tab)) if tab[i][1][o] == val))
         public = set(idx[:n_public])
     for o in outs:                              # public rows must show both values of every output
         for val in (0, 1):
@@ -284,11 +313,12 @@ def describe_task(nl):
     return "\n".join(lines)
 
 
-def make_task(nl, task_id, seed=0, tier="SYN"):
-    """-> (Task, program text, info). Raises ValueError when the reference program does not compile (routing conflict)."""
+def make_task(nl, task_id, seed=0, tier="SYN", router=False):
+    """-> (Task, program text, info). Raises ValueError when the reference program does not compile (routing conflict).
+    router=True: nets are routed by simulation/router.py (layout_routed) instead of the bus/tap wire_path layout."""
     from env import library as L
     from env.contract import TruthTable
-    lay = layout(nl)
+    lay = layout_routed(nl) if router else layout(nl)
     depth = nl.depth()
     p = plan_from_layout(task_id, f"synthetic netlist ({len(nl.gates)} gates)", describe_task(nl), lay, tier)
     settle = 120 + 40 * depth

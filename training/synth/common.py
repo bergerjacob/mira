@@ -30,8 +30,15 @@ def gate(task, mutants=8, seed=0):
     return rep
 
 
-def save(task, program, synth, family, root=TASKS):
-    d = root / family
+def program_matches(task, program):
+    """The program, compiled and filtered like the harness build tool, loads exactly the task solution."""
+    from training.synth.bugs import solution_of
+    sol = solution_of(task, program)
+    return not isinstance(sol, str) and sorted(map(tuple, sol)) == sorted(tuple(b[:4]) for b in task.solution)
+
+
+def save(task, program, synth, family, root=None):
+    d = Path(root or TASKS) / family
     d.mkdir(parents=True, exist_ok=True)
     body = task.to_dict()
     body["synth"] = synth
@@ -47,9 +54,25 @@ def load(path):
     return task_from_dict(d, path), path.with_suffix(".py").read_text(), d.get("synth", {})
 
 
-def stored(family=None, root=TASKS):
+def stored(family=None, root=None):
     pat = f"{family}/*.json" if family else "*/*.json"
-    return sorted(Path(root).glob(pat))
+    return sorted(Path(root or TASKS).glob(pat))
+
+
+def signature(obj):
+    import hashlib
+    return hashlib.sha1(json.dumps(obj, sort_keys=True).encode()).hexdigest()[:16]
+
+
+def claim(family, obj, root=None):
+    """Atomically reserve the signature of `obj` (e.g. a netlist) for `family`; False if it was generated before (dedup across workers)."""
+    d = Path(root or TASKS) / family / ".sig"
+    d.mkdir(parents=True, exist_ok=True)
+    try:
+        (d / signature(obj)).open("x").close()
+        return True
+    except FileExistsError:
+        return False
 
 
 def pmap(fn, items, workers=MAX_WORKERS, progress=None):
