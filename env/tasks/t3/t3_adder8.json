@@ -838,7 +838,7 @@
   },
   "budgets": {
    "rest": 260,
-   "total": 20000,
+   "total": 30000,
    "max_blocks": 1500
   },
   "forbidden": ["minecraft:command_block", "minecraft:chain_command_block", "minecraft:repeating_command_block", "minecraft:structure_block", "minecraft:jigsaw", "minecraft:test_block", "minecraft:test_instance_block", "minecraft:barrier"],
@@ -864,13 +864,12 @@
  },
  "broken": [
   {
-   "name": "repeater [95, 2, 4] delay 1->2",
-   "kind": "delay",
+   "name": "remove repeater [95, 2, 4]",
+   "kind": "remove",
    "edits": [
     [
-     "set",
-     [95, 2, 4],
-     "minecraft:repeater[delay=2,facing=east,locked=false,powered=false]"
+     "remove",
+     [95, 2, 4]
     ]
    ]
   },

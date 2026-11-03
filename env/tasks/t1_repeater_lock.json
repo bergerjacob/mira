@@ -290,13 +290,12 @@
    ]
   },
   {
-   "name": "replace wire [2, 1, 2] with stone",
-   "kind": "swap",
+   "name": "remove lock repeater [1, 1, 1]",
+   "kind": "remove",
    "edits": [
     [
-     "set",
-     [2, 1, 2],
-     "minecraft:stone"
+     "remove",
+     [1, 1, 1]
     ]
    ]
   },

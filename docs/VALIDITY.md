@@ -163,6 +163,8 @@ must always be the baked world, never the program output; true today) or require
 
 ## 10. Rotation / mirror non-invariance: classification and proposal
 
+*(Implemented 2026-11-02: see section 13. The requests at the end of this section are done except 4 (decided: stricter) and 5.)*
+
 A3 found 10 of 38 T0-T4 references failing some of the 8 dihedral variants (`env/tasks/t5/variants_report.json`); A4 found the dust repro.
 **Classification: (b) + (c), not (a).**
 * (b) Nucleation bug: `{simulate=true}` placement corrupts dust shapes (ORACLE.md bug 6; vanilla hand placement in the same order disagrees with env and agrees
@@ -210,3 +212,45 @@ All 8 strong-agent session builds and the 4 T4 references (plus t0_and) paste in
 frozen, no state is rejected, nothing changes in 3 s of ticking after unfreezing; a Carpet fake player drives t0_and (8/8 rows) and t1_clock (`stop` sequence)
 correctly (`docs/ORACLE.md`, `data/oracle/paste_receipt_server*.json`). The pasted world is env's handover (at-rest) world; pasting the raw program output of
 the counter4 session would boot at count 14 (section 9). Not verified: the Litematica client mod reading our DataVersion-5023 `.litematic` on 1.21.0.
+
+## 13. Canonical placement adopted in env (2026-11-02, A6)
+
+The proposal of section 10 is implemented in `env/sim.py`: `compile_cells` writes every state raw with every dust as a cross and tags the schematic;
+`Sim` loads tagged schematics with `TickSettleMode.Placement` (scheduled ticks kept) and the usual settle follows; `export_litematic` and every other
+`compile_cells` + `Sim` caller (tools, library, router, modules, project mode) use the same path, so **the handover world equals the world the env
+scored**. `MIRA_PLACEMENT=legacy` restores the old procedure (flag read on every call; default `canonical`). Details and numbers: docs/ENV.md "Placement".
+`paste_stable` is unchanged (it re-loads the saved at-rest world InWorld and as Placement); it is now mostly true by construction and still fails for a
+world that moves when pasted (e.g. `lib/t_flipflop` rotated under the legacy placement; observer pairs; unsettled transients).
+
+| | legacy | canonical |
+|---|---|---|
+| dihedral variants of T0-T5 references passing (42 tasks x 8) | 300/336 | **336/336** (no allowlist needed: `allowed_variants()` is `range(8)` for every task; kept as a guard) |
+| stored broken variants passing | 0 | 0 (after the two task fixes below) |
+| `validate_tasks`: accepted / mutants killed | 42/42, 1172/1360 | 42/42, 1169/1360 (-3: budget and dust artefacts below) |
+| stored sessions with a `final_blocks.json` (20): verdict changes | - | 1: `t3_counter4 …af52` pass -> fail |
+
+**Task fixes, each adjudicated in vanilla 26.2 (one JVM per capture):**
+* `t3_adder8`: `budgets.total` 20000 -> 30000 (rotated variants need ~2500 vector ticks; with 30000 all 8 elements pass). The stored broken variant
+  "repeater [95,2,4] delay 1->2" was "failing" only because it exhausted the 20000 ticks; it passes in env (30000) **and in vanilla** (hold 126, verdict pass), so
+  it was not a negative. Replaced by "remove repeater [95,2,4]" (fails in env, fails in vanilla). `env/tasks/author_t3.py` still writes the default total when it
+  regenerates the JSON (task owner: set 30000 there too).
+* `t1_repeater_lock`: "replace wire [2,1,2] with stone" is not a negative: the repeater powers the stone strongly and the next dust is powered through it.
+  In vanilla a *structure paste of the raw (dot) dust* fails it (a dot dust powers nothing sideways) but a hand-placed dust is a cross and works, and the
+  canonical env (cross) agrees with the hand placement. Replaced by "remove lock repeater [1,1,1]" (env 0.35, vanilla fails `follow_then_hold[36-59]`); "turn
+  the lock repeater south" is also failing in both. The 8 dihedral variants all kill the new one.
+
+**counter4 `…af52` (section 9) decided by the placement, not by us:** under the canonical placement the program boots at count 14 and fails 100/100 vectors in the env,
+in Nucleation and in vanilla. `oracle_sessions.py --sessions af52` (unchanged script): stored pass, env now FAIL, vanilla (handover) FAIL, nuc==van yes, raw paste FAIL
+(0 cells differ from the handover). Over the 18 sessions with a build, env and vanilla(handover) disagree in 0 cases; handover and raw paste differ in 0 cells except
+t5_mul2x2 `…5559` (1) and t5_seq_detector `…2c20` (5), both still passing in vanilla. So "env's at-rest world is the product" and "the program output boots correctly
+when pasted" are now the same statement for every stored build except where the handover differs by those few cells; the stricter reading of section 9 is what the env enforces.
+Experiment 02's counter4 row (docs/EXPERIMENT_02.md) therefore becomes a fail: the agent's latch cells need an explicit reset or initial states.
+
+**Open after this change.**
+* Lone dust is a cross in the env and in the handover file, but the raw program state is a dot: pasted as a raw structure it behaves differently. The product is the handover.
+* Build-time rest now takes 0-25 ticks (placement-scheduled ticks): `budgets.rest` must stay above ~30 (all shipped tasks have >= 100).
+* Position dependence of timing-tight adders (section 9, offsets) is untouched; request 5 of section 10 (second origin for hidden vectors) is not done.
+* Stale text elsewhere (not mine): docs/PRODUCT.md "Placement-path sensitivity" and docs/ORACLE.md/LIBRARY.md describe the env as engine-placed; `lib/*.meta.json`
+  orientation claims are legacy-measured; `tools/oracle/placement.py` is now redundant (its `canonical_compile` still works); `tests/oracle/test_placement.py`,
+  `test_envplan.py`, `test_robustness_live.py`, `tests/training/test_synth_engine.py`, `tests/unit/test_router.py` encode the legacy path and need
+  `MIRA_PLACEMENT=legacy` (14 of the 15 failures: 13 in tests/oracle, 1 training, 1 unit; the 15th, `test_canonical_broken_variant_that_works_when_hand_built`, looks up the removed stone variant).

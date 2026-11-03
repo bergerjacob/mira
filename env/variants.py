@@ -28,6 +28,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from simulation.blockstates import parse_state, rotate_point, transform_state  # noqa: E402
 from env.contract import Contract, Port  # noqa: E402
+from env.sim import placement_mode  # noqa: E402
 from env.task import Task  # noqa: E402
 
 REPORT = Path(__file__).parent / "tasks" / "t5" / "variants_report.json"
@@ -169,7 +170,9 @@ def load_variant(task_id_or_path, seed):
 
 
 def allowed_variants(task_id):
-    """Seeds 0..7 whose variant passed the check in variants_report.json (all 8 when the task was never checked)."""
+    """Seeds 0..7 whose variant passed the check in variants_report.json (all 8 when the task was never checked).
+    Under the canonical placement (env/sim.py) every task passes in all 8 elements, so this is all of range(8) for every
+    shipped task; it stays as a regression guard for new tasks (a rejection means the reference itself is orientation-dependent)."""
     rep = json.loads(REPORT.read_text()) if REPORT.exists() else {}
     r = rep.get("tasks", {}).get(task_id.split("@")[0])
     return list(r["allowed"]) if r else list(range(8))
@@ -265,6 +268,7 @@ def main(argv=None):
         for r in reps:
             rep["tasks"][r["id"]] = r
         rep["elements"] = {s: elem_name(s) for s in range(8)}
+        rep["placement"] = placement_mode()
         REPORT.parent.mkdir(exist_ok=True)
         REPORT.write_text(json.dumps(rep, indent=1, sort_keys=True) + "\n")
     return 0 if all(len(r["allowed"]) == len(seeds) for r in reps) else 1

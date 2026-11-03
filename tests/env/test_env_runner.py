@@ -207,7 +207,7 @@ def test_export_refuses_unsettled_or_invalid_builds(tmp_path, task):
     from env.runner import export_litematic
     t = task("t1_clock")
     c = fresh(t)
-    c.budgets.rest = 5
+    c.budgets.rest = 20      # the canonical placement needs ~8 ticks of start-up settling for this clock
     # clock with the lever off is at rest -> fine
     export_litematic(c, t.solution, tmp_path / "a.litematic")
     with pytest.raises(ValueError):

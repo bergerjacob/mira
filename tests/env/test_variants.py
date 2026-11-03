@@ -188,16 +188,41 @@ def test_report_lists_every_task_and_allowed_variants_reads_it():
         assert set(map(int, r["seeds"])) == set(range(8)) and r["allowed"] == allowed_variants(tid)
         assert all(r["seeds"][str(s)]["ok"] for s in r["allowed"])
     assert allowed_variants("t0_and") == list(range(8))
-    assert 4 not in allowed_variants("t1_xor") and 0 in allowed_variants("t1_xor")
+    # canonical placement (env/sim.py): the references no longer depend on orientation, so nothing is excluded
+    assert rep["placement"] == "canonical"
+    assert all(r["allowed"] == list(range(8)) for r in rep["tasks"].values())
+    assert allowed_variants("t1_xor") == list(range(8))
     assert allowed_variants("no_such_task") == list(range(8))
 
 
-def test_env_failures_of_variants_are_not_vanilla_failures():
-    """Every variant that the env rejects and that was replayed in vanilla 26.2 passes there (the env placement path is order-dependent)."""
+def test_variants_replayed_in_vanilla_pass_there_and_in_the_env():
+    """Every variant replayed in vanilla 26.2 passes there. Under the legacy placement the env rejected 11 of them (its hand-placement
+    path was order-dependent); under the canonical placement the env accepts all of them."""
     rep = json.loads(REPORT.read_text())
     van = rep.get("vanilla", {})
     assert len(van) >= 5
     for key, r in van.items():
         tid, s = key.split("@v")
         assert r["vanilla_pass"], key
-    assert any(int(k.split("@v")[1]) not in rep["tasks"][k.split("@v")[0]]["allowed"] for k in van)
+    assert all(int(k.split("@v")[1]) in rep["tasks"][k.split("@v")[0]]["allowed"] for k in van)
+
+
+# --------------------------------------------------------------------------- placement (docs/VALIDITY.md section 13)
+# (task, seed): rejected by the env under the legacy hand placement although the build passes in vanilla 26.2
+FORMERLY_REJECTED = [("t1_xor", 4), ("t1_xor", 6), ("t1_clock", 2), ("t1_t_flipflop", 1), ("t3_counter2", 2), ("t3_parity4", 2), ("t5_lfsr4", 1)]
+
+
+@pytest.mark.parametrize("tid,seed", FORMERLY_REJECTED)
+def test_variants_the_legacy_placement_rejected_pass_under_canonical_placement(tid, seed, monkeypatch):
+    from env.score import score
+    monkeypatch.setenv("MIRA_PLACEMENT", "canonical")
+    v = variant_of(load_task(tid), seed)
+    r = run(v.contract, v.solution)
+    assert score(v.contract, r).full_pass, (r.invariant_failures(), [x.index for x in r.vectors if not x.ok])
+
+
+def test_legacy_placement_flag_still_reproduces_the_orientation_dependence(monkeypatch):
+    from env.score import score
+    monkeypatch.setenv("MIRA_PLACEMENT", "legacy")
+    v = variant_of(load_task("t1_xor"), 4)
+    assert not score(v.contract, run(v.contract, v.solution, fast=True)).full_pass

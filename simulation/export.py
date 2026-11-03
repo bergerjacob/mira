@@ -1,6 +1,6 @@
 """Hand-over files for a build: settled at-rest `.litematic`, vanilla structure `.nbt`, and a vanilla paste receipt.
 
-    cells, info = settle(world)                          # Nucleation: place through the engine, run to rest
+    cells, info = settle(world)                          # Nucleation: canonical placement (env/sim.py), run to rest
     save_litematic(cells, "out.litematic", nbt, ents)    # via Nucleation; read back and compared
     write_structure_nbt(cells, "out.nbt", nbt)           # our own gzip NBT writer (Nucleation 0.12 cannot write vanilla .nbt)
     receipt = paste_check("out.litematic", ticks=40)     # vanilla 26.2 oracle: place the file, idle, read back, diff
@@ -37,13 +37,14 @@ def canon(state: str) -> str:
 
 # --------------------------------------------------------------------------- settle (Nucleation)
 def settle(world: Dict[Pos, str], budget: int = 400) -> Tuple[Dict[Pos, str], dict]:
-    """Place `world` through Nucleation's engine (neighbour updates as if placed by hand), step until quiescent
+    """Place `world` the way the env does (env/sim.py: canonical = raw states + cross dust, loaded with Placement, as a structure
+    / Litematica paste; MIRA_PLACEMENT=legacy = per-block engine placement), step until quiescent
     (at most `budget` ticks) and return the at-rest states. info: {ticks, at_rest, place_errors, changed}.
     Raises RuntimeError when the simulator cannot load the build (e.g. one of the 263 unloadable block ids)."""
     from env.sim import Sim, compile_cells
     sc, corner, errs = compile_cells(world)
     try:
-        sim = Sim(sc, corner, "inworld")
+        sim = Sim(sc, corner)
     except Exception as e:
         raise RuntimeError(f"simulator cannot load the build: {e}") from None
     ticks, rest = sim.settle(budget)
@@ -56,7 +57,7 @@ def settle(world: Dict[Pos, str], budget: int = 400) -> Tuple[Dict[Pos, str], di
 
 def path_check(world: Dict[Pos, str], baked: Dict[Pos, str], budget: int = 400) -> dict:
     """Is the at-rest state placement-path sensitive? Bistable parts (latches, locked-repeater flip-flops) can come up
-    differently depending on how the blocks arrive. Compares the baked world (engine placement + settle, what `settle`
+    differently depending on how the blocks arrive. Compares the baked world (env placement + settle, what `settle`
     returns and what we export) with (a) the RAW program states pasted then settled (`raw_<mode>`) and (b) the baked
     world re-loaded and settled (`baked_<mode>`, = the env's paste_stable invariant), for Nucleation's InWorld and
     Placement modes. Values are numbers of differing cells (-1 = simulator error / never at rest). raw_inworld is

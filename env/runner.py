@@ -251,10 +251,10 @@ def _run(contract, pr, res, seed, public_only, fast) -> RunResult:
     note("no_popoff", not fl or not inv.no_popoff,
          "; ".join(f"{r} at {list(p)} ({B.short(B.split_state(s)[0])})" for p, s, r in fl[:6]))
 
-    sc, origin, perr = compile_cells(pr.world, pr.nbt)
+    sc, origin, perr = compile_cells(pr.world, pr.nbt)   # canonical: raw states + cross dust, loaded with Placement (env/sim.py)
     res.place_errors = perr
     try:
-        sim = Sim(sc, origin, "inworld")
+        sim = Sim(sc, origin)
     except Exception as e:
         pr.errors.append(f"simulator refused to load the build: {e}")
         return res
@@ -279,7 +279,9 @@ def _run(contract, pr, res, seed, public_only, fast) -> RunResult:
 
     collect()
     sim.checkpoint()
-    # paste-stable: the saved at-rest world must not change when loaded InWorld or settled as Placement
+    # paste-stable: the saved at-rest world (what export_litematic hands over) must not change when loaded InWorld or settled
+    # as Placement. With the canonical build this is mostly trivially true; it still catches states that are not at rest
+    # (a pending tick, a torch that would burn out, a transient piston/observer state)
     if rest_ok and inv.paste_stable:
         raw, origin2, _ = compile_cells(base_world, pr.nbt, engine_place=False)
         details = []
@@ -498,8 +500,8 @@ def _run(contract, pr, res, seed, public_only, fast) -> RunResult:
 
 
 def export_litematic(contract: Contract, blocks, path) -> int:
-    """Compile -> place through the engine -> settle to rest -> save the at-rest .litematic (min corner = file origin).
-    Returns the number of blocks written. Raises ValueError for builds that do not compile or never come to rest."""
+    """Compile (canonical placement, the same as the env run) -> settle to rest -> bake -> save the at-rest .litematic
+    (min corner = file origin); the handover world equals the world the env scored. Returns the number of blocks written. Raises ValueError for builds that do not compile or never come to rest."""
     pr = blocks if isinstance(blocks, Prepared) else prepare(contract, blocks)
     if pr.errors:
         raise ValueError("build does not compile: " + "; ".join(pr.errors))

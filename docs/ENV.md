@@ -8,7 +8,7 @@ no API key). All Nucleation calls live in `env/sim.py`.
 ```
 env/contract.py   Contract v2 dataclasses (JSON schema), public/hidden split, describe()
 env/blocks.py     state validation/canonicalisation from Nucleation's block registry; static support (pop-off) check
-env/sim.py        the only Nucleation wrapper: engine placement, Sim (ticks, checkpoint/restore, change log), structural graph
+env/sim.py        the only Nucleation wrapper: canonical placement (`MIRA_PLACEMENT`), Sim (ticks, checkpoint/restore, change log), structural graph
 env/runner.py     prepare() (R0) + run() -> RunResult; export_litematic()
 env/score.py      R0-R4 + reward, balanced accuracy, model-facing diagnostics (feedback())
 env/tools.py      Env: set_blocks / fill / remove / view / probe / run_spec / submit / undo / task_info (+ tool_specs())
@@ -101,21 +101,25 @@ Time is in **game ticks** (20 = 1 s; a repeater step is 2 ticks).
 ## Runner (`env/runner.py`)
 
 `prepare()` (R0): canonicalise every state against Nucleation's registry (unknown block / property / value -> error),
-bounds (`build_box`, `fixed`, reserved areas, `max_blocks`). `run()`: place `fixed + build` bottom-up **through the
-engine** (`{simulate=true}`), run to quiescence (`budgets.rest`), checkpoint; then invariants, vectors, sequences,
+bounds (`build_box`, `fixed`, reserved areas, `max_blocks`). `run()`: build `fixed + build` with the **canonical placement**
+(below: raw states, dust as a cross, one `Placement` load, like a structure / Litematica paste), run to quiescence
+(`budgets.rest`, up to ~25 ticks are spent just settling the placement's scheduled ticks), checkpoint; then invariants, vectors, sequences,
 connectivity probes, silent-component list, and (unless `fast=True`) a full deterministic re-run from scratch.
 `run()` never raises on a bad build: simulator errors become R0 errors.
 
 * `paste_stable`: the settled at-rest world is saved as raw states and re-loaded twice (`InWorld`, `Placement`); after
-  quiescence it must equal the saved world. Catches e.g. an observer pair (quiet when loaded, clocking when pasted).
+  quiescence it must equal the saved world. With the canonical placement this is mostly true by construction (the build already
+  came from a `Placement` load); it still catches a world that is not at rest in the sense of a paste, e.g. a latch whose saved
+  state moves when re-loaded or a build with pending transients (`lib/t_flipflop` rotated, legacy: 3 repeaters).
 * `at_rest`: quiescent within `budgets.rest`. `no_oscillation`: every vector settles within its budget.
 * `no_popoff`: static support check (see caveats: the simulator does not pop floating components).
 * `no_collateral`: no block change outside `bbox` ∪ `change_boxes`, and no fixed device replaced by another block.
 * `deterministic`: a second independent compile+run gives the same trace fingerprint.
 * On failure each `VectorResult` carries `diverge` (first tick from which the wrong value stands) and RLE port waveforms
   (`"0@0 1@4 0@12"` = value@tick); sequence windows carry `first_bad`.
-* `export_litematic(contract, blocks, path)` compiles, settles, bakes and saves the at-rest `.litematic` (the audit's
-  "save only fully resolved at-rest states"); refuses builds that do not compile or never rest.
+* `export_litematic(contract, blocks, path)` compiles (the same canonical placement as `run`, so the handover world is the world the
+  env scored), settles, bakes and saves the at-rest `.litematic` (the audit's "save only fully resolved at-rest states"); refuses
+  builds that do not compile or never rest.
 
 ## Scoring (`env/score.py`)
 
@@ -167,7 +171,7 @@ Survivors are reported (kill rate = spec strength). **All 22 accepted.** Mutatio
 | `t1_xor` (2 subtract comparators) | T1 | 20 | 66/71 (93%) | side-input repeater delay 1->2 |
 | `t1_mux2` (2 comparators + torch) | T1 | 12 | 44/48 (92%) | side-input repeater delay, wire->stone |
 | `t1_rs_latch` (NOR latch, S/R merged into the feedback lines) | T1 | 13 | 46/46 (100%) | - |
-| `t1_repeater_lock` (repeater-lock D latch) | T1 | 4 | 18/21 (86%) | delay changes |
+| `t1_repeater_lock` (repeater-lock D latch) | T1 | 4 | 17/21 (81%, canonical placement; 18/21 legacy) | delay changes, wire->stone (the repeater powers the stone strongly and a hand-placed dust is a cross) |
 | `t1_t_flipflop` (master-slave, repeater locks, button toggles) | T1 | 24 | 78/86 (91%) | delay changes, wire->stone |
 | `t1_pulse_extender` (button, +16 ticks) | T1 | 10 | 36/39 (92%) | delay 4->3 |
 | `t1_edge_detector` (rising edge, NOR of torch and delayed copy) | T1 | 15 | 51/53 (96%) | delay 3->4 |
@@ -198,10 +202,11 @@ Not done: the 3x3 door.
   (`crafting=true`, `has_book=true`) cannot even be placed. `env` reports these as R0 errors naming the block (`simulatable()`,
   cached per state); `python env/block_support.py --list` reproduces the sweep. Whether the loadable ones behave like vanilla is untested.
 * A repeater placed without `locked`/`powered` makes `TickSimulation.from_schematic` raise `Simulation`; hopper, note block,
-  pressure plate without full props too. Canonical states avoid this; a half-specified repeater also poisons later `{simulate=true}`
-  placements nearby (`InvalidArgument`).
-* `{simulate=true}` takes **stated** properties literally, so wires must be placed bare (`engine_state()` strips them) or
-  they stay disconnected; and it errors when it replaces an existing non-air block (each cell is placed once).
+  pressure plate without full props too. Canonical states avoid this; (legacy placement only) a half-specified repeater also poisons
+  later `{simulate=true}` placements nearby (`InvalidArgument`).
+* (Legacy placement only, `MIRA_PLACEMENT=legacy`) `{simulate=true}` takes **stated** properties literally, so wires must be placed
+  bare (`engine_state()` strips them) or they stay disconnected; and it errors when it replaces an existing non-air block. The canonical
+  placement writes dust as a cross and lets the `Placement` load resolve the shapes.
 * The simulator does **not** pop floating components (a wire/lever/torch with no support just stays): R1 uses a static
   support check (`blocks.floating`).
 * Repeater/comparator `facing` is the **input** side (output goes the other way); wall torch/lever/button `facing` points away from
@@ -217,8 +222,10 @@ Not done: the 3x3 door.
 * `TickSimulation.restore` does not clear the change log (the env clears it); `run_until_quiescent` is replaced by a
   stepping loop so waveforms can be recorded; `is_quiescent` does account for pending repeater/torch ticks.
 * Observers facing each other are quiescent `InWorld` but start clocking under `Placement` (caught by `paste_stable`).
-* The NOR latch comes up quiescent at rest (Q off, second torch on) with the engine's placement order; since the rest state
-  of a latch is not part of the physics, its specs start with an explicit reset pulse.
+* Bistable parts (NOR latch, locked-repeater flip-flops) come up in whatever state the placement procedure produces; the state of a
+  latch is not part of the physics, so its specs start with an explicit reset pulse. Under the canonical placement the state no
+  longer depends on block order or orientation, but a program that relies on a particular power-on state (as t3_counter4
+  `…af52` did) can still fail: it fails exactly when a user pastes it.
 * Items, hoppers with items, entities, mobs, comparators on containers are not exercised; NBT blocks are placed with
   `set_block_with_nbt` (no engine settling) and are untested.
 * Timing: full run 57 ms (lamp) .. 330 ms (door); `fast` (no determinism re-run) about half. The tick budget is enforced per run.
@@ -244,3 +251,49 @@ Not done: the 3x3 door.
 * Equivalent mutants (wire<->stone between powered components) and tolerated delay changes count as survivors; kill rate is a
   lower bound on spec strength, not a coverage measure.
 * Only 1 T2 task; no T3/T4 (adders, ALU), no module/hierarchy layer, no LLM loop (not in scope of this task).
+
+## Placement: canonical vs legacy (2026-11-02)
+
+`env.sim.compile_cells` + `Sim` build the world the way a structure / Litematica paste does (`MIRA_PLACEMENT=canonical`, the default):
+
+1. every state is written raw, every `redstone_wire` as a **cross** (`east/north/south/west=side, power=0`, the state a hand placement starts
+   from; an isolated dust therefore stays a cross, as when placed by hand);
+2. `Sim` loads the schematic with `TickSettleMode.Placement` (shapes and torch/repeater state resolved after ALL blocks are present; the
+   ticks scheduled by the placement are kept, baking right after the load would lose them), then the usual settle;
+3. `compile_cells` tags its schematic (`name() == "mira_env_canonical"`); `Sim` always loads a tagged schematic with Placement, so every
+   caller (`runner`, `tools`, `library`, `router`, `modules`, `project`, `export`) inherits the placement without a change. Raw schematics
+   (`compile_cells(..., engine_place=False)`, files) keep the load mode they are given (`paste_stable`).
+
+`MIRA_PLACEMENT=legacy` restores the old procedure (per-block `{simulate=true}` placement, sorted y,x,z, loaded InWorld). It is read on every
+call, so tests can switch it with `monkeypatch.setenv`. Why: the legacy path corrupts dust shapes (ORACLE bug 6) and picks order-dependent
+latch states, so 36 of 336 dihedral variants of T0-T5 references failed in the env while passing in vanilla (docs/VALIDITY.md sections 10, 13).
+
+| measured with `env/validate_tasks.py` (42 tasks) and `env/variants.py` (42 x 8) | legacy | canonical |
+|---|---|---|
+| tasks accepted (reference 1.0, empty fails, >= 3 broken fail) | 42/42 | 42/42 |
+| mutants killed (auto + stored) | 1172/1360 (86.2%) | 1169/1360 (86.0%) |
+| dihedral variants whose reference passes | 300/336 (15 tasks with a rejection) | **336/336** |
+| stored broken variants that pass (5 per variant, T4: 3; all 336 variants) | 0 | 0 (after replacing the one invalid variant, see below) |
+| `validate_tasks` wall time per task, adder8 / addsub8 / shift32 / accum4 | 404 / 417 / 494 / 202 s | 167 / 246 / 311 / 35 s |
+| ticks needed to reach rest at build time | 0 for all references | 0-25 (placement ticks) |
+
+Kill-rate difference, 3 mutants, no physics: `t1_repeater_lock` 18/21 -> 17/21 (the stored "wire -> stone" variant was killed in legacy only because the lone dust
+stayed a dot; a hand-placed dust is a cross and then the circuit works, so it is not a negative; replaced by "remove lock repeater [1,1,1]", failing in vanilla) and `t3_adder8`
+29/35 -> 27/35 (two repeater delay+1 mutants were "killed" only by exhausting `budgets.total` 20000; with 30000 they pass, as they do in vanilla; the stored
+delay variant was replaced by "remove repeater [95,2,4]", failing in env and vanilla).
+
+**Migration.** Numbers quoted from before the change were measured under the legacy placement.
+* Re-scored with the canonical env: the 20 stored session builds with a `final_blocks.json` (`data/sessions`, = the 8 sandbox sessions + earlier
+  and T5 sessions): 19 identical verdicts and rewards, 1 changed: `t3_counter4 …af52` pass -> **fail** (reward 0.990 -> 0.300; all 100 vectors; vanilla fails the
+  same world). The at-rest (handover) world is cell-identical to the legacy one for the other 19 builds, so their vanilla results (docs/ORACLE.md,
+  `data/oracle/sessions_r*.json`) still apply. Experiment 02 (docs/EXPERIMENT_02.md): 7/8 rows unchanged, **t3_counter4 is now a fail** in the env.
+* Experiment 01 (docs/EXPERIMENT_01.md): not re-scored (the transcripts store the model messages, not the final blocks). Results that could
+  change are only those on tasks with bistable or dust-shape-sensitive parts (`t1_clock`, `t1_t_flipflop`, `t1_rs_latch`, `t1_repeater_lock`,
+  `t1_edge_detector`, `t1_pulse_extender`, `t1_xor`) and only for builds that (a) depend on a power-on state, (b) leave a dust at a line end
+  next to a dust two cells away (bug 6), or (c) failed R1 `paste_stable` / `at_rest`. Reference solutions and 19 of 20 session builds kept their verdicts, so
+  the expected effect is a few cells of the grid, not the conclusions; treat the absolute rates as "legacy-placement" numbers and re-run before quoting
+  them against new results.
+* `lib/*.meta.json` orientation claims (`func_ok_orientations`, `orientation_failures`) were measured under the legacy placement
+  (`t_flipflop` rot90 now passes in the env); regenerate with `python env/library.py write`.
+* Isolated dust: a dust with no neighbour is a cross in the canonical env (as when placed by hand) and stays a cross in the handover file; the
+  raw program state (bare dust) pasted as a structure would be a dot, which powers nothing sideways. The handover file is the product, so the verdicts agree.

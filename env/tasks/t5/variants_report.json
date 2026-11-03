@@ -9,6 +9,7 @@
   "6": "rot180+mirror_x",
   "7": "rot270+mirror_x"
  },
+ "placement": "canonical",
  "tasks": {
   "t0_and": {
    "allowed": [
@@ -23,7 +24,7 @@
    ],
    "blocks": 13,
    "id": "t0_and",
-   "seconds": 6.1,
+   "seconds": 0.8,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -96,7 +97,7 @@
    ],
    "blocks": 12,
    "id": "t0_delay",
-   "seconds": 5.4,
+   "seconds": 1.1,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -169,7 +170,7 @@
    ],
    "blocks": 13,
    "id": "t0_fanout",
-   "seconds": 4.4,
+   "seconds": 1.6,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -242,7 +243,7 @@
    ],
    "blocks": 4,
    "id": "t0_lamp",
-   "seconds": 2.6,
+   "seconds": 0.8,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -315,7 +316,7 @@
    ],
    "blocks": 11,
    "id": "t0_nor",
-   "seconds": 4.6,
+   "seconds": 1.6,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -388,7 +389,7 @@
    ],
    "blocks": 6,
    "id": "t0_not",
-   "seconds": 3.2,
+   "seconds": 0.8,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -461,7 +462,7 @@
    ],
    "blocks": 8,
    "id": "t0_or",
-   "seconds": 3.4,
+   "seconds": 1.2,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -534,7 +535,7 @@
    ],
    "blocks": 4,
    "id": "t0_pad_lamp",
-   "seconds": 1.9,
+   "seconds": 0.8,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -607,7 +608,7 @@
    ],
    "blocks": 4,
    "id": "t0_piston",
-   "seconds": 2.8,
+   "seconds": 0.8,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -680,7 +681,7 @@
    ],
    "blocks": 20,
    "id": "t0_wire_long",
-   "seconds": 8.3,
+   "seconds": 1.0,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -753,7 +754,7 @@
    ],
    "blocks": 18,
    "id": "t1_and3",
-   "seconds": 7.9,
+   "seconds": 1.4,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -817,13 +818,16 @@
    "allowed": [
     0,
     1,
+    2,
     3,
+    4,
+    5,
     6,
     7
    ],
    "blocks": 17,
    "id": "t1_clock",
-   "seconds": 8.3,
+   "seconds": 3.2,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -842,22 +846,9 @@
     "2": {
      "broken_fail": "5/5",
      "elem": "rot180",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 5 cells differ, e.g. [28, 3, 18] saved redstone_lamp -> redstone_lamp minecraft:redstone_lamp[lit=false]"
-      },
-      "sequences_bad": [
-       "off",
-       "run",
-       "stop"
-      ],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "3": {
      "broken_fail": "5/5",
@@ -869,42 +860,16 @@
     "4": {
      "broken_fail": "5/5",
      "elem": "rot0+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 5 cells differ, e.g. [-13, 5, -19] saved redstone_lamp -> redstone_lamp minecraft:redstone_lamp[lit=false]"
-      },
-      "sequences_bad": [
-       "off",
-       "run",
-       "stop"
-      ],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "5": {
      "broken_fail": "5/5",
      "elem": "rot90+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 5 cells differ, e.g. [-21, 1, -8] saved repeater -> repeater minecraft:repeater[delay=2,facing=north,locked=false,powered=false]"
-      },
-      "sequences_bad": [
-       "off",
-       "run",
-       "stop"
-      ],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "6": {
      "broken_fail": "5/5",
@@ -935,7 +900,7 @@
    ],
    "blocks": 15,
    "id": "t1_edge_detector",
-   "seconds": 6.2,
+   "seconds": 1.6,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1008,7 +973,7 @@
    ],
    "blocks": 12,
    "id": "t1_mux2",
-   "seconds": 6.2,
+   "seconds": 0.9,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1081,7 +1046,7 @@
    ],
    "blocks": 11,
    "id": "t1_nand",
-   "seconds": 5.3,
+   "seconds": 1.2,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1154,7 +1119,7 @@
    ],
    "blocks": 4,
    "id": "t1_observer",
-   "seconds": 2.3,
+   "seconds": 0.8,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1227,7 +1192,7 @@
    ],
    "blocks": 10,
    "id": "t1_pulse_extender",
-   "seconds": 5.0,
+   "seconds": 1.2,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1300,7 +1265,7 @@
    ],
    "blocks": 4,
    "id": "t1_repeater_lock",
-   "seconds": 2.5,
+   "seconds": 0.8,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1373,7 +1338,7 @@
    ],
    "blocks": 13,
    "id": "t1_rs_latch",
-   "seconds": 5.6,
+   "seconds": 1.2,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1436,14 +1401,17 @@
   "t1_t_flipflop": {
    "allowed": [
     0,
+    1,
     2,
     3,
     4,
+    5,
+    6,
     7
    ],
    "blocks": 24,
    "id": "t1_t_flipflop",
-   "seconds": 8.5,
+   "seconds": 2.1,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1455,20 +1423,9 @@
     "1": {
      "broken_fail": "5/5",
      "elem": "rot90",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 3 cells differ, e.g. [-13, 5, -14] saved repeater -> repeater minecraft:repeater[delay=3,facing=north,locked=false,powered=false]"
-      },
-      "sequences_bad": [
-       "toggle"
-      ],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "2": {
      "broken_fail": "5/5",
@@ -1494,38 +1451,16 @@
     "5": {
      "broken_fail": "5/5",
      "elem": "rot90+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 3 cells differ, e.g. [-18, 1, -7] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=none,north=side,power=14,south=side,west=none]"
-      },
-      "sequences_bad": [
-       "toggle",
-       "toggle4"
-      ],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "6": {
      "broken_fail": "5/5",
      "elem": "rot180+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.3,
-     "why": {
-      "errors": [],
-      "invariants": {},
-      "sequences_bad": [
-       "toggle",
-       "toggle4"
-      ],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "7": {
      "broken_fail": "5/5",
@@ -1542,12 +1477,14 @@
     1,
     2,
     3,
+    4,
     5,
+    6,
     7
    ],
    "blocks": 20,
    "id": "t1_xor",
-   "seconds": 7.8,
+   "seconds": 1.1,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1580,18 +1517,9 @@
     "4": {
      "broken_fail": "5/5",
      "elem": "rot0+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 1 cells differ, e.g. [-12, 5, -19] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=side,north=none,power=0,south=side,west=side]"
-      },
-      "sequences_bad": [],
-      "vectors": 8,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "5": {
      "broken_fail": "5/5",
@@ -1603,18 +1531,9 @@
     "6": {
      "broken_fail": "5/5",
      "elem": "rot180+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 1 cells differ, e.g. [36, 6, 41] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=side,north=none,power=0,south=side,west=side]"
-      },
-      "sequences_bad": [],
-      "vectors": 8,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "7": {
      "broken_fail": "5/5",
@@ -1638,7 +1557,7 @@
    ],
    "blocks": 39,
    "id": "t2_door_2x2",
-   "seconds": 16.7,
+   "seconds": 3.7,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1711,7 +1630,7 @@
    ],
    "blocks": 243,
    "id": "t3_adder2",
-   "seconds": 75.8,
+   "seconds": 46.0,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1784,7 +1703,7 @@
    ],
    "blocks": 368,
    "id": "t3_adder3",
-   "seconds": 155.0,
+   "seconds": 140.3,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1857,7 +1776,7 @@
    ],
    "blocks": 493,
    "id": "t3_adder4",
-   "seconds": 144.1,
+   "seconds": 82.0,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1920,12 +1839,17 @@
   "t3_adder8": {
    "allowed": [
     0,
+    1,
+    2,
+    3,
     4,
+    5,
+    6,
     7
    ],
    "blocks": 993,
    "id": "t3_adder8",
-   "seconds": 338.2,
+   "seconds": 208.4,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -1937,50 +1861,23 @@
     "1": {
      "broken_fail": "5/5",
      "elem": "rot90",
-     "ok": false,
-     "ref": false,
-     "reward": 0.0,
-     "why": {
-      "errors": [
-       "evaluation aborted: RuntimeError: tick budget of 20000 exceeded"
-      ],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 56,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "2": {
      "broken_fail": "5/5",
      "elem": "rot180",
-     "ok": false,
-     "ref": false,
-     "reward": 0.0,
-     "why": {
-      "errors": [
-       "evaluation aborted: RuntimeError: tick budget of 20000 exceeded"
-      ],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 56,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "3": {
      "broken_fail": "5/5",
      "elem": "rot270",
-     "ok": false,
-     "ref": false,
-     "reward": 0.0,
-     "why": {
-      "errors": [
-       "evaluation aborted: RuntimeError: tick budget of 20000 exceeded"
-      ],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 56,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "4": {
      "broken_fail": "5/5",
@@ -1992,34 +1889,16 @@
     "5": {
      "broken_fail": "5/5",
      "elem": "rot90+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.0,
-     "why": {
-      "errors": [
-       "evaluation aborted: RuntimeError: tick budget of 20000 exceeded"
-      ],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 56,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "6": {
      "broken_fail": "5/5",
      "elem": "rot180+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.0,
-     "why": {
-      "errors": [
-       "evaluation aborted: RuntimeError: tick budget of 20000 exceeded"
-      ],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 56,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "7": {
      "broken_fail": "5/5",
@@ -2033,12 +1912,17 @@
   "t3_counter2": {
    "allowed": [
     0,
+    1,
+    2,
     3,
+    4,
+    5,
+    6,
     7
    ],
    "blocks": 62,
    "id": "t3_counter2",
-   "seconds": 27.4,
+   "seconds": 8.0,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -2050,32 +1934,16 @@
     "1": {
      "broken_fail": "5/5",
      "elem": "rot90",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 6 cells differ, e.g. [-7, 5, 4] saved repeater -> repeater minecraft:repeater[delay=3,facing=north,locked=false,powered=false]"
-      },
-      "sequences_bad": [],
-      "vectors": 54,
-      "vectors_bad": 3
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "2": {
      "broken_fail": "5/5",
      "elem": "rot180",
-     "ok": false,
-     "ref": false,
-     "reward": 0.3,
-     "why": {
-      "errors": [],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 54,
-      "vectors_bad": 54
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "3": {
      "broken_fail": "5/5",
@@ -2087,46 +1955,23 @@
     "4": {
      "broken_fail": "5/5",
      "elem": "rot0+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.3,
-     "why": {
-      "errors": [],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 54,
-      "vectors_bad": 54
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "5": {
      "broken_fail": "5/5",
      "elem": "rot90+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 19 cells differ, e.g. [-15, 1, -8] saved redstone_lamp -> redstone_lamp minecraft:redstone_lamp[lit=false]"
-      },
-      "sequences_bad": [],
-      "vectors": 54,
-      "vectors_bad": 54
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "6": {
      "broken_fail": "5/5",
      "elem": "rot180+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.3,
-     "why": {
-      "errors": [],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 54,
-      "vectors_bad": 54
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "7": {
      "broken_fail": "5/5",
@@ -2140,14 +1985,17 @@
   "t3_counter2_down": {
    "allowed": [
     0,
+    1,
     2,
     3,
     4,
+    5,
+    6,
     7
    ],
    "blocks": 59,
    "id": "t3_counter2_down",
-   "seconds": 23.1,
+   "seconds": 3.2,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -2159,18 +2007,9 @@
     "1": {
      "broken_fail": "5/5",
      "elem": "rot90",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 9 cells differ, e.g. [-10, 5, 0] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=side,north=none,power=0,south=side,west=none]"
-      },
-      "sequences_bad": [],
-      "vectors": 54,
-      "vectors_bad": 33
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "2": {
      "broken_fail": "5/5",
@@ -2196,32 +2035,16 @@
     "5": {
      "broken_fail": "5/5",
      "elem": "rot90+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 13 cells differ, e.g. [-15, 1, -2] saved redstone_lamp -> redstone_lamp minecraft:redstone_lamp[lit=false]"
-      },
-      "sequences_bad": [],
-      "vectors": 54,
-      "vectors_bad": 54
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "6": {
      "broken_fail": "5/5",
      "elem": "rot180+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.3,
-     "why": {
-      "errors": [],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 54,
-      "vectors_bad": 54
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "7": {
      "broken_fail": "5/5",
@@ -2235,12 +2058,17 @@
   "t3_counter4": {
    "allowed": [
     0,
+    1,
+    2,
     3,
+    4,
+    5,
+    6,
     7
    ],
    "blocks": 130,
    "id": "t3_counter4",
-   "seconds": 78.0,
+   "seconds": 67.8,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -2252,32 +2080,16 @@
     "1": {
      "broken_fail": "5/5",
      "elem": "rot90",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 9 cells differ, e.g. [-4, 5, 20] saved repeater -> repeater minecraft:repeater[delay=3,facing=north,locked=false,powered=true]"
-      },
-      "sequences_bad": [],
-      "vectors": 100,
-      "vectors_bad": 100
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "2": {
      "broken_fail": "5/5",
      "elem": "rot180",
-     "ok": false,
-     "ref": false,
-     "reward": 0.3,
-     "why": {
-      "errors": [],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 100,
-      "vectors_bad": 100
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "3": {
      "broken_fail": "5/5",
@@ -2289,46 +2101,23 @@
     "4": {
      "broken_fail": "5/5",
      "elem": "rot0+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.3,
-     "why": {
-      "errors": [],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 100,
-      "vectors_bad": 100
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "5": {
      "broken_fail": "5/5",
      "elem": "rot90+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 62 cells differ, e.g. [-15, 1, -8] saved redstone_lamp -> redstone_lamp minecraft:redstone_lamp[lit=false]"
-      },
-      "sequences_bad": [],
-      "vectors": 100,
-      "vectors_bad": 100
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "6": {
      "broken_fail": "5/5",
      "elem": "rot180+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.3,
-     "why": {
-      "errors": [],
-      "invariants": {},
-      "sequences_bad": [],
-      "vectors": 100,
-      "vectors_bad": 100
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "7": {
      "broken_fail": "5/5",
@@ -2352,7 +2141,7 @@
    ],
    "blocks": 135,
    "id": "t3_decoder2to4",
-   "seconds": 47.3,
+   "seconds": 11.3,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -2425,7 +2214,7 @@
    ],
    "blocks": 367,
    "id": "t3_decoder3to8",
-   "seconds": 121.8,
+   "seconds": 40.1,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -2498,7 +2287,7 @@
    ],
    "blocks": 99,
    "id": "t3_majority3",
-   "seconds": 31.0,
+   "seconds": 5.4,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -2562,6 +2351,7 @@
    "allowed": [
     0,
     1,
+    2,
     3,
     4,
     5,
@@ -2570,7 +2360,7 @@
    ],
    "blocks": 120,
    "id": "t3_parity4",
-   "seconds": 37.2,
+   "seconds": 12.7,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -2589,18 +2379,9 @@
     "2": {
      "broken_fail": "5/5",
      "elem": "rot180",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 1 cells differ, e.g. [43, 3, 34] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=none,north=side,power=0,south=side,west=none]"
-      },
-      "sequences_bad": [],
-      "vectors": 45,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "3": {
      "broken_fail": "5/5",
@@ -2652,7 +2433,7 @@
    ],
    "blocks": 193,
    "id": "t3_rom4x4",
-   "seconds": 68.8,
+   "seconds": 17.5,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -2715,6 +2496,8 @@
   "t4_accum4": {
    "allowed": [
     0,
+    1,
+    2,
     3,
     4,
     5,
@@ -2723,77 +2506,59 @@
    ],
    "blocks": 861,
    "id": "t4_accum4",
-   "seconds": 356.2,
+   "seconds": 69.9,
    "seeds": {
     "0": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot0",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "1": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot90",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 4 cells differ, e.g. [-4, 5, 7] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=none,north=none,power=0,south=side,west=side]"
-      },
-      "sequences_bad": [],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "2": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot180",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 4 cells differ, e.g. [37, 3, 28] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=side,north=none,power=0,south=side,west=side]"
-      },
-      "sequences_bad": [],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "3": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot270",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "4": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot0+mirror_x",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "5": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot90+mirror_x",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "6": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot180+mirror_x",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "7": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot270+mirror_x",
      "ok": true,
      "ref": true,
@@ -2814,59 +2579,59 @@
    ],
    "blocks": 1993,
    "id": "t4_adder16",
-   "seconds": 2125.8,
+   "seconds": 1490.7,
    "seeds": {
     "0": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot0",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "1": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot90",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "2": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot180",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "3": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot270",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "4": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot0+mirror_x",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "5": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot90+mirror_x",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "6": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot180+mirror_x",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "7": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot270+mirror_x",
      "ok": true,
      "ref": true,
@@ -2878,84 +2643,68 @@
    "allowed": [
     0,
     1,
+    2,
     3,
+    4,
     5,
     6,
     7
    ],
    "blocks": 1311,
    "id": "t4_addsub8",
-   "seconds": 880.4,
+   "seconds": 444.4,
    "seeds": {
     "0": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot0",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "1": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot90",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "2": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot180",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 8 cells differ, e.g. [36, 3, 23] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=none,north=side,power=0,south=side,west=none]"
-      },
-      "sequences_bad": [],
-      "vectors": 58,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "3": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot270",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "4": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot0+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 8 cells differ, e.g. [-5, 5, -10] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=none,north=side,power=0,south=side,west=none]"
-      },
-      "sequences_bad": [],
-      "vectors": 58,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "5": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot90+mirror_x",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "6": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot180+mirror_x",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "7": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot270+mirror_x",
      "ok": true,
      "ref": true,
@@ -2976,59 +2725,59 @@
    ],
    "blocks": 962,
    "id": "t4_shift32",
-   "seconds": 1060.5,
+   "seconds": 602.1,
    "seeds": {
     "0": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot0",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "1": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot90",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "2": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot180",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "3": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot270",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "4": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot0+mirror_x",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "5": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot90+mirror_x",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "6": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot180+mirror_x",
      "ok": true,
      "ref": true,
      "reward": 1.0
     },
     "7": {
-     "broken_fail": "3/3",
+     "broken_fail": "5/5",
      "elem": "rot270+mirror_x",
      "ok": true,
      "ref": true,
@@ -3039,14 +2788,17 @@
   "t5_lfsr4": {
    "allowed": [
     0,
+    1,
     2,
     3,
     4,
-    6
+    5,
+    6,
+    7
    ],
    "blocks": 199,
    "id": "t5_lfsr4",
-   "seconds": 404.4,
+   "seconds": 14.2,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -3058,25 +2810,9 @@
     "1": {
      "broken_fail": "5/5",
      "elem": "rot90",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 55 cells differ, e.g. [-14, 5, -11] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=side,north=none,power=11,south=side,west=none]"
-      },
-      "sequences_bad": [
-       "first_6",
-       "steady_4",
-       "full_period_17",
-       "random_a",
-       "random_b",
-       "long_holds"
-      ],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "2": {
      "broken_fail": "5/5",
@@ -3102,25 +2838,9 @@
     "5": {
      "broken_fail": "5/5",
      "elem": "rot90+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 55 cells differ, e.g. [-19, 1, 1] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=side,north=none,power=0,south=side,west=none]"
-      },
-      "sequences_bad": [
-       "first_6",
-       "steady_4",
-       "full_period_17",
-       "random_a",
-       "random_b",
-       "long_holds"
-      ],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "6": {
      "broken_fail": "5/5",
@@ -3132,18 +2852,9 @@
     "7": {
      "broken_fail": "5/5",
      "elem": "rot270+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 1 cells differ, e.g. [40, 6, -6] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=none,north=none,power=0,south=side,west=side]"
-      },
-      "sequences_bad": [],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     }
    }
   },
@@ -3154,11 +2865,13 @@
     2,
     3,
     4,
-    5
+    5,
+    6,
+    7
    ],
    "blocks": 424,
    "id": "t5_lock4",
-   "seconds": 1044.0,
+   "seconds": 81.1,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -3205,34 +2918,16 @@
     "6": {
      "broken_fail": "5/5",
      "elem": "rot180+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 2 cells differ, e.g. [49, 6, 50] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=none,north=none,power=0,south=side,west=side]"
-      },
-      "sequences_bad": [],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     },
     "7": {
      "broken_fail": "5/5",
      "elem": "rot270+mirror_x",
-     "ok": false,
-     "ref": false,
-     "reward": 0.28,
-     "why": {
-      "errors": [],
-      "invariants": {
-       "paste_stable": "placement: 1 cells differ, e.g. [48, 6, 67] saved redstone_wire -> redstone_wire minecraft:redstone_wire[east=none,north=none,power=0,south=side,west=side]"
-      },
-      "sequences_bad": [],
-      "vectors": 0,
-      "vectors_bad": 0
-     }
+     "ok": true,
+     "ref": true,
+     "reward": 1.0
     }
    }
   },
@@ -3249,7 +2944,7 @@
    ],
    "blocks": 226,
    "id": "t5_mul2x2",
-   "seconds": 448.6,
+   "seconds": 18.2,
    "seeds": {
     "0": {
      "broken_fail": "5/5",
@@ -3322,7 +3017,7 @@
    ],
    "blocks": 181,
    "id": "t5_seq_detector",
-   "seconds": 469.1,
+   "seconds": 29.2,
    "seeds": {
     "0": {
      "broken_fail": "5/5",

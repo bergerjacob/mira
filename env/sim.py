@@ -1,10 +1,18 @@
 """The only module that talks to Nucleation (nucleation 0.12.0). Swap this file to swap the simulator.
 
 Coordinates in/out of `Sim` are absolute task coordinates; internally shifted by the schematic's min corner
-(TickSimulation addresses blocks relative to it; negative coordinates work, so pistons may push past it). `compile_cells` places blocks bottom-up THROUGH the engine
-(`{simulate=true}`: neighbour updates run as if placed by hand) so wire shapes / torch state are resolved.
+(TickSimulation addresses blocks relative to it; negative coordinates work, so pistons may push past it).
+
+Placement (`MIRA_PLACEMENT`, default `canonical`): `compile_cells` builds the world the way a structure / Litematica paste does. Every
+state is written raw, every redstone_wire as a cross (east/north/south/west=side, power=0: the state a hand placement starts from),
+and `Sim` loads the schematic with `TickSettleMode.Placement`, which resolves wire shapes and torch/repeater state after ALL blocks
+are present and keeps the ticks the placement scheduled (baking right after the load would drop them). The result does not depend
+on the order of the blocks, hence not on the rotation / mirroring of a build, and equals what a user's paste produces
+(docs/VALIDITY.md sections 9-10, 13). `MIRA_PLACEMENT=legacy` restores the old procedure: blocks placed one by one through the
+engine (`{simulate=true}`, bottom-up y,x,z) and loaded InWorld; it mis-shapes some dust and picks order-dependent latch states.
 """
 import json
+import os
 from functools import lru_cache
 
 from nucleation import MchprsWorld, Schematic, TickSimulation, TickSettleMode
@@ -37,6 +45,20 @@ def corner_of(cells):
     return tuple(min(p[i] for p in cells) for i in range(3)) if cells else (0, 0, 0)
 
 
+PLACEMENTS = ("canonical", "legacy")
+DEFAULT_PLACEMENT = "canonical"
+CANONICAL_TAG = "mira_env_canonical"      # schematic name of a canonical compile; Sim loads such schematics with Placement
+CROSS = "minecraft:redstone_wire[east=side,north=side,power=0,south=side,west=side]"
+
+
+def placement_mode() -> str:
+    """'canonical' or 'legacy' (env var MIRA_PLACEMENT, read on every call)."""
+    m = os.environ.get("MIRA_PLACEMENT", DEFAULT_PLACEMENT).strip().lower() or DEFAULT_PLACEMENT
+    if m not in PLACEMENTS:
+        raise ValueError(f"MIRA_PLACEMENT must be one of {PLACEMENTS}, got {m!r}")
+    return m
+
+
 def engine_state(state: str) -> str:
     """Drop properties the engine must derive from neighbours (wire shape/power); stated values would be
     taken literally and leave wires disconnected."""
@@ -46,18 +68,25 @@ def engine_state(state: str) -> str:
 
 def compile_cells(cells: dict, nbt=None, engine_place=True):
     """cells: {abs_pos: canonical_state}. Returns (Schematic, corner, place_errors[(pos,state,msg)]); give
-    `corner` to Sim. engine_place=False stores raw states (used for the paste-stability comparison)."""
+    `corner` to Sim. engine_place=True is the build placement (see the module docstring: canonical = raw states with
+    cross dust, loaded with Placement; legacy = per-block engine placement). engine_place=False stores the states
+    exactly as given (used for the paste-stability comparison)."""
+    canonical = engine_place and placement_mode() == "canonical"
     sc = Schematic.create("mira_env")
+    if canonical:
+        sc.set_name(CANONICAL_TAG)
     origin = corner_of(cells)
     errors = []
     for pos in sorted(cells, key=lambda p: (p[1], p[0], p[2])):
         st = cells[pos]
+        if canonical and parse(st)[0] == "minecraft:redstone_wire":
+            st = CROSS
         x, y, z = shift(pos, origin)
         try:
             if nbt and pos in nbt:
                 sc.set_block_with_nbt(x, y, z, st, json.dumps(nbt[pos]))
             else:
-                sc.set_block(x, y, z, engine_state(st) + "{simulate=true}" if engine_place else st)
+                sc.set_block(x, y, z, engine_state(st) + "{simulate=true}" if engine_place and not canonical else st)
         except Exception as e:  # engine refused: store raw so the sim still loads, report it
             errors.append((pos, st, str(e)))
             try:
@@ -67,8 +96,12 @@ def compile_cells(cells: dict, nbt=None, engine_place=True):
     return sc, origin, errors
 
 
-@lru_cache(maxsize=None)
 def simulatable(state: str) -> bool:
+    return _simulatable(state, placement_mode())
+
+
+@lru_cache(maxsize=None)
+def _simulatable(state: str, placement: str) -> bool:
     """Can Nucleation place and load this canonical state at all? (263 of 1286 block ids cannot be loaded by
     TickSimulation, e.g. daylight_detector, sculk sensors, most buttons/plates; some states of crafter/lectern
     cannot even be placed.) Tested in isolation on a stone floor and cached."""
@@ -84,8 +117,17 @@ def simulatable(state: str) -> bool:
         return False
 
 
+def is_canonical(schematic) -> bool:
+    return schematic.name() == CANONICAL_TAG
+
+
 class Sim:
     def __init__(self, schematic, origin, mode="inworld"):
+        """mode applies to raw schematics (`compile_cells(..., engine_place=False)`, loaded from files); a schematic made by a
+        canonical `compile_cells` is always loaded with Placement (InWorld would skip the shape pass on its cross dust)."""
+        if is_canonical(schematic) and mode == "inworld":
+            mode = "placement"
+        self.mode = mode
         self.origin = tuple(origin)
         self.sim = TickSimulation.from_schematic(schematic, MODES[mode], 0, 0, 0, "")
         self._base = None
