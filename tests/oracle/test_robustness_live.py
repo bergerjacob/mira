@@ -42,7 +42,7 @@ def test_job_origin_is_honoured_and_t0_and_is_position_independent():
 
 
 @pytest.mark.skipif(not COUNTER4.exists(), reason="session data not present")
-def test_counter4_session_passes_in_vanilla_as_env_scored_it():
+def test_counter4_session_fails_in_vanilla_as_env_now_scores_it():
     st = json.loads((COUNTER4 / "state.json").read_text())
     c = load_task(st.get("task_ref") or st["task_id"]).contract
     rr = runner.run(c, json.loads((COUNTER4 / "final_blocks.json").read_text()), fast=True)
@@ -50,6 +50,6 @@ def test_counter4_session_passes_in_vanilla_as_env_scored_it():
     (_, ph, ch), = envplan.env_captures(c, rr, world=hw)
     (_, pr_, cr), = envplan.env_captures(c, rr, world=rw)
     th, tr = gametest.capture_batch([("c4h", hw, ph), ("c4r", rw, pr_)])
-    assert envplan.evaluate(c, th, ch) == []
-    assert envplan.evaluate(c, tr, cr)                                  # raw paste: wrong power-on state
+    assert envplan.evaluate(c, th, ch)                                  # env (canonical placement) and vanilla agree: FAIL
+    assert envplan.evaluate(c, tr, cr)                                  # raw paste fails alike
     assert first_divergence(th, run_plan(hw, ph)) is None               # Nucleation == vanilla tick for tick

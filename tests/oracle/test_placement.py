@@ -27,6 +27,12 @@ def repro(extra=((4, 1, 4),)):
     return cells
 
 
+@pytest.fixture(autouse=True)
+def _legacy_env_placement(monkeypatch):
+    """These tests document the LEGACY per-block engine placement (env default is canonical since docs/VALIDITY.md s13)."""
+    monkeypatch.setenv("MIRA_PLACEMENT", "legacy")
+
+
 def settled(compile_fn, cells, mode="inworld"):
     sc, o, _ = compile_fn(cells)
     s = Sim(sc, o, mode)
@@ -97,16 +103,16 @@ def test_canonical_placement_keeps_identity_passes(tid):
     assert _verdicts(tid, 0) == (True, True)
 
 
-def test_canonical_broken_variant_that_works_when_hand_built():
-    """t1_repeater_lock 'replace wire [2,1,2] with stone' leaves an isolated dust at [3,1,2]: as a dot (env) it powers nothing
-    sideways and the variant fails; hand-placed it is a cross (vanilla, verified with the oracle's `place` op) and the
-    'broken' variant works. So canonical placement passing it is correct, the stored variant is not a real negative."""
+def test_stored_repeater_lock_variants_all_fail_under_canonical_placement():
+    """The invalid 'replace wire with stone' variant was replaced (docs/VALIDITY.md s13): every stored variant must now fail."""
     t = load_task("t1_repeater_lock")
-    b = next(b for b in t.broken if b["name"].startswith("replace wire"))
-    cells = {tuple(x[:3]): list(x) for x in t.solution}
-    for e in b["edits"]:
-        cells[tuple(e[1])] = [*e[1], e[2]]
-    blocks = list(cells.values())
-    assert not score(t.contract, runner.run(t.contract, blocks, fast=True)).full_pass
-    with placement.patched_env():
-        assert score(t.contract, runner.run(t.contract, blocks, fast=True)).full_pass
+    assert t.broken
+    for b in t.broken:
+        cells = {tuple(x[:3]): list(x) for x in t.solution}
+        for e in b["edits"]:
+            if e[0] == "remove":
+                cells.pop(tuple(e[1]), None)
+            else:
+                cells[tuple(e[1])] = [*e[1], e[2]]
+        with placement.patched_env():
+            assert not score(t.contract, runner.run(t.contract, list(cells.values()), fast=True)).full_pass, b["name"]

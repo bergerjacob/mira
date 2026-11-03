@@ -189,25 +189,26 @@ def test_put_and_use_unchanged():
 
 # ------------------------------------------------------------------ the counter4 root cause
 @pytest.mark.skipif(not COUNTER4.exists(), reason="session data not present")
-def test_counter4_raw_paste_comes_up_in_another_state():
+def test_counter4_raw_paste_and_handover_agree_under_canonical_placement():
+    """Legacy placement booted the counter at 0 (handover) vs 14 (raw paste). Canonical placement (docs/VALIDITY.md s13) makes
+    the handover world identical to a raw paste, so both come up in the same state (count 14, which is not what the task wants)."""
     c, blocks = _session(COUNTER4)
     pr = runner.prepare(c, blocks)
     hand = {tuple(b[:3]): b[3] for b in envplan.handover_world(c, pr)}
     raw = run_plan(envplan.raw_world(pr), Plan(1, [], [], "place", 20, (0, 0, 0))).initial
     q = {p.name: (envplan.read_out(c, hand, p.name), envplan.read_out(c, raw, p.name)) for p in c.outputs}
-    assert all(h == 0 for h, _ in q.values())                     # env / handover: count 0
-    assert [q[k][1] for k in ("Q0", "Q1", "Q2", "Q3")] == [0, 1, 1, 1]   # raw paste: count 14
+    assert all(h == r for h, r in q.values())
 
 
 @pytest.mark.skipif(not COUNTER4.exists(), reason="session data not present")
-def test_counter4_env_mirrored_replay_passes_on_handover_fails_on_raw():
+def test_counter4_env_mirrored_replay_fails_on_handover_and_raw_alike():
     c, blocks = _session(COUNTER4)
     rr = runner.run(c, blocks, fast=True)
     hw, rw = envplan.handover_world(c, rr.prepared), envplan.raw_world(rr.prepared)
     (_, ph, ch), = envplan.env_captures(c, rr, world=hw)
     (_, pw, cw), = envplan.env_captures(c, rr, world=rw)
-    assert envplan.evaluate(c, run_plan(hw, ph), ch) == []
-    assert envplan.evaluate(c, run_plan(rw, pw), cw)[:1] == ["vec0:model#0@18"]
+    assert envplan.evaluate(c, run_plan(hw, ph), ch)                 # env now agrees with vanilla: this build fails
+    assert envplan.evaluate(c, run_plan(rw, pw), cw)
 
 
 @pytest.mark.skipif(not ADDER2.exists(), reason="session data not present")

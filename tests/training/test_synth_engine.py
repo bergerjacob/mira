@@ -129,7 +129,8 @@ def test_reference_passes_env_with_reward_one(built):
     assert sc.full_pass and sc.reward == pytest.approx(1.0)
 
 
-def test_engine_placement_dust_quirk_still_present():
+def test_engine_placement_dust_quirk_still_present(monkeypatch):
+    monkeypatch.setenv("MIRA_PLACEMENT", "legacy")   # env default is canonical since docs/VALIDITY.md s13
     """Documents the Nucleation quirk the layout spacing works around: a line end next to a lever + a foreign dust two cells
     east and one south -> paste_stable differs. If this starts failing, the CS spacing could be relaxed."""
     from env import blocks as EB

@@ -223,7 +223,8 @@ def test_check_net_detects_a_cut_route():
     assert not chk.ok and "weak/unpowered" in chk.detail
 
 
-def test_paste_diff_reproduces_the_engine_placement_dust_bug():
+def test_paste_diff_reproduces_the_engine_placement_dust_bug(monkeypatch):
+    monkeypatch.setenv("MIRA_PLACEMENT", "legacy")   # env default is canonical since docs/VALIDITY.md s13
     """docs/ROUTER.md: env engine placement mis-shapes a lever stub when dust is placed later at (+2, +2)."""
     w = floor(-3, -3, 5, 5)
     w[(0, 1, -1)] = N("minecraft:lever[face=floor,facing=north]")
