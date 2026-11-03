@@ -404,7 +404,7 @@ class Project:
             out.append("NOTES.md <- template")
         (pdir / "project.json").write_text(json.dumps(meta, indent=1))
         prj = cls(pdir)
-        out.append("next: edit build.py / modules/*.py, then `build`, `overview`, `test`")
+        out.append("next: write spec.json (what works means), edit build.py / modules/*.py, then `build`, `overview`, `test`")
         return prj, "\n".join(out)
 
     # ---------------------------------------------------------------- helpers

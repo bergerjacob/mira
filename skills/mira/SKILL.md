@@ -17,6 +17,13 @@ You edit files with your normal file tools and run the `mira` CLI (`<repo>/bin/m
 7. Hand over: `mira export --litematic OUT` writes the settled at-rest world, then `mira paste-check`. Hand over THIS file, never a raw block list (memory circuits boot differently when placed another way).
 8. Keep `NOTES.md` true (named places as `port:X`, `label:X`, `module:X`, `(x, y, z)`); `mira notes-check` finds stale references.
 
+## Spec basics people trip over
+- Units are game ticks: 20 ticks = 1 s; a repeater step = 2 ticks; a redstone torch inverts after 2 ticks; **a redstone lamp turns off 4 ticks after losing power** (turns on immediately), so a lamp-port timing window must allow it (a "1 s on / 1 s off" blinker reads ~24 on / 16 off).
+- `budgets.total` is the cumulative tick budget across ALL sequences/vectors; long sequences need it raised (e.g. 20000), otherwise `tick budget of N exceeded`.
+- Sequences with `"public": false` form the hidden set (`test` reports public vs other); omit it and everything counts as public. Write both: a few public examples, more hidden ones.
+- `verify-vanilla` replays spec sequences/vectors (sampled for big tables; `--all` for everything).
+- Enable-style clock recipe: a lever powers its mount block; a torch is inverted by its mount; a torch powers the block above it; hold a ring oscillator in reset with a second torch on the lever's mount block.
+
 ## Rules that save hours
 - Your own spec passing is not enough. Independent testing showed a counter that passed its own spec but broke when buttons were pressed faster than its spec assumed. Spec the timing a real user produces (fast presses, simultaneous inputs, idle periods), or write the assumption into NOTES.md as a stated limit.
 - Unsure what the user wants? State your assumption in NOTES.md and proceed; list it in your final message.
