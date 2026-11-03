@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# MIRA CLI shim: works from any directory (project root is derived from this file).
+ROOT="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)"
+exec "$ROOT/.venv/bin/python" "$ROOT/scripts/mira.py" "$@"

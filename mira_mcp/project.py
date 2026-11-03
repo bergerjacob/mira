@@ -114,6 +114,15 @@ were ever a port/label/instance/module in this project (renamed or deleted -> re
 -
 """
 
+AGENTS_TEMPLATE = """# {name}: MIRA project
+
+This directory is a Minecraft contraption as a code project. Work here with your normal file tools plus the `mira` CLI.
+Files: `spec.json` (what "works" means; write it first), `build.py` + `modules/` (Part API program), `NOTES.md` (intent, assumptions, named places), `.mira/` (generated: revisions, reports, exports - do not edit).
+Loop: `mira build` -> `mira overview` -> `mira test` -> `mira trace PORT --seq NAME` -> fix -> `mira spec-check` -> `mira verify-vanilla` -> `mira export --litematic OUT` -> `mira paste-check`.
+Full guide: the `mira` skill (skills/mira/SKILL.md) and docs/PRODUCT.md in the MIRA repo.
+Hand over the exported .litematic, not a raw block list. Spec the timing real users produce; write assumptions in NOTES.md.
+"""
+
 MODULE_TEMPLATE = '''"""{name}: project module. Import from build.py with `from modules.{name} import {name}`.
 Ports registered with p.port(...) show up as `<instance>.<port>` in the build and in module specs."""
 from simulation.builder import *
@@ -385,6 +394,9 @@ class Project:
                 note = "\n".join(lines[:40]) + "\n"
             (pdir / "build.py").write_text(BUILD_TEMPLATE.format(name=name, task_note=note))
             out.append("build.py <- template")
+        if not (pdir / "AGENTS.md").exists():
+            (pdir / "AGENTS.md").write_text(AGENTS_TEMPLATE.format(name=name))
+            out.append("AGENTS.md <- template")
         if not (pdir / "NOTES.md").exists():
             places = "\n".join(f"- port:{p.name} at ({p.pos[0]}, {p.pos[1]}, {p.pos[2]}): {p.doc or p.kind}"
                                for p in (contract.ports if contract else [])[:40]) or "- "
