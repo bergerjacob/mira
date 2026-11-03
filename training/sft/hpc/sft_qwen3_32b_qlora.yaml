@@ -1,0 +1,11 @@
+# QLoRA SFT of a dense 32B model (4-bit NF4 base) on 1-2 nodes; use accelerate_zero2.yaml (bitsandbytes 4-bit is not ZeRO-3 shardable).
+model: Qwen/Qwen3-32B
+data: [data/synth/sft, data/sft/transcripts.jsonl]
+max_len: 16384
+qlora: true
+eval_frac: 0.05
+seed: 0
+lora: {r: 64, alpha: 128, dropout: 0.05}
+train: {epochs: 2, micro_batch: 1, grad_accum: 16, lr: 1.0e-4, warmup_ratio: 0.03, save_steps: 200, eval_steps: 100}
+out: runs/sft_qwen3_32b_qlora
+attn_implementation: flash_attention_2

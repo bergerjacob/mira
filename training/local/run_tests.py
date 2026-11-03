@@ -5,7 +5,8 @@
     /usr/bin/python3 training/local/run_tests.py tests/training_pipeline -m gpu      # include the GPU tests
 
 pytest, pluggy, iniconfig ... are borrowed from the repo .venv (appended to sys.path, so system torch/numpy win).
-`.venv/bin/python -m pytest tests/training_pipeline` also works (the conftest borrows transformers from the user site).
+Under `.venv/bin/python` only the 20 torch-free tests run (the venv's own torch 2.9 does not pair with the user-site
+transformers 5.2); the other 34 skip.
 """
 import os
 import sys

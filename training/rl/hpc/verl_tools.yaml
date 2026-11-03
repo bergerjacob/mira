@@ -1,0 +1,10 @@
+# SKETCH: MIRA harness tools exposed to verl's multi-turn rollout (schemas = harness/agent.build_tools("builder", R)).
+tools:
+  - class_name: training.rl.hpc.verl_mira_tool.MiraTool
+    config: {name: build, type: native}
+  - class_name: training.rl.hpc.verl_mira_tool.MiraTool
+    config: {name: view, type: native}
+  - class_name: training.rl.hpc.verl_mira_tool.MiraTool
+    config: {name: run_spec, type: native}
+  - class_name: training.rl.hpc.verl_mira_tool.MiraTool
+    config: {name: submit, type: native}

@@ -81,5 +81,5 @@ def test_template_messages_converts_arguments_and_drops_provider_keys():
     out = template_messages(msgs)
     assert out[0]["content"] == "" and "reasoning_details" not in out[0]
     assert out[0]["tool_calls"][0]["function"]["arguments"] == {"source": "x"}
-    assert out[0]["tool_calls"][1]["function"]["arguments"] == {"_raw": "not json"}
+    assert out[0]["tool_calls"][1]["function"]["arguments"] == "not json"      # invalid JSON stays the model's raw text
     assert out[1] == {"role": "tool", "content": "ok", "tool_call_id": "c1"}

@@ -125,7 +125,8 @@ def parse_tool_calls(text: str):
 
 def template_messages(messages: List[dict]) -> List[dict]:
     """OpenAI-format history -> what HF chat templates expect: tool-call arguments as dicts (Qwen/Llama templates render
-    dicts with tojson; a JSON string would be double-encoded by some), provider-only keys dropped."""
+    dicts with tojson; a JSON string would be double-encoded by some) unless they are not valid JSON (kept as the raw string,
+    i.e. exactly what the model wrote), provider-only keys dropped."""
     out = []
     for m in messages:
         mm = {"role": m["role"], "content": m.get("content") or ""}
@@ -136,11 +137,12 @@ def template_messages(messages: List[dict]) -> List[dict]:
                 args = fn.get("arguments", "{}")
                 if isinstance(args, str):
                     try:
-                        args = _loads(args)
+                        parsed = _loads(args)
                     except ValueError:
-                        args = {"_raw": args}
-                    if not isinstance(args, dict):
-                        args = {"_raw": args}
+                        parsed = None
+                    # valid JSON -> dict (templates tojson it); invalid (e.g. cut by the token limit) -> the raw text, which
+                    # Qwen templates emit verbatim. A wrapper like {"_raw": ...} was imitated and nested by Qwen3-1.7B.
+                    args = parsed if isinstance(parsed, dict) else args
                 calls.append({"id": c.get("id"), "type": "function", "function": {"name": fn.get("name", ""), "arguments": args}})
             mm["tool_calls"] = calls
         if m["role"] == "tool":
@@ -160,6 +162,81 @@ def render_prompt(tokenizer, messages, tools=None, enable_thinking: bool = False
     return tokenizer.apply_chat_template(template_messages(messages), **kw)
 
 
+# --------------------------------------------------------------------------- sampling
+PREFILL_CHUNK = 512
+
+
+def filter_logits(logits, temperature: float, top_p=None, top_k=None):
+    """Temperature + top-k + nucleus filtering of a [V] or [B, V] float tensor (masked entries = -inf)."""
+    import torch
+    logits = logits / max(float(temperature), 1e-6)
+    if top_k is not None and 0 < int(top_k) < logits.shape[-1]:
+        kth = torch.topk(logits, int(top_k), dim=-1).values[..., -1:]
+        logits = logits.masked_fill(logits < kth, float("-inf"))
+    if top_p is not None and 0 < float(top_p) < 1:
+        srt, idx = torch.sort(logits, descending=True, dim=-1)
+        probs = torch.softmax(srt, dim=-1)
+        drop = probs.cumsum(-1) - probs > float(top_p)        # keep the smallest prefix whose mass reaches top_p
+        srt = srt.masked_fill(drop, float("-inf"))
+        logits = torch.full_like(logits, float("-inf")).scatter(-1, idx, srt)
+    return logits
+
+
+def sample_tokens(model, prompt_ids, max_new: int, eos_ids, temperature: float = 0.0, top_p=None, top_k=None,
+                  max_time=None, chunk: int = PREFILL_CHUNK, prefix_state: Optional[dict] = None):
+    """KV-cached decoding with our own chunked prefill (transformers 5.2's `generate(prefill_chunk_size=...)` corrupts the
+    output: greedy t0_and turned into gibberish, measured 2026-11-02; unchunked prefill of a 14k prompt does not fit 12 GB).
+    `prefix_state` (a dict owned by the caller) keeps the KV cache of the previous call: the next prompt only prefills the
+    tokens after the longest common prefix (a multi-turn episode re-sends the whole history every turn; prefill of 5-10k
+    tokens was 60-90% of a short turn's latency). Returns (completion_ids, stopped_by in eos | length | time).
+    Seeding is the caller's job."""
+    import torch
+    from transformers import DynamicCache
+    dev = next(model.parameters()).device
+    prompt_ids = list(prompt_ids)
+    cache, start = None, 0
+    if prefix_state is not None and prefix_state.get("cache") is not None:
+        old = prefix_state["ids"]
+        n = min(len(old), len(prompt_ids) - 1)        # always prefill at least one token (we need its logits)
+        lcp = 0
+        while lcp < n and old[lcp] == prompt_ids[lcp]:
+            lcp += 1
+        if lcp > 0:
+            cache = prefix_state["cache"]
+            cache.crop(lcp)
+            start = lcp
+        prefix_state["cache"] = None
+    if cache is None:
+        cache = DynamicCache(config=model.config)
+    ids = torch.tensor([prompt_ids], device=dev)
+    eos = set(int(e) for e in eos_ids)
+    out_ids, t0, stopped = [], time.time(), "length"
+    with torch.inference_mode():
+        for s in range(start, ids.shape[1], chunk):
+            out = model(input_ids=ids[:, s:s + chunk], past_key_values=cache, use_cache=True, logits_to_keep=1)
+        logits = out.logits[0, -1].float()
+        for _ in range(max_new):
+            if temperature and temperature > 0:
+                probs = torch.softmax(filter_logits(logits, temperature, top_p, top_k), dim=-1)
+                tok = int(torch.multinomial(probs, 1))
+            else:
+                tok = int(torch.argmax(logits))
+            out_ids.append(tok)
+            if tok in eos:
+                stopped = "eos"
+                break
+            if max_time is not None and time.time() - t0 > max_time:
+                stopped = "time"
+                break
+            out = model(input_ids=torch.tensor([[tok]], device=dev), past_key_values=cache, use_cache=True)
+            logits = out.logits[0, -1].float()
+    if prefix_state is not None:
+        prefix_state["ids"] = prompt_ids + out_ids[:-1]     # the last sampled token was never fed
+        prefix_state["cache"] = cache
+        prefix_state["reused"] = start
+    return out_ids, stopped
+
+
 # --------------------------------------------------------------------------- backend
 class LocalLLM(BaseLLM):
     """HF transformers generation behind the BaseLLM interface (budget path kept: reservations are $0).
@@ -172,7 +249,8 @@ class LocalLLM(BaseLLM):
     def __init__(self, model: str = "qwen3-4b", budget=None, *, tag: str = "", model_obj=None, tokenizer=None, adapter=None,
                  device=None, dtype: str = "bfloat16", enable_thinking: bool = False, max_context: Optional[int] = None,
                  cache_path=None, deadline: Optional[float] = None, stop_file=None, trace: bool = False,
-                 model_name: Optional[str] = None, top_p: Optional[float] = None, top_k: Optional[int] = None):
+                 model_name: Optional[str] = None, top_p: Optional[float] = None, top_k: Optional[int] = None,
+                 prefix_cache: bool = True, prefix_state: Optional[dict] = None):
         from training.local.models import max_context as ctx_of, resolve
         super().__init__(model_name or model, budget, tag)
         self.model_id = resolve(model)
@@ -184,6 +262,10 @@ class LocalLLM(BaseLLM):
         self.trace = trace
         self.traces = []
         self.top_p, self.top_k = top_p, top_k          # None = the model's generation_config (model-card sampling)
+        self.prefix_cache = prefix_cache
+        self.prefix_state = prefix_state if prefix_state is not None else {}
+        self.reused_tokens = 0
+        self.oom_events = 0
         self.gen_seconds = 0.0
         self.generated_tokens = 0
         self.adapter = str(adapter) if adapter else None
@@ -247,32 +329,19 @@ class LocalLLM(BaseLLM):
     def generate_ids(self, prompt_ids: List[int], max_new: int, temperature: float, seed, max_time=None):
         """Raw sampling; returns (completion_ids, stopped_by) with stopped_by in eos | length | time."""
         import torch
-        dev = next(self.hf_model.parameters()).device
-        inp = torch.tensor([prompt_ids], device=dev)
         if seed is not None:
             torch.manual_seed(int(seed))
             if torch.cuda.is_available():
                 torch.cuda.manual_seed_all(int(seed))
-        kw = dict(max_new_tokens=max_new, eos_token_id=self._eos, pad_token_id=self.tokenizer.pad_token_id,
-                  attention_mask=torch.ones_like(inp), prefill_chunk_size=1024)
-        if temperature and temperature > 0:
-            kw.update(do_sample=True, temperature=float(temperature))
-            if self.top_p is not None:
-                kw["top_p"] = float(self.top_p)
-            if self.top_k is not None:
-                kw["top_k"] = int(self.top_k)
-        else:
-            kw.update(do_sample=False, temperature=None, top_p=None, top_k=None)
-        if max_time is not None:
-            kw["max_time"] = max(1.0, float(max_time))
-        with torch.no_grad():
-            out = self.hf_model.generate(inp, **kw)
-        comp = out[0, len(prompt_ids):].tolist()
-        if comp and comp[-1] in self._eos:
-            return comp, "eos"
-        if len(comp) >= max_new:
-            return comp, "length"
-        return comp, ("time" if max_time is not None else "eos")
+        gc = getattr(self.hf_model, "generation_config", None)
+        top_p = self.top_p if self.top_p is not None else getattr(gc, "top_p", None)
+        top_k = self.top_k if self.top_k is not None else getattr(gc, "top_k", None)
+        st = self.prefix_state if self.prefix_cache else None
+        out = sample_tokens(self.hf_model, prompt_ids, max_new, self._eos, temperature=temperature, top_p=top_p, top_k=top_k,
+                            max_time=max_time, prefix_state=st)
+        if st is not None:
+            self.reused_tokens += st.get("reused", 0)
+        return out
 
     def _complete(self, messages, tools, max_tokens, temperature, seed, reasoning) -> Completion:
         thinking = self.enable_thinking or (reasoning in ("low", "medium", "high"))
@@ -294,10 +363,21 @@ class LocalLLM(BaseLLM):
             max_time = None
             if self.deadline is not None:
                 left = self.deadline - time.time()
-                if left < 20:
+                if left < 90:                  # a typical build message takes 30-60 s; do not start one that will be cut
                     self._hit_deadline("no time left for another generation")
                 max_time = left
-            comp_ids, stopped = self.generate_ids(prompt_ids, max_new, temperature, seed, max_time=max_time)
+            try:
+                comp_ids, stopped = self.generate_ids(prompt_ids, max_new, temperature, seed, max_time=max_time)
+            except Exception as e:           # CUDA OOM on a long prompt: a (recorded) empty reply, not a crash
+                if "OutOfMemory" not in type(e).__name__:
+                    raise
+                import torch
+                self.prefix_state.clear()
+                torch.cuda.empty_cache()
+                self.oom_events += 1
+                msg = {"role": "assistant", "content": ""}
+                return Completion(msg, "oom", {"prompt_tokens": n_prompt, "completion_tokens": 0, "reasoning_tokens": 0,
+                                               "cached_tokens": 0}, 0.0, "local", time.time() - t0, self.model_id)
             latency = time.time() - t0
             if stopped == "time":
                 self._hit_deadline("generation cut by the time limit")
@@ -337,12 +417,13 @@ def local_factory(model: str, *, exp_dir=None, deadline: Optional[float] = None,
         from training.local.lora import load_adapter
         load_adapter(hf_model, adapter, merge=True)
     exp_dir = Path(exp_dir) if exp_dir else None
+    shared_prefix = {}            # one KV prefix cache for the whole grid: episodes share the system prompt + tool specs
 
     def factory(cfg, budget):
         llm = LocalLLM(model, budget, tag=cfg.key, model_obj=hf_model, tokenizer=tok, enable_thinking=enable_thinking,
                        max_context=max_context, deadline=deadline, model_name=model_label or cfg.model,
                        cache_path=(exp_dir / "local_cache.jsonl") if exp_dir else None,
-                       stop_file=(exp_dir / "STOP") if exp_dir else None)
+                       stop_file=(exp_dir / "STOP") if exp_dir else None, prefix_state=shared_prefix)
         llm.adapter = str(adapter) if adapter else None     # already merged into the shared model; part of the cache key
         return llm
     factory.load_info = info

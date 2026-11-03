@@ -7,8 +7,8 @@
     # report: harness/analysis.py tables + local metrics (tok/s, generation wall time, context overflows, parse errors)
     /usr/bin/python3 scripts/run_local_baseline.py --model qwen3-4b --report docs/experiments/local_qwen3-4b.md
 
-Defaults: tasks t0,t1, builder arm, R in {0,3}, 1 seed, temperature 0.7, 4096 tokens per call (a longer runaway generation
-would not fit one chunk), harness defaults otherwise (30 turns, 40k completion tokens per episode). Experiment dir:
+Defaults: tasks t0,t1, builder arm, R in {0,3}, 1 seed, temperature 0.7 (top_p/top_k from the model card), 3072 tokens per
+call (~3 min at 15-20 tok/s; a longer runaway generation would not fit one chunk), harness defaults otherwise (30 turns, 40k completion tokens per episode). Experiment dir:
 data/experiments/local_<model>/ (transcripts in the harness format, `local_cache.jsonl` = replay cache).
 """
 import argparse
@@ -36,7 +36,7 @@ def local_metrics(exp_dir: Path) -> str:
         gen_s = sum(t.get("latency", 0) for t in turns)
         comp = sum(t["usage"].get("completion_tokens", 0) for t in turns)
         prompt_max = max((t["usage"].get("prompt_tokens", 0) for t in turns), default=0)
-        overflow = sum(1 for t in turns if t.get("finish_reason") == "context_overflow")
+        overflow = sum(1 for t in turns if t.get("finish_reason") in ("context_overflow", "oom"))
         length = sum(1 for t in turns if t.get("finish_reason") == "length")
         bad_json = sum(1 for t in turns for r in t.get("results", []) if "not valid JSON" in str(r.get("result", "")))
         calls = sum(len(t["assistant"].get("tool_calls") or []) for t in turns)
@@ -49,7 +49,7 @@ def local_metrics(exp_dir: Path) -> str:
         return "\n## Local generation metrics\n\n(no complete runs)\n"
     out = ["", "## Local generation metrics", "",
            "| R | runs | pass | mean reward | turns/ep | completion tok/ep | max prompt tok | gen wall s/ep | tok/s | "
-           "ctx overflow eps | tool calls/ep | replies w/o call | bad-JSON calls | ended_by |",
+           "ctx overflow/OOM eps | tool calls/ep | replies w/o call | bad-JSON calls | ended_by |",
            "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for R in sorted({r["R"] for r in rows}) + ["all"]:
         g = [r for r in rows if R == "all" or r["R"] == R]
@@ -81,9 +81,9 @@ def main(argv=None):
     ap.add_argument("--adapter")
     ap.add_argument("--thinking", action="store_true")
     ap.add_argument("--temperature", type=float, default=0.7)
-    ap.add_argument("--max-tokens", type=int, default=4096)
+    ap.add_argument("--max-tokens", type=int, default=3072)
     ap.add_argument("--max-context", type=int)
-    ap.add_argument("--time-budget-s", type=float, default=450)
+    ap.add_argument("--time-budget-s", type=float, default=480)
     ap.add_argument("--exp-root", default=None)
     ap.add_argument("--report", help="write the markdown report here instead of running")
     a = ap.parse_args(argv)

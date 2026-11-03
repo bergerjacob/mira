@@ -1,0 +1,10 @@
+# LoRA SFT of an 8B model: fits one 80 GB GPU without DeepSpeed (accelerate_ddp.yaml for data parallel).
+model: Qwen/Qwen3-8B
+data: [data/synth/sft, data/sft/transcripts.jsonl]
+max_len: 16384
+eval_frac: 0.05
+seed: 0
+lora: {r: 32, alpha: 64, dropout: 0.05}
+train: {epochs: 2, micro_batch: 1, grad_accum: 8, lr: 2.0e-4, warmup_ratio: 0.03, save_steps: 200, eval_steps: 100}
+out: runs/sft_qwen3_8b_lora
+attn_implementation: flash_attention_2

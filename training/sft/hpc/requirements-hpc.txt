@@ -1,0 +1,14 @@
+# HPC training stack (NOT installed or tested on the dev box; minimum versions from the APIs used, pin after the first cluster run).
+torch>=2.6
+transformers>=4.55
+datasets>=3.0
+accelerate>=1.6
+peft>=0.15
+trl>=0.19                 # SFTConfig(dataset_kwargs={"skip_prepare_dataset": True}), GRPOTrainer
+deepspeed>=0.16
+bitsandbytes>=0.45        # QLoRA only
+flash-attn>=2.7           # optional (attn_implementation=flash_attention_2); fall back to sdpa
+pyyaml
+safetensors
+# RL (multi-turn): verl>=0.5 with sglang or vllm>=0.9 rollout workers; see training/rl/hpc/
+# env scoring needs the repo env deps (requirements.txt: nucleation==0.12.0 ...), CPU only

@@ -21,9 +21,12 @@ MODEL_ALIASES = {
     "gemma3-1b": "google/gemma-3-1b-it",
 }
 TOKENIZER_FOR_TINY = "Qwen/Qwen3-1.7B"
-# prompt+completion tokens that fit the RTX 3060 (12 GB, ~1.1 GB used by the desktop) in bf16 with 1024-token chunked prefill:
-# Qwen3-4B peaks at 10.4 GB with a 14k prompt and OOMs at 18k (measured 2026-11-02); the 1.7B model fits its 32k window.
-MAX_CONTEXT = {"Qwen/Qwen3-4B-Instruct-2507": 15000, "Qwen/Qwen3-1.7B": 32768}
+# prompt+completion tokens that fit the RTX 3060 (12 GB, ~1.1 GB used by the desktop) in bf16 with 512-token chunked prefill
+# (harness/llm_local.sample_tokens): Qwen3-4B peaks at 10.1 GB with a 12k prompt and OOMs at 16k (8.0 GB weights + 147 KB of
+# KV cache per token; measured 2026-11-02 with ~1.1 GB used by the desktop; later the desktop held ~2 GB and an 11k prompt OOMed,
+# so the default is 11500 and an OOM during generation is returned as an empty `oom` reply). The 1.7B model (3.4 GB + 114 KB/token)
+# fits its 32k window.
+MAX_CONTEXT = {"Qwen/Qwen3-4B-Instruct-2507": 11500, "Qwen/Qwen3-1.7B": 32768}
 
 
 def resolve(name: str) -> str:

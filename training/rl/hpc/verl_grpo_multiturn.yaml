@@ -1,0 +1,46 @@
+# SKETCH of a verl GRPO config for multi-turn tool use (keys follow verl's ppo_trainer.yaml; check them against the installed verl).
+# Policy: SFT'd 14B (merged LoRA). Rollout: sglang multi-turn with the MIRA tools (training/rl/hpc/verl_mira_tool.py).
+algorithm:
+  adv_estimator: grpo
+  use_kl_in_reward: false
+data:
+  train_files: data/rl/tasks_10_90.parquet      # one row per task: prompt (system+task messages), extra_info.task_id, extra_info.rounds
+  val_files: data/rl/tasks_val.parquet
+  max_prompt_length: 8192
+  max_response_length: 16384                     # whole multi-turn response incl. tool results
+  train_batch_size: 64
+  return_raw_chat: true
+actor_rollout_ref:
+  model:
+    path: runs/sft_qwen3_14b_lora/merged
+    lora_rank: 64
+    lora_alpha: 128
+    enable_gradient_checkpointing: true
+  actor:
+    optim: {lr: 1.0e-6}
+    ppo_mini_batch_size: 32
+    use_kl_loss: true
+    kl_loss_coef: 0.04
+    kl_loss_type: low_var_kl                     # = k3 estimator, same as training/rl/grpo.py
+    clip_ratio: 0.2
+    loss_agg_mode: token-mean
+    fsdp_config: {param_offload: false, optimizer_offload: false}
+  rollout:
+    name: sglang
+    n: 8                                         # group size
+    temperature: 1.0
+    multi_turn:
+      enable: true
+      max_assistant_turns: 12
+      tool_config_path: training/rl/hpc/verl_tools.yaml
+  ref:
+    fsdp_config: {param_offload: true}
+reward_model:
+  enable: false                                  # reward comes from MiraTool.calc_reward (env score), not a learned RM
+trainer:
+  n_gpus_per_node: 8
+  nnodes: 1
+  total_epochs: 10
+  save_freq: 20
+  test_freq: 10
+  logger: [console]

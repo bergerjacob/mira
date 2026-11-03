@@ -1,0 +1,12 @@
+# LoRA SFT of a dense 14B tool-calling model on one 8xH100 (80 GB) node with ZeRO-3 (accelerate_zero3.yaml).
+# Estimate (not measured): 3k episodes x ~12k tokens x 2 epochs ~ 72M tokens; ~1-2 h on 8xH100.
+model: Qwen/Qwen3-14B            # alternatives: google/gemma-4-31b-it (dense, already strong at tool calls in Experiment 01)
+data: [data/synth/sft, data/sft/transcripts.jsonl]   # synthetic (ours) + rejection-sampled OWN transcripts (see docs/TRAINING.md)
+max_len: 16384                   # 97% of the synthetic episodes fit 16k (system prompt alone ~5k tokens)
+enable_thinking: false
+eval_frac: 0.05
+seed: 0
+lora: {r: 64, alpha: 128, dropout: 0.05}
+train: {epochs: 2, micro_batch: 1, grad_accum: 8, lr: 1.0e-4, warmup_ratio: 0.03, save_steps: 200, eval_steps: 100}
+out: runs/sft_qwen3_14b_lora
+attn_implementation: flash_attention_2

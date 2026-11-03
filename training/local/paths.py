@@ -31,4 +31,6 @@ def setup_paths(offline: bool = True) -> None:
         os.environ.setdefault("HF_HUB_OFFLINE", "1")
         os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
     os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+    os.environ.setdefault("HF_HUB_DISABLE_PROGRESS_BARS", "1")
+    os.environ.setdefault("TRANSFORMERS_VERBOSITY", "error")       # no weight-loading progress bars / generation-flag warnings
     os.environ.setdefault("PYTORCH_ALLOC_CONF", "expandable_segments:True")   # long prompts on the 12 GB card fragment otherwise
