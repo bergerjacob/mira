@@ -233,3 +233,7 @@ no scraped data, no corpus builds. The only non-synthetic material is the `repai
 3. **`env/sim.py` / `env/runner.py`**: consider placing dust after all other blocks (or a second shape-update pass) in `compile_cells`: the
    engine-placement dust-shape quirk above makes correct layouts fail `paste_stable` and constrains every generator's spacing.
 4. **`env/validate_tasks.py`**: an incremental mutant runner (reuse the placed world) would cut the gate (most of the generation time) by several x.
+
+
+## Contamination (added after the round-3 audit)
+Besides `repair_env.jsonl`, the sequential sweeps `sq_counter*` and `sq_shift*` (and their `rp_sq_*` repairs) reproduce benchmark references. Use `scripts/synth_decontaminate.py` and train from `data/synth/sft_clean/` only.

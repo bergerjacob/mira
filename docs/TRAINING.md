@@ -273,3 +273,7 @@ results equal the benchmark's (tested without verl).
 * Multi-turn GRPO is implemented and unit-tested, but has not been run on the GPU.
 * `tests/harness` now exceeds 9 minutes because `test_reference_e2e` covers T3-T5 (other workstreams); the T0-T2 subset passes
   (137 tests in 61 s with the local-backend change).
+
+
+## Decontamination (round-3 audit H1) - read before training
+`data/synth/sft/` contains copies of benchmark references (`sq_counter*` = t3_counter*, `sq_shift*` = t4_shift sweeps, `rpe_*`, reference fixtures). **Train only on `data/synth/sft_clean/`**, produced by `python scripts/synth_decontaminate.py` (translation-invariant solution hash against every env/tasks solution + generator-lineage rules; ledger in `data/synth/contamination_ledger.json`: 109 contaminated synth tasks, 213 of 1,600 episodes dropped). Do not add `training/sft/build_fixture.py reference` episodes of T0/T1 to the SFT mix while T0/T1 are the evaluation. Split any future data by base circuit, not by episode.

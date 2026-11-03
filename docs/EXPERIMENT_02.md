@@ -13,7 +13,7 @@ Eight Sonnet-class subagents (one fresh context each, builder arm, `scripts/run_
 | t4_addsub8 | T4 | library | 1485 | 4 | 4 | 52/52 | 0.988 | 24 min |
 | t4_shift32 | T4 | library | 1004 | 2 | 2 | 6/6 | 0.975 | 18 min |
 
-**All eight pass the hidden checks, most on the first or second `run_spec`.** These include the three tasks (t1_clock, t1_edge_detector, t1_pulse_extender) that neither cheap model ever solved in Experiment 01, and a 16-bit adder and a 32-stage shift register.
+**Correction (round-3 audit, canonical placement; `docs/VALIDITY.md` s13): `t3_counter4` now FAILS in env (and in vanilla on the handover world): its raw program boots the counter at 14 when pasted. T0-T4 is therefore 7/8, not 8/8.** The rows below were scored under the legacy placement. All eight passed the hidden checks then, most on the first or second `run_spec`. These include the three tasks (t1_clock, t1_edge_detector, t1_pulse_extender) that neither cheap model ever solved in Experiment 01, and a 16-bit adder and a 32-stage shift register.
 
 ## Integrity checks
 - Tool-call audit of all eight agent transcripts: only `bash` through the sandbox wrapper (one agent also sent a progress message); no reads of `env/tasks`, `lib`, `tests`, `data`, git or the harness. (`run_baseline_sandboxed.py audit` prints heuristic false positives because the wrapper path contains `data/sandbox`; the tool-call parse above is the real check.) The `lib` variant agents read only `/mira/lib` and `docs/LIBRARY.md`, as intended.
