@@ -34,12 +34,13 @@ class PortDef:
     dir: str              # in | out
     need: int = 1         # min input strength (inputs)
     level: int = 15       # output strength
+    entry: str = "any"    # 'face': the router must join this input dust through its face (lib meta, router.entry_rule)
 
 
 # lib cells whose output strength follows an input strength (measured, docs/ROUTER.md): mux2's comparators pass the A/B
 # strength through to Y (A at 9 -> Y at 9). Their data inputs must arrive strong, and Y is only as strong as that.
-ANALOG = {"mux2": {"Y": ("A", "B")}}
-ANALOG_NEED = 13
+ANALOG = R.ANALOG
+ANALOG_NEED = R.ANALOG_NEED
 
 
 class Module:
@@ -57,7 +58,8 @@ class Module:
         exec(compile(L.prelude([name]), f"lib/{name}.py", "exec"), ns)
         meta = L.meta(name)
         needs = meta.get("verified", {}).get("min_in_strength_per_port", {})
-        ports = {k: PortDef(k, tuple(v["pos"]), v.get("face"), "in" if v["dir"] == "in" else "out", int(needs.get(k, 1)))
+        ports = {k: PortDef(k, tuple(v["pos"]), v.get("face"), "in" if v["dir"] == "in" else "out", int(needs.get(k, 1)),
+                         entry=v.get("entry", "any"))
                  for k, v in meta["ports"].items()}
         for out, ins in ANALOG.get(name, {}).items():
             ports[out].level = ANALOG_NEED
@@ -76,7 +78,8 @@ class Module:
         ports = {}
         for k, (pos, kind, face) in p._ports.items():
             pn = k.split(".", 1)[1]
-            ports[pn] = PortDef(pn, tuple(pos), face, "out" if kind == "out" else "in", int((needs or {}).get(pn, 1)))
+            ports[pn] = PortDef(pn, tuple(pos), face, "out" if kind == "out" else "in", int((needs or {}).get(pn, 1)),
+                                entry=R.entry_rule(p.get, tuple(pos), face) if kind != "out" else "any")
         return cls(name or part_def.name, part_def, ports, spec, params)
 
     @property
@@ -249,7 +252,8 @@ class Design:
         if role == "sink" and pd.dir != "in":
             raise ValueError(f"{ref} is an output port; sinks are input ports or design outputs")
         pos, face = inst.ports[pname]
-        return R.Pin(pos, face, "dust", need=pd.need, level=pd.level, name=ref)
+        return R.Pin(pos, face, "dust", need=pd.need, level=pd.level, name=ref, entry=pd.entry if pd.dir == "in" else "any",
+                     why=inst.module.name + "." + pname)
 
     def build(self, order: str = "declared", passes: int = 3, repair: bool = True) -> DesignBuild:
         """Place the instances and route every net. order: 'declared' or 'short' (shortest nets first). A net that fails

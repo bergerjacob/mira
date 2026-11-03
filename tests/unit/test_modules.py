@@ -211,3 +211,38 @@ def test_t4_design_reads_the_task_contract():
 def test_random_bench_routed_nets_all_pass_in_the_simulator():
     out = M.bench_random(12, seed=2, size=(24, 8, 24))
     assert out["routed"] >= 8 and out["checked_ok"] == out["routed"] and out["paste_stable"]
+
+
+# --------------------------------------------------------------------------- port entry rules (EXPERIMENT_04)
+def test_lib_module_ports_carry_the_entry_rule_and_the_design_pin_uses_it():
+    and2 = M.Module.lib("and2")
+    assert and2.ports["A"].entry == "face" and and2.ports["Y"].entry == "any"
+    d = M.Design(box=(-5, 0, -5, 40, 6, 20), floor_y=0)
+    d.add("g", and2, at=(10, 0, 5))
+    d.input("I", (0, 1, 5))
+    d._place()
+    pin = d.pin("g.A", "sink")
+    assert pin.entry == "face" and pin.why == "and2.A"
+    assert d.pin("g.Y", "source").entry == "any"
+
+
+def test_from_part_computes_the_entry_rule_from_the_cells():
+    from simulation.builder import part, solid, wire, repeater, EAST, WEST
+
+    @part
+    def front(p, floor=False):
+        p.set((0, 1, 0), wire())
+        p.set((1, 1, 0), repeater(flow=EAST, delay=1))
+        p.set((3, 1, 0), wire())
+        p.set((4, 1, 0), solid())
+        p.port("A", (0, 1, 0), kind="in", face=WEST)
+        p.port("B", (3, 1, 0), kind="in", face=WEST)
+    m = M.Module.from_part(front)
+    assert m.ports["A"].entry == "any" and m.ports["B"].entry == "face"
+
+
+def test_mux2_module_is_still_declared_analog_with_any_entry():
+    mux = M.Module.lib("mux2")
+    assert mux.ports["A"].need == R.ANALOG_NEED and mux.ports["Y"].level == R.ANALOG_NEED
+    assert {p.entry for p in mux.ports.values()} == {"any"}
+    assert M.ANALOG is R.ANALOG

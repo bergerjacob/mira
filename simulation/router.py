@@ -123,6 +123,64 @@ def dir_name(d) -> str:
     raise ValueError(f"not a horizontal direction: {d}")
 
 
+# lib cells whose output strength follows an input strength (measured, docs/ROUTER.md): mux2's comparators pass the A/B
+# strength through to Y (A at 9 -> Y at 9). Their data inputs must arrive strong, and Y is only as strong as that.
+ANALOG = {"mux2": {"Y": ("A", "B")}}
+ANALOG_NEED = 13
+
+# blocks a redstone wire connects to from the side whatever their orientation (vanilla RedStoneWireBlock.shouldConnectTo:
+# isSignalSource); repeaters connect along their axis, observers at their back
+_WIRE_SOURCES = ("redstone_torch", "redstone_wall_torch", "lever", "_button", "redstone_block", "_pressure_plate", "comparator",
+                 "daylight_detector", "target", "tripwire_hook", "lightning_rod", "sculk_sensor", "detector_rail", "lectern",
+                 "trapped_chest")
+
+
+def wire_connects(state: Optional[str], d: Tuple[int, int, int]) -> bool:
+    """Does dust connect sideways to the neighbour `state` lying in direction d (horizontal unit vector) from the dust?"""
+    if state is None:
+        return False
+    n, p = name_of(state), props_of(state)
+    if n == "redstone_wire":
+        return True
+    f = p.get("facing")
+    if n == "repeater":
+        return f in DIRS and DIRS[f][0] * d[0] + DIRS[f][2] * d[2] != 0       # same axis
+    if n == "observer":
+        return f in DIRS and DIRS[f] == d
+    return any(n == k or n.endswith(k) for k in _WIRE_SOURCES)
+
+
+def entry_rule(get, pos: Pos, face: Optional[str]) -> str:
+    """How may a net join the dust port at `pos` (route arrives from the `face` side)? get(p) -> state or None.
+    'face': the port dust only does its job while its single connection is the face side. Joined from a side the dust bends and
+    stops powering the block it points at (dust powers the block it points to and the block under it, nothing else), so a gate whose
+    first element is a plain block fed by the port (`and2`, `not_gate`) is silently dead. 'any': a side join only adds a connection
+    because (a) the neighbour inside the part connects to dust (dust, aligned repeater, comparator, lever, redstone torch, an
+    observer's back), or (b) a repeater/comparator reads the block under the dust (dust always powers that block), as in
+    `full_adder.A/CIN`, `xor2.B`, `half_adder.B`. Checked against the simulator for every lib part (docs/ROUTER.md)."""
+    if face not in DIRS:
+        return "any"
+    inward = DIRS[OPP[face]]
+    for dy in (0, 1, -1):
+        q = add(add(pos, inward), (0, dy, 0))
+        st = get(q)
+        if dy == 0:
+            if wire_connects(st, inward):
+                return "any"
+        elif is_dust(st):
+            return "any"
+    under = add(pos, (0, -1, 0))
+    ust = get(under)
+    if ust is not None and holds(ust):                   # a block under the dust is powered by it
+        for d in DIRS.values():
+            nb = get(add(under, d))
+            if nb is not None and name_of(nb) in ("repeater", "comparator"):
+                f = props_of(nb).get("facing")
+                if f in DIRS and DIRS[f] == (-d[0], 0, -d[2]):      # its input side faces the block under the dust
+                    return "any"
+    return "face"
+
+
 class RouteError(Exception):
     pass
 
@@ -140,6 +198,9 @@ class Pin:
     level: int = 15
     name: str = ""
     any_side: bool = False     # also allow the other horizontal sides (set by the router's fallback for dust pins)
+    entry: str = "any"         # 'face': a dead gate unless the route arrives through `face` (see entry_rule); never relaxed
+                               # to a side join unless the caller allows it
+    why: str = ""              # where need / entry came from (error messages)
 
     def __post_init__(self):
         self.pos = tuple(int(v) for v in self.pos)
@@ -147,6 +208,8 @@ class Pin:
             raise RouteError(f"pin face must be one of {sorted(DIRS)} or None, got {self.face!r}")
         if self.kind not in ("dust", "device", "pad"):
             raise RouteError(f"pin kind must be dust/device/pad, got {self.kind!r}")
+        if self.entry not in ("any", "face"):
+            raise RouteError(f"pin entry must be 'any' or 'face', got {self.entry!r}")
 
     def label(self) -> str:
         return self.name or str(self.pos)
@@ -173,6 +236,11 @@ class Net:
     delay: Dict[str, int] = field(default_factory=dict)     # repeater ticks from the source to each sink
     explored: int = 0
     note: str = ""
+    restore: bool = False
+    allow_side: bool = False
+    side_joined: List[str] = field(default_factory=list)    # pin labels joined from a side other than their face
+    warnings: List[str] = field(default_factory=list)       # risky: a dead gate is likely (build WARNING)
+    infos: List[str] = field(default_factory=list)          # harmless side joins (listed by `nets`, one summary warning)
 
     @property
     def repeaters(self) -> List[Pos]:
@@ -442,12 +510,17 @@ class Router:
         return out[::-1]   # [(cell, support_kind, d_in, clear_cell)]
 
     # -- public
-    def route(self, name: str, src: Pin, sinks: List[Pin], strict: bool = False) -> Net:
+    def route(self, name: str, src: Pin, sinks: List[Pin], strict: bool = False, restore: bool = False,
+              allow_side: bool = False) -> Net:
         """Route one net; on success the cells are committed to the session. Returns the Net (ok, reason, cells, ...).
-        strict=True raises RouteError instead of returning an unrouted net."""
+        strict=True raises RouteError instead of returning an unrouted net. restore=True lets a repeater stand on the last
+        cell before a sink (a restorer) when the strength would otherwise be too low. A dust pin with entry='face' is
+        joined only through its face unless allow_side=True."""
         if name in self.nets:
-            raise RouteError(f"net {name!r} already routed")
-        net = Net(name, src, list(sinks))
+            if self.nets[name].ok:
+                raise RouteError(f"net {name!r} already routed")
+            del self.nets[name]
+        net = Net(name, src, list(sinks), restore=restore, allow_side=allow_side)
         self._current = name
         try:
             cap = self.max_states
@@ -456,33 +529,249 @@ class Router:
                 self._route(net)
             except RouteError as e1:
                 self.max_states = cap
-                # fallback: a dust port may also be joined from another side (its face is only the preferred side)
+                # fallback: a dust port may also be joined from another side (its face is only the preferred side), except
+                # ports whose dust would then no longer power what it feeds (entry='face') unless the caller allows it
                 pins = [src] + list(sinks)
-                if not any(p.kind == "dust" and p.face and not p.any_side for p in pins):
+                movable = [p for p in pins if p.kind == "dust" and p.face and not p.any_side and (p.entry != "face" or allow_side)]
+                if not movable:
+                    stuck = [p.label() for p in pins if p.kind == "dust" and p.face and p.entry == "face"]
+                    if stuck:
+                        raise RouteError(f"{e1}; port{'s' if len(stuck) > 1 else ''} {', '.join(stuck)} must be entered through "
+                                         f"{'its' if len(stuck) == 1 else 'their'} face (the dust feeds a non-conducting block: a side join "
+                                         "leaves the gate dead); free the cells in front of it, or pass allow_side=True") from None
                     raise
-                relax = [replace(p, any_side=True) if p.kind == "dust" else p for p in pins]
-                net = Net(name, relax[0], relax[1:])
+                relax = [replace(p, any_side=True) if p in movable else p for p in pins]
+                net = Net(name, relax[0], relax[1:], restore=restore, allow_side=allow_side)
                 try:
                     self._route(net)
                 except RouteError as e2:
                     raise RouteError(f"{e1} (other sides of the dust ports: {e2})") from None
-                net.note = "a dust port was joined from a side other than its face"
             finally:
                 self.max_states = cap
             net.ok = True
+            self._side_report(net)
+            if net.side_joined:
+                net.note = "a dust port was joined from a side other than its face: " + ", ".join(net.side_joined)
         except RouteError as e:
-            net.ok, net.reason, net.cells, net.parent, net.air = False, str(e), {}, {}, set()
+            net.ok, net.reason, net.cells, net.parent, net.air = False, f"net {name!r}: {e}", {}, {}, set()
             if strict:
-                raise
+                raise RouteError(net.reason) from None
         if net.ok:
-            for p, s in net.cells.items():
-                self.world[p] = s
-                self.owner[p] = name
-                self._note_hot(p, s)
-            self.air |= net.air
-            self._release(name)
+            self._commit(name, net)
         self.nets[name] = net
         return net
+
+    def _commit(self, name: str, net: Net):
+        for p, s in net.cells.items():
+            self.world[p] = s
+            self.owner[p] = name
+            self._note_hot(p, s)
+        self.air |= net.air
+        self._release(name)
+
+    def _side_report(self, net: Net):
+        """Which dust ports with a face did the route join from another side? -> net.side_joined, net.warnings."""
+        roots = [c for c, par in net.parent.items() if par is None]
+        for pin in [net.src] + net.sinks:
+            if pin.kind != "dust" or not pin.face:
+                continue
+            front = add(pin.pos, DIRS[pin.face])
+            adj = [c for c in net.parent if c != pin.pos and abs(c[0] - pin.pos[0]) + abs(c[2] - pin.pos[2]) == 1 and c[1] == pin.pos[1]]
+            if pin is net.src:
+                adj = [c for c in adj if c in roots] or adj
+            if adj and front not in adj:
+                side = next((k for k, v in DIRS.items() if add(pin.pos, v) == adj[0]), "?")
+                net.side_joined.append(pin.label())
+                if pin.entry == "face":
+                    net.warnings.append(f"net {net.name!r}: port {pin.label()} joined from the {side} side but its face is {pin.face}: "
+                                        f"its dust feeds a non-conducting block, so the gate is probably dead (allow_side=True was set)")
+                else:
+                    net.infos.append(f"port {pin.label()} joined from the {side} side (face {pin.face}); harmless, "
+                                     "its inward neighbour connects to the dust")
+
+    # -- several nets at once
+    def _constraint(self, src: Pin, sinks: List[Pin]) -> int:
+        """Free attach cells at the tightest pin of a net (0-4; a one-sided dust port counts its face only)."""
+        best = 4
+        for pin in [src] + list(sinks):
+            if pin.kind == "pad":
+                continue
+            sides = [pin.face] if (pin.face and (pin.entry == "face" or not pin.any_side) and pin.kind == "dust") else list(DIRS)
+            best = min(best, sum(1 for sd in sides if self.free(add(pin.pos, DIRS[sd]))))
+        return best
+
+    def order_nets(self, specs, order: str = "auto"):
+        """specs: [(name, src, sinks, opts)] -> the same list in routing order. 'given' keeps it; 'short' = least total
+        Manhattan length first; 'constrained' = fewest free attach cells at a pin first; 'auto' = nets with a pin that has
+        at most one free attach cell first, then shortest first (trees last among equals)."""
+        if order not in ("auto", "short", "constrained", "given"):
+            raise RouteError(f"order must be auto, short, constrained or given, got {order!r}")
+        if order == "given":
+            return list(specs)
+
+        def length(sp):
+            return sum(_dist(sp[1].pos, k.pos) for k in sp[2])
+
+        def key(sp):
+            c = self._constraint(sp[1], sp[2])
+            if order == "short":
+                return (length(sp), len(sp[2]))
+            if order == "constrained":
+                return (c, length(sp))
+            return (0 if c <= 1 else 1, length(sp) + 6 * (len(sp[2]) - 1))
+        return sorted(specs, key=key)
+
+    def route_all(self, specs, order: str = "auto", rounds: int = 2, max_retries: int = 16) -> List[Net]:
+        """Route a batch of nets: specs = [(name, src, sinks, opts)], opts = {"restore": bool, "allow_side": bool}.
+        Pins of nets still pending are announced to the search (soft keep-out) so early nets do not wall them in. Nets that
+        fail are retried after ripping up the nets of this batch next to their pins (the nearest blocker alone, then the
+        two or three nearest), and the batch keeps the best state; the others are re-routed behind them. Returns the Nets in
+        the order of `specs`."""
+        specs = list(specs)
+        names = [sp[0] for sp in specs]
+        if len(set(names)) != len(names):
+            raise RouteError("route_all: duplicate net names")
+        by_name = {sp[0]: sp for sp in specs}
+        self._batch_specs = specs
+        for sp in specs:
+            self.reserve_pins(sp[0], [sp[1]] + list(sp[2]), 1.0, 2)
+        for sp in self.order_nets(specs, order):
+            self.route(sp[0], sp[1], sp[2], strict=False, **sp[3])
+        retries = 0
+        for _ in range(rounds):
+            failed = [n for n in names if not self.nets[n].ok]
+            if not failed or retries >= max_retries:
+                break
+            gained = False
+            for f in failed:
+                if retries >= max_retries:
+                    break
+                for k in (1, 2, 3):
+                    retries += 1
+                    if self._ripup_retry(by_name[f], names, k):
+                        gained = True
+                        break
+                    if retries >= max_retries:
+                        break
+            if not gained:
+                break
+        for n in names:
+            self._release(n)
+        return [self.nets[n] for n in names]
+
+    def blockers(self, pins, batch=None, radius: int = 2) -> List[str]:
+        """Nets (of `batch`, default all) owning route cells within `radius` of the pins, nearest first."""
+        score: Dict[str, float] = {}
+        for pin in pins:
+            for p, o in self.owner.items():
+                if (batch is not None and o not in batch) or o not in self.nets or not self.nets[o].ok:
+                    continue
+                d = max(abs(p[0] - pin.pos[0]), abs(p[2] - pin.pos[2]))
+                if d <= radius and abs(p[1] - pin.pos[1]) <= 2:
+                    score[o] = score.get(o, 0.0) + 1.0 / (1 + d)
+        return [n for n, _ in sorted(score.items(), key=lambda kv: -kv[1])]
+
+    def _ripup_retry(self, sp, batch, k: int) -> bool:
+        name, src, sinks, opts = sp
+        bl = self.blockers([src] + list(sinks), set(batch) - {name})[:k]
+        if not bl:
+            return False
+        saved = {n: self.nets[n] for n in bl}
+        failed_old = self.nets.get(name)
+        cap, first = self.max_states, self.first_try_states
+        self.max_states, self.first_try_states = min(cap, 80_000), min(first, 30_000)   # retries must stay cheap
+        try:
+            return self._ripup_try(sp, bl, saved, failed_old)
+        finally:
+            self.max_states, self.first_try_states = cap, first
+
+    def _ripup_try(self, sp, bl, saved, failed_old) -> bool:
+        name = sp[0]
+        for n in bl:
+            self.unroute(n)
+        self._release(name)
+        done: List[str] = []
+        ok = True
+        for n in [name] + bl:       # the net that failed goes first now; the blockers route around it
+            spec = sp if n == name else next(x for x in self._batch_specs if x[0] == n)
+            self.nets.pop(n, None)
+            net = self.route(n, spec[1], spec[2], strict=False, **spec[3])
+            if not net.ok:
+                ok = False
+                break
+            done.append(n)
+        if ok:
+            return True
+        for n in done:
+            self.unroute(n)
+        for n, old in saved.items():
+            self.nets.pop(n, None)
+            self.nets[n] = old
+            for p, st in old.cells.items():
+                self.world[p] = st
+                self.owner[p] = n
+                self._note_hot(p, st)
+            self.air |= old.air
+        if failed_old is not None:
+            self.nets[name] = failed_old
+        return False
+
+    def explain(self, pins, reason: str = "", batch=None, rx: int = 9, rz: int = 5) -> str:
+        """Why a net cannot get through: who holds the cells next to its pins + a small map of the first pin named in
+        `reason` (else the last pin)."""
+        pin = next((p for p in pins if p.label() and p.label() in reason), pins[-1])
+        held = []
+        for sd in ([pin.face] if pin.face else list(DIRS)):
+            g = add(pin.pos, DIRS[sd])
+            o = self.owner.get(g)
+            st = self.state(g)
+            if o:
+                held.append(f"{sd} cell {g}: net {o!r}")
+            elif st:
+                held.append(f"{sd} cell {g}: {name_of(st)}")
+            elif g in self.air:
+                held.append(f"{sd} cell {g}: reserved air (a staircase or pad)")
+            elif not self.writable(g):
+                held.append(f"{sd} cell {g}: outside the box / keep_clear")
+            else:
+                near = {self.owner[q] for q in [add(g, d) for d in ALL6] + [add(add(g, d), (0, dy, 0)) for d in DIRS.values() for dy in (1, -1)]
+                        if q in self.owner and q != pin.pos}
+                if near:
+                    held.append(f"{sd} cell {g}: free, but dust there would touch net(s) {', '.join(repr(n) for n in sorted(near))}")
+        bl = self.blockers(pins, batch)
+        lines = []
+        if held:
+            lines.append(f"next to {pin.label()}: " + "; ".join(held))
+        if bl:
+            lines.append("blocking nets nearby: " + ", ".join(repr(n) for n in bl[:6]))
+        lines += self.area_map(pin.pos, rx, rz)
+        return "\n".join(lines)
+
+    def area_map(self, center: Pos, rx: int = 9, rz: int = 5) -> List[str]:
+        """ASCII map at the level of `center` (x right, z down): @ pin, letters = nets, # other blocks, ~ not writable / reserved."""
+        y = center[1]
+        letters: Dict[str, str] = {}
+        rows = []
+        for z in range(center[2] - rz, center[2] + rz + 1):
+            row = []
+            for x in range(center[0] - rx, center[0] + rx + 1):
+                p = (x, y, z)
+                o = self.owner.get(p)
+                if p == tuple(center):
+                    row.append("@")
+                elif o:
+                    ch = letters.setdefault(o, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"[len(letters) % 52])
+                    row.append(ch)
+                elif self.state(p):
+                    row.append("#")
+                elif p in self.air or not self.writable(p):
+                    row.append("~")
+                else:
+                    row.append(".")
+            rows.append("".join(row))
+        head = f"map y={y}, x {center[0] - rx}..{center[0] + rx}, z {center[2] - rz}..{center[2] + rz} (@ = pin)"
+        leg = "  ".join(f"{c}={n}" for n, c in letters.items())
+        return [head] + ["  " + r for r in rows] + [f"  legend: {leg + '  ' if leg else ''}#=block ~=reserved/outside/keep_clear .=free"]
 
     def unroute(self, name: str) -> Net:
         """Rip up a routed net: its cells leave the world, its staircase air cells are released."""
@@ -529,7 +818,7 @@ class Router:
             for name, near in hit.items():
                 old = self.unroute(name)
                 self.ban |= near
-                new = self.route(name, old.src, old.sinks)
+                new = self.route(name, old.src, old.sinks, restore=old.restore, allow_side=old.allow_side)
                 self.ban -= near
                 if not new.ok:      # keep the old route rather than losing the net
                     self.unroute(name)
@@ -673,9 +962,21 @@ class Router:
             depth[c] = 0 if tree[c] is None else depth[tree[c]] + 1
         s0 = 15 if src.kind in ("device", "pad") else src.level - 1
 
+        leaf_sink = {}
+        if net.restore:    # a restorer on the last cell: the repeater faces the sink pin and powers it with a fresh 15
+            at = {}
+            for sk in net.sinks:
+                at.setdefault(net.attach[sk.label()], []).append(sk)
+            leaf_sink = {c: v[0] for c, v in at.items() if len(v) == 1 and not kids[c]}
+
         def eligible(c):
             par = tree[c]
             ks = kids[c]
+            if c in leaf_sink:
+                if par is None and src.kind != "dust":
+                    return False
+                a, b = par if par is not None else src.pos, leaf_sink[c].pos
+                return a[1] == c[1] == b[1] and _sub(c, a) == _sub(b, c)
             if len(ks) != 1 or c in need:
                 return False
             a = par if par is not None else src.pos
@@ -707,7 +1008,8 @@ class Router:
                 too_weak = (r + k - 1 > 15) if k is not None else (r > s0 - depth[c])
                 if too_weak:
                     if max([req[ch] for ch in kids[c]] + [0]) > 15:
-                        raise RouteError(f"signal too weak after the repeater at {c}: no straight flat cell for another repeater")
+                        raise RouteError(f"signal too weak after the repeater at {c}: no straight flat cell for another repeater"
+                                         + ("" if net.restore else " (restore=True also allows a repeater on the last cell before a sink)"))
                     reps.add(c)
                     r = 1
             req[c] = r
@@ -732,11 +1034,13 @@ class Router:
         net.strength = {c: (15 if c in reps else v) for c, v in val.items()}
         for s in net.sinks:
             c = net.attach[s.label()]
-            lv = val[c] - 1 if s.kind == "dust" else val[c]
+            lv = min(15, val[c] - 1 if s.kind == "dust" else val[c])
             net.sink_level[s.label()] = lv
             net.delay[s.label()] = delay[c]
             if lv < (s.need if s.kind == "dust" else 1):
-                raise RouteError(f"sink {s.label()} would get strength {lv} < {s.need}: no straight flat cell left for a repeater")
+                raise RouteError(f"sink {s.label()} would get strength {lv} < {s.need} ({s.why or 'need'}): no straight flat cell left for a "
+                                 "repeater" + ("" if net.restore else " (restore=True also allows a repeater on the last cell before a sink; "
+                                               "need= overrides the minimum)"))
 
     # -- results
     def blocks(self, names=None) -> Dict[Pos, str]:
@@ -798,39 +1102,80 @@ def lib_need(part_name: str, port: str) -> int:
 _SESSIONS: "weakref.WeakKeyDictionary" = weakref.WeakKeyDictionary()
 
 
-def _part_pin(part, spec, role: str) -> Pin:
-    """'inst.PORT' (a registered port), (x,y,z), ((x,y,z), face) or a Pin -> Pin."""
+def _port_ref(part, name: str):
+    """'inst.PORT' -> (lib or wrapper part name, its port) from the builder's port table, else from the instance table."""
+    info = part._pinfo.get(name)
+    if info:
+        return info
+    if "." in name:
+        inst, port = name.rsplit(".", 1)
+        pn = next((i["part"] for i in part._insts if i["name"] == inst or i["name"].endswith("/" + inst)), None)
+        if pn:
+            return pn, port
+    return None
+
+
+def _analog_restored(part, name: str) -> bool:
+    """Is every lib output of the instance that owns port `name` a non-analog one (a restorer behind the mux)?"""
+    inst = name.rsplit(".", 1)[0]
+    outs = [k for k, (_, kind, _f) in part._ports.items()
+            if kind == "out" and k.startswith(inst + ".") and "." not in k[len(inst) + 1:]]
+    refs = [part._pinfo.get(k) for k in outs]
+    return bool(refs) and all(r and lib_meta(r[0]) is not None and r[0] not in ANALOG for r in refs)
+
+
+def _part_pin(part, spec, role: str, need: Optional[int] = None) -> Pin:
+    """'inst.PORT' (a registered port), (x,y,z), ((x,y,z), face) or a Pin -> Pin. Sinks get their minimum strength and
+    entry rule from the lib port they stand for (wrapped parts: the inner port on the same cell)."""
     if isinstance(spec, Pin):
+        if need is not None:
+            spec.need = need
         return spec
+    ref, label = None, None
     if isinstance(spec, str):
         ports = part._ports
         if spec not in ports:
             raise RouteError(f"{role}: no port {spec!r}; ports: {', '.join(sorted(ports)) or 'none'}")
         pos, kind, face = ports[spec]
-        need = 1
-        if role == "sink" and "." in spec:
-            inst, port = spec.rsplit(".", 1)
-            pn = next((i["part"] for i in part._insts if i["name"] == inst or i["name"].endswith("/" + inst)), None)
-            need = lib_need(pn, port) if pn else 1
-        st = part.get(pos)
-        return Pin(tuple(pos), face, "dust" if is_dust(st) else "device", need=need, name=spec)
-    if len(spec) == 2 and isinstance(spec[1], str):
-        pos, face = spec
+        ref, label = _port_ref(part, spec), spec
     else:
-        pos, face = spec, None
-    pos = tuple(int(v) for v in pos)
+        if len(spec) == 2 and isinstance(spec[1], str):
+            pos, face = spec
+        else:
+            pos, face = spec, None
+        pos = tuple(int(v) for v in pos)
+        hit = next((k for k, v in part._ports.items() if tuple(v[0]) == pos and k in part._pinfo), None)
+        if hit:     # a coordinate that is a registered lib port: same rules as by name
+            ref, label = _port_ref(part, hit), hit
+            face = face or part._ports[hit][2]
+    pos = tuple(pos)
     st = part.get(pos)
-    return Pin(pos, face, "dust" if is_dust(st) else "device" if st is not None else "pad")
+    kind = "dust" if is_dust(st) else "device" if st is not None else "pad"
+    pin = Pin(pos, face, kind, name=label if isinstance(spec, str) else "")
+    if kind == "dust" and role == "sink":
+        meta = lib_meta(ref[0]) if ref else None
+        mp = (meta or {}).get("ports", {}).get(ref[1]) if ref else None
+        if mp is not None:
+            pin.need = lib_need(*ref)
+            pin.entry = mp.get("entry") or entry_rule(part.get, pos, face)
+            pin.why = f"{ref[0]}.{ref[1]}"
+            if ref[0] in ANALOG and any(ref[1] in ins for ins in ANALOG[ref[0]].values()) and label \
+                    and not _analog_restored(part, label):
+                pin.need = max(pin.need, ANALOG_NEED)
+                pin.why += f" (analog input: its output follows it, so {ANALOG_NEED}+)"
+        else:
+            pin.entry = entry_rule(part.get, pos, face)
+    elif kind == "dust" and role == "source" and ref and ref[0] in ANALOG and ref[1] in ANALOG[ref[0]]:
+        if lib_meta(ref[0]) is not None:
+            pin.level = ANALOG_NEED
+    if need is not None:
+        pin.need = need
+    return pin
 
 
-def part_route(part, src, sinks, name=None, need=None, box=None, avoid=None, keep_clear=None, floor_y=None,
-               strict=True, **kw) -> Net:
-    """Route on a builder Part (the cells already placed are the obstacles; earlier routes and their staircase air cells
-    are remembered per Part). src / sinks: 'inst.PORT', (x,y,z) or ((x,y,z), face). Raises RouteError (a BuilderError
-    in the sandbox) when the net cannot be routed (strict=True)."""
-    if not isinstance(sinks, (list, tuple)) or (len(sinks) == 3 and all(isinstance(v, int) for v in sinks)) \
-            or (len(sinks) == 2 and isinstance(sinks[1], str) and not isinstance(sinks[0], str)):
-        sinks = [sinks]
+def _part_session(part, sources, box, avoid, keep_clear, floor_y, kw):
+    """The Router session of a Part (created on first use), synced with the cells the Part holds now.
+    -> (router, auto_box). `sources` = the pins' (x,y,z) for the default box."""
     s = _SESSIONS.get(part)
     world = {p: c[0] for p, c in part._cells.items()}
     for p in avoid or ():
@@ -853,28 +1198,125 @@ def part_route(part, src, sinks, name=None, need=None, box=None, avoid=None, kee
         if floor_y is not None:
             s.floor_y = floor_y
     if s.box is None:   # default: bounding box of everything known + 4
-        pts = list(world) + [_part_pin(part, src, "source").pos] + [_part_pin(part, k, "sink").pos for k in sinks]
+        pts = list(world) + list(sources)
         lo = [min(p[i] for p in pts) - 4 for i in range(3)]
         hi = [max(p[i] for p in pts) + 4 for i in range(3)]
         lo[1] = max(lo[1], min(p[1] for p in pts) - 1)
         s.box = tuple(lo + hi)
-        auto_box = True
-    else:
-        auto_box = False
+        return s, True
+    return s, False
+
+
+def _as_sinks(sinks):
+    if not isinstance(sinks, (list, tuple)) or (len(sinks) == 3 and all(isinstance(v, int) for v in sinks)) \
+            or (len(sinks) == 2 and isinstance(sinks[1], str) and not isinstance(sinks[0], str)):
+        return [sinks]
+    return list(sinks)
+
+
+def _pin_pos(part, spec) -> Pos:
+    if isinstance(spec, Pin):
+        return spec.pos
+    if isinstance(spec, str):
+        if spec not in part._ports:
+            raise RouteError(f"no port {spec!r}; ports: {', '.join(sorted(part._ports)) or 'none'}")
+        return tuple(part._ports[spec][0])
+    return tuple(int(v) for v in (spec[0] if len(spec) == 2 and isinstance(spec[1], str) else spec))
+
+
+def _publish(part, s: Router, net: Net, line):
+    """Write a routed net into the Part (provenance 'net:NAME'), record it for `nets`, surface its warnings."""
+    ctx = part._ctx
+    if net.ok:
+        origin = ctx.origin(f"net:{net.name}", line)
+        ctx.count(len(net.cells))
+        for p, st in net.cells.items():
+            part._put(p, st, None, origin, 0)
+    for w in net.warnings:
+        ctx.warn("route", w, limit=300)
+    if net.infos:     # one aggregated line per build (see _finish_infos): the details live in `nets`
+        ctx.route_infos += len(net.infos)
+    ctx.nets.append({
+        "name": net.name, "ok": net.ok, "src": net.src.label(), "sinks": [k.label() for k in net.sinks],
+        "route_cells": len(net.parent), "blocks": len(net.cells), "repeaters": len(net.repeaters),
+        "levels": dict(net.sink_level), "needs": {k.label(): k.need for k in net.sinks if k.kind == "dust"},
+        "why": {k.label(): k.why for k in net.sinks if k.why}, "delay": dict(net.delay), "note": net.note,
+        "warnings": list(net.warnings), "infos": list(net.infos), "reason": net.reason, "line": line})
+
+
+def part_route(part, src, sinks, name=None, need=None, box=None, avoid=None, keep_clear=None, floor_y=None,
+               strict=True, restore=False, allow_side=False, **kw) -> Net:
+    """Route on a builder Part (the cells already placed are the obstacles; earlier routes and their staircase air cells
+    are remembered per Part). src / sinks: 'inst.PORT', (x,y,z) or ((x,y,z), face). Raises RouteError (a BuilderError
+    in the sandbox) when the net cannot be routed (strict=True), else returns the unrouted Net."""
+    sinks = _as_sinks(sinks)
+    pts = [_pin_pos(part, src)] + [_pin_pos(part, k) for k in sinks]
+    s, auto_box = _part_session(part, pts, box, avoid, keep_clear, floor_y, kw)
     try:
         sp = _part_pin(part, src, "source")
-        kp = [_part_pin(part, k, "sink") for k in sinks]
-        if need is not None:
-            for k in kp:
-                k.need = need
+        kp = [_part_pin(part, k, "sink", need) for k in sinks]
         nm = name or f"net{len(s.nets)}"
-        net = s.route(nm, sp, kp, strict=strict)
+        net = s.route(nm, sp, kp, strict=False, restore=restore, allow_side=allow_side)
+        if not net.ok:
+            net.reason += "\n" + s.explain([sp] + kp, net.reason)
     finally:
         if auto_box:
             s.box = None
-    for p, st in net.cells.items():
-        part.set(p, st)
+    _publish(part, s, net, part._ctx.line())
+    if not net.ok and strict:
+        s.nets.pop(nm, None)
+        raise RouteError(net.reason)
     return net
+
+
+def part_route_all(part, nets, order="auto", box=None, avoid=None, keep_clear=None, floor_y=None, strict=True,
+                   restore=False, allow_side=False, need=None, **kw) -> List[Net]:
+    """Several nets in one go (Router.route_all): ordered by constraint/length, ripped up and retried around failures.
+    nets: [(src, sinks[, name[, need]])] or dicts {src, sinks, name, need, restore, allow_side}."""
+    items = []
+    for i, it in enumerate(nets):
+        if isinstance(it, dict):
+            d = dict(it)
+        else:
+            it = tuple(it)
+            if not 2 <= len(it) <= 4:
+                raise RouteError(f"net {i}: expected (src, sinks[, name[, need]]), got {it!r}")
+            d = dict(zip(("src", "sinks", "name", "need"), it))
+        if "src" not in d or "sinks" not in d:
+            raise RouteError(f"net {i}: needs src and sinks")
+        items.append(d)
+    pts = []
+    for d in items:
+        d["sinks"] = _as_sinks(d["sinks"])
+        pts += [_pin_pos(part, d["src"])] + [_pin_pos(part, k) for k in d["sinks"]]
+    s, auto_box = _part_session(part, pts, box, avoid, keep_clear, floor_y, kw)
+    line = part._ctx.line()
+    try:
+        specs, base = [], len(s.nets)
+        for i, d in enumerate(items):
+            nm = d.get("name") or f"net{base + i}"
+            n_need = d.get("need", need)
+            sp = _part_pin(part, d["src"], "source")
+            kp = [_part_pin(part, k, "sink", n_need) for k in d["sinks"]]
+            specs.append((nm, sp, kp, {"restore": d.get("restore", restore), "allow_side": d.get("allow_side", allow_side)}))
+        if len({sp[0] for sp in specs}) != len(specs):
+            raise RouteError("duplicate net names in route_all")
+        done = s.route_all(specs, order=order)
+        for net, sp in zip(done, specs):
+            if not net.ok:
+                net.reason += "\n" + s.explain([sp[1]] + sp[2], net.reason)
+    finally:
+        if auto_box:
+            s.box = None
+    for net in done:
+        _publish(part, s, net, line)
+    bad = [n for n in done if not n.ok]
+    if bad and strict:
+        for n in bad:
+            s.nets.pop(n.name, None)
+        raise RouteError(f"{len(bad)} of {len(done)} nets unroutable (after ordering and rip-up):\n" + "\n".join(n.reason for n in bad[:4])
+                         + (f"\n... (+{len(bad) - 4} more)" if len(bad) > 4 else ""))
+    return done
 
 
 # --------------------------------------------------------------------------- simulator checks

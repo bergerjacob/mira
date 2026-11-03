@@ -3,6 +3,7 @@
     python env/library.py list                       # catalogue table
     python env/library.py verify [names] [--oracle]  # env (+ vanilla oracle) verification of every orientation
     python env/library.py write [names] [--oracle]   # verify and rewrite lib/<name>.meta.json
+    python env/library.py entries [names]            # (re)write only the per-port `entry` rule of the sidecars (fast)
 
 A component is `lib/<name>.py` (sandbox-legal builder source defining the `@part` function `<name>`) plus
 `lib/<name>.meta.json` (ports, spec, timing, verified orientations; generated from `lib/specs.py` + a verification run).
@@ -511,12 +512,41 @@ def _verified_block(rep):
     }
 
 
+def port_entries(name):
+    """-> {port: 'face'|'any'}: how a net may join each port (simulation.router.entry_rule on the part's own cells).
+    'face' = an input dust whose inward neighbour does not connect to dust: joined from a side it no longer powers that
+    neighbour (a dead gate), so the router only enters it through its face. Outputs are always 'any'."""
+    from simulation.router import entry_rule
+    first = (specs()[name].get("variants") or [None])[0]
+    plist = "".join(f", {k}={v!r}" for k, v in (first or {}).items())
+    build = compile_program(name, f"def build(b):\n    b.place({name}, at=(0, 0, 0), name='dut'{plist})\n")
+    cells = {(b[0], b[1], b[2]): b[3] for b in build.blocks}
+    return {k: (entry_rule(cells.get, v["pos"], v["face"]) if v["kind"] == "in" else "any") for k, v in rotated_ports(build).items()}
+
+
+def write_entries(names_=None):
+    """Add/refresh the `entry` field of every port in lib/<name>.meta.json without re-verifying anything."""
+    out = {}
+    for n in names_ or [x for x in names() if x in specs()]:
+        p = LIB / f"{n}.meta.json"
+        if not p.exists():
+            continue
+        m = json.loads(p.read_text())
+        ent = port_entries(n)
+        for k, v in m["ports"].items():
+            v["entry"] = ent.get(k, "any")
+        p.write_text(json.dumps(m, indent=1, default=list) + "\n")
+        out[n] = {k: v["entry"] for k, v in m["ports"].items() if v["dir"] == "in"}
+    return out
+
+
 def build_meta(name, rep):
     sp = specs()[name]
     first = (sp.get("variants") or [None])[0]
     plist = "".join(f", {k}={v!r}" for k, v in (first or {}).items())
     build = compile_program(name, f"def build(b):\n    b.place({name}, at=(0, 0, 0), name='dut'{plist})\n")
     ports = rotated_ports(build)
+    entries = port_entries(name)
     rows = None
     if sp.get("rows") is not None or sp.get("fn") is not None:
         ins = sp.get("inputs", [])
@@ -528,7 +558,7 @@ def build_meta(name, rep):
     m = {
         "name": name, "title": sp["title"], "description": sp["description"], "requires": sp.get("requires", []),
         "params": {"floor": True, **(first or {})}, "kind": sp.get("kind", "comb"),
-        "ports": {k: {"dir": v["kind"], "pos": list(v["pos"]), "face": v["face"]} for k, v in ports.items()},
+        "ports": {k: {"dir": v["kind"], "pos": list(v["pos"]), "face": v["face"], "entry": entries.get(k, "any")} for k, v in ports.items()},
         "footprint": rep.get("footprint"), "timing_ticks": rep.get("timing"), "notes": sp.get("notes", ""),
         "spec": {"inputs": sp.get("inputs"), "outputs": sp.get("outputs"), "rows": rows, "sequences": seqs},
         "verified": _verified_block(rep), "provenance": sp.get("provenance", DEFAULT_PROVENANCE),
@@ -807,7 +837,7 @@ def catalogue_table():
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["list", "verify", "write", "corpus"])
+    ap.add_argument("cmd", choices=["list", "verify", "write", "corpus", "entries"])
     ap.add_argument("names", nargs="*")
     ap.add_argument("--oracle", action="store_true")
     ap.add_argument("--workers", type=int, default=4)
@@ -844,6 +874,10 @@ def main(argv=None):
         compact_scan(res)
         if a.promote:
             print("promoted", len(promote(res, a.max_blocks)))
+        return 0
+    if a.cmd == "entries":
+        for n, ent in write_entries(a.names or None).items():
+            print(f"{n:16} " + " ".join(f"{k}={v}" for k, v in ent.items()))
         return 0
     if a.cmd == "list":
         print(f"{'component':16} {'size':10} {'blocks':>6} {'timing':24} {'orient':>6} oracle")

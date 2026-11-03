@@ -1,8 +1,9 @@
 """mira: project-mode CLI (build program + modules + spec + notes + views + tests + export). See docs/PRODUCT.md.
 
     .venv/bin/python scripts/mira.py init NAME [--from-task ID] [--from-litematic FILE] [--program FILE] [--dir PATH]
-    .venv/bin/python scripts/mira.py -p NAME build | overview | view --layer Y | find PAT | query X Y Z | diff | test
-                                              | trace PORT... | notes-check | export | paste-check | log | init-module NAME
+    .venv/bin/python scripts/mira.py -p NAME build [--timeout N] | overview | view --layer Y | find PAT | query X Y Z | diff | test
+                                              | nets | spec-check | verify-vanilla | trace PORT... | notes-check | export
+                                              | paste-check | log | init-module NAME
 
 The project is chosen by -p/--project NAME|PATH, else $MIRA_PROJECT, else the project containing the current directory.
 Output is the command's text; exit code 1 when it starts with 'error:' / FAILED / FAIL, 0 otherwise.
@@ -32,11 +33,16 @@ def parser():
     s.add_argument("--lenient", action="store_true", help="accept block ids/states unknown to the 1.21 validator (implied by --from-litematic)")
     s = sub.add_parser("build", help="compile build.py (+ imports) and store a revision")
     s.add_argument("-m", "--message", default="")
+    s.add_argument("--timeout", type=float, help="sandbox limit in seconds (default 120)")
     s = sub.add_parser("overview", help="multi-resolution summary (< 80 lines for any size)")
     s.add_argument("--rev")
-    s = sub.add_parser("view", help="ASCII slice of one layer")
-    s.add_argument("--layer", "-y", type=int, required=True)
-    s.add_argument("--box", type=int, nargs=4, metavar=("X0", "Z0", "X1", "Z1"))
+    s = sub.add_parser("view", help="ASCII slice: a layer (--layer Y) or a plane perpendicular to an axis (--axis x|z --at N)")
+    s.add_argument("--layer", "-y", type=int, help="horizontal slice at this y")
+    s.add_argument("--axis", choices=["x", "y", "z"], help="slice axis (x: columns z, rows y; z: columns x, rows y)")
+    s.add_argument("--at", type=int, help="coordinate of the slice along --axis")
+    s.add_argument("--box", type=int, nargs=4, metavar=("A0", "B0", "A1", "B1"),
+                   help="y slices: x0 z0 x1 z1; x slices: z0 y0 z1 y1; z slices: x0 y0 x1 y1")
+    s.add_argument("--settled", action="store_true", help="the at-rest world (placement + running to rest) instead of the raw program")
     s.add_argument("--rev")
     s = sub.add_parser("find", help="ports, labels, instances, files and block ids matching a pattern (substring or glob)")
     s.add_argument("pattern")
@@ -46,18 +52,39 @@ def parser():
     s.add_argument("y", type=int)
     s.add_argument("z", type=int)
     s.add_argument("--radius", "-r", type=int, default=0)
+    s.add_argument("--settled", action="store_true", help="show the at-rest state (and the raw state when it differs)")
     s.add_argument("--rev")
     s = sub.add_parser("diff", help="block-level diff between revisions (default: previous -> latest)")
     s.add_argument("a", nargs="?")
     s.add_argument("b", nargs="?")
     s.add_argument("--examples", type=int, default=10)
+    s.add_argument("--raw-vs-settled", action="store_true", help="instead of two revisions: which cells does settling change (rev b, default latest)?")
     s = sub.add_parser("test", help="run spec.json (or a module spec) in the simulator")
     s.add_argument("--module")
     s.add_argument("--public-only", action="store_true")
     s.add_argument("--fast", action="store_true", help="skip the determinism re-run")
+    s = sub.add_parser("nets", help="every routed net (b.route / b.route_all): src, sinks, length, repeaters, strength per sink, warnings")
+    s.add_argument("--name", help="only nets whose name, source or a sink matches (substring or glob); one net shows full detail")
+    s.add_argument("--warnings", action="store_true", help="only nets with warnings, notes or unrouted")
+    s.add_argument("--rev")
+    s = sub.add_parser("spec-check", help="validate spec.json: schema, ports vs build, vacuity, IO coverage, mutation score")
+    s.add_argument("--module")
+    s.add_argument("--mutants", type=int, default=12, help="how many mutants of the build to try (default 12)")
+    s.add_argument("--no-mutation", action="store_true")
+    s.add_argument("--seed", type=int, default=0)
+    s.add_argument("--budget", type=float, default=240.0, help="wall-clock seconds for the mutation sweep")
+    s = sub.add_parser("verify-vanilla", help="replay spec.json in the vanilla 26.2 oracle (one JVM per capture) and compare with the env")
+    s.add_argument("--max-vectors", type=int, default=12, help="big truth tables are sampled to this many vectors (default 12)")
+    s.add_argument("--all", action="store_true", help="replay every vector (slow for big tables)")
+    s.add_argument("--variants", type=int, default=0, help="also replay K rotated/mirrored/translated copies (env/variants.py)")
+    s.add_argument("--second-origin", action="store_true", help="also replay at a random second absolute origin")
+    s.add_argument("--seed", type=int, default=1)
+    s.add_argument("--workers", type=int, default=3, help="JVMs at a time")
     s = sub.add_parser("trace", help="ASCII timing diagram of ports / blocks under the test stimulus")
     s.add_argument("signals", nargs="*", help="spec port, build port or x,y,z (default: spec outputs)")
-    s.add_argument("--ticks", type=int, help="idle run of N ticks instead of the spec stimulus")
+    s.add_argument("--ticks", type=int, help="idle run of N ticks (with --seq: only the first N ticks of the sequence)")
+    s.add_argument("--from", dest="from_tick", type=int, help="show the window starting at this tick")
+    s.add_argument("--to", dest="to_tick", type=int, help="show the window ending at this tick (with --seq the run stops there)")
     s.add_argument("--seq", help="a named spec sequence")
     s.add_argument("--set", dest="sets", help='custom vectors: "A=1,B=0;A=0"')
     s.add_argument("--vector", type=int, help="show only test vector K (state from the preceding vectors is kept)")

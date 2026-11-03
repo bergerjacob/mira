@@ -35,6 +35,11 @@ class Score:
     n_hidden_ok: int = 0
     blocks: int = 0
     volume: int = 0
+    r4_na: bool = False              # R4 earned but the contract has no reference solution: r4 stays 1.0 (reward unchanged), printed as n/a
+
+    @property
+    def r4_text(self) -> str:
+        return "n/a" if self.r4_na else f"{self.r4:.2f}"
 
     def to_dict(self):
         return {k: (round(v, 4) if isinstance(v, float) else v) for k, v in self.__dict__.items()}
@@ -113,6 +118,7 @@ def score(contract: Contract, res: RunResult) -> Score:
         if rv:
             eff.append(min(1.0, rv / max(1, s.volume)))
         s.r4 = sum(eff) / len(eff) if eff else 1.0
+        s.r4_na = not eff
     s.reward = (W["r0"] * s.r0 + W["r1"] * s.r1 + W["r2"] * s.r2 + W["r3"] * s.r3 * r1_pass + W["r4"] * s.r4 * (s.r3 == 1.0))
     return s
 
@@ -187,7 +193,7 @@ def feedback(contract: Contract, res: RunResult, sc: Score, final: bool = False,
                  + ", ".join(f"{B.short(B.split_state(s)[0])}{_p(p)}" for p, s in res.silent[:8]) + (" ..." if len(res.silent) > 8 else ""))
     if final:
         L.append(f"HIDDEN checks: {sc.n_hidden_ok}/{sc.n_hidden} pass (details withheld)")
-        L.append(f"SCORE: reward={sc.reward:.3f}  R0={sc.r0:.2f} R1={sc.r1:.2f} R2={sc.r2:.2f} R3={sc.r3:.2f} R4={sc.r4:.2f}  "
+        L.append(f"SCORE: reward={sc.reward:.3f}  R0={sc.r0:.2f} R1={sc.r1:.2f} R2={sc.r2:.2f} R3={sc.r3:.2f} R4={sc.r4_text}  "
                  f"{'FULL PASS' if sc.full_pass else 'not a full pass'}")
     else:
         L.append(f"SCORE (public checks only): R1={sc.r1:.2f} R2={sc.r2:.2f} R3={sc.r3:.2f}" + ("  ALL PUBLIC CHECKS PASS" if sc.full_pass else ""))

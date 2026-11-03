@@ -301,6 +301,8 @@ class _Ctx:
         self.written = 0
         self.depth = 0
         self.lib_cache: Dict[str, Any] = {}
+        self.nets: List[dict] = []      # routed-net records (Part.route), listed by `mira nets`
+        self.route_infos = 0            # dust ports the router joined from a side other than their face, harmlessly
 
     def origin(self, path: str, line: Optional[int]) -> int:
         key = (path, line)
@@ -323,8 +325,8 @@ class _Ctx:
         if len(self.errors) < 100:
             self.errors.append(BuildIssue(kind, msg, line if line is not None else self.line(), path))
 
-    def warn(self, kind: str, msg: str, path: str = ""):
-        if len(self.warnings) < 50:
+    def warn(self, kind: str, msg: str, path: str = "", limit: int = 50):
+        if len(self.warnings) < limit:
             self.warnings.append(BuildIssue(kind, msg, self.line(), path))
 
     def count(self, n: int):
@@ -334,10 +336,11 @@ class _Ctx:
 
 
 class _PartResult:
-    __slots__ = ("cells", "ports", "labels", "entities")
+    __slots__ = ("cells", "ports", "labels", "entities", "pinfo")
 
-    def __init__(self, cells, ports, labels, entities):
+    def __init__(self, cells, ports, labels, entities, pinfo=None):
         self.cells, self.ports, self.labels, self.entities = cells, ports, labels, entities
+        self.pinfo = pinfo or {}      # port name -> (part name, port name) of the lib/inner port it stands for
 
 
 class PartDef:
@@ -399,6 +402,7 @@ class Part:
         self._labels: Dict[str, Tuple[P, P]] = {}
         self._entities: List[Tuple[float, float, float, str, Optional[str]]] = []
         self._insts: List[dict] = []
+        self._pinfo: Dict[str, Tuple[str, str]] = {}   # "inst.PORT" -> (part, port): what the router needs/entry rules come from
 
     # -- internals
     def _state(self, state: str) -> Optional[str]:
@@ -581,17 +585,36 @@ class Part:
                            self._ctx.line(), {})
 
     def route(self, src, sinks, name: Optional[str] = None, need: Optional[int] = None, box=None, avoid=None,
-              keep_clear=None, floor_y: Optional[int] = None):
+              keep_clear=None, floor_y: Optional[int] = None, strict: bool = True, restore: bool = False,
+              allow_side: bool = False):
         """3D router (simulation/router.py, docs/ROUTER.md): dust + supports + repeaters from src to every sink, around
         everything already placed (no touching foreign dust/components, staircases for height, bridges over other nets).
-        src / sinks: 'inst.PORT', (x, y, z) or ((x, y, z), face); a list of sinks makes a tree. Lib input ports get their
-        measured minimum strength. Returns the Net (net.cells, net.repeaters, net.sink_level); BuilderError if unroutable."""
+        src / sinks: 'inst.PORT', (x, y, z) or ((x, y, z), face); a list of sinks makes a tree.
+        need: minimum dust strength at every sink (default: lib ports their measured minimum, mux2 data inputs 13,
+        wrapped parts inherit from the lib port they alias, others 1). restore=True: also allow a repeater on the last
+        cell before a sink when the strength would otherwise drop below need. A dust port whose neighbour does not
+        conduct (lib and2/not_gate...) is only joined through its face: unreachable -> error, unless allow_side=True.
+        strict=True raises BuilderError when a net cannot be routed; strict=False returns the Net with ok False.
+        Returns the Net (net.cells, net.repeaters, net.sink_level, net.note); every routed net is listed by `nets`."""
         from simulation import router as R
         try:
             return R.part_route(self, src, sinks, name=name, need=need, box=box, avoid=avoid, keep_clear=keep_clear,
-                                floor_y=floor_y)
+                                floor_y=floor_y, strict=strict, restore=restore, allow_side=allow_side)
         except R.RouteError as e:
             raise BuilderError(f"route: {e}") from None
+
+    def route_all(self, nets, order: str = "auto", box=None, avoid=None, keep_clear=None, floor_y: Optional[int] = None,
+                  strict: bool = True, restore: bool = False, allow_side: bool = False, need: Optional[int] = None):
+        """Route several nets at once: `nets` = [(src, sinks), (src, sinks, name), ...] or dicts with src, sinks, name,
+        need, restore, allow_side. order='auto' (most constrained pin first, then shortest), 'short', 'constrained' or
+        'given'. Nets that fail are retried after ripping up the nets around them (docs/ROUTER.md); the error names the
+        blocking nets and draws a small area map. Returns the Nets in the order given."""
+        from simulation import router as R
+        try:
+            return R.part_route_all(self, nets, order=order, box=box, avoid=avoid, keep_clear=keep_clear, floor_y=floor_y,
+                                    strict=strict, restore=restore, allow_side=allow_side, need=need)
+        except R.RouteError as e:
+            raise BuilderError(f"route_all: {e}") from None
 
     # -- cell building / merging
     def _build_cell(self, pd: PartDef, params: dict) -> _PartResult:
@@ -609,7 +632,15 @@ class Part:
             self._ctx.depth -= 1
         ports = {k: (v, "io", None) for k, v in pd.ports.items()}
         ports.update(sub._ports)
-        res = _PartResult(sub._cells, ports, sub._labels, sub._entities)
+        pinfo = dict(sub._pinfo)
+        for name, (pos, kind, _) in sub._ports.items():   # a port declared on the very cell of an inner port is an alias of it
+            if "." in name or name in pinfo:
+                continue
+            for other, (opos, okind, _f) in sub._ports.items():
+                if other != name and "." in other and other in pinfo and opos == pos and okind == kind:
+                    pinfo[name] = pinfo[other]
+                    break
+        res = _PartResult(sub._cells, ports, sub._labels, sub._entities, pinfo)
         self._ctx.cache[key] = res
         return res
 
@@ -636,6 +667,7 @@ class Part:
             ports[pname] = q
             face = _dir_transform(pface, rot, mirror) if pface else None
             self._ports[f"{inst_name}.{pname}"] = (q, pkind, face)
+            self._pinfo[f"{inst_name}.{pname}"] = res.pinfo.get(pname) or (pd.name, pname)
         for lname, (a, b) in res.labels.items():
             a2, b2 = P(*rotate_point(a, rot, mirror)) + at, P(*rotate_point(b, rot, mirror)) + at
             self._labels[f"{inst_name}.{lname}"] = (P(min(a2.x, b2.x), min(a2.y, b2.y), min(a2.z, b2.z)),
@@ -1115,6 +1147,12 @@ class Build:
 
 
 def _finish(ctx: _Ctx, root: Part) -> Build:
+    stats = {"writes": ctx.written}
+    if ctx.nets:
+        stats["nets"] = ctx.nets
+    if ctx.route_infos:
+        ctx.warn("route", f"{ctx.route_infos} dust port(s) were joined from a side other than their face; harmless (the inward neighbour "
+                 "connects to the dust). `nets --warnings` lists them", limit=300)
     cells = sorted(root._cells.items(), key=lambda kv: (kv[0][1], kv[0][2], kv[0][0]))
     blocks = [(x, y, z, st, nbt) for (x, y, z), (st, nbt, _, _) in cells]
     prov = [ctx.origins[c[2]] for _, c in cells]
@@ -1122,7 +1160,7 @@ def _finish(ctx: _Ctx, root: Part) -> Build:
     labels = {k: {"min": list(a), "max": list(b)} for k, (a, b) in sorted(root._labels.items())}
     ents = sorted(root._entities, key=lambda e: (e[1], e[2], e[0], e[3]))
     return Build(blocks, [tuple(p) for p in prov], ents, ports, labels, root._insts,
-                 ctx.errors, ctx.warnings, ctx.log, {"writes": ctx.written})
+                 ctx.errors, ctx.warnings, ctx.log, stats)
 
 
 # --- sandbox -------------------------------------------------------------------------
@@ -1162,7 +1200,7 @@ def check_source(tree: ast.AST) -> List[Tuple[int, str]]:
     return bad
 
 
-_PUBLIC = ["Byte", "P", "Part", "Inst", "PartDef", "part", "wire_path", "items", "opposite", "DIRS", "DIR_VEC",
+_PUBLIC = ["Byte", "P", "Part", "Inst", "PartDef", "part", "wire_path", "items", "opposite", "DIRS", "DIR_VEC", "BuilderError",
            "NORTH", "EAST", "SOUTH", "WEST", "UP", "DOWN", "block", "air", "stone", "glass", "dirt", "solid",
            "redstone_block", "wire", "lamp", "lever", "button", "pressure_plate", "repeater", "comparator",
            "observer", "piston", "sticky_piston", "hopper", "dropper", "dispenser", "torch", "chest", "barrel",
@@ -1212,7 +1250,7 @@ def _safe_builtins(ctx: _Ctx) -> dict:
     for exc in ("Exception ValueError TypeError KeyError IndexError AssertionError ArithmeticError ZeroDivisionError "
                 "StopIteration RuntimeError NotImplementedError AttributeError LookupError OverflowError").split():
         b[exc] = getattr(builtins, exc)
-    b.update({"__import__": _import, "print": _print, "True": True, "False": False, "None": None,
+    b.update({"BuilderError": BuilderError, "__import__": _import, "print": _print, "True": True, "False": False, "None": None,
               "__build_class__": None})
     return b
 

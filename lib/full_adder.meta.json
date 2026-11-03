@@ -15,7 +15,8 @@
     2,
     4
    ],
-   "face": "west"
+   "face": "west",
+   "entry": "any"
   },
   "B": {
    "dir": "in",
@@ -24,7 +25,8 @@
     1,
     6
    ],
-   "face": "south"
+   "face": "south",
+   "entry": "any"
   },
   "CIN": {
    "dir": "in",
@@ -33,7 +35,8 @@
     3,
     1
    ],
-   "face": "east"
+   "face": "east",
+   "entry": "any"
   },
   "COUT": {
    "dir": "out",
@@ -42,7 +45,8 @@
     2,
     2
    ],
-   "face": "west"
+   "face": "west",
+   "entry": "any"
   },
   "S": {
    "dir": "out",
@@ -51,7 +55,8 @@
     3,
     6
    ],
-   "face": "south"
+   "face": "south",
+   "entry": "any"
   }
  },
  "footprint": {

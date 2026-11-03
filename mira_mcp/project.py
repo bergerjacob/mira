@@ -41,6 +41,7 @@ REPO_LIB = ROOT / "lib"
 SOURCE_GLOBS = ("build.py", "modules/**/*.py", "lib/**/*.py", "modules/**/*.spec.json", "spec.json", "NOTES.md")
 NAME_RE = re.compile(r"^[A-Za-z0-9_.-]{1,64}$")
 HEADER = "from simulation.builder import *\n"
+DEFAULT_TIMEOUT = 120.0     # build sandbox limit in seconds (`build --timeout N`)
 
 
 class ProjectError(Exception):
@@ -477,12 +478,19 @@ class Project:
             fh.write(json.dumps(rec) + "\n")
 
     # ---------------------------------------------------------------- compile
-    def compile(self, entry: str = "build.py", entry_text: Optional[str] = None, timeout: float = 60.0):
+    def compile(self, entry: str = "build.py", entry_text: Optional[str] = None, timeout: float = DEFAULT_TIMEOUT):
         from simulation import builder as B
         asm = Assembly(self.dir, entry, entry_text)
         if asm.errors:
             return asm, None
         build = B.compile(asm.source, timeout=timeout, lib_root=str(REPO_LIB), validate=not self.meta.get("lenient"))
+        for e in build.errors:
+            if e.kind == "timeout" or "exit -24" in e.message:   # -24 = SIGXCPU: the sandbox's CPU-time limit
+                e.kind, e.message = "timeout", (f"build exceeded its {timeout:g}s limit (the sandbox stops runaway programs). "
+                                                f"Raise it with `build --timeout N` (now {timeout:g}); routing many nets, big arrays and "
+                                                "loops over thousands of blocks are the usual cost - route_all and arrays of parts are cheaper")
+            elif "exit -9" in e.message or "exit -11" in e.message:
+                e.message = f"build process was killed (memory limit 6 GiB or a crash): {e.message}"
         return asm, build
 
     def _issue_lines(self, asm: Assembly, issues, limit=12) -> List[str]:
@@ -490,19 +498,46 @@ class Project:
         for e in issues[:limit]:
             f, ln = asm.where(e.line)
             loc = f"{f}:{ln}" if ln else f
-            out.append(f"  {loc}: {e.kind}: {e.message}" + (f" [in {e.path}]" if e.path else ""))
+            msg = e.message if len(e.message) <= 1800 else e.message[:1800] + " ..."
+            out.append(f"  {loc}: {e.kind}: {msg}".replace("\n", "\n    ") + (f" [in {e.path}]" if e.path else ""))
         if len(issues) > limit:
             out.append(f"  ... (+{len(issues) - limit} more)")
         return out
 
-    def build(self, message: str = "") -> str:
+    def _log_lines(self, log, limit: Optional[int] = None) -> List[str]:
+        """print() output of the build program (captured by the sandbox: 200 lines of 300 chars at most)."""
+        if not log:
+            return []
+        limit = limit or int(os.environ.get("MIRA_BUILD_LOG_LINES", "40"))
+        shown = log[:limit]
+        L = [f"build log ({len(log)} line{'s' if len(log) != 1 else ''} printed by the program"
+             + (f", first {limit}" if len(log) > limit else "") + (", sandbox cap of 200 reached" if len(log) >= 200 else "") + "):"]
+        L += [f"  | {x[:200]}" for x in shown]
+        return L
+
+    def _warning_lines(self, asm: Assembly, warnings, other_limit: int = 6, route_limit: int = 12) -> List[str]:
+        route = [w for w in warnings if w.kind == "route"]
+        other = [w for w in warnings if w.kind != "route"]
+        L = [f"  warning {x.strip()}" for x in self._issue_lines(asm, other, other_limit)]
+        for w in route[:route_limit]:
+            f, ln = asm.where(w.line)
+            L.append(f"  WARNING route {f}:{ln}: {w.message}" if ln else f"  WARNING route: {w.message}")
+        if len(route) > route_limit:
+            L.append(f"  ... (+{len(route) - route_limit} more route warnings; `nets --warnings` lists every net with one)")
+        return L
+
+    def build(self, message: str = "", timeout: Optional[float] = None) -> str:
         t0 = time.time()
-        asm, b = self.compile()
+        timeout = float(timeout) if timeout else DEFAULT_TIMEOUT
+        asm, b = self.compile(timeout=timeout)
         rs = self.revs()
         last = f"latest good rev {rs[-1]}" if rs else "no good revision yet"
         if asm.errors or b is None or b.errors:
             lines = [f"BUILD FAILED - nothing stored ({last})"]
             lines += [f"  {e}" for e in asm.errors[:12]] if asm.errors else self._issue_lines(asm, b.errors)
+            if b is not None:
+                lines += self._log_lines(b.log, 20)
+                lines += self._warning_lines(asm, b.warnings, 3, 6)
             (self.mira / "last_build.json").write_text(json.dumps({"ok": False, "ts": time.time(), "errors": lines[1:]}))
             return "\n".join(lines)
         h, sh = b.hash(), self.source_hash()
@@ -521,9 +556,10 @@ class Project:
                 dst = d / "src" / "_repo" / rel
                 dst.parent.mkdir(parents=True, exist_ok=True)
                 dst.write_text(asm.read(rel))
+        nets = b.stats.get("nets", [])
         data = {"blocks": b.blocks, "prov": b.prov, "entities": b.entities, "ports": b.ports, "labels": b.labels,
                 "instances": b.instances, "warnings": [w.to_dict() for w in b.warnings], "segments": asm.to_dict(),
-                "program": asm.source}
+                "program": asm.source, "log": b.log, "nets": nets}
         _gz_write(d / "build.json.gz", data)
         bb = b.bounds()
         meta = {"rev": n, "ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "hash": h, "source_hash": sh, "message": message,
@@ -546,7 +582,16 @@ class Project:
                                                          for g, n_ in by_grp.most_common(10)))
         if b.ports:
             L.append(f"ports ({len(b.ports)}): " + ", ".join(V.compress_names(list(b.ports), 10)))
-        L += [f"  warning {x}" for x in self._issue_lines(asm, b.warnings, 6)]
+        if nets:
+            ok_n = sum(1 for n in nets if n["ok"])
+            L.append(f"nets: {ok_n}/{len(nets)} routed, {sum(n['route_cells'] for n in nets)} route cells, "
+                     f"{sum(n['repeaters'] for n in nets)} repeaters, {sum(1 for n in nets if n['warnings'])} with warnings (`nets` lists them)")
+            bad = [n["name"] for n in nets if not n["ok"]]
+            if bad:
+                L.append(f"  WARNING route: {len(bad)} net(s) UNROUTED (strict=False): {', '.join(bad[:8])}"
+                         + (" ..." if len(bad) > 8 else "") + " - `nets --warnings` shows why")
+        L += self._warning_lines(asm, b.warnings)
+        L += self._log_lines(b.log)
         if prev:
             a, r, c = V.diff_cells(prev.cells, rev.cells)
             L.append(f"vs rev {prev.n}: +{len(a)} -{len(r)} ~{len(c)}  (details: diff)")
@@ -612,8 +657,11 @@ class Project:
         prov = d["prov"]
         per_inst = defaultdict(list)
         root_files = Counter()
+        per_net = Counter()
         for b, (path, line) in zip(d["blocks"], prov):
-            if path:
+            if path.startswith("net:"):
+                per_net[path] += 1
+            elif path:
                 per_inst[path.split("/", 1)[0]].append((b[0], b[1], b[2], path))
             else:
                 root_files[r.file_of(line)[0]] += 1
@@ -621,7 +669,7 @@ class Project:
         groups = defaultdict(list)
         for name in per_inst:
             groups[V.group_key(name)].append(name)
-        L.append(f"MODULES ({len(per_inst)} instances in {len(groups)} groups; root blocks by file)")
+        L.append(f"MODULES ({len(per_inst)} instances in {len(groups)} groups; root blocks by file; router wiring grouped as nets)")
         rows = []
         for g, names in sorted(groups.items(), key=lambda kv: -sum(len(per_inst[n]) for n in kv[1])):
             pts = [p for n in names for p in per_inst[n]]
@@ -638,6 +686,14 @@ class Project:
         L += rows
         if root_files:
             L.append("  (root)  " + ", ".join(f"{f} {n}" for f, n in root_files.most_common(6)))
+        if per_net:
+            nets = {n["name"]: n for n in d.get("nets", [])}
+            top = ", ".join(f"{k[4:]} {v}" for k, v in per_net.most_common(3))
+            rep = sum(n["repeaters"] for n in nets.values())
+            warn = sum(1 for n in nets.values() if n["warnings"])
+            L.append(f"  (nets)  {len(per_net)} routed nets, {sum(per_net.values())} blocks"
+                     + (f", {rep} repeaters" if nets else "") + (f", {warn} with warnings" if warn else "")
+                     + f"; biggest: {top}; `nets` lists them")
         # ports / labels
         if contract:
             ins = [p for p in contract.ports if p.is_input]
@@ -699,18 +755,117 @@ class Project:
         s = "; ".join(out[:8])
         return s + (f"; ... (+{len(out) - 8})" if len(out) > 8 else "")
 
-    # ---------------------------------------------------------------- view / find / query
-    def view(self, layer: int, box: Optional[Sequence[int]] = None, rev=None, max_cols: int = 100, max_rows: int = 60) -> str:
+    # ---------------------------------------------------------------- nets
+    def nets(self, rev=None, name: Optional[str] = None, warnings_only: bool = False, limit: int = 60) -> str:
+        """Every routed net of the build (Part.route / route_all): source, sinks, length, repeaters, strength per sink."""
+        import fnmatch
         r = self.rev(rev)
-        world = self.world(r)
+        nets = r.data.get("nets", [])
+        if not nets:
+            return (f"no routed nets in rev {r.n} (nets come from b.route / b.route_all calls; "
+                    "wiring placed with wire_path or set() is not listed)")
+        if name:
+            pat = name.lower()
+            wild = any(c in pat for c in "*?[")
+            m = (lambda x: fnmatch.fnmatch(x.lower(), pat)) if wild else (lambda x: pat in x.lower())
+            nets = [n for n in nets if m(n["name"]) or m(n["src"]) or any(m(k) for k in n["sinks"])]
+            if not nets:
+                return f"no net matches {name!r}"
+        if warnings_only:
+            nets = [n for n in nets if n["warnings"] or n["note"] or not n["ok"]]
+        tot = Counter()
+        for n in nets:
+            tot["cells"] += n["route_cells"]
+            tot["rep"] += n["repeaters"]
+            tot["warn"] += bool(n["warnings"])
+            tot["bad"] += not n["ok"]
+        L = [f"NETS rev {r.n}: {len(nets)} net(s), {tot['cells']} route cells, {tot['rep']} repeaters, {tot['warn']} with warnings"
+             + (f", {tot['bad']} UNROUTED" if tot["bad"] else "")]
+        detail = len(nets) == 1
+        L.append(f"{'name':<14}{'src -> sinks':<46}{'len':>4}{'rep':>4}  strength at sinks (need)   source line")
+        for n in nets[:limit]:
+            sinks = n["sinks"]
+            st = []
+            for k in sinks[:5]:
+                lv, nd = n["levels"].get(k), n["needs"].get(k, 1)
+                st.append(f"{k}={lv if lv is not None else '-'}" + (f"({nd})" if nd > 1 else ""))
+            f, ln = r.file_of(n["line"])
+            head = f"{n['src']} -> {', '.join(sinks[:3])}{f' +{len(sinks) - 3}' if len(sinks) > 3 else ''}"
+            L.append(f"{n['name'][:13]:<14}{head[:45]:<46}{n['route_cells']:>4}{n['repeaters']:>4}  "
+                     f"{' '.join(st)}{f' +{len(sinks) - 5}' if len(sinks) > 5 else ''}   {f}:{ln}" + ("  UNROUTED" if not n["ok"] else ""))
+            for w in n["warnings"]:
+                L.append(f"    ! {w}")
+            if n["note"] and not n["warnings"]:
+                L.append(f"    note: {n['note']}")
+            if not n["ok"]:
+                L.append("    " + n["reason"].replace("\n", "\n    ")[:900])
+            if detail:
+                L.append(f"    delay (repeater ticks) per sink: {n['delay']}; blocks written {n['blocks']}; sink rules: {n['why'] or '-'}")
+        if len(nets) > limit:
+            L.append(f"... (+{len(nets) - limit} more; filter with --name PATTERN or --warnings)")
+        return clip("\n".join(L))
+
+    # ---------------------------------------------------------------- view / find / query
+    def settled(self, rev: Rev) -> Tuple[Dict[tuple, str], dict]:
+        """The at-rest world of a revision (spec scenery included): placement + running to rest, as the env bakes it
+        (simulation.export.settle). Cached per revision/spec in .mira/cache."""
+        import hashlib
+        from simulation import export as X
+        contract = None
+        try:
+            contract, _ = self.contract()
+        except ProjectError:
+            pass
+        spec = (self.dir / "spec.json").read_bytes() if (self.dir / "spec.json").exists() else b""
+        key = hashlib.sha256(rev.meta["hash"].encode() + spec).hexdigest()[:16]
+        cache = self.mira / "cache" / f"settled-{rev.n}-{key}.json.gz"
+        if cache.exists():
+            d = _gz_read(cache)
+            return {tuple(map(int, k.split(","))): v for k, v in d["cells"].items()}, d["info"]
+        cells, info = X.settle(self.world(rev), contract.budgets.rest if contract else 400)
+        cache.parent.mkdir(exist_ok=True)
+        for old in cache.parent.glob(f"settled-{rev.n}-*.json.gz"):
+            old.unlink()
+        _gz_write(cache, {"cells": {",".join(map(str, k)): v for k, v in cells.items()}, "info": info})
+        return cells, info
+
+    def _settled_note(self, info: dict, raw: Dict[tuple, str], cells: Dict[tuple, str]) -> str:
+        n = sum(1 for p, st in cells.items() if raw.get(p) != st)
+        return (f"SETTLED world (placement + {info['ticks']} ticks to rest{'' if info['at_rest'] else ', NOT at rest'}; "
+                f"{n} cells differ from the raw program, see `diff --raw-vs-settled`)")
+
+    def view(self, layer: Optional[int] = None, box: Optional[Sequence[int]] = None, rev=None, max_cols: int = 100,
+             max_rows: int = 60, axis: Optional[str] = None, at: Optional[int] = None, settled: bool = False) -> str:
+        r = self.rev(rev)
+        axis = (axis or "y").lower()
+        if axis not in ("x", "y", "z"):
+            return f"error: --axis must be x, y or z, got {axis!r}"
+        if at is None:
+            at = layer
+        if at is None:
+            return "error: give --layer Y (horizontal slice) or --axis x|y|z --at N"
+        at = int(at)
+        raw = self.world(r)
+        head = ""
+        if settled:
+            world, info = self.settled(r)
+            head = self._settled_note(info, raw, world) + "\n"
+        else:
+            world = raw
         try:
             contract, _ = self.contract()
         except ProjectError:
             contract = None
-        out = V.slice_view(world, int(layer), box, max_cols, max_rows)
+        out = V.axis_view(world, axis, at, box, max_cols, max_rows)
+        ai = "xyz".index(axis)
         ports = []
-        inside = (lambda q: q[1] == int(layer) and (box is None or (min(box[0], box[2]) <= q[0] <= max(box[0], box[2])
-                                                                 and min(box[1], box[3]) <= q[2] <= max(box[1], box[3]))))
+
+        def inside(q):
+            if q[ai] != at:
+                return False
+            if box is None or axis != "y":
+                return True
+            return min(box[0], box[2]) <= q[0] <= max(box[0], box[2]) and min(box[1], box[3]) <= q[2] <= max(box[1], box[3])
         for p in (contract.ports if contract else []):
             if p.pos and inside(p.pos):
                 ports.append(f"{p.name}{list(p.pos)}")
@@ -718,8 +873,8 @@ class Project:
             if inside(v["pos"]):
                 ports.append(f"{k}{v['pos']}")
         if ports:
-            out += "\nports on this layer: " + ", ".join(ports[:30]) + (" ..." if len(ports) > 30 else "")
-        return clip(out)
+            out += f"\nports on this {'layer' if axis == 'y' else 'slice'}: " + ", ".join(ports[:30]) + (" ..." if len(ports) > 30 else "")
+        return clip(head + out)
 
     def find(self, pattern: str, rev=None, limit: int = 40) -> str:
         import fnmatch
@@ -754,6 +909,10 @@ class Project:
                 f, ln = r.file_of(i["line"])
                 L.append(f"instance {i['name']} = {i['part']} at {i['at']} rot {i['rot']}{' mirror ' + i['mirror'] if i['mirror'] else ''}"
                          f", {i['blocks']} blocks {lo}..{hi} (placed at {f}:{ln})")
+        for n in d.get("nets", []):
+            if match(n["name"]) or match(n["src"]) or any(match(k) for k in n["sinks"]):
+                L.append(f"net {n['name']}: {n['src']} -> {', '.join(n['sinks'][:6])}{' ...' if len(n['sinks']) > 6 else ''}  "
+                         f"{n['route_cells']} cells, {n['repeaters']} repeaters (routed at line {r.file_of(n['line'])[0]}:{r.file_of(n['line'])[1]})")
         for f in r.meta.get("files", []):
             if match(f):
                 n = sum(1 for _, line in d["prov"] if r.file_of(line)[0] == f)
@@ -771,10 +930,14 @@ class Project:
         more = len(L) - limit
         return clip("\n".join(L[:limit]) + (f"\n... (+{more} more matches; narrow the pattern)" if more > 0 else ""))
 
-    def query(self, x: int, y: int, z: int, radius: int = 0, rev=None, limit: int = 60) -> str:
+    def query(self, x: int, y: int, z: int, radius: int = 0, rev=None, limit: int = 60, settled: bool = False) -> str:
         r = self.rev(rev)
         d = r.data
         fixed = self.fixed()
+        sw, note = {}, ""
+        if settled:
+            sw, info = self.settled(r)
+            note = self._settled_note(info, self.world(r), sw)
         prov = {(b[0], b[1], b[2]): (b, p) for b, p in zip(d["blocks"], d["prov"])}
         L = []
         rad = max(0, min(int(radius), 4))
@@ -782,12 +945,18 @@ class Project:
             for zz in range(z - rad, z + rad + 1):
                 for xx in range(x - rad, x + rad + 1):
                     p = (xx, yy, zz)
+                    now = lambda raw: sw.get(p, "minecraft:air") if settled else raw      # noqa: E731
                     if p in prov:
                         b, (path, line) = prov[p]
                         f, ln = r.file_of(line)
-                        L.append(f"{list(p)} {V.short(b[3])}{_flow(b[3])}  <- {f}:{ln}" + (f" [{path}]" if path else "") + (" +nbt" if b[4] else ""))
+                        st = now(b[3])
+                        was = _raw_note(b[3], st) if settled else ""
+                        L.append(f"{list(p)} {V.short(st)}{_flow(st)}{was}  <- {f}:{ln}" + (f" [{path}]" if path else "") + (" +nbt" if b[4] else ""))
                     elif p in fixed:
-                        L.append(f"{list(p)} {V.short(fixed[p])}  <- spec fixed")
+                        st = now(fixed[p])
+                        L.append(f"{list(p)} {V.short(st)}" + (_raw_note(fixed[p], st) if settled else "") + "  <- spec fixed")
+                    elif settled and p in sw:
+                        L.append(f"{list(p)} {V.short(sw[p])}  (settling created it)")
                     elif rad == 0:
                         L.append(f"{list(p)} air")
         head = f"query {[x, y, z]} radius {rad}: {len(L)} non-air cells" if rad else f"query {[x, y, z]}"
@@ -795,10 +964,15 @@ class Project:
             L = L[:limit] + [f"... (+{len(L) - limit}; use a smaller radius)"]
         if rad == 0 and (x, y, z) in prov and prov[(x, y, z)][0][4]:
             L.append(f"nbt: {prov[(x, y, z)][0][4][:300]}")
-        return clip("\n".join([head] + L))
+        return clip("\n".join(([note] if note else []) + [head] + L))
 
     # ---------------------------------------------------------------- diff / log
-    def diff(self, a=None, b=None, examples: int = 10) -> str:
+    def diff(self, a=None, b=None, examples: int = 10, raw_vs_settled: bool = False) -> str:
+        if raw_vs_settled:
+            r = self.rev(b if b is not None else a)
+            sw, info = self.settled(r)
+            return clip(f"rev {r.n}: raw program vs settled world (placement + {info['ticks']} ticks to rest"
+                        f"{'' if info['at_rest'] else ', NOT at rest'})\n" + V.raw_vs_settled(self.world(r), sw, min(examples, 5)))
         rs = self.revs()
         if not rs:
             raise ProjectError("no revisions")
@@ -892,11 +1066,12 @@ class Project:
         verdict = "PASS" if sc.full_pass else "FAIL"
         head = (f"TEST {'module ' + module if module else 'rev ' + str(rev_n)}: {verdict}  public {ok_pub}/{len(pub)}"
                 + ("" if public_only else f"  other {ok_hid}/{len(hid)}") + f"  reward {sc.reward:.3f}  "
-                f"({len(blocks)} blocks, {time.time() - t0:.1f}s{', fast' if fast else ''}{', public only' if public_only else ''})")
+                f"({len(blocks)} blocks, {time.time() - t0:.1f}s{', fast' if fast else ''}{', public only' if public_only else ''}"
+                f"{', R4 n/a: spec has no reference size' if sc.r4_na else ''})")
         body = feedback(contract, res, sc, final=False)
         if not public_only:   # the score line of feedback() only speaks about public checks
             body = "\n".join(f"SCORE (all checks): reward={sc.reward:.3f}  R0={sc.r0:.2f} R1={sc.r1:.2f} R2={sc.r2:.2f} R3={sc.r3:.2f} "
-                              f"R4={sc.r4:.2f}  {'FULL PASS' if sc.full_pass else 'not a full pass'}" if ln.startswith("SCORE (public") else ln
+                              f"R4={sc.r4_text}  {'FULL PASS' if sc.full_pass else 'not a full pass'}" if ln.startswith("SCORE (public") else ln
                               for ln in body.splitlines())
         extra_fail = []
         for v in res.vectors:
@@ -911,7 +1086,7 @@ class Project:
         rec = {"rev": rev_n, "module": module, "ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "verdict": verdict,
                "public_only": public_only, "fast": fast, "reward": round(sc.reward, 4), "full_pass": sc.full_pass,
                "public": f"{ok_pub}/{len(pub)}", "other": f"{ok_hid}/{len(hid)}",
-               "r": [round(x, 4) for x in (sc.r0, sc.r1, sc.r2, sc.r3, sc.r4)],
+               "r": [round(x, 4) for x in (sc.r0, sc.r1, sc.r2, sc.r3, sc.r4)], "r4_na": sc.r4_na,
                "failing_vectors": [v.index for v in res.vectors if not v.ok][:50],
                "failing_sequences": [q.name for q in res.sequences if not q.ok],
                "invariant_failures": {k: v["detail"][:200] for k, v in res.invariant_failures().items()}}
@@ -923,7 +1098,8 @@ class Project:
     # ---------------------------------------------------------------- trace
     def trace(self, signals: Sequence[str], ticks: Optional[int] = None, seq: Optional[str] = None,
               sets: Optional[str] = None, vector: Optional[int] = None, module: Optional[str] = None,
-              public_only: Optional[bool] = None, width: int = 100) -> str:
+              public_only: Optional[bool] = None, width: int = 100, from_tick: Optional[int] = None,
+              to_tick: Optional[int] = None) -> str:
         import random
         from env.runner import Driver, prepare, read_port
         from env.sim import Sim, compile_cells
@@ -1006,7 +1182,12 @@ class Project:
             evs = sorted(q.events, key=lambda e: e.t)
             ei = 0
             rows = {k: [] for k in readers}
-            for t in range(q.duration + 1):
+            horizon = q.duration
+            if ticks is not None:
+                horizon = min(horizon, int(ticks))
+            if to_tick is not None:
+                horizon = min(horizon, int(to_tick))
+            for t in range(horizon + 1):
                 while ei < len(evs) and evs[ei].t <= t:
                     for k, val in evs[ei].set.items():
                         drv.set(ports[k], val)
@@ -1014,7 +1195,7 @@ class Project:
                     events.append(f"t={t} set {evs[ei].set}")
                     ei += 1
                 sample()
-                if t < q.duration:
+                if t < horizon:
                     sim.step()
             for e in q.expect:
                 events.append(f"expect {e.port}={e.value} {'all' if e.mode == 'all' else 'any'} t={e.t1}..{e.t2}")
@@ -1060,6 +1241,17 @@ class Project:
             for _ in range(ticks or 40):
                 sim.step()
                 sample()
+        if from_tick is not None or (to_tick is not None and not mode.startswith("sequence")):
+            n_all = max((len(v) for v in rows.values()), default=0)
+            lo = max(0, int(from_tick or 0))
+            hi = min(n_all - 1, int(to_tick)) if to_tick is not None else n_all - 1
+            if lo > hi:
+                return f"error: --from {from_tick} is past the end of the trace ({n_all} ticks, 0..{n_all - 1})"
+            rows = {k: v[lo:hi + 1] for k, v in rows.items()}
+            marks = {t - lo: m for t, m in marks.items() if lo <= t <= hi}
+            mode += f"; window ticks {lo}..{hi} of {n_all}"
+        elif mode.startswith("sequence") and (ticks is not None or to_tick is not None):
+            mode += f"; first {horizon} of {q.duration} ticks"
         L = [f"TRACE {', '.join(readers)}  stimulus: {mode}; at rest after {t_rest} ticks" + ("" if ok else " (NOT at rest)")]
         L.append(V.timing_diagram(rows, marks, width))
         L.append("edges (value@tick): " + " | ".join(f"{k}: {V.edges(v, 8)}" for k, v in rows.items()))
@@ -1070,6 +1262,104 @@ class Project:
         text = "\n".join(L)
         (self.mira / "traces").mkdir(exist_ok=True)
         (self.mira / "traces" / "last.txt").write_text(text)
+        return clip(text)
+
+    # ---------------------------------------------------------------- spec-check / verify-vanilla
+    def _spec_blocks(self, contract, module: Optional[str], extra: dict):
+        """(blocks for the contract, rev number) of the build the spec is checked against, or (None, reason)."""
+        if module is None:
+            try:
+                r = self._current()
+            except ProjectError as e:
+                return None, str(e).splitlines()[0]
+            return self._for_contract(contract, [tuple(b) for b in r.data["blocks"]]), r.n
+        entry, text = self._module_program(module, extra)
+        asm, b = self.compile(entry, text)
+        if asm.errors or b is None or b.errors:
+            return None, "module does not build"
+        return self._for_contract(contract, b.blocks), 0
+
+    def spec_check(self, module: Optional[str] = None, mutants: int = 12, no_mutation: bool = False, seed: int = 0,
+                   budget: float = 240.0) -> str:
+        """Is the spec any good? Schema (readable errors), cells the ports point at, vacuity (outputs that never change,
+        inputs that never matter, an empty build that passes), IO coverage and a mutation score of the spec against the
+        current build (surviving mutants = behaviour the spec does not pin down)."""
+        from mira_mcp import project_checks as C
+        t0 = time.time()
+        sp = self.dir / ("spec.json" if module is None else f"modules/{module}.spec.json")
+        if not sp.exists():
+            return f"error: no {sp.relative_to(self.dir)}; write a contract v2 first (docs/PRODUCT.md, spec cheat sheet)"
+        try:
+            raw = json.loads(sp.read_text())
+        except ValueError as e:
+            return f"SPEC-CHECK FAIL: {sp.name} is not valid JSON: {e}"
+        probs = C.schema_problems(raw.get("contract", raw) if module else raw)
+        if probs:
+            return clip(f"SPEC-CHECK FAIL: {len(probs)} schema problem(s) in {sp.name}\n" + "\n".join(f"  - {x}" for x in probs)
+                        + "\nnext: fix them, then run `spec-check` again (docs/PRODUCT.md has a contract cheat sheet)")
+        contract, extra = self.contract(module)
+        blocks, rev_n = self._spec_blocks(contract, module, extra)
+        findings, L = [], []
+        n_in, n_out = len(contract.inputs), len(contract.outputs)
+        n_seq = len(contract.behaviour.sequences)
+        L.append(f"spec {sp.name}: '{contract.id}', {n_in} inputs / {n_out} outputs, {len(contract.vectors())} vectors, {n_seq} sequences; schema ok")
+        findings += C.vacuity(contract)
+        if blocks is None:
+            L.append(f"build: not available ({rev_n}); port-cell, empty-build and mutation checks skipped")
+        else:
+            from env.runner import fixed_cells, run
+            from env.score import score
+            world = {p_: st for p_, st in fixed_cells(contract).items()}
+            world.update({(b_[0], b_[1], b_[2]): b_[3] for b_ in blocks})
+            findings += C.port_cell_findings(contract, world)
+            try:
+                if score(contract, run(contract, [], fast=True)).full_pass:
+                    findings.append("an EMPTY build passes this spec (fixed scenery alone satisfies every check): the spec is vacuous")
+            except Exception as e:  # noqa: BLE001
+                L.append(f"empty-build run failed: {type(e).__name__}: {str(e)[:120]}")
+        L += ["coverage: " + x if i == 0 else "          " + x for i, x in enumerate(C.coverage_lines(contract))]
+        surv = 0
+        if blocks is not None and not no_mutation:
+            groups = None
+            if module is None:
+                try:
+                    rv = self.rev(rev_n)
+                    groups = {(b_[0], b_[1], b_[2]): (path.split("/", 1)[0] if path else rv.file_of(line)[0])
+                              for b_, (path, line) in zip(rv.data["blocks"], rv.data["prov"])}
+                except ProjectError:
+                    groups = None
+            res = C.mutation(contract, blocks, max_mutants=int(mutants), seed=int(seed), budget_s=float(budget), groups=groups)
+            L += C.mutation_lines(res, groups)
+            surv = len(res.get("survivors", []))
+        elif no_mutation:
+            L.append("mutation: skipped (--no-mutation)")
+        status = "OK" if not findings and not surv else "WARN"
+        head = (f"SPEC-CHECK {status}" + (f" (rev {rev_n})" if blocks is not None and module is None else "")
+                + f": {len(findings)} finding(s)" + (f", {surv} surviving mutant(s)" if surv else "") + f"  ({time.time() - t0:.1f}s)")
+        out = [head] + [f"  FINDING: {x}" for x in findings] + L
+        if status == "OK":
+            out.append("next: the spec looks strong; hand it to the user for sign-off, then test/export")
+        return clip("\n".join(out))
+
+    def verify_vanilla(self, max_vectors: int = 12, every: bool = False, variants: int = 0, seed: int = 1, workers: int = 3,
+                       second_origin: bool = False) -> str:
+        """Replay spec.json in the vanilla 26.2 oracle (one JVM per capture) at the env's origin, and compare with the env
+        verdict per vector / sequence. Big tables are sampled (max_vectors); `every` replays all."""
+        from mira_mcp import project_checks as C
+        contract, extra = self.contract()
+        if contract is None:
+            return "error: no spec.json; write a contract v2 (docs/PRODUCT.md spec cheat sheet) first"
+        blocks, rev_n = self._spec_blocks(contract, None, extra)
+        if blocks is None:
+            return f"error: {rev_n}"
+        res = C.vanilla(contract, blocks, max_vectors=int(max_vectors), every=bool(every), variants=int(variants), seed=int(seed),
+                        workers=int(workers), second_origin=bool(second_origin))
+        text = C.vanilla_text(res, rev_n)
+        if res.get("available"):
+            rec = {"rev": rev_n, "ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "verdict": "PASS" if text.startswith("VERIFY-VANILLA") and ": PASS" in text.split("\n", 1)[0] else "FAIL",
+                   "cases": res["cases"], "captures": [{k: v for k, v in c.items() if k != "labels"} for c in res["captures"]]}
+            (self.mira / "vanilla_receipt.json").write_text(json.dumps(rec, indent=1, default=str))
+            self._log({"event": "verify_vanilla", "rev": rev_n, "verdict": rec["verdict"]})
         return clip(text)
 
     # ---------------------------------------------------------------- notes-check
@@ -1096,17 +1386,32 @@ class Project:
             hist |= {Path(f).stem for f in m.get("files", [])}
         allcur = set().union(*cur.values())
         world = self.world(r)
+        spec_boxes = []        # cells the spec reserves on purpose: port boxes, fixed scenery (incl. air reservations), keep_clear, no_write
+        if contract:
+            spec_boxes += [list(pp.box) for pp in contract.ports if pp.box]
+            spec_boxes += [list(f["box"]) for f in contract.fixed]
+            spec_boxes += [list(b_) for b_ in list(contract.keep_clear) + list(contract.no_write) + list(contract.invariants.change_boxes)]
+        in_spec = lambda pos: any(b_[0] <= pos[0] <= b_[3] and b_[1] <= pos[1] <= b_[4] and b_[2] <= pos[2] <= b_[5] for b_ in spec_boxes)  # noqa: E731
+
+        def expand(kind_names: str):
+            """'ff0..ff3' / 'ff0..3' -> ['ff0', ..., 'ff3']; anything else -> [name]."""
+            m = re.fullmatch(r"(.*?)(\d+)\.\.(?:\1)?(\d+)", kind_names)
+            if m and int(m.group(2)) <= int(m.group(3)) and int(m.group(3)) - int(m.group(2)) < 1000:
+                return [f"{m.group(1)}{i}" for i in range(int(m.group(2)), int(m.group(3)) + 1)]
+            return [kind_names]
         stale, checked = [], Counter()
         text = re.sub(r"<!--.*?-->", lambda m: "\n" * m.group().count("\n"), p.read_text(), flags=re.S)
         for ln, line in enumerate(text.splitlines(), 1):
-            for kind, name in re.findall(r"\b(port|label|module|inst|part):([A-Za-z0-9_.\[\]#/-]+[A-Za-z0-9_\]#])", line):
-                checked[kind] += 1
-                if name not in cur[kind]:
-                    stale.append(f"NOTES.md:{ln}: {kind}:{name} does not exist in rev {r.n}" + (" (it existed in an earlier revision)" if name in hist else ""))
+            for kind, rng in re.findall(r"\b(port|label|module|inst|part):([A-Za-z0-9_.\[\]#/-]+[A-Za-z0-9_\]#])", line):
+                for name in expand(rng):
+                    checked[kind] += 1
+                    if name not in cur[kind]:
+                        stale.append(f"NOTES.md:{ln}: {kind}:{name}{' (from ' + rng + ')' if name != rng else ''} does not exist in rev {r.n}"
+                                     + (" (it existed in an earlier revision)" if name in hist else ""))
             for tok in re.findall(r"`([^`\s]+)`", line):
                 if re.match(r"^(port|label|module|inst|part):", tok) or re.fullmatch(r"[(\[]?-?\d+,\s*-?\d+,\s*-?\d+[)\]]?", tok):
                     continue
-                if tok in allcur:
+                if all(t_ in allcur for t_ in expand(tok)):
                     checked["name"] += 1
                 elif tok in hist:
                     checked["name"] += 1
@@ -1115,7 +1420,7 @@ class Project:
                 pos = tuple(int(v) for v in xs)
                 checked["coord"] += 1
                 if pos not in world and not any(tuple(v["pos"]) == pos for v in d["ports"].values()) \
-                        and not any(tuple(pp.pos) == pos for pp in (contract.ports if contract else [])):
+                        and not any(tuple(pp.pos) == pos for pp in (contract.ports if contract else [])) and not in_spec(pos):
                     stale.append(f"NOTES.md:{ln}: no block at {list(pos)} in rev {r.n} (and no port there)")
         summary = ", ".join(f"{n} {k}" for k, n in sorted(checked.items())) or "no references found"
         if not stale:
@@ -1246,6 +1551,15 @@ class Project:
         return "\n".join(out)
 
 
+def _raw_note(raw: str, now: str) -> str:
+    """'  (raw: ...)' when settling changed a cell; property-level change when the short forms look the same."""
+    if raw == now:
+        return ""
+    if V.short(raw) != V.short(now):
+        return f"  (raw: {V.short(raw)})"
+    return f"  (raw differs: {V.state_change(raw, now)})"
+
+
 def _flow(state: str) -> str:
     bid, props = V.split(state)
     opp = {"north": "south", "south": "north", "east": "west", "west": "east"}
@@ -1273,7 +1587,7 @@ def _cell_value(state: str) -> str:
 
 # --------------------------------------------------------------------------- dispatch (CLI + MCP share it)
 COMMANDS = ("init", "build", "overview", "view", "find", "query", "diff", "test", "trace", "notes-check", "export",
-            "paste-check", "log", "init-module", "show")
+            "paste-check", "log", "init-module", "show", "nets", "spec-check", "verify-vanilla")
 
 
 def run(project, cmd: str, **kw) -> str:
@@ -1284,22 +1598,31 @@ def run(project, cmd: str, **kw) -> str:
             return out
         p = Project(resolve(project) if not isinstance(project, Path) else project)
         if cmd == "build":
-            return p.build(kw.get("message", ""))
+            return p.build(kw.get("message", ""), kw.get("timeout"))
         if cmd == "overview":
             return p.overview(kw.get("rev"))
         if cmd == "view":
-            return p.view(kw["layer"], kw.get("box"), kw.get("rev"))
+            return p.view(kw.get("layer"), kw.get("box"), kw.get("rev"), axis=kw.get("axis"), at=kw.get("at"),
+                          settled=bool(kw.get("settled")))
         if cmd == "find":
             return p.find(kw["pattern"], kw.get("rev"))
         if cmd == "query":
-            return p.query(kw["x"], kw["y"], kw["z"], kw.get("radius", 0), kw.get("rev"))
+            return p.query(kw["x"], kw["y"], kw["z"], kw.get("radius", 0), kw.get("rev"), settled=bool(kw.get("settled")))
         if cmd == "diff":
-            return p.diff(kw.get("a"), kw.get("b"), kw.get("examples", 10))
+            return p.diff(kw.get("a"), kw.get("b"), kw.get("examples", 10), bool(kw.get("raw_vs_settled")))
+        if cmd == "nets":
+            return p.nets(kw.get("rev"), kw.get("name"), bool(kw.get("warnings")))
         if cmd == "test":
             return p.test(kw.get("module"), kw.get("public_only", False), kw.get("fast", False))
         if cmd == "trace":
             return p.trace(kw.get("signals") or [], kw.get("ticks"), kw.get("seq"), kw.get("sets"), kw.get("vector"),
-                           kw.get("module"), kw.get("public_only"), kw.get("width", 100))
+                           kw.get("module"), kw.get("public_only"), kw.get("width", 100), kw.get("from_tick"), kw.get("to_tick"))
+        if cmd == "spec-check":
+            return p.spec_check(kw.get("module"), kw.get("mutants", 12), bool(kw.get("no_mutation")), kw.get("seed", 0),
+                                kw.get("budget", 240.0))
+        if cmd == "verify-vanilla":
+            return p.verify_vanilla(kw.get("max_vectors", 12), bool(kw.get("all")), kw.get("variants", 0), kw.get("seed", 1),
+                                    kw.get("workers", 3), bool(kw.get("second_origin")))
         if cmd == "notes-check":
             return p.notes_check(kw.get("rev"))
         if cmd == "export":

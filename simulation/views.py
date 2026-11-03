@@ -237,9 +237,94 @@ def slice_view(cells: Dict[Pos, str], y: int, box: Optional[Sequence[int]] = Non
     return "\n".join(out)
 
 
+def axis_view(cells: Dict[Pos, str], axis: str, at: int, box: Optional[Sequence[int]] = None, max_cols: int = 100,
+              max_rows: int = 60) -> str:
+    """Full-resolution slice perpendicular to `axis` at coordinate `at`: axis 'y' = the layer view (box x0 z0 x1 z1);
+    'x' = columns z, rows y (top = highest; box z0 y0 z1 y1); 'z' = columns x, rows y (box x0 y0 x1 y1)."""
+    if axis == "y":
+        return slice_view(cells, at, box, max_cols, max_rows)
+    if axis not in ("x", "z"):
+        return f"error: axis must be x, y or z, got {axis!r}"
+    bb = bounds(cells)
+    if bb is None:
+        return "(empty build)"
+    ci, name_c = (2, "z") if axis == "x" else (0, "x")      # horizontal axis of the picture
+    layer = {(p[ci], p[1]): s for p, s in cells.items() if p[0 if axis == "x" else 2] == at}
+    c0, c1, r0, r1 = bb[0][ci], bb[1][ci], bb[0][1], bb[1][1]
+    if box is not None:
+        c0, r0, c1, r1 = min(box[0], box[2]), min(box[1], box[3]), max(box[0], box[2]), max(box[1], box[3])
+    notes = []
+    if c1 - c0 + 1 > max_cols:
+        notes.append(f"{name_c} clipped to {c0}..{c0 + max_cols - 1} of {c0}..{c1}")
+        c1 = c0 + max_cols - 1
+    if r1 - r0 + 1 > max_rows:
+        notes.append(f"y clipped to {r1 - max_rows + 1}..{r1} of {r0}..{r1}")
+        r0 = r1 - max_rows + 1
+    sel = {k: v for k, v in layer.items() if c0 <= k[0] <= c1 and r0 <= k[1] <= r1}
+    yw = max(len(str(r0)), len(str(r1)))
+    out = [f"slice {axis}={at}  {name_c} {c0}..{c1} (columns)  y {r0}..{r1} (rows, top = highest)  {len(sel)} blocks"]
+    out.append(" " * (yw + 1) + "".join(str(abs(c) // 10 % 10) if (c % 10 == 0 or c == c0) else " " for c in range(c0, c1 + 1)))
+    out.append(" " * (yw + 1) + "".join(str(abs(c) % 10) for c in range(c0, c1 + 1)))
+    used = set()
+    for r in range(r1, r0 - 1, -1):
+        row = []
+        for c in range(c0, c1 + 1):
+            ch = glyph(sel[(c, r)]) if (c, r) in sel else "."
+            used.add(ch)
+            row.append(ch)
+        out.append(f"{r:>{yw}} " + "".join(row))
+    out.append("legend: " + legend(used))
+    if notes:
+        out.append("CLIPPED: " + "; ".join(notes) + f" -> pass --box {name_c}0 y0 {name_c}1 y1")
+    return "\n".join(out)
+
+
+def raw_vs_settled(raw: Dict[Pos, str], settled: Dict[Pos, str], examples: int = 3, tile: int = 16) -> str:
+    """Which cells did settling (placement + running to rest) change relative to the raw program? Grouped by block kind,
+    with the property-level change that dominates each kind."""
+    added, removed, changed = diff_cells(raw, settled)
+    if not (added or removed or changed):
+        return "raw program == settled world (nothing changes on the way to rest)"
+    by = defaultdict(lambda: {"n": 0, "what": Counter(), "ex": []})
+    key = lambda p: (p[1], p[2], p[0])
+    for p in sorted(changed, key=key):
+        old, new = changed[p]
+        kind = split(old)[0] if split(old)[0] == split(new)[0] else f"{split(old)[0]}->{split(new)[0]}"
+        d = by[kind]
+        d["n"] += 1
+        d["what"][state_change(old, new)] += 1
+        if len(d["ex"]) < examples:
+            d["ex"].append(f"    {list(p)} {state_change(old, new)}")
+    for p in sorted(removed, key=key):
+        d = by[split(removed[p])[0] + " (removed)"]
+        d["n"] += 1
+        d["what"]["removed"] += 1
+        if len(d["ex"]) < examples:
+            d["ex"].append(f"    {list(p)} {short(removed[p])} removed")
+    for p in sorted(added, key=key):
+        d = by[split(added[p])[0] + " (added)"]
+        d["n"] += 1
+        d["what"]["added"] += 1
+        if len(d["ex"]) < examples:
+            d["ex"].append(f"    {list(p)} {short(added[p])} added")
+    L = [f"settling changed {len(changed) + len(removed) + len(added)} of {len(raw)} cells "
+         f"(~{len(changed)} changed, +{len(added)} added, -{len(removed)} removed), by block kind:"]
+    for kind, d in sorted(by.items(), key=lambda kv: -kv[1]["n"])[:14]:
+        top = "; ".join(f"{w} x{n}" for w, n in d["what"].most_common(2))
+        L.append(f"  {kind}: {d['n']}  ({top})")
+        L += d["ex"]
+    if len(by) > 14:
+        L.append(f"  ... (+{len(by) - 14} more kinds)")
+    tiles = Counter((p[0] // tile * tile, p[2] // tile * tile) for p in [*changed, *removed, *added])
+    L.append("by region (x-z tiles): " + "; ".join(f"x{x}..{x + tile - 1} z{z}..{z + tile - 1}: {n}" for (x, z), n in tiles.most_common(5)))
+    return "\n".join(L)
+
+
 def group_key(path: str) -> str:
     """Instance path -> module group: first path segment with array indices / trailing digits collapsed
     ('fa3/cell' -> 'fa#', 'row[2]' -> 'row[]')."""
+    if path.startswith("net:"):      # router wiring (Part.route): one group, `nets` lists the individual nets
+        return "(nets)"
     head = path.split("/", 1)[0]
     head = re.sub(r"\[\d+\]", "[]", head)
     return re.sub(r"\d+$", "#", head)

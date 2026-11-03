@@ -7,11 +7,12 @@ in vanilla Minecraft 26.2.
 
 ```
 mira_mcp/project.py     Project: init, import assembly, revisions, every command (returns compact text)
-simulation/views.py     pure renderers: overview maps, slices, diffs, timing diagrams (no simulator, no project state)
+mira_mcp/project_checks.py  spec-check (schema, vacuity, coverage, mutation) and verify-vanilla (env vs vanilla replay)
+simulation/views.py     pure renderers: overview maps, slices (y / x / z), diffs, raw-vs-settled, timing diagrams (no simulator, no project state)
 simulation/export.py    settle -> .litematic (Nucleation), vanilla structure .nbt (own writer), path check, paste_check (oracle)
 scripts/mira.py         CLI (same commands)
 mira_mcp/server.py      + project_* MCP tools (additive; the session tools are unchanged)
-tests/project/          35 offline tests (~20-30 s; the vanilla paste test runs when the oracle is installed, else it is skipped)
+tests/project/          69 offline tests (~30 s; the vanilla tests run when the oracle is installed, else they are skipped)
 ```
 
 ```bash
@@ -29,19 +30,27 @@ alias mira='.venv/bin/python scripts/mira.py'
 3. **Modules**: put cells and helpers in `modules/NAME.py`. Import them into `build.py` with `from modules.NAME import x`, and import library parts
    with `from lib.full_adder import full_adder` (the project's `lib/` is searched first, then the repo's `lib/`). `mira init-module NAME` writes
    a template and, once the part compiles, a module spec skeleton.
-4. **build**: compiles in the sandbox and stores revision N. Errors are reported as `file:line`. A successful build reports blocks, bbox,
-   palette, blocks per source file, blocks per instance group, ports, the change against the previous revision, and whether the build obeys
-   the spec's rules (build box, fixed cells).
-5. **overview**: always under 80 lines at any size (measured up to 101k blocks, below). It shows the module tree with bboxes, ports, a
-   top-down class map beside a module-letter map, a side elevation, and the commands to run next. Then drill down:
-   - `view --layer Y [--box x0 z0 x1 z1]`
-   - `find PATTERN`
-   - `query X Y Z [-r R]`, which also shows the source `file:line` that wrote each block
+4. **build** `[-m MSG] [--timeout N]`: compiles in the sandbox (default limit 120 s CPU; a runaway program is reported as
+   "build exceeded its Ns limit ... raise it with `build --timeout N`") and stores revision N. Errors are reported as `file:line`.
+   A successful build reports blocks, bbox, palette, blocks per source file, blocks per instance group (router wiring is the group
+   `(nets)`), ports, the routed-net summary, **route WARNINGs** (a face-only gate pin joined from a side, ...), the program's
+   `print()` output (first 40 lines, `MIRA_BUILD_LOG_LINES`; a failed build shows it too), the change against the previous revision,
+   and whether the build obeys the spec's rules (build box, fixed cells).
+5. **overview**: always under 80 lines at any size (measured up to 101k blocks, below). It shows the module tree with bboxes, a
+   `(nets)` row for the router wiring, ports, a top-down class map beside a module-letter map, a side elevation, and the commands to
+   run next. Then drill down:
+   - `view --layer Y [--box x0 z0 x1 z1]`, or `view --axis x|z --at N [--box a0 y0 a1 y1]` for elevations (x: columns z; z: columns x)
+   - `view/query --settled`: the **at-rest world** (placement + running to rest: pistons extended, lamps lit, dust powered), not the raw
+     program; `diff --raw-vs-settled` lists which cells settling changed, grouped by block kind
+   - `find PATTERN` (also matches nets)
+   - `query X Y Z [-r R]`, which also shows the source `file:line` (and the net, `[net:q1]`) that wrote each block
+   - `nets [--name PAT] [--warnings]`: every routed net: source, sinks, route cells, repeaters, strength at each sink (and its need), notes
 6. **test** (`[--module NAME] [--public-only] [--fast]`): the env runner and score over `spec.json` or a module spec. It rebuilds first if the sources
-   changed.
-7. **trace / fix**: `trace PORT... [--vector K | --seq NAME | --set "A=1;A=0" | --ticks N]` draws an ASCII timing diagram of spec ports,
-   build ports or `x,y,z` cells under the test's stimulus. Fix the code, rebuild, then use `diff` (block-level, grouped by module and region)
-   and `log`.
+   changed. R4 prints `n/a` when the spec has no `reference` size (the machine-readable `r4_na` field is in `.mira/last_test.json`).
+7. **trace / fix**: `trace PORT... [--vector K | --seq NAME | --set "A=1;A=0" | --ticks N] [--from T] [--to T]` draws an ASCII timing diagram of spec
+   ports, build ports or `x,y,z` cells under the test's stimulus (`--ticks`/`--from`/`--to` also work with `--seq`; a window or a cut-off
+   saves time on long sequences). Fix the code, rebuild, then use `diff` (block-level, grouped by module and region) and `log`.
+   **Is the spec good?** `spec-check [--mutants N] [--no-mutation]` (below); **does vanilla agree?** `verify-vanilla` (below).
 8. **notes**: keep `NOTES.md` true. `notes-check` reports references that no longer exist. Write references as `port:NAME`, `label:NAME`,
    `module:NAME`, `inst:PATH`, `part:NAME` or `(x, y, z)`; backticked names that existed in an earlier revision are checked too.
 9. **export**: `export [--litematic OUT] [--nbt OUT] [--no-fixed] [--force]` writes the settled at-rest world (build + spec scenery),
@@ -52,7 +61,8 @@ alias mira='.venv/bin/python scripts/mira.py'
 Every command prints compact text, clipped at `MIRA_MAX_CHARS` (12000) with an explicit notice. The CLI exit code is 1 when the first line
 says `error:`, `FAILED`, `FAIL` or `REFUSED`. Which project is used: `-p NAME|PATH`, else `$MIRA_PROJECT`, else the project that contains
 the current directory. The MCP tools are `project_init, project_build, project_overview, project_view, project_find, project_query,
-project_diff, project_test, project_trace, project_notes_check, project_export, project_paste_check, project_init_module, project_log`.
+project_diff, project_test, project_trace, project_notes_check, project_export, project_paste_check, project_init_module, project_log`
+(the new `nets`, `spec-check`, `verify-vanilla` commands and the new flags exist in the CLI and in `project.run(...)`; `mira_mcp/server.py` has no tools for them yet).
 Each takes `project` (name or path) and returns the same text as the CLI. The agent edits files with its own file tools.
 
 ## Project layout and the import mechanism
@@ -333,20 +343,181 @@ Reading: size depends on structure (number of module groups, port groups, kinds)
 largest is 39 lines / ~950 tokens. Not measured: builds with hundreds of differently named port groups (port lines are capped, the rest
 reachable via `find`).
 
+## Wiring a project: `b.route`, `b.route_all`, `nets` (2026-11-03)
+
+Wiring between lib cells is the part agents spent most time on in the free-form pilot (`docs/EXPERIMENT_04.md`). Rules the router now
+enforces, and how the project commands expose them (details: `docs/ROUTER.md`):
+
+```python
+def build(b):
+    ...
+    # one call, the router orders the nets (most constrained pin first, then shortest) and rips up blockers when a net fails
+    for n in b.route_all([("x1.Y", "g1.A"), ("rst_inv.Y", ["g1.B", "g2.B"], "rstn"), ("ff0.Q", ["L0", "d0.A"], "q0")],
+                         box=BOX, floor_y=0):
+        print(n.summary())
+    b.route("RST", "p_rst.A", name="rst", need=2, restore=True)      # single net; restore=True allows a repeater on the last cell
+```
+
+- **Port entry rules.** A lib input pin whose inward neighbour does not connect to dust (`and2.A/B`, `not_gate.A`, `demux2.EN`) is a *face-only* pin: joined from a side, the dust bends and stops powering that
+  neighbour, and the gate is silently dead. The sidecar `lib/*.meta.json` records `ports.<P>.entry = "face" | "any"`; `b.route` joins a
+  face pin only through its face. If the face is blocked the route **fails** (`net 'q1': sink g1.B: no legal path ...; port g1.B must be
+  entered through its face ...`) unless you pass `allow_side=True`, which gives a build WARNING naming the pin. `strict=False` returns the
+  unrouted `Net` instead of raising. Ports of user parts: wrapper ports declared on the *same cell* as an inner lib port (`p.port("A",
+  inner["A"], ...)`) inherit entry and need from it; other ports get the rule from their cells (a repeater/comparator/dust behind the pin
+  connects, so the pin is `any`).
+- **Needs.** Sinks get the measured minimum input strength (`full_adder.CIN` 7, `d_flipflop.CLK` 3 ...). `mux2` is analog (its output
+  follows its input strength): its data inputs need 13 and `mux2.Y` is a 13-strength source; a wrapper that puts a `restorer` on the
+  output is not analog. `need=N` on `route`/`route_all` overrides every derived minimum of that net.
+- **Logs and warnings.** `build` prints the program's `print()` output, the number of routed nets and route WARNINGs. `nets` lists every
+  net (name, src -> sinks, route cells, repeaters, `sink=strength(need)`, notes, source line); `nets --warnings` only the interesting
+  ones. Router wiring is the module group `(nets)` in `overview`, `diff` and the module letters; `query` shows `[net:NAME]`.
+- **Failures.** A failed `route`/`route_all` names the net, the sink/source pin and the reason, who holds the cells next to the pin, the
+  nets nearby that block it, and draws a 19x11 ASCII map of the pin's layer (`@` pin, letters = nets, `#` blocks, `~` reserved).
+
+## `spec-check`: is the spec any good? (`mira_mcp/project_checks.py`)
+
+```text
+$ mira spec-check --mutants 12
+SPEC-CHECK WARN (rev 1): 0 finding(s), 5 surviving mutant(s)  (3.2s)
+spec spec.json: 'counter', 2 inputs / 4 outputs, 0 vectors, 7 sequences; schema ok
+coverage: sequences: count_up_wrap(17 events, 72 checks, 1100t), ...
+          inputs (2): BTN 7 presses; RST 6 presses
+          outputs (4): L0 67 checks (0:35/1:32); ...
+mutation: 7/12 mutants of the build killed by the spec (58%), 0 broke only structural invariants (not behaviour), 5 survived  [3.2s]
+  SURVIVED: repeater [44, 5, 20] delay 1->2  [net:clk]
+  weakness hints: the spec does not observe net:clk (2), rst_dly (1) - add vectors/sequences ...
+```
+
+1. **Schema** (before anything runs): readable errors with the offending path and "did you mean" for misspelled keys: missing/unknown keys,
+   `build_box` not a single 6-integer box or outside `bbox`, port kind/pos/bbox, duplicate port names, `fixed` entries, unknown ports in
+   rows/events/expects, values other than 0/1/null (`expect`) or 0/1/`init`/`!init` (sequence windows), window outside `duration`, `mode`
+   other than `all`/`any`. A schema failure is `SPEC-CHECK FAIL` (exit code 1).
+2. **Ports vs the build**: a `click` input must sit on a lever/button/plate in the build + scenery, a `pad` cell must be empty, a `lamp`/
+   `wire_power`/`piston`/`torch` output must point at that block.
+3. **Vacuity** (`FINDING:` lines): an output never checked, or only ever expected to be one value (a build that never drives it can
+   pass); an input never driven, or set in vectors but no two vectors differing only in it expect different outputs (the spec cannot
+   tell whether it is wired); an **empty build** that passes.
+4. **Coverage**: vectors (public/hidden, distinct input combinations of 2^n, don't-care share), sequences, per-input rises/falls (pulse
+   inputs: presses), per-output checks split by expected value.
+5. **Mutation** (skipped when the build does not pass its own spec, or `--no-mutation`): `env/mutate.py` breaks redstone components of
+   the current build one at a time (remove / flip / turn / shift / repeater delay / torch or wire -> stone), capped at `--mutants`
+   (default 12) and `--budget` seconds (240), run in worker processes. *Killed* = a vector or sequence fails; *structural only* =
+   it still behaves but breaks an invariant (floating dust: says nothing about the spec); *survived* = passes everything: behaviour the
+   spec does not pin down. Survivors are listed with their module/net, with a hint. Survivors can be legitimate redundancy (a delay
+   nothing depends on); read them before adding vectors.
+
+Status `OK` needs no findings and no survivors; otherwise `WARN`.
+
+## `verify-vanilla`: does vanilla agree with the env?
+
+Replays `spec.json` in the vanilla 26.2 oracle exactly as the env scored it (`tools/oracle/envplan.py`: the env's at-rest handover
+world, the env's vector order and per-vector tick counts, every sequence as its own capture, the build at the env's absolute cells),
+**one JVM per capture** (`--workers` at a time, default 3), then compares the verdict per vector / sequence: vanilla, the Nucleation
+replay, and the env.
+
+```text
+$ mira verify-vanilla --second-origin
+VERIFY-VANILLA rev 1: PASS  24/24 checks pass in vanilla 26.2 (2 captures, one JVM each, 12.6s)
+  case origin: env full pass yes; vectors replayed 12/1024 (sampled; --all replays every vector)
+  origin @ env origin: 12/12 ok in vanilla (vanilla origin [0, 0, 0])
+  origin @ second origin +73,0,+74: 12/12 ok in vanilla (vanilla origin [73, 0, 74])
+```
+
+- Big tables are sampled (`--max-vectors`, default 12: random sample, env order kept, for shuffled/reset-between tables; the first N for
+  stateful sequential tables); `--all` replays everything (the replay is one capture, so runtime ~ ticks, not vectors).
+- `--second-origin` replays the build at a random second absolute origin (vanilla update order depends on position);
+  `--variants K` adds K rotated/mirrored copies (`env/variants.py` seeds `--seed`..; each is re-run in the env first).
+- A line like `1 pass in the env but FAIL in vanilla` is the interesting class: a spec-passing build that vanilla refuses.
+- `VERIFY-VANILLA UNAVAILABLE` without the oracle (`bash scripts/oracle_setup.sh`). Receipt: `.mira/vanilla_receipt.json`.
+- Measured (2026-11-03, pilot rebuilds): counter (7 sequences) 7/7 in 25 s; with `--variants 2 --second-origin` 28/28 in 82 s; 4-bit ALU (1024
+  vectors, 12 sampled) 12/12 at both origins in 2 min (mostly the env run); flush door 4/4 in 7 s.
+
+## Spec authoring cheat sheet (contract v2 fields agents trip over; full reference `docs/ENV.md`)
+
+```jsonc
+{"id": "door", "title": "...", "tier": "free", "description": "what the user asked",
+ "bbox": [-3, 0, -2, 12, 6, 16],                    // the simulated world: everything (scenery, build, ports, hallway)
+ "build_box": [0, 1, 0, 10, 4, 14],                 // ONE box [x1,y1,z1,x2,y2,z2] the build may write (bounding box of an L-shape)
+ "ports": [{"name": "BTN", "kind": "click", "pos": [0, 1, 7], "pulse": true, "doc": "stone button"},
+           {"name": "OPEN", "kind": "region", "pos": [4, 1, 3], "box": [4, 1, 3, 5, 2, 3], "region_mode": "air"},
+           {"name": "L0", "kind": "lamp", "pos": [8, 1, 0]}],
+ "fixed": [{"box": [-3, 0, -2, 12, 0, 16], "state": "minecraft:smooth_stone"},               // floor
+           {"box": [0, 1, 7, 0, 1, 7], "state": "minecraft:stone_button[face=floor,facing=east]"},   // ONE cell = a degenerate box
+           {"box": [0, 1, 9, 0, 1, 9], "state": "minecraft:air"}],                          // air entry = reserved (pad) cell
+ "behaviour": {"truth_table": {"rows": [{"inputs": {"A": 1}, "expect": {"Y": 0}, "public": true}], "settle": 100, "extra": 2},
+               "sequences": [{"name": "press", "events": [{"t": 10, "set": {"BTN": 1}}],
+                              "expect": [{"port": "OPEN", "value": "!init", "t1": 40, "t2": 60, "mode": "all"}], "duration": 100}]},
+ "keep_clear": [], "no_write": [], "reference": {"blocks": 40, "volume": 300}}
+```
+
+- **Fixed entries are boxes**, never lists of cells or `{"pos": ...}`: one cell is `[x,y,z,x,y,z]`. They are immutable scenery *and* devices:
+  levers, buttons, lamps, floors, pistons. A fixed `minecraft:air` box reserves cells (the build may not use them; `pad` inputs live there).
+  The build may re-state a fixed cell with the identical state (it is dropped), and then `build.py` need not contain the device.
+- **`build_box` is one box.** If the build is L-shaped, give the bounding box and use `keep_clear` / `no_write` for holes.
+- **Input kinds.** `click` on a lever: value 1/0 = powered/unpowered (a click only when the level differs). `click` + `pulse: true` on
+  a button: value 1 = press (`use_block`), value 0 = **nothing** (the button releases itself: stone 20 ticks, wood 30). In vanilla a press on a
+  button that is still down is ignored, so space presses by more than the release time unless that is the test (the counter pilot measured
+  that a clock built on buttons misbehaves when two presses come within ~30 ticks).
+  `pad`: an empty reserved cell; 1 places a `redstone_block`, 0 places air. Table rows: unlisted inputs **keep their previous value**
+  (no reset between vectors unless `reset_between`), rows run in a seeded random order when `shuffle` (so a row must not depend on the
+  previous row for a combinational spec).
+- **Output kinds.** `lamp` lit, `wire_power` (`min_power`, default 1), `piston` extended, `torch` lit, `block_prop` (`{"prop","value","block"}`),
+  `region` (`box` + `region_mode`: `air` = 1 iff all air, `solid` = 1 iff none air *including piston heads / moving pistons*, `block`,
+  `block_in` + `blocks: [ids]` for "one of these real blocks is here"). Every port needs `pos`, also a `region` (give any cell of its `box`).
+- **Rest state and polarity.** Every vector/sequence starts from the *at-rest* world: the build + scenery placed, settled, run to
+  quiescence (`budgets.rest` ticks), inputs at their fixed/initial state. Outputs are read from that world: a lamp wired through a NOT
+  gate is **lit at rest**, a door that is closed is `OPEN=0`. Write the first expectation of a sequence for tick 0..3 against the rest
+  state, or use `"init"` / `"!init"` (same as / opposite of the at-rest value) when the polarity is the builder's choice. Sequence tick
+  `t` = state after `t` ticks; events at `t` are applied before reading `t`; `mode: all` = holds at every tick of `[t1,t2]`, `any` = at
+  least once. A repeater step is 2 ticks, a comparator 2, a torch 2; give windows slack for the real delay (measure with `trace`).
+- **Public and hidden.** `public: true` rows/sequences are shown to the builder (here: yourself); hidden ones count in `test` but are
+  not described by `feedback`. A table whose public rows hold only one value of an output is vacuous (`spec-check` says so).
+  Add hidden reversed copies of a table to catch leftover state; `order_independent: true` re-runs in a second random order.
+- **R4 and `reference`.** `reference: {"blocks": n, "volume": v}` is a size to beat; without it R4 prints `n/a` (and counts as 1.0 in the
+  reward, which is only a convenience: ignore R4 for free-form projects).
+- **Invariants worth knowing.** `no_collateral` (nothing changes outside `bbox` + `change_boxes`, no fixed device replaced), `keep_clear`
+  (cells stay air at every sampled tick: hallways, door cells), `paste_stable` (the saved at-rest world is unchanged by a paste),
+  `no_popoff` (every component has support), `at_rest` (turn off for free-running clocks).
+- **Ask before you spec.** `spec-check` finds the cheap mistakes; the spec is still *your reading of the request*. Show the user the
+  rows/sequences (`spec-check` prints the coverage) before relying on a PASS.
+
+## EXPERIMENT_04 backlog: status (2026-11-03)
+
+| item | status |
+|---|---|
+| 1 silent dead gates | face-only pins recorded in the sidecars, router refuses side joins (`allow_side`), `strict`, build WARNING, tests |
+| 2 `need` for mux2 / wrapped parts, restorers | analog mux2 (13), alias inheritance, `need=` documented, `restore=True` (repeater on the last cell) |
+| 3 power-on state sensitivity | not addressed (lib cell state; use `export`'s baked file) |
+| 4 invisible logs / nets | `build` prints print() + route summary + warnings; `nets`; `(nets)` group in overview/diff |
+| 5 router rip-up | `b.route_all(order='auto')` + rip-up/retry; failures name blockers and draw a map |
+| 6 timeout message | `build --timeout N`, "exceeded its Ns limit" instead of `exit -24` |
+| 7 settled view | `view/query --settled`, `diff --raw-vs-settled` |
+| 8 vanilla replay | `verify-vanilla` |
+| 9 spec validation | `spec-check` |
+| 10 R4 n/a | printed `n/a`, `r4_na` in the report |
+| 11 notes-check | ranges, spec boxes |
+| 12 trace window | `--ticks/--from/--to` with `--seq` |
+| 13 overview/side view | `(nets)` grouping, `view --axis x|z` |
+| 14 BuilderError in sandbox | defined (`from simulation.builder import *` and as a builtin) |
+| 15 contract authoring gaps | the cheat sheet above |
+
 ## Command reference (CLI = MCP)
 
 | command | what it returns |
 |---|---|
 | `init NAME [--from-task ID] [--from-litematic F] [--program F] [--dir P] [--lenient]` | created files; `--from-litematic` decompiles (lossless gate) and implies `--lenient` (block ids unknown to the 1.21 validator pass through) |
-| `build [-m MSG]` | `BUILD OK rev N hash ...` + palette, per-file and per-instance-group counts, ports, change vs previous, spec rules; or `BUILD FAILED` with `file:line: kind: message` |
+| `build [-m MSG] [--timeout N]` | `BUILD OK rev N hash ...` + palette, per-file and per-instance-group counts, ports, net summary, route WARNINGs, print() log, change vs previous, spec rules; or `BUILD FAILED` with `file:line: kind: message` (router failures name the net, the pin, the reason, the blocking nets and a small ASCII map) |
 | `overview [--rev N]` | see above |
-| `view --layer Y [--box x0 z0 x1 z1]` | 1:1 slice; repeaters `> < ^ v` and comparators `} { A V` show the signal flow; `@` lit lamp, `t` wall torch; clipped at 100x60 with a notice |
-| `find PATTERN` | spec ports (+doc), build ports (+face), labels, instances (part, at, rot, blocks, bbox, `file:line` of the place call), files, block ids with example coords; substring or glob |
-| `query X Y Z [-r R]` | states (redstone-relevant props) + `file:line [instance]` or `spec fixed`, NBT for one cell; repeater/comparator flow spelled out |
-| `diff [A [B]]` | added/removed/changed counts, by module group and 16x16 tile, examples with property-level changes, changed source files |
+| `view --layer Y \| --axis x\|y\|z --at N [--box ..] [--settled]` | 1:1 slice (y layers, or x / z elevations with y as rows); repeaters `> < ^ v` and comparators `} { A V` show the signal flow; `@` lit lamp, `t` wall torch; `--settled` shows the at-rest world; clipped at 100x60 with a notice |
+| `find PATTERN` | spec ports (+doc), build ports (+face), labels, instances (part, at, rot, blocks, bbox, `file:line` of the place call), nets, files, block ids with example coords; substring or glob |
+| `query X Y Z [-r R] [--settled]` | states (redstone-relevant props) + `file:line [instance or net:NAME]` or `spec fixed`, NBT for one cell; repeater/comparator flow spelled out; `--settled` adds the at-rest state with the raw one in `(raw: ...)` |
+| `diff [A [B]] [--raw-vs-settled]` | added/removed/changed counts, by module group and 16x16 tile, examples with property-level changes, changed source files; `--raw-vs-settled`: which cells settling changes, by block kind |
+| `nets [--name PAT] [--warnings]` | every `b.route`/`b.route_all` net: name, src -> sinks, route cells, repeaters, strength at each sink (need), notes/warnings, source line; one net shows delay per sink and the rule each sink came from |
+| `spec-check [--module M] [--mutants N] [--no-mutation] [--budget S]` | schema problems (readable), ports pointing at the wrong block, vacuity findings, IO coverage, mutation score and surviving mutants as spec-weakness hints |
+| `verify-vanilla [--max-vectors N] [--all] [--variants K] [--second-origin] [--workers W]` | replays the spec in vanilla 26.2 (one JVM per capture), per vector / sequence env-vs-vanilla verdicts; receipt in `.mira/vanilla_receipt.json` |
 | `test [--module M] [--public-only] [--fast]` | verdict line (public, other, reward), `env.score.feedback` text, failing non-public vectors/sequences (product mode: the spec is the agent's own) |
-| `trace SIG... [--vector K] [--seq S] [--set "A=1;A=0"] [--ticks N] [--all] [--module M]` | timing diagram (100 columns, downsampled with `*` for activity), edges, stimulus list with settle ticks and WRONG outputs |
-| `notes-check` | stale references with NOTES.md line numbers |
+| `trace SIG... [--vector K] [--seq S] [--set "A=1;A=0"] [--ticks N] [--from T] [--to T] [--all] [--module M]` | timing diagram (100 columns, downsampled with `*` for activity), edges, stimulus list with settle ticks and WRONG outputs; `--ticks/--from/--to` also with `--seq` |
+| `notes-check` | stale references with NOTES.md line numbers; ranges (`inst:ff0..ff3`, `` `L0..3` ``) are expanded; coordinates inside spec port boxes, `fixed` boxes (also air reservations), `keep_clear`, `no_write`, `change_boxes` count as known cells |
 | `export [--litematic F] [--nbt F] [--no-fixed] [--force]` | file, settle, readback, path check; refuses builds that never rest unless `--force` |
 | `paste-check [--file F] [--ticks N] [--modes known_shape,place]` | receipt |
 | `log [-n N]` | revisions with test verdicts and messages |
@@ -355,7 +526,7 @@ reachable via `find`).
 ## Deviations, limits, open problems
 
 - **Paste-check checks what the paste puts into the world, not behaviour in vanilla.** It places the file, idles and diffs. Replaying the
-  spec in vanilla is `scripts/oracle_sessions.py` (the A5 owner). The two modes approximate Litematica's direct paste (`known_shape`, no
+  spec in vanilla is `verify-vanilla` (below; `scripts/oracle_sessions.py` is the older harness). The two modes approximate Litematica's direct paste (`known_shape`, no
   neighbour updates) and `/setblock`/structure-block placement with updates (`place`). The real Litematica mod and the 1.21.0 Carpet server
   were **not** exercised.
 - **The vanilla structure `.nbt` is written by our own NBT writer**, because Nucleation 0.12.0 cannot write it (`save_to_file_with_format`
@@ -376,13 +547,13 @@ reachable via `find`).
   incrementally.
 - Not done:
   - no `checkout`/`undo` command (the sources of every revision are in `.mira/revs/N/src/`; restoring is a copy);
-  - `view` slices are y-layers only;
   - unknown backticked words in NOTES.md are ignored unless they were names in an earlier revision.
 - `--lenient` lets unknown block ids compile, but `export`, `test` and `trace` then depend on Nucleation loading them; a failure comes back
   as `EXPORT FAILED: simulator cannot load the build: ...`.
 
 ## Requests to owners of frozen files (nothing there was edited)
 
+0. (done 2026-11-03) `env/score.py` prints `R4=n/a` when the contract has no reference size (`Score.r4_na`; `r4` stays 1.0).
 1. `env/score.py::feedback`: a `product=True` mode would help. Project mode sees the whole spec, so it should list failing non-public vectors
    and print the full R0-R4 score line. Today `project.test` adds those lines itself and rewrites the `SCORE (public checks only)` line.
 2. `env/sim.py::compile_cells`: document or accept SNBT for `nbt` (it passes `json.dumps(nbt[pos])` to `set_block_with_nbt`). Then export

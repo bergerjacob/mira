@@ -3,7 +3,7 @@
 `simulation/router.py` routes redstone nets in 3D around everything already placed; `simulation/modules.py` turns lib
 cells into modules with ports and specs, places them, connects their ports with routed nets and localises faults.
 `Part.route(...)` in `simulation/builder.py` is a thin delegate so a sandboxed build program can call the router.
-Tests: `tests/unit/test_router.py` (23), `tests/unit/test_modules.py` (16, one marked `slow`).
+Tests: `tests/unit/test_router.py` (61), `tests/unit/test_modules.py` (19, one marked `slow`), `tests/project/test_nets_and_checks.py` (`nets`, build log, warnings).
 
 ```bash
 .venv/bin/python -m pytest tests/unit/test_router.py tests/unit/test_modules.py -q   # ~50 s, offline (Nucleation only)
@@ -30,11 +30,91 @@ def build(b):
     print(n.summary())                               # cells, repeaters, strength at every sink
 ```
 
-`b.route(src, sinks, name=None, need=None, box=None, avoid=None, keep_clear=None, floor_y=None)`; `src`/`sinks` are
-`"inst.PORT"`, `(x, y, z)` or `((x, y, z), face)`. Everything already on the Part is an obstacle; earlier routes and their
-staircase clearances are remembered per Part. `avoid` = fixed task cells the Part does not hold (levers, lamps) or 6-tuple
+`b.route(src, sinks, name=None, need=None, box=None, avoid=None, keep_clear=None, floor_y=None, strict=True, restore=False, allow_side=False)`;
+`src`/`sinks` are `"inst.PORT"`, `(x, y, z)` or `((x, y, z), face)`. Everything already on the Part is an obstacle; earlier routes and
+their staircase clearances are remembered per Part. `avoid` = fixed task cells the Part does not hold (levers, lamps) or 6-tuple
 boxes. `floor_y=0` = the task floor exists (no supports written there). Default box = bounding box of the Part + 4.
-Unroutable -> `BuilderError("route: sink f1.CIN: no legal path ...")` with the reason.
+
+| argument | meaning |
+|---|---|
+| `need` | minimum dust strength at **every dust sink** of this net. Overrides everything derived (below). Default: the measured minimum of the lib port the sink stands for (`full_adder.CIN` 7), `mux2` data inputs 13, otherwise 1 |
+| `strict` | `True` (default): an unroutable net raises `BuilderError("route: net 'q1': sink g1.B: no legal path ... (reason, blocking nets, ASCII map)")`; `False`: returns the `Net` with `ok == False`, `net.reason`, no cells |
+| `restore` | `True`: a repeater may also stand on the last cell before a sink (it faces the pin and powers it with a fresh 15). Without it a sink whose `need` cannot be met by dust + in-line repeaters fails with a hint |
+| `allow_side` | `True`: a face-only dust pin (below) may be joined from a side if its face is unreachable. The net routes, `net.warnings` and a build WARNING say the gate is probably dead |
+
+`b.route_all(nets, order="auto", box=None, avoid=None, keep_clear=None, floor_y=None, strict=True, restore=False, allow_side=False, need=None)`
+routes a batch: `nets` = `[(src, sinks)]`, `(src, sinks, name)`, `(src, sinks, name, need)` or dicts (`src, sinks, name, need, restore,
+allow_side`). Returns the `Net`s in the order given. See "route_all" below.
+
+Every routed net is written into the Part with provenance `net:NAME` and listed in `build.stats["nets"]`; project mode shows them with
+`mira nets` and groups them as `(nets)` in `overview` (docs/PRODUCT.md). `net.summary()` prints cells, repeaters and the strength at every
+sink; `net.note` / `net.warnings` / `net.infos` list side joins.
+
+### Port entry rules (dead gates)
+
+A dust port is joined by a route cell on its **face** side. When the cell inside the part (opposite the face) does **not connect to
+dust** (a solid block that feeds a torch, a lamp, ...), the port dust only powers it while its single connection is the face: joined
+from a side the dust bends (`west + north`) and no longer points at that block. The first free-form pilot hit this twice (`and2`/
+`not_gate` joined from the side, net marked ok, R2 100 %, the gate silent). `lib/*.meta.json` now records per port
+`entry`: `"face"` (the route must arrive through the face) or `"any"` (the inward neighbour is dust, an aligned repeater, a comparator, a
+lever, a redstone torch, an observer's back: the side join only adds a connection). Measured on all lib parts with
+`python env/library.py entries` (rule: `router.entry_rule`) and checked against the simulator by joining each input from a free side:
+`and2.A/B` and `not_gate.A` are `face` and the truth table fails from either free side; `demux2.EN` is `face` (no free side to test). Every
+other input of the 17 parts (27 ports: `mux2`, `or2`, `nor2`, `xor2` A/B, `half_adder` A/B, `full_adder` A/B/CIN, `restorer`, `delay_line`,
+`edge_detector`, `d_flipflop`, `t_flipflop`, `sr_latch`, `crossover`, `wire_link`, `demux2.A`) is `any` and passes from every free side that was
+testable (a first rule that only looked at the neighbour inside the part called `xor2.B`, `half_adder.B`, `full_adder.A/CIN` face-only; the
+probe showed they work from a side because a repeater under-and-beside them reads the block under the dust, so the rule now includes it).
+Outputs are always `any`.
+
+- The router never relaxes a `face` pin to a side join unless `allow_side=True`.
+- `any` pins may still fall back to a side when their face is blocked; the build then carries one aggregated WARNING ("N dust port(s)
+  joined from a side other than their face; harmless") and `nets` lists the pins in `net.infos`.
+- Ports of your own parts: a wrapper port declared on the same cell as an inner lib port (`p.port("A", g["A"], kind="in", face=WEST)`)
+  is an alias and inherits entry rule, measured need and analog-ness from it (the builder records `(part, port)` per port, nested
+  names included, so renamed instances work). Any other port gets `entry_rule` from the cells in the Part (a wrapper with a dust cell and
+  a repeater in front of the gate is `any`). A raw coordinate that is a registered port gets the same rules as its name.
+
+### Needs, analog parts, restoring
+
+- `need` per sink = `min_in_strength_per_port` of the lib port (alias-aware), raised to 13 for `mux2.A/B` (**analog**: Y follows the
+  input strength, measured 15/9/5 for 0/6/10 dust cells). A wrapper that puts a lib non-analog output (a `restorer`) on `Y` is not
+  analog: its inputs only need the lib minimum. Source side: `mux2.Y` is a 13-strength source (`Pin.level`), so the router adds repeaters
+  after it when the net is long. Override with `need=`.
+- The router still inserts repeaters only on flat straight non-pin cells; `restore=True` adds the last cell before a sink for leaf sinks.
+  Where neither is possible the error says so (`no straight flat cell left for a repeater (restore=True also allows ...)`); then move a
+  module or lower `need` if the lib cell tolerates it.
+
+### route_all: ordering, rip-up, failure reports
+
+`Router.route_all(specs, order="auto", rounds=2, max_retries=16)` (`Part.route_all` wraps it):
+
+1. Pins of every pending net are announced (`reserve_pins`) so early nets do not wall in later pins.
+2. Order: `auto` = nets with a pin that has at most one free attach cell first (a face-only port counts its face only), then shortest total
+   Manhattan length first (each extra sink adds 6); `short`, `constrained` (fewest free attach cells), `given` also exist.
+3. Failed nets are retried after ripping up the nets **of this batch** whose cells are within 2 of their pins: the nearest blocker alone,
+   then the 2 and 3 nearest; the failed net routes first, the blockers behind it; any failure restores the previous state exactly.
+   Retries use a smaller search budget (80k states) so a hopeless net costs seconds, not minutes.
+4. A net that still fails reports `net 'a': sink g.A: no legal path ...`, who holds the cells next to the pin, `blocking nets nearby:
+   'wall'`, and a map:
+
+```
+route_all: 1 of 1 nets unroutable (after ordering and rip-up):
+net 'a': sink g.A: no legal path (21756 states explored); port g.A must be entered through its face (the dust feeds a non-conducting block: a side join leaves the gate dead); free the cells in front of it, or pass allow_side=True
+next to g.A: west cell (19, 1, 5): free, but dust there would touch net(s) 'wall'
+blocking nets nearby: 'wall'
+map y=1, x 11..29, z 0..10 (@ = pin)
+  .......#...........
+  .......a...........
+  .......a.@###......
+  ...
+  legend: a=wall  #=block ~=reserved/outside/keep_clear .=free
+```
+(the `next to PIN` line lists, per attach cell of the pin, the block, net, reserved air, box limit or touching net that denies it.)
+
+Measured (`tests/unit/test_router.py`, 16x16 box, 12 lever->lamp nets): in-order routing 8 nets (seed 6), `route_all(auto)` 12; with
+rip-up 11 vs 10 without it (seed 0). Pilots (2026-11-03, plain lib gates, no wrappers, one `route_all` call): 4-bit counter 20/20 nets,
+1950 blocks, build 17 s, 7/7 sequences pass in the env and in vanilla; 4-bit ALU 44/44 nets with default needs (mux inputs 13), 2833 blocks,
+build 8.5 s, 1024/1024 rows pass (`test --fast` 60 s), 12 sampled vectors pass in vanilla at two origins.
 
 **Outside the sandbox (trusted design scripts, harness tools)**:
 
@@ -68,9 +148,9 @@ Low level: `R.Router(world, box, keep_clear, reserved, floor_y)`, `.route(name, 
 | climb: the cell above the lower dust stays air; step down: the upper dust stands on a full block (not a slab), the cell above the lower dust stays air. These air cells are reserved for the whole session | a conductor above the lower dust cuts the step; dust on a slab cannot step down (`step_down_over_slab_is_dead`) |
 | crossings = 3D routing; a route over a foreign line uses a top-slab support | "hop on top slabs does not leak", "hop on full blocks leaks" (T4 facts) |
 | repeaters only on flat, straight, single-child, non-pin cells, inserted after routing from the sinks upward so that every sink gets its `need`; `facing = opposite(flow)` | repeaters on turns/junctions kill branches; a repeater only takes input from behind |
-| lib input ports need their measured `min_in_strength_per_port` (`full_adder.CIN` 7); `mux2` data inputs need 13 and its Y is assumed to carry only 13 | `mux2` passes the input strength through (measured: A at 9 -> Y at 9, see below) |
+| lib input ports need their measured `min_in_strength_per_port` (`full_adder.CIN` 7); `mux2` data inputs need 13 and its Y is assumed to carry only 13 (unless a restorer sits behind it) | `mux2` passes the input strength through (measured: A at 9 -> Y at 9, see below) |
 | a sink lamp may also be fed by dust standing on it | a lamp is a conductor |
-| nothing outside `box`, inside `keep_clear`, on reserved pad cells or on existing blocks; a one-sided dust port is joined from its face, other sides only as a fallback (`net.note` says so) | task bounds; lib port conventions |
+| nothing outside `box`, inside `keep_clear`, on reserved pad cells or on existing blocks; a one-sided dust port is joined from its face; other sides only as a fallback for `entry: any` ports (or with `allow_side=True`) | task bounds; lib port conventions; a face-only port joined from a side is a dead gate (entry rules above) |
 
 Search: A* over (cell, incoming direction, support kind), costs for length, turns (0.4), height steps (+0.5), new supports
 (0.5), slabs (+0.3), passing next to other nets (0.15) and passing next to the pins of nets not routed yet (soft keep-out,
@@ -162,7 +242,9 @@ Not exhaustive: 2048 rows x 2 would take ~30 min in the env; the sample always c
 - Paste repair is a check-and-retry, not a rule; a design can still end with a paste failure (reported in `res.errors`).
 - Repeater placement is strength-driven only; there is no delay balancing (hold times of sequential designs are untested
   with routed nets; only combinational designs were benchmarked).
-- `Part.route` derives lib sink needs from the instance's part name (`lib/<part>.meta.json`), so renamed copies get need 1.
+- `Part.route` resolves sink needs/entries through the builder's port table (`part -> lib port` per port, alias by cell), so renamed instances and aliased wrapper ports work; a wrapper port on a *new* cell (a repeater in front of the gate) gets need 1 and its geometric entry rule. Pass `need=` for it.
+- `restore=True` does not conjure space: it only adds the last-cell repeater. Where a net needs strength and has no straight flat cell, it still fails.
+- `route_all` ripping up is local (nets of the batch near the failed pins), not a global negotiated-congestion router.
 - `Design` runs in-process (not sandboxed): for trusted scripts / harness tools only.
 - Timing numbers were taken under heavy load from four parallel agents.
 
@@ -174,4 +256,4 @@ Not exhaustive: 2048 rows x 2 would take ~30 min in the env; the sample always c
    vanilla agrees with the Placement reload, `compile_cells` should place dust in a second pass (all non-dust first, then
    dust, then re-place dust ends) or settle shapes after placement; then `repair_paste` becomes a no-op.
 3. `AGENTS.md` and `evaluation/prompts/builder_system.md`: mention `b.route(...)` and `simulation/modules.py` (example above).
-4. `mira_mcp/` (A1 project mode): expose `Design.check().summary()` and `Router.report()` as tools; both return plain text.
+4. `mira_mcp/` (A1 project mode): expose `Design.check().summary()` and `Router.report()` as tools; both return plain text (project mode now has `nets`, which lists `Part.route` nets from the build record; `Design` is still not exposed).

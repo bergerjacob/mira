@@ -15,7 +15,8 @@
     1,
     0
    ],
-   "face": "west"
+   "face": "west",
+   "entry": "face"
   },
   "B": {
    "dir": "in",
@@ -24,7 +25,8 @@
     1,
     2
    ],
-   "face": "west"
+   "face": "west",
+   "entry": "face"
   },
   "Y": {
    "dir": "out",
@@ -33,7 +35,8 @@
     1,
     1
    ],
-   "face": "east"
+   "face": "east",
+   "entry": "any"
   }
  },
  "footprint": {
