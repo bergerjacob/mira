@@ -118,7 +118,7 @@ AGENTS_TEMPLATE = """# {name}: MIRA project
 
 This directory is a Minecraft contraption as a code project. Work here with your normal file tools plus the `mira` CLI.
 Files: `spec.json` (what "works" means; write it first), `build.py` + `modules/` (Part API program), `NOTES.md` (intent, assumptions, named places), `.mira/` (generated: revisions, reports, exports - do not edit).
-Loop: `mira build` -> `mira overview` -> `mira test` -> `mira trace PORT --seq NAME` -> fix -> `mira spec-check` -> `mira verify-vanilla` -> `mira export --litematic OUT` -> `mira paste-check`.
+Loop: `mira build` -> `mira overview` -> `mira test` -> `mira trace PORT --seq NAME` -> fix -> `mira spec-check` -> `mira export --litematic OUT` -> `mira verify-vanilla --all` -> `mira paste-check` -> `mira status`.
 Full guide: the `mira` skill (skills/mira/SKILL.md) and docs/PRODUCT.md in the MIRA repo.
 Hand over the exported .litematic, not a raw block list. Spec the timing real users produce; write assumptions in NOTES.md.
 """
@@ -477,6 +477,13 @@ class Project:
         for rel in self.source_files():
             if rel.endswith(".py"):
                 h.update(rel.encode() + b"\0" + (self.dir / rel).read_bytes() + b"\0")
+        # Imported repository cells and routing metadata are build inputs too.
+        asm = Assembly(self.dir)
+        for rel in sorted(asm.files):
+            if asm.lib_from_repo.get(rel):
+                h.update(rel.encode() + b"\0" + asm.read(rel).encode() + b"\0")
+        from mira_mcp.evidence import engine
+        h.update(engine()["implementation"].encode())
         return h.hexdigest()
 
     def world(self, rev: Rev, with_fixed: bool = True) -> Dict[tuple, str]:
@@ -663,7 +670,9 @@ class Project:
         lt = self._last_test()
         spec = (f"spec: {contract.id} ({len(contract.inputs)} in / {len(contract.outputs)} out), fixed scenery {len(fixed)} blocks"
                 if contract else "spec: none")
-        L.append(spec + (f"; last test rev {lt['rev']}: {lt['verdict']}" if lt else "; not tested yet"))
+        from mira_mcp.evidence import bind, current
+        freshness = "" if current(lt, bind(self, r)) else " STALE (inputs changed or unbound legacy result)"
+        L.append(spec + (f"; last test rev {lt['rev']}: {lt['verdict']}{freshness}" if lt else "; not tested yet"))
         L.append("palette: " + V.palette_line(cells, 8))
         # module tree
         prov = d["prov"]
@@ -1070,6 +1079,8 @@ class Project:
             blocks = b.blocks
             rev_n = self.revs()[-1] if self.revs() else 0
         blocks = self._for_contract(contract, blocks)
+        from mira_mcp.evidence import bind
+        binding = bind(self, self.rev(rev_n), module) if self.revs() else None
         res = run(contract, blocks, public_only=public_only, fast=fast)
         sc = score(contract, res)
         pub = [v for v in res.vectors if v.public] + [q for q in res.sequences if q.public]
@@ -1102,6 +1113,9 @@ class Project:
                "failing_vectors": [v.index for v in res.vectors if not v.ok][:50],
                "failing_sequences": [q.name for q in res.sequences if not q.ok],
                "invariant_failures": {k: v["detail"][:200] for k, v in res.invariant_failures().items()}}
+        if binding is not None:
+            rec["binding"] = binding
+        rec["scope"] = ("public-only" if public_only else "all-spec-checks") + ("; fast: determinism not checked" if fast else "")
         (self.mira / ("last_test.json" if module is None else f"last_test_{module}.json")).write_text(json.dumps(rec, indent=1))
         with open(self.mira / "tests.jsonl", "a") as fh:
             fh.write(json.dumps(rec) + "\n")
@@ -1354,9 +1368,8 @@ class Project:
         return clip("\n".join(out))
 
     def verify_vanilla(self, max_vectors: int = 12, every: bool = False, variants: int = 0, seed: int = 1, workers: int = 3,
-                       second_origin: bool = False) -> str:
-        """Replay spec.json in the vanilla 26.2 oracle (one JVM per capture) at the env's origin, and compare with the env
-        verdict per vector / sequence. Big tables are sampled (max_vectors); `every` replays all."""
+                       second_origin: bool = False, file: Optional[str] = None, origin=None) -> str:
+        """Replay the exported file, never a separately reconstructed world. Big tables may be sampled."""
         from mira_mcp import project_checks as C
         contract, extra = self.contract()
         if contract is None:
@@ -1364,12 +1377,49 @@ class Project:
         blocks, rev_n = self._spec_blocks(contract, None, extra)
         if blocks is None:
             return f"error: {rev_n}"
+        from mira_mcp.evidence import artifact, bind, current, file_hash, resolve_path
+        from simulation import export as X
+        from tools.oracle import gametest
+        if max_vectors < 1 or workers < 1 or variants < 0:
+            return "error: max-vectors/workers must be positive and variants nonnegative"
+        if file is None:
+            path, exported = self._export_record()
+        else:
+            path = Path(file).expanduser().resolve()
+            ep = self.mira / "exports/last_export.json"
+            exported = json.loads(ep.read_text()) if ep.exists() else {}
+            saved = exported.get("artifact", {}).get("file")
+            if not saved or resolve_path(self.dir, saved).resolve() != path:
+                exported = {}
+        if origin is None:
+            origin = exported.get("litematic_info", {}).get("origin")
+        if origin is None or len(origin) != 3:
+            return "error: --file needs --origin X Y Z (world position of the file's minimum corner) or a recorded export"
+        X.require_state_only(path)
+        info = artifact(self.dir, path)
+        loaded, source_dv = gametest.load_build(path)
+        if not loaded:
+            return "error: empty artifact"
+        mn = [min(b[i] for b in loaded) for i in range(3)]
+        world = [(*(b[i] - mn[i] + int(origin[i]) for i in range(3)), *b[3:]) for b in loaded]
+        binding = bind(self, self.rev(rev_n))
         res = C.vanilla(contract, blocks, max_vectors=int(max_vectors), every=bool(every), variants=int(variants), seed=int(seed),
-                        workers=int(workers), second_origin=bool(second_origin))
+                        workers=int(workers), second_origin=bool(second_origin), artifact_world=world, source_dv=source_dv)
+        if file_hash(path) != info["sha256"]:
+            return "VERIFY-VANILLA FAILED: artifact changed during verification"
         text = C.vanilla_text(res, rev_n)
+        text += f"\nartifact: {path} sha256 {info['sha256']}"
         if res.get("available"):
             rec = {"rev": rev_n, "ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "verdict": "PASS" if text.startswith("VERIFY-VANILLA") and ": PASS" in text.split("\n", 1)[0] else "FAIL",
-                   "cases": res["cases"], "captures": [{k: v for k, v in c.items() if k != "labels"} for c in res["captures"]]}
+                   "cases": res["cases"], "captures": [{k: v for k, v in c.items() if k != "labels"} for c in res["captures"]],
+                   "artifact": info, "binding": binding, "origin": list(origin),
+                   "project_linked": bool(current(exported, binding)
+                                          and exported.get("artifact", {}).get("sha256") == info["sha256"]
+                                          and exported.get("options") == {"include_fixed": True, "force": False}
+                                          and list(origin) == exported.get("litematic_info", {}).get("origin")),
+                   "oracle": gametest.versions(), "file_data_version": source_dv, "scope": res.get("scope"),
+                   "options": {"max_vectors": max_vectors, "all": every, "variants": variants, "seed": seed,
+                               "workers": workers, "second_origin": second_origin}}
             (self.mira / "vanilla_receipt.json").write_text(json.dumps(rec, indent=1, default=str))
             self._log({"event": "verify_vanilla", "rev": rev_n, "verdict": rec["verdict"]})
         return clip(text)
@@ -1444,10 +1494,16 @@ class Project:
                force: bool = False) -> str:
         from simulation import export as X
         r = self._current() if rev is None else self.rev(rev)
-        try:
-            contract, _ = self.contract()
-        except ProjectError:
-            contract = None
+        from mira_mcp.evidence import artifact, bind
+        binding = bind(self, r)
+        if r.data.get("entities") or any(b[4] for b in r.data["blocks"]):
+            return "EXPORT REFUSED: certified export currently supports entity-free, NBT-free builds only; source payloads are retained"
+        contract, _ = self.contract()  # Existing invalid specs must not silently lose their scenery.
+        if contract is not None:
+            from env.runner import prepare
+            prepared = prepare(contract, self._for_contract(contract, r.data["blocks"]))
+            if prepared.errors:
+                return "EXPORT REFUSED: task rules: " + "; ".join(prepared.errors[:6])
         world = self.world(r, include_fixed)
         budget = contract.budgets.rest if contract else 400
         t0 = time.time()
@@ -1464,6 +1520,9 @@ class Project:
         lit = Path(litematic) if litematic else out_dir / f"{self.name}-r{r.n}.litematic"
         li = X.save_litematic(cells, str(lit), nbt_map, ents, name=self.name)
         rec = {"rev": r.n, "hash": r.meta["hash"], "litematic": str(lit.resolve()), "litematic_info": li,
+               "binding": binding, "artifact": artifact(self.dir, lit),
+               "options": {"include_fixed": include_fixed, "force": force},
+               "scope": "payload-free block states; baked export, behaviour not certified",
                "settle": info, "include_fixed": include_fixed, "ts": time.strftime("%Y-%m-%dT%H:%M:%S")}
         L = [f"EXPORT rev {r.n}: {lit} ({li['blocks']} blocks, settled in {info['ticks']} ticks"
              + ("" if info["at_rest"] else ", NOT at rest (forced)") + f", {info['changed']} cells changed by settling, "
@@ -1489,18 +1548,54 @@ class Project:
         self._log({"event": "export", "rev": r.n, "file": str(lit)})
         return "\n".join(L)
 
+    def _export_record(self):
+        """Reuse only a current, full-scenery export with the recorded bytes; otherwise refresh it."""
+        from mira_mcp.evidence import artifact_matches, bind, current, resolve_path
+        r = self._current()
+        p = self.mira / "exports/last_export.json"
+        rec = json.loads(p.read_text()) if p.exists() else None
+        if not (current(rec, bind(self, r)) and artifact_matches(self.dir, rec.get("artifact"))
+                and rec.get("options") == {"include_fixed": True, "force": False}):
+            out = self.export()
+            if not out.startswith("EXPORT rev"):
+                raise ProjectError(out)
+            rec = json.loads(p.read_text())
+        return resolve_path(self.dir, rec["artifact"]["file"]), rec
+
+    def status(self):
+        """Evidence ledger: freshness, scope and file identity, without running any checks."""
+        from mira_mcp.evidence import artifact_matches, bind, current
+        if not self.revs():
+            return "STATUS: no successful build; run build"
+        r = self.rev()
+        binding = bind(self, r)
+        lines = [f"STATUS rev {r.n}: " + ("sources current" if r.meta.get("source_hash") == self.source_hash() else "sources STALE; rebuild")]
+        ep = self.mira / "exports/last_export.json"
+        exported = json.loads(ep.read_text()) if ep.exists() else {}
+        for label, rel in (("test", "last_test.json"), ("export", "exports/last_export.json"),
+                           ("vanilla behaviour", "vanilla_receipt.json"), ("paste", "paste_receipt.json")):
+            p = self.mira / rel
+            rec = json.loads(p.read_text()) if p.exists() else None
+            if not rec:
+                lines.append(f"  {label}: NOT RUN")
+                continue
+            fresh = current(rec, binding) and (not rec.get("artifact") or artifact_matches(self.dir, rec["artifact"]))
+            if label == "export":
+                fresh = fresh and artifact_matches(self.dir, rec.get("artifact"))
+            if label in ("vanilla behaviour", "paste"):
+                fresh = (fresh and rec.get("project_linked", False)
+                         and rec.get("artifact", {}).get("sha256") == exported.get("artifact", {}).get("sha256"))
+            lines.append(f"  {label}: {'CURRENT' if fresh else 'STALE'} {rec.get('verdict', 'written')}"
+                         + f" [{rec.get('scope', 'see record')}]" )
+        lines.append("A current PASS is evidence for the recorded scope only, not proof the user's request is fully specified.")
+        return "\n".join(lines)
+
     def paste_check(self, file: Optional[str] = None, ticks: int = 40, modes=("known_shape", "place")) -> str:
         from simulation import export as X
+        from mira_mcp.evidence import artifact, bind
         if file is None:
-            last = self.mira / "exports" / "last_export.json"
-            r = self._current()
-            rec = json.loads(last.read_text()) if last.exists() else None
-            if rec is None or rec["hash"] != r.meta["hash"] or not Path(rec["litematic"]).exists():
-                out = self.export()
-                if not out.startswith("EXPORT rev"):
-                    return out
-                rec = json.loads(last.read_text())
-            file, rev_n = rec["litematic"], rec["rev"]
+            file, rec = self._export_record()
+            rev_n = rec["rev"]
         else:
             rev_n = None
         try:
@@ -1509,6 +1604,10 @@ class Project:
             return f"PASTE CHECK UNAVAILABLE: {e}"
         receipt["rev"] = rev_n
         receipt["project"] = self.name
+        receipt["artifact"] = artifact(self.dir, file)
+        receipt["project_linked"] = rev_n is not None
+        if rev_n is not None:
+            receipt["binding"] = rec["binding"]
         (self.mira / "paste_receipt.json").write_text(json.dumps(receipt, indent=1))
         self._log({"event": "paste_check", "rev": rev_n, "verdict": receipt["verdict"]})
         return X.receipt_text(receipt) + f"\nreceipt: {self.mira / 'paste_receipt.json'}"
@@ -1599,7 +1698,7 @@ def _cell_value(state: str) -> str:
 
 # --------------------------------------------------------------------------- dispatch (CLI + MCP share it)
 COMMANDS = ("init", "build", "overview", "view", "find", "query", "diff", "test", "trace", "notes-check", "export",
-            "paste-check", "log", "init-module", "show", "nets", "spec-check", "verify-vanilla")
+            "paste-check", "log", "init-module", "show", "nets", "spec-check", "verify-vanilla", "status")
 
 
 def run(project, cmd: str, **kw) -> str:
@@ -1609,6 +1708,8 @@ def run(project, cmd: str, **kw) -> str:
             _, out = Project.init(kw.pop("name", None) or str(project), **kw)
             return out
         p = Project(resolve(project) if not isinstance(project, Path) else project)
+        if cmd == "status":
+            return p.status()
         if cmd == "build":
             return p.build(kw.get("message", ""), kw.get("timeout"))
         if cmd == "overview":
@@ -1634,7 +1735,7 @@ def run(project, cmd: str, **kw) -> str:
                                 kw.get("budget", 240.0))
         if cmd == "verify-vanilla":
             return p.verify_vanilla(kw.get("max_vectors", 12), bool(kw.get("all")), kw.get("variants", 0), kw.get("seed", 1),
-                                    kw.get("workers", 3), bool(kw.get("second_origin")))
+                                    kw.get("workers", 3), bool(kw.get("second_origin")), kw.get("file"), kw.get("origin"))
         if cmd == "notes-check":
             return p.notes_check(kw.get("rev"))
         if cmd == "export":

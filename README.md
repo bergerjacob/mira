@@ -1,11 +1,15 @@
 # MIRA: Minecraft Iterative Reasoning Agent
 
+> **Current entry point:** [working brief and supported scope](docs/FOCUS.md), [coding-agent skill](skills/mira/SKILL.md), and [project CLI](docs/PRODUCT.md). Use an existing coding agent to edit Python builds and specs; MIRA supplies compact views, execution and schematic handover checks. The CLI needs Python 3.12+ and the repository dependencies; vanilla checks need the Java 25 oracle (`bash scripts/oracle_setup.sh`). No API key or Carpet server is required for this workflow.
+>
+> **Everything below is historical setup/research documentation**, retained for the older Fabric/RCON pipeline. It is not the current product quick start, and its model recommendations, roadmap and dependency requirements are not current. Recent work and known limitations are in `docs/FOCUS.md`; neither a trained model improvement nor general arbitrary-build reliability has been demonstrated.
+
 MIRA is an AI framework designed to generate, build, and debug Minecraft Redstone circuits from text descriptions. Unlike standard generative models that struggle with strict spatial logic, MIRA uses an iterative approach combining hierarchical planning, real-time simulation, and automated verification.
 
 > **Status:** Re-scoped Nov 2026. One-shot generation measured at ~17.5% functional pass (the March "100%" was block-count only); training has not started. Direction: a verifiable redstone/build environment + harness for frontier agents, then training. See **`docs/STATUS_2026-11.md`** (read first).
 > **Latest Update:** November 1, 2026
 
-## Quick Start
+## Historical setup: Fabric/Carpet pipeline
 
 ### Prerequisites
 - **Python 3.10+**

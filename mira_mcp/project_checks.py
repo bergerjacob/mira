@@ -402,13 +402,15 @@ def mutation_lines(res: dict, groups: Optional[Dict[tuple, str]] = None) -> List
 
 # --------------------------------------------------------------------------- vanilla replay
 def vanilla(contract, blocks, max_vectors: int = 12, every: bool = False, variants: int = 0, seed: int = 1, workers: int = 3,
-            preroll: int = 20, second_origin: bool = False, progress=None) -> dict:
+            preroll: int = 20, second_origin: bool = False, progress=None, artifact_world=None, source_dv=None) -> dict:
     """Replay the spec in the vanilla oracle, as the env scored it (env order, per-vector ticks, handover world at the env's
     absolute cells; tools/oracle/envplan.py), one JVM per capture. variants=K adds K rotated / mirrored / translated copies
     (env/variants.py seeds `seed`..`seed+K-1`; each is re-run in the env first); second_origin=True also replays the build
     at a random second absolute origin (the update order of vanilla depends on position).
     Returns {"cases": [...], "captures": [...], "available": bool}."""
     from env import runner
+    from env.score import score
+    from env.variants import Xf
     from env.task import Task
     from env.variants import elem_name, variant_of, variant_params
     from tools.oracle import envplan, gametest
@@ -436,7 +438,17 @@ def vanilla(contract, blocks, max_vectors: int = 12, every: bool = False, varian
         env_v = {v.index: v.ok for v in rr.vectors}
         env_s = {q.name: q.ok for q in rr.sequences}
         try:
-            world = envplan.handover_world(c, pr)
+            if artifact_world is None:
+                world = envplan.handover_world(c, pr)
+            elif label == "origin":
+                world = artifact_world
+            else:
+                sd = int(seed) + cases.index((label, t)) - 1
+                if sd % 8 == 0:
+                    sd += 1
+                rot, mirror, off = variant_params(sd)
+                xf = Xf(contract.bbox, rot, mirror, off)
+                world = [(*xf.point(b[:3]), xf.state(b[3]), *b[4:]) for b in artifact_world]
         except ValueError as e:
             info.append({"case": label, "error": str(e)})
             continue
@@ -454,8 +466,10 @@ def vanilla(contract, blocks, max_vectors: int = 12, every: bool = False, varian
             else:
                 sel = order[:max_vectors]
             sampled = True
-        origin = envplan.env_origin(pr, world)
-        origins = [("env origin", origin)]
+        # Artifact coordinates are the declared world placement, not engine-relative cells.
+        origin = (tuple(min(b[i] for b in world) for i in range(3)) if artifact_world is not None
+                  else envplan.env_origin(pr, world))
+        origins = [("artifact origin" if artifact_world is not None else "env origin", origin)]
         if second_origin and label == "origin":
             rng = random.Random(seed * 31 + 7)
             dx, dz = rng.randint(20, 90), rng.randint(20, 90)
@@ -466,11 +480,11 @@ def vanilla(contract, blocks, max_vectors: int = 12, every: bool = False, varian
                 work.append({"case": label, "origin": oname, "capture": cl, "contract": c, "world": world, "plan": plan,
                              "checks": checks, "env_v": env_v, "env_s": env_s, "vecs": vecs})
         info.append({"case": label, "vectors_total": total, "vectors_run": len(sel) if vecs else 0, "sampled": sampled,
-                     "env_pass": bool(rr.compiled and all(env_v.values()) and all(env_s.values()))})
+                     "env_pass": score(c, rr).full_pass})
     if progress:
         progress(f"{len(work)} capture(s) -> vanilla (one JVM each, {workers} at a time)")
     t0 = time.time()
-    traces = gametest.capture_many([(f"vv{i}", w["world"], w["plan"]) for i, w in enumerate(work)],
+    traces = gametest.capture_many([(f"vv{i}", w["world"], w["plan"], source_dv) for i, w in enumerate(work)],
                                    workers=workers, isolated=True) if work else []
     caps = []
     for w, ot in zip(work, traces):
@@ -491,7 +505,8 @@ def vanilla(contract, blocks, max_vectors: int = 12, every: bool = False, varian
         caps.append({"case": w["case"], "origin": w["origin"], "capture": w["capture"], "rows": rows,
                      "ticks": ot.n_ticks, "origin_abs": list(ot.origin),
                      "labels": {i: (w["vecs"][i].inputs, w["vecs"][i].expect) for i in range(len(w["vecs"]))} if w["vecs"] else {}})
-    return {"available": True, "cases": info, "captures": caps, "seconds": round(time.time() - t0, 1)}
+    return {"available": True, "cases": info, "captures": caps, "seconds": round(time.time() - t0, 1),
+            "scope": "behavioural expectations only; contract invariants are checked by test, not vanilla replay"}
 
 
 def vanilla_text(res: dict, rev: int) -> str:
@@ -510,12 +525,13 @@ def vanilla_text(res: dict, rev: int) -> str:
             n_env_bad_van_ok += (env_ok is False) and van_ok
             n_nuc_diff += nuc_ok != van_ok
     errs = [c for c in res["cases"] if c.get("error")]
-    verdict = "PASS" if not n_bad and not errs else "FAIL"
+    verdict = "PASS" if n_rows and not n_bad and not errs else "FAIL"
     L.append(f"VERIFY-VANILLA rev {rev}: {verdict}  {n_rows - n_bad}/{n_rows} checks pass in vanilla 26.2 "
              f"({len(res['captures'])} captures, one JVM each, {res['seconds']}s)"
              + (f"; {n_env_ok_van_bad} pass in the env but FAIL in vanilla" if n_env_ok_van_bad else "")
              + (f"; {n_env_bad_van_ok} fail in the env but pass in vanilla" if n_env_bad_van_ok else "")
              + (f"; Nucleation replay differs from vanilla on {n_nuc_diff}" if n_nuc_diff else ""))
+    L.append("  scope: " + res.get("scope", "behavioural expectations only; not all contract invariants"))
     for c in res["cases"]:
         if c.get("error"):
             L.append(f"  case {c['case']}: {c['error']}")

@@ -13,8 +13,8 @@ You edit files with your normal file tools and run the `mira` CLI (`<repo>/bin/m
 3. Write `build.py` (+ `modules/*.py`) with the Part API: `from simulation.builder import *`; library cells `from lib.full_adder import full_adder` (`mira` lists them: see `docs/LIBRARY.md`); wire with `b.route_all([...])` instead of hand-placing dust. API reference: `docs/BUILDER.md`; prompt with worked examples: `evaluation/prompts/builder_system.md`.
 4. `mira build` -> read errors/warnings (route WARNINGs matter) -> `mira overview` (under 80 lines at any size) -> drill down with `view --layer Y`, `view --settled`, `query X Y Z`, `find`, `nets`, `diff`.
 5. `mira test` (rebuilds if needed) -> on failure `mira trace PORT... --seq NAME` shows the timing diagram. Fix, rebuild, repeat. Test modules alone with `mira test --module NAME`.
-6. Before you trust a pass: `mira spec-check` (is the spec vacuous/weak? surviving mutants = untested behaviour) and `mira verify-vanilla` (does real Minecraft 26.2 agree?).
-7. Hand over: `mira export --litematic OUT` writes the settled at-rest world, then `mira paste-check`. Hand over THIS file, never a raw block list (memory circuits boot differently when placed another way).
+6. Before you trust a pass: `mira spec-check` (is the spec vacuous/weak? surviving mutants = untested behaviour).
+7. Hand over: `mira export --litematic OUT`, then `mira verify-vanilla --all`, `mira paste-check`, and `mira status`. Both checks consume THIS file and record its SHA-256. Don't re-export afterwards without rechecking. Vanilla replay checks behavioural expectations; paste-check checks block placement/idle stability, not behaviour or the whole user request. Current exact certification is limited to entity/NBT-free builds. Hand over the exported file, never a raw block list (memory circuits boot differently when placed another way).
 8. Keep `NOTES.md` true (named places as `port:X`, `label:X`, `module:X`, `(x, y, z)`); `mira notes-check` finds stale references.
 
 ## Spec basics people trip over

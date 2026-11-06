@@ -31,6 +31,7 @@ def parser():
     s.add_argument("--dir", help="project directory (default data/projects/NAME)")
     s.add_argument("--force", action="store_true", help="re-initialise an existing project (files are kept)")
     s.add_argument("--lenient", action="store_true", help="accept block ids/states unknown to the 1.21 validator (implied by --from-litematic)")
+    sub.add_parser("status", help="evidence freshness and scope (no checks run)")
     s = sub.add_parser("build", help="compile build.py (+ imports) and store a revision")
     s.add_argument("-m", "--message", default="")
     s.add_argument("--timeout", type=float, help="sandbox limit in seconds (default 120)")
@@ -74,6 +75,8 @@ def parser():
     s.add_argument("--seed", type=int, default=0)
     s.add_argument("--budget", type=float, default=240.0, help="wall-clock seconds for the mutation sweep")
     s = sub.add_parser("verify-vanilla", help="replay spec.json in the vanilla 26.2 oracle (one JVM per capture) and compare with the env")
+    s.add_argument("--file", help="replay this exact schematic (default current full export)")
+    s.add_argument("--origin", type=int, nargs=3, help="world position of file's minimum corner (required for unrecorded files)")
     s.add_argument("--max-vectors", type=int, default=12, help="big truth tables are sampled to this many vectors (default 12)")
     s.add_argument("--all", action="store_true", help="replay every vector (slow for big tables)")
     s.add_argument("--variants", type=int, default=0, help="also replay K rotated/mirrored/translated copies (env/variants.py)")
@@ -137,7 +140,7 @@ def main(argv=None) -> int:
     out = PJ.run(proj, a.cmd, **kw)
     print(out)
     head = out.split("\n", 1)[0]
-    return 1 if head.startswith("error:") or "FAILED" in head or " FAIL" in head or "REFUSED" in head else 0
+    return 1 if head.startswith("error:") or any(s in head for s in ("FAILED", " FAIL", "REFUSED", "UNAVAILABLE")) else 0
 
 
 if __name__ == "__main__":

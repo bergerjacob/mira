@@ -2,7 +2,9 @@
 
 ## Project Summary
 
-MIRA (Minecraft Iterative Reasoning Agent) generates, builds, and debugs Minecraft Redstone circuits from text descriptions. **Read `docs/STATUS_2026-11.md` first**: as of Nov 2026 one-shot generation is measured at ~17.5% functional pass (earlier "100%" claims were block-count only), no training has run, and the plan is a verifiable-environment + harness approach (spike Nucleation as a fast simulator, then harness, then training). Older docs (ARCHITECTURE.md, PAST_ATTEMPTS.md March sections) are historical.
+MIRA generates, edits and checks technical Minecraft contraptions. **Read `docs/FOCUS.md` first** for current user priorities, supported scope and the next narrow milestone. Product integration is an existing coding agent + `skills/mira` + `bin/mira`, not our experimental agent loop. `docs/STATUS_2026-11.md` and older plans are historical; small SFT/RL smoke tests now exist, but no functional training improvement is demonstrated.
+
+**Evidence:** `mira_mcp/evidence.py` binds reports to source/dependencies, spec and engine; `mira status` labels stale/limited evidence. Handover order: test -> export -> verify-vanilla -> paste-check -> status. Behaviour and paste receipts identify the same file digest; certified handovers currently exclude NBT/entity payloads. Existing invalid specs must fail closed. Do not broaden certification or silently treat a sampled/public-only/fast check as full verification.
 
 **Current direction (Nov 2026):** model writes builds as Python against `simulation/builder.py` (flat `(x,y,z,state,nbt)` tuples are the interchange format); scoring is Nucleation's tick simulator through `env/` with author-written hidden specs; the vanilla MC 26.2 GameTest oracle (`tools/oracle/`) is the referee; the Carpet/RCON server is no longer used for functional verdicts. Decisions and reasoning: `docs/audits/oracle_*_2026-11.md`; docs per component: `docs/BUILDER.md`, `docs/ENV.md`, `docs/ORACLE.md`, `docs/CORPUS_REPORT.md`, `docs/DATA_SOURCES.md`.
 

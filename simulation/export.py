@@ -336,6 +336,17 @@ def read_structure_nbt(path: str) -> Dict[Pos, str]:
 
 
 # --------------------------------------------------------------------------- paste check (vanilla oracle)
+def require_state_only(path):
+    """The current oracle receipts certify block states, not entity/inventory payloads."""
+    from nucleation import Schematic
+    sc = Schematic.load_from_file(str(path))
+    entities = sc.entity_count()
+    block_entities = len(json.loads(sc.get_all_block_entities_snbt_json()))
+    if entities or block_entities:
+        raise ValueError(f"unsupported verification payload: {entities} entities, {block_entities} block entities; "
+                         "only payload-free block-state handovers are currently certified")
+
+
 def _cmp(want: Dict[Pos, str], got: Dict[Pos, str], examples: int = 5) -> dict:
     missing = [p for p in want if p not in got]
     extra = [p for p in got if p not in want]
@@ -359,12 +370,16 @@ def paste_check(path: str, ticks: int = 40, modes=("known_shape", "place"), time
     `stable_at_rest` = in every mode nothing changed while idle and the world equals the file at the end."""
     from tools.oracle import gametest
     from tools.oracle.trace import Plan
+    if ticks <= 0 or not modes or len(set(modes)) != len(modes) or any(m not in ("known_shape", "place") for m in modes):
+        raise ValueError("ticks must be positive; modes must be a non-empty unique subset of known_shape,place")
+    require_state_only(path)
     if not gametest.available():
         raise RuntimeError("vanilla oracle not installed (bash scripts/oracle_setup.sh)")
     blocks, src_dv = gametest.load_build(path)
     want = {(b[0], b[1], b[2]): canon(b[3]) for b in blocks if not _is_air(b[3])}
     rec = {"file": os.path.abspath(path), "sha256": sha256(path), "blocks": len(want), "ticks": ticks,
-           "file_data_version": src_dv, "oracle": gametest.versions(), "modes": {}}
+           "file_data_version": src_dv, "oracle": gametest.versions(), "modes": {},
+           "scope": "payload-free block states; placement and idle only, not behaviour"}
     for mode in modes:
         tr = gametest.capture(blocks, Plan(ticks=ticks, settle=mode), name=f"paste_{mode}",
                               source_data_version=DATA_VERSION, isolated=True, timeout=timeout)
@@ -379,6 +394,8 @@ def paste_check(path: str, ticks: int = 40, modes=("known_shape", "place"), time
     rec["exact"] = bool(m.get("known_shape", {}).get("placed", {}).get("ok"))
     rec["stable_at_rest"] = all(v["idle_changes"] == 0 and v["after_idle"]["ok"] for v in m.values())
     rec["verdict"] = "PASS" if rec["exact"] and rec["stable_at_rest"] else "FAIL"
+    if sha256(path) != rec["sha256"]:
+        raise ValueError("artifact changed during paste-check; retry with an immutable file")
     return rec
 
 
