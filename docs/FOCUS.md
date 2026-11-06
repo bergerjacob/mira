@@ -10,6 +10,11 @@
 - Code digging is interesting and may share Minecraft execution/trace infrastructure, but contraption engineering comes first. No premature repo split or grand unified framework.
 - Originally prefer 1.21.0, later leave version decisions open. Do not silently equate the 1.21 server, 26.2 vanilla oracle and simulator's version label.
 
+## User-endorsed mental model
+**The agent writes the condition like a theorem; Minecraft's fixed physics is the kernel.** Pi is the editor/reasoner, MIRA compiles the Python build and runs checks against the selected game version. Passing finite tests is still not a universal proof. The kernel boundary must explicitly state supported mechanics and preserve imported data rather than silently dropping unsupported content.
+
+For large contraptions, use codebase-style access: bounded overview -> named regions/ports -> requested slices/queries. Persistent spatial/intent memory lives in each project's `NOTES.md`, Python labels/ports and `spec.json`. Do not depend on custom metadata inside `.litematic` surviving third-party tools; a portable project sidecar can accompany an export. No embedded Pi framework or new agent harness is needed for this.
+
 ## This checkpoint
 Independent audits of the current product found a smaller, higher-value target than more tasks or integrations: **tie test/export/verification evidence to one source/spec/engine and one actual schematic**.
 
@@ -38,6 +43,7 @@ mira status
 `python -m pytest tests/project -q`: **93 passed** (23 new evidence tests), with the installed vanilla oracle enabled. A copied 14-block gated-lamp project completed full env testing, exported 105 blocks including scenery, replayed **14/14 checks at two actual world origins** in vanilla 26.2, and passed both paste modes on the **same SHA-256**. Final `status` marked all four records current. Logs: `/tmp/mira-project-tests.log`, `/tmp/mira-handover-smoke.log`; scratch project `/tmp/mira-handover-BHWi` (not a permanent example). This is a targeted regression/smoke check, not a full-suite or independent request-fidelity claim. A fresh read-only reviewer identified origin and fast-scope issues; both were fixed and covered by regression tests.
 
 ## Next work, not started in this checkpoint
+0. **Import hardening comes first after the latest request:** audit completed, `docs/audits/oracle_import_2026-11.md` (four reproduced findings; implementation not started). Audit `Project.init(from_litematic)` / `builder.decompile` for loss and destructive failure. Preserve the original file byte-for-byte with its digest, record normalization origin, region/payload/tick/version limits, and make unsupported certification explicit. Current decompiler's round trip compares normalized blocks/NBT/entities, not the whole original file; its blanket 'lossless' wording needs narrowing. Run adversarial fixtures before broad corpus claims. Keep named memory in project sidecars; no format fork.
 1. Preserve a small standalone example in `examples/`, with an explicit repeat-press timing envelope and independent negative checks. Replace the stale root README with that golden path; keep old server/research setup clearly historical.
 2. Correct pulse-event coverage (attempted presses, minimum spacing, cross-input offsets); then repair the known slow counter and verify the fix against independent sequences, rather than build more benchmarks.
 3. Run one honest edit/repair pilot with an existing coding agent. Measure request fidelity, edits, tokens and wall time, not just reward.
