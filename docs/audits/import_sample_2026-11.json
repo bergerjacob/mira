@@ -1,0 +1,398 @@
+{
+  "scope": "24-file convenience sample from existing local data; raw admission + normalized-content round trip + sandbox build only. No functional/paste/arbitrary-format/lossless-file claim.",
+  "limits": {
+    "compressed_bytes": 16777216,
+    "decompressed_bytes": 67108864,
+    "selection_cells": 250000,
+    "worker_seconds": 45,
+    "scheduled_ticks": false,
+    "certification_payloads": false,
+    "selection_air_semantics": "sidecar only; normalized build stores non-air cells"
+  },
+  "workdir": "/tmp/claude/mira-import-sample-llir5_tf",
+  "files": [
+    {
+      "source": "data/raw_schematics/12gt_Dispenser_Factory_Protected.litematic",
+      "bytes": 3314,
+      "sha256": "2f2edf43a135f1aa96925169aea9b13cb0d35e53031a759244e0168f8b949ac4",
+      "verdict": "refused",
+      "error": "ImportError: ImportError: unsupported payload conversion: raw block-entity/entity NBT differs from normalized loader content",
+      "source_unchanged": true,
+      "seconds": 0.058
+    },
+    {
+      "source": "data/raw_schematics/3_wide_water_remover_.litematic",
+      "bytes": 562,
+      "sha256": "016d28f55843be26bb6c73019ef008659d5c2a0d1389e90388e90660510fe252",
+      "verdict": "imported-and-built",
+      "source_data_version": 2584,
+      "format": "litematic",
+      "selection_cells": 72,
+      "blocks": 23,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 1
+      },
+      "result": "BUILD OK rev 1 hash c1c92647a883  23 blocks  bbox [0, 0, 0]..[3, 5, 2] (4x6x3)  0.0s\npalette: stone 12, slime_block 6, sticky_piston 2, observer 2, oak_wall_sign 1  [5 kinds]\nblocks by source file: build.py 23\nblocks by instance group: (root) 23\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.096
+    },
+    {
+      "source": "data/raw_schematics/crystalline_wireframe.litematic",
+      "bytes": 4080,
+      "sha256": "3cd07ebbc08d38bd78299917f9976250f2817158ef820781cf00fa267e7da394",
+      "verdict": "imported-and-built",
+      "source_data_version": 2975,
+      "format": "litematic",
+      "selection_cells": 65536,
+      "blocks": 13269,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash 03136091c8b1  13269 blocks  bbox [0, 0, 0]..[255, 0, 255] (256x1x256)  0.3s\npalette: white_concrete 13269  [1 kinds]\nblocks by source file: build.py 13269\nblocks by instance group: (root) 13269\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.52
+    },
+    {
+      "source": "data/raw_schematics/gmf boat up end lower heightmap.litematic",
+      "bytes": 1223,
+      "sha256": "82b716517c7bd84cca1b9bced3db2121afceae4c5117d8ac9f05f174bb49d1bf",
+      "verdict": "refused",
+      "error": "ImportError: ImportError: unsupported payload conversion: raw block-entity/entity NBT differs from normalized loader content",
+      "source_unchanged": true,
+      "seconds": 0.042
+    },
+    {
+      "source": "data/raw_schematics/hopper_drop.litematic",
+      "bytes": 440,
+      "sha256": "b62e3b1be38c7424ed2525304327f7bfc04b7d85f694820583f3e5a2452b2455",
+      "verdict": "imported-and-built",
+      "source_data_version": 2975,
+      "format": "litematic",
+      "selection_cells": 3,
+      "blocks": 3,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash 71d7c7dffe0c  3 blocks  bbox [0, 0, 0]..[0, 2, 0] (1x3x1)  0.0s\npalette: chest 2, hopper 1  [2 kinds]\nblocks by source file: build.py 3\nblocks by instance group: (root) 3\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.071
+    },
+    {
+      "source": "data/raw_schematics/mandala_floor.litematic",
+      "bytes": 1233,
+      "sha256": "8ca39c7b1ae626a1c15d084b1c3e2949fef650838f612438c8d132990e234c94",
+      "verdict": "imported-and-built",
+      "source_data_version": 2975,
+      "format": "litematic",
+      "selection_cells": 3249,
+      "blocks": 3249,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash 5a02166f1852  3249 blocks  bbox [0, 0, 0]..[56, 0, 56] (57x1x57)  0.1s\npalette: white_concrete 1769, black_concrete 812, green_concrete 188, light_blue_terracotta 180, magenta_concrete 128, lime_concrete 92, orange_terracotta 64, purple_concrete 16  [8 kinds]\nblocks by source file: build.py 3249\nblocks by instance group: (root) 3249\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.128
+    },
+    {
+      "source": "data/raw_schematics/mandala_mosaic.litematic",
+      "bytes": 10562,
+      "sha256": "4e654bbf48e5c39dfe5d7debeae743e251cf602acef08f6c85e2c5a9893a475c",
+      "verdict": "imported-and-built",
+      "source_data_version": 2975,
+      "format": "litematic",
+      "selection_cells": 65025,
+      "blocks": 65025,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash 30ff0e485d51  65025 blocks  bbox [0, 0, 0]..[254, 0, 254] (255x1x255)  0.9s\npalette: lime_concrete 12200, green_concrete 11040, blue_concrete 10608, black_concrete 9956, waxed_cut_copper 6512, white_concrete 6129, magenta_concrete 5500, light_blue_concrete 3064, ... (+1 kinds)  [9 kinds]\nblocks by source file: build.py 65025\nblocks by instance group: (root) 65025\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 1.476
+    },
+    {
+      "source": "data/raw_schematics/mandala_snowflake.litematic",
+      "bytes": 6268,
+      "sha256": "a488e83239fb6c5dff1cffd321f8020409cbb2b3851d34280ccdcd0ddf598578",
+      "verdict": "imported-and-built",
+      "source_data_version": 2975,
+      "format": "litematic",
+      "selection_cells": 65536,
+      "blocks": 50617,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash b01159f5b9d9  50617 blocks  bbox [0, 0, 0]..[254, 0, 254] (255x1x255)  0.9s\npalette: blue_concrete 17634, blue_wool 6904, dark_prismarine 4941, prismarine_bricks 3824, diamond_block 3404, prismarine 3066, cyan_terracotta 2800, light_blue_concrete_powder 2710, ... (+2 kinds)  [10 kinds]\nblocks by source file: build.py 50617\nblocks by instance group: (root) 50617\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 1.508
+    },
+    {
+      "source": "data/raw_schematics/royal_burger_mapart.litematic",
+      "bytes": 2089,
+      "sha256": "c3f5d7b05d4440da6b758e464108f3698d357a279eabe10c4fca57eab15ad8fb",
+      "verdict": "imported-and-built",
+      "source_data_version": 2975,
+      "format": "litematic",
+      "selection_cells": 65536,
+      "blocks": 65536,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash 2c6da80bd743  65536 blocks  bbox [0, 0, 0]..[255, 0, 255] (256x1x256)  0.5s\npalette: magenta_glazed_terracotta 20032, purple_concrete 20013, orange_concrete 16385, lime_concrete 4088, gold_block 1612, yellow_concrete 1311, brown_concrete 1202, red_concrete 866, ... (+2 kinds)  [10 kinds]\nblocks by source file: build.py 65536\nblocks by instance group: (root) 65536\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.801
+    },
+    {
+      "source": "data/raw_schematics/simple_lamp.litematic",
+      "bytes": 491,
+      "sha256": "5bb2249001f496f666a0fd99c9db98b7f858e21f0b80667bd3fee28e612b587f",
+      "verdict": "imported-and-built",
+      "source_data_version": 2975,
+      "format": "litematic",
+      "selection_cells": 6,
+      "blocks": 6,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash 8c448cab1533  6 blocks  bbox [0, 0, 0]..[2, 1, 0] (3x2x1)  0.0s\npalette: stone 3, lever 1, redstone_wire 1, redstone_lamp 1  [4 kinds]\nblocks by source file: build.py 6\nblocks by instance group: (root) 6\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.071
+    },
+    {
+      "source": "data/raw_schematics/simple_piston_door.litematic",
+      "bytes": 497,
+      "sha256": "40066be832010674eb111da073ff399cba05b5b72bee048313a2c7875d57dbd0",
+      "verdict": "imported-and-built",
+      "source_data_version": 2975,
+      "format": "litematic",
+      "selection_cells": 75,
+      "blocks": 18,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash f6033e92f1d5  18 blocks  bbox [0, 0, 0]..[4, 4, 0] (5x5x1)  0.0s\npalette: stone 13, sticky_piston 2, redstone_wire 2, lever 1  [4 kinds]\nblocks by source file: build.py 18\nblocks by instance group: (root) 18\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.068
+    },
+    {
+      "source": "data/raw_schematics/test_tmp.litematic",
+      "bytes": 381,
+      "sha256": "9d30ec745b3db72e3a383244183abf248147c789cacceb1ecb09f317cedcbc40",
+      "verdict": "imported-and-built",
+      "source_data_version": 2975,
+      "format": "litematic",
+      "selection_cells": 2,
+      "blocks": 2,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash 1fc017357750  2 blocks  bbox [0, 0, 0]..[1, 0, 0] (2x1x1)  0.0s\npalette: stone 1, dirt 1  [2 kinds]\nblocks by source file: build.py 2\nblocks by instance group: (root) 2\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.068
+    },
+    {
+      "source": "data/raw_schematics/warped_floor_test.litematic",
+      "bytes": 548,
+      "sha256": "62f0d224c18555def8414da81bd99b37d03ee331ec8a742c2a9eb9d98d850cd4",
+      "verdict": "imported-and-built",
+      "source_data_version": 2975,
+      "format": "litematic",
+      "selection_cells": 169,
+      "blocks": 105,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash 55001cb8a8d1  105 blocks  bbox [0, 0, 0]..[12, 0, 12] (13x1x13)  0.0s\npalette: warped_wart_block 39, polished_blackstone_bricks 38, warped_hyphae 16, chiseled_polished_blackstone 12  [4 kinds]\nblocks by source file: build.py 105\nblocks by instance group: (root) 105\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.074
+    },
+    {
+      "source": "data/external/litematicas-leroymilo/redstone/2w_ABtileable_redcoder.litematic",
+      "bytes": 672,
+      "sha256": "b862e3da3a0ec4b360ec324a6a658d46822e25106b90f1f4d99fdfcd431e71a7",
+      "verdict": "imported-and-built",
+      "source_data_version": 3953,
+      "format": "litematic",
+      "selection_cells": 80,
+      "blocks": 27,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 1
+      },
+      "result": "BUILD OK rev 1 hash e37f5dd467d7  27 blocks  bbox [0, 0, 0]..[3, 4, 3] (4x5x4)  0.0s\npalette: smooth_stone 7, redstone_wire 5, smooth_stone_slab 3, target 3, repeater 2, redstone_wall_torch 2, redstone_torch 2, redstone_lamp 2, ... (+1 kinds)  [9 kinds]\nblocks by source file: build.py 27\nblocks by instance group: (root) 27\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.073
+    },
+    {
+      "source": "data/external/litematicas-leroymilo/redstone/Smelter_V2.litematic",
+      "bytes": 3914,
+      "sha256": "32ad9fe7ce61228f54e7b29ec58a7a225f9f1b8c137428c81e08f1524de92c28",
+      "verdict": "refused",
+      "error": "ImportError: ImportError: unsupported overlapping non-air regions (ambiguous overwrite)",
+      "source_unchanged": true,
+      "seconds": 0.032
+    },
+    {
+      "source": "data/external/litematicas-leroymilo/redstone/hidden_staircase.litematic",
+      "bytes": 1958,
+      "sha256": "c0591a16fc44ada69f9ac4cff55606c5d6321591e424a8d8a222d68f01a851b7",
+      "verdict": "imported-and-built",
+      "source_data_version": 4325,
+      "format": "litematic",
+      "selection_cells": 972,
+      "blocks": 489,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 13
+      },
+      "result": "BUILD OK rev 1 hash a2a5f5f652eb  489 blocks  bbox [0, 0, 0]..[11, 8, 8] (12x9x9)  0.0s\npalette: smooth_quartz 136, redstone_wire 63, sticky_piston 44, orange_wool 40, observer 37, pink_wool 24, repeater 20, yellow_wool 16, ... (+18 kinds)  [26 kinds]\nblocks by source file: build.py 489\nblocks by instance group: (root) 489\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.082
+    },
+    {
+      "source": "data/external/nucleation_src/artifacts/32bit_sklansky_parallel_prefix_adder.schem",
+      "bytes": 94370,
+      "sha256": "7526416695ee9cb3521d5692744a3816cdc400f48094c17b373d397234c8da1a",
+      "verdict": "refused",
+      "error": "ImportError: ImportError: selection volume 5801334 exceeds 250000 cells",
+      "source_unchanged": true,
+      "seconds": 0.181
+    },
+    {
+      "source": "data/external/nucleation_src/artifacts/4bit_ripple_carry_adder.schem",
+      "bytes": 1778,
+      "sha256": "04ab57d413aa37fa8d321ea132d8748ab3d76bd22c4fee4d33c01e3896d8df18",
+      "verdict": "imported-and-built",
+      "source_data_version": 1343,
+      "format": "sponge",
+      "selection_cells": 60016,
+      "blocks": 3395,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash 864dfd16081a  3395 blocks  bbox [0, 0, 0]..[241, 7, 30] (242x8x31)  0.1s\npalette: gray_concrete 1602, redstone_wire 1362, repeater 103, redstone_wall_torch 72, yellow_concrete 62, blue_concrete 60, cyan_concrete 60, lime_concrete 60, ... (+2 kinds)  [10 kinds]\nblocks by source file: build.py 3395\nblocks by instance group: (root) 3395\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.158
+    },
+    {
+      "source": "data/external/minecraft-computers/fib_computer.schem",
+      "bytes": 3082,
+      "sha256": "28018e72104bf7e9b850ece2a50439bc0520e50c3903d20fa874fe6956aac662",
+      "verdict": "refused",
+      "error": "ImportError: ImportError: unsupported payload conversion: raw block-entity/entity NBT differs from normalized loader content",
+      "source_unchanged": true,
+      "seconds": 0.045
+    },
+    {
+      "source": "data/external/minecraft-computers/polybius_square_ui.schem",
+      "bytes": 11278,
+      "sha256": "67c138294c017ef05d88560ac82cd1e29609c3f845c79bae1b91c0f824d44c1b",
+      "verdict": "refused",
+      "error": "ImportError: ImportError: unsupported payload conversion: raw block-entity/entity NBT differs from normalized loader content",
+      "source_unchanged": true,
+      "seconds": 0.083
+    },
+    {
+      "source": "data/corpus/converted/claudestone/and/and_comparator_1wide_bus.litematic",
+      "bytes": 455,
+      "sha256": "9372a2378be4355d92f9de619e1f7488abbe40de7b849921a263e38c49f6cada",
+      "verdict": "imported-and-built",
+      "source_data_version": 5023,
+      "format": "litematic",
+      "selection_cells": 36,
+      "blocks": 18,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash 49277a490066  18 blocks  bbox [0, 0, 0]..[0, 5, 5] (1x6x6)  0.0s\npalette: comparator 8, smooth_stone 6, redstone_block 4  [3 kinds]\nblocks by source file: build.py 18\nblocks by instance group: (root) 18\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.072
+    },
+    {
+      "source": "data/corpus/converted/rouge/4-bit-counter.litematic",
+      "bytes": 540,
+      "sha256": "d5a3f7c516666fcd9a10c1ffa70a4e85a0fb250d162bb4381a57e2b7f32c65da",
+      "verdict": "imported-and-built",
+      "source_data_version": 5023,
+      "format": "litematic",
+      "selection_cells": 128,
+      "blocks": 84,
+      "regions": 1,
+      "payload_counts": {
+        "entities": 0,
+        "block_entities": 0
+      },
+      "result": "BUILD OK rev 1 hash 7fee3d403f93  84 blocks  bbox [0, 0, 0]..[15, 1, 3] (16x2x4)  0.0s\npalette: stone 40, redstone_wire 31, redstone_wall_torch 8, redstone_lamp 4, stone_button 1  [5 kinds]\nblocks by source file: build.py 84\nblocks by instance group: (root) 84\nspec: none (write spec.json to enable `test`)",
+      "archive_intact": true,
+      "source_unchanged": true,
+      "seconds": 0.07
+    },
+    {
+      "source": "data/external/nucleation_src/computational_schematics/ADD005_8bit_cle.schem",
+      "bytes": 1560,
+      "sha256": "3b4e13cd09dc8ad0b5770370d6f416e1d8140e2eec416c207ba76d8a79af46ca",
+      "verdict": "refused",
+      "error": "ImportError: ImportError: unsupported Sponge payload Data conflicts with wrapper position/id",
+      "source_unchanged": true,
+      "seconds": 0.029
+    },
+    {
+      "source": "data/external/nucleation_src/computational_schematics/ADD007_8bit_cca_matt.schem",
+      "bytes": 1025,
+      "sha256": "e84894ba1b99618251ca6759b95fbdca31dee926eabca2430075e36e4bbba5e1",
+      "verdict": "refused",
+      "error": "ImportError: ImportError: unsupported Sponge payload Data conflicts with wrapper position/id",
+      "source_unchanged": true,
+      "seconds": 0.029
+    }
+  ],
+  "summary": {
+    "attempted": 24,
+    "imported_and_built": 16,
+    "refused": 8,
+    "build_failed": 0,
+    "all_sources_unchanged": true
+  }
+}

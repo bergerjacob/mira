@@ -26,6 +26,7 @@ import os
 import re
 import shutil
 import sys
+import tempfile
 import time
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -358,12 +359,66 @@ class Project:
         pdir = Path(path).expanduser().resolve() if path else resolve(name)
         if (pdir / "project.json").exists() and not force:
             raise ProjectError(f"{pdir} already is a project (use --force to re-initialise; files are kept)")
+        # All reads, admission checks and writes happen in a sibling staging tree. A failed
+        # task/program/import never changes even one byte of an existing project.
+        pdir.parent.mkdir(parents=True, exist_ok=True)
+        tmp = Path(tempfile.mkdtemp(prefix=".mira-init-", dir=pdir.parent))
+        stage, backup = tmp / "project", tmp / "previous"
+        published = False
+        cleanup_warning = ""
+        try:
+            if pdir.exists():
+                shutil.copytree(pdir, stage)  # staged writes cannot follow symlinks into the original
+            _, message = cls._init_staged(name, stage, from_task, from_litematic, program, force, lenient)
+            had_previous = pdir.exists()
+            if had_previous:
+                pdir.rename(backup)
+            try:
+                stage.rename(pdir)
+                published = True
+            except BaseException:
+                if had_previous:
+                    try:
+                        backup.rename(pdir)
+                    except OSError as e:
+                        # Never let temp cleanup erase the only surviving original on rollback failure.
+                        raise ProjectError(f"init publication/rollback failed: {e}; original retained at {backup}") from e
+                raise
+        finally:
+            if published or not backup.exists():
+                pending = sys.exception()
+                try:
+                    shutil.rmtree(tmp)
+                except OSError as e:
+                    if published:
+                        # Publication is the commit point. Cleanup failure must not report a
+                        # failed init after the new project has already replaced the old one.
+                        cleanup_warning = f"\nWARNING init published successfully; cleanup incomplete at {tmp}: {e}"
+                    elif pending is not None:
+                        pending.add_note(f"init staging cleanup incomplete at {tmp}: {e}")
+                    else:
+                        raise
+        return cls(pdir), message.replace(str(stage), str(pdir)) + cleanup_warning
+
+    @classmethod
+    def _init_staged(cls, name, pdir, from_task, from_litematic, program, force, lenient):
+        if (pdir / "project.json").exists() and not force:
+            raise ProjectError(f"{pdir} already is a project (use --force to re-initialise; files are kept)")
         pdir.mkdir(parents=True, exist_ok=True)
         (pdir / "modules").mkdir(exist_ok=True)
         meta = {"name": name, "created": time.strftime("%Y-%m-%dT%H:%M:%S"), "task": None, "origin": "new",
                 "lenient": bool(lenient or from_litematic)}
         out = [f"initialised project {name!r} at {pdir}"]
         contract = None
+        retaining_build = not from_litematic and not program and (pdir / "build.py").exists()
+        if retaining_build and (pdir / "project.json").exists():
+            previous = cls(pdir)
+            if previous.meta.get("import"):
+                previous.import_provenance()  # --force is not a way to remove a retained build's binding
+                meta["import"] = previous.meta["import"]
+                meta["origin"] = previous.meta.get("origin", "import")
+                meta["lenient"] = bool(lenient or previous.meta.get("lenient"))
+                meta["task"] = previous.meta.get("task")
         if from_task:
             from env.task import load_task
             from env import library  # noqa: F401  (registers the T3/T4 reference models)
@@ -376,11 +431,28 @@ class Project:
             out.append(f"spec.json <- task {t.id} ({len(contract.inputs)} inputs, {len(contract.outputs)} outputs, "
                        f"build box {contract.build_box}); fixed blocks are part of the world, not of build.py")
         if from_litematic:
-            from simulation import builder as B
-            text = B.decompile(from_litematic)
-            (pdir / "build.py").write_text(f"# decompiled from {Path(from_litematic).name} (lossless round trip verified)\n" + text)
-            meta["origin"] = f"litematic:{Path(from_litematic).name}"
-            out.append(f"build.py <- decompiled {from_litematic} ({text.count(chr(10))} lines)")
+            from simulation.imports import prepare
+            from mira_mcp.evidence import digest
+            imported = prepare(from_litematic)
+            text = imported["program"]
+            provenance = imported["metadata"]
+            archive = pdir / ".mira/imports" / (provenance["sha256"] + Path(from_litematic).suffix)
+            archive.parent.mkdir(parents=True, exist_ok=True)
+            if archive.exists() and archive.read_bytes() != imported["original"]:
+                raise ProjectError("archived source digest mismatch; refusing replacement")
+            if not archive.exists():
+                archive.write_bytes(imported["original"])
+                archive.chmod(0o444)
+            provenance["archive"] = str(archive.relative_to(pdir))
+            sidecar = pdir / ".mira/import.json"
+            sidecar.write_text(json.dumps(provenance, indent=1))
+            meta["import"] = {"sidecar": ".mira/import.json", "metadata_digest": digest(provenance)}
+            (pdir / "build.py").write_text("# Normalized non-air content round trip checked; original bytes and selection bounds archived.\n" + text)
+            meta["origin"] = f"schematic:{Path(from_litematic).name}"
+            out.append(f"build.py <- normalized content of {from_litematic} ({text.count(chr(10))} lines)")
+            out.append(f"original retained: {provenance['archive']} SHA256 {provenance['sha256']}; "
+                       f"{provenance['source_format']} DataVersion {provenance['source_data_version']}; "
+                       f"{len(provenance['regions'])} named region(s), offset {provenance['normalization_offset']}; see .mira/import.json for limits")
         elif program:
             (pdir / "build.py").write_text(Path(program).read_text())
             meta["origin"] = (meta["origin"] + "+" if from_task else "") + f"program:{Path(program).name}"
@@ -411,6 +483,21 @@ class Project:
     @property
     def name(self) -> str:
         return self.meta.get("name", self.dir.name)
+
+    def import_provenance(self):
+        """Validate both the portable sidecar and the immutable original before using evidence."""
+        from mira_mcp.evidence import digest, file_hash
+        ref = self.meta.get("import")
+        if not ref:
+            return None
+        try:
+            p = self.dir / ref["sidecar"]
+            info = json.loads(p.read_text())
+            if digest(info) != ref["metadata_digest"] or file_hash(self.dir / info["archive"]) != info["sha256"]:
+                raise ValueError("digest mismatch")
+        except (OSError, ValueError, KeyError) as e:
+            raise ProjectError(f"import provenance TAMPERED or missing: {e}") from None
+        return info
 
     def contract(self, module: Optional[str] = None):
         """(Contract, extra) of spec.json or modules/<module>.spec.json; None when absent. Raises on invalid specs."""
@@ -546,6 +633,7 @@ class Project:
         return L
 
     def build(self, message: str = "", timeout: Optional[float] = None) -> str:
+        self.import_provenance()
         t0 = time.time()
         timeout = float(timeout) if timeout else DEFAULT_TIMEOUT
         asm, b = self.compile(timeout=timeout)
@@ -1464,6 +1552,16 @@ class Project:
         stale, checked = [], Counter()
         text = re.sub(r"<!--.*?-->", lambda m: "\n" * m.group().count("\n"), p.read_text(), flags=re.S)
         for ln, line in enumerate(text.splitlines(), 1):
+            # Backticked qualified references name one exact object, including whitespace.
+            # Remove them from the legacy unquoted/range scan to avoid matching only a prefix.
+            def exact_reference(match):
+                kind, name = match.groups()
+                checked[kind] += 1
+                if name not in cur[kind]:
+                    stale.append(f"NOTES.md:{ln}: `{kind}:{name}` does not exist in rev {r.n}"
+                                 + (" (it existed in an earlier revision)" if name in hist else ""))
+                return ""
+            line = re.sub(r"`(port|label|module|inst|part):([^`\r\n]+)`", exact_reference, line)
             for kind, rng in re.findall(r"\b(port|label|module|inst|part):([A-Za-z0-9_.\[\]#/-]+[A-Za-z0-9_\]#])", line):
                 for name in expand(rng):
                     checked[kind] += 1
@@ -1528,11 +1626,21 @@ class Project:
              + ("" if info["at_rest"] else ", NOT at rest (forced)") + f", {info['changed']} cells changed by settling, "
              f"readback {'ok' if li['readback_mismatches'] == 0 else 'MISMATCH ' + str(li['readback_mismatches'])}) sha256 {li['sha256'][:16]}"]
         L.append(f"  file origin = world {li['origin']} (min corner); scenery from spec.json {'included' if include_fixed and contract else 'not included'}")
+        provenance = self.import_provenance()
+        from tools.oracle.gametest import versions
+        version_info = {"source": provenance.get("source_data_version") if provenance else None,
+                        "litematic": li["data_version"], "oracle": versions().get("data_version")}
+        rec["data_versions"] = version_info
+        L.append("  DataVersions: " + json.dumps(version_info, sort_keys=True) + "; actual tags, no conversion compatibility claim")
+        if len({v for v in version_info.values() if v is not None}) > 1:
+            L.append("  WARNING DataVersion mismatch: state readback is not version conversion or compatibility certification")
         if nbt:
             ni = X.write_structure_nbt(cells, nbt, nbt_map, ents)
             rec["nbt"], rec["nbt_info"] = str(Path(nbt).resolve()), ni
+            version_info["structure"] = ni["data_version"]
             L.append(f"  vanilla structure {nbt}: {ni['bytes']} bytes, DataVersion {ni['data_version']}, readback "
                      f"{'ok' if ni['readback_mismatches'] == 0 else 'MISMATCH'}; no air stored (load with a structure block)")
+        rec["data_version_mismatch"] = len({v for v in version_info.values() if v is not None}) > 1
         pc = X.path_check(world, cells, budget)
         rec["path_check"] = pc
         L.append(f"  placement path: raw program states vs this baked file after settling: {pc['raw_inworld']} cells differ (quiet load), "
@@ -1565,6 +1673,10 @@ class Project:
     def status(self):
         """Evidence ledger: freshness, scope and file identity, without running any checks."""
         from mira_mcp.evidence import artifact_matches, bind, current
+        try:
+            provenance = self.import_provenance()
+        except ProjectError as e:
+            return f"STATUS: {e}; evidence cannot be trusted"
         if not self.revs():
             return "STATUS: no successful build; run build"
         r = self.rev()
@@ -1572,6 +1684,12 @@ class Project:
         lines = [f"STATUS rev {r.n}: " + ("sources current" if r.meta.get("source_hash") == self.source_hash() else "sources STALE; rebuild")]
         ep = self.mira / "exports/last_export.json"
         exported = json.loads(ep.read_text()) if ep.exists() else {}
+        if provenance:
+            lines.append(f"  imported {provenance['source_format']} DataVersion {provenance.get('source_data_version')}; original SHA256 {provenance['sha256']} intact; {len(provenance['regions'])} named region(s)")
+        if exported.get("data_versions"):
+            dvs = exported['data_versions']
+            mismatch = len({v for v in dvs.values() if v is not None}) > 1
+            lines.append("  actual DataVersions: " + json.dumps(dvs, sort_keys=True) + (" MISMATCH (no conversion compatibility claim)" if mismatch else ""))
         for label, rel in (("test", "last_test.json"), ("export", "exports/last_export.json"),
                            ("vanilla behaviour", "vanilla_receipt.json"), ("paste", "paste_receipt.json")):
             p = self.mira / rel

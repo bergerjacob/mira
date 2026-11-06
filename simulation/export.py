@@ -109,7 +109,8 @@ def save_litematic(cells: Dict[Pos, str], path: str, nbt: Optional[Dict[Pos, str
     back = read_blocks(path)
     want = {(x - mn[0], y - mn[1], z - mn[2]): canon(s) for (x, y, z), s in cells.items()}
     bad = [p for p in set(want) | set(back) if want.get(p) != back.get(p)]
-    return {"blocks": len(cells), "origin": list(mn), "sha256": sha256(path), "readback_mismatches": len(bad),
+    actual_version = read_nbt(path).get("MinecraftDataVersion")  # actual written tag, not the writer's intended/default version
+    return {"blocks": len(cells), "origin": list(mn), "sha256": sha256(path), "data_version": actual_version, "readback_mismatches": len(bad),
             "readback_examples": [f"{list(p)} want {want.get(p)} file {back.get(p)}" for p in sorted(bad)[:3]]}
 
 

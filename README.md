@@ -1,188 +1,56 @@
-# MIRA: Minecraft Iterative Reasoning Agent
+# MIRA — contraptions as code
 
-> **Current entry point:** [working brief and supported scope](docs/FOCUS.md), [coding-agent skill](skills/mira/SKILL.md), and [project CLI](docs/PRODUCT.md). Use an existing coding agent to edit Python builds and specs; MIRA supplies compact views, execution and schematic handover checks. The CLI needs Python 3.12+ and the repository dependencies; vanilla checks need the Java 25 oracle (`bash scripts/oracle_setup.sh`). No API key or Carpet server is required for this workflow.
->
-> **Everything below is historical setup/research documentation**, retained for the older Fabric/RCON pipeline. It is not the current product quick start, and its model recommendations, roadmap and dependency requirements are not current. Recent work and known limitations are in `docs/FOCUS.md`; neither a trained model improvement nor general arbitrary-build reliability has been demonstrated.
+Use your existing coding agent (Pi, Claude Code, Codex…) to design and edit technical Minecraft
+contraptions in ordinary Python. MIRA supplies compact spatial queries, spec-driven tests and
+exact-file vanilla handover checks. **The agent writes the condition; fixed Minecraft physics
+is the kernel.** Finite tests remain evidence, not universal proofs.
 
-MIRA is an AI framework designed to generate, build, and debug Minecraft Redstone circuits from text descriptions. Unlike standard generative models that struggle with strict spatial logic, MIRA uses an iterative approach combining hierarchical planning, real-time simulation, and automated verification.
+## Try the checked path
 
-> **Status:** Re-scoped Nov 2026. One-shot generation measured at ~17.5% functional pass (the March "100%" was block-count only); training has not started. Direction: a verifiable redstone/build environment + harness for frontier agents, then training. See **`docs/STATUS_2026-11.md`** (read first).
-> **Latest Update:** November 1, 2026
+With the repository's Python 3.12+ environment/dependencies installed:
 
-## Historical setup: Fabric/Carpet pipeline
-
-### Prerequisites
-- **Python 3.10+**
-- **Java 21** (for Minecraft 1.21 server)
-- **OpenRouter API key** (for LLM generation)
-
-### Clone & Setup
-
-```bash
-# 1. Clone (with submodules for the Discord scraper)
-git clone --recurse-submodules https://github.com/bergerjacob/mira.git
-cd mira
-
-# If you forgot --recurse-submodules:
-git submodule update --init
-
-# 2. Create venv and install dependencies
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
-# 3. Set up Minecraft server (downloads Fabric + mods, requires Java 21)
-python setup.py
-
-# 4. Start the headless server
-bash start_server.sh
+```sh
+.venv/bin/python examples/import_edit.py /tmp/mira-import-example
 ```
 
-### Configure API key
+This standalone example generates a small NOT-gate input, archives the original bytes/digest,
+imports its named offset selection with an empty margin, queries a compact layer, and makes one
+normal Python edit. It runs the authored finite spec and a deliberately wrong negative expectation,
+then exports and checks **the same file SHA256** for behaviour and paste placement when the local
+Minecraft 26.2 oracle is installed. No API key, API spend or Carpet server is needed. The destination
+must not exist. Oracle installation is separate: see [ORACLE.md](docs/ORACLE.md).
 
-Create a `.env` file in the project root:
+## Work on your own build
 
-```bash
-echo 'OPENROUTER_API_KEY="your-key-here"' > .env
+```sh
+bin/mira init gate --from-litematic /path/input.litematic --dir /tmp/gate
+bin/mira -p /tmp/gate build
+bin/mira -p /tmp/gate overview
+bin/mira -p /tmp/gate find 'region name'
+bin/mira -p /tmp/gate view --layer 1
+# Edit build.py, spec.json and NOTES.md using your agent's normal file tools.
+bin/mira -p /tmp/gate test
+bin/mira -p /tmp/gate spec-check
+bin/mira -p /tmp/gate export
+bin/mira -p /tmp/gate verify-vanilla --all
+bin/mira -p /tmp/gate paste-check
+bin/mira -p /tmp/gate status
 ```
 
-**Recommended model:** `google/gemini-3.1-flash-lite-preview` (best price/performance)
+Import is a **bounded, checked subset**, not arbitrary/lossless-file conversion. Originals and
+selection metadata are retained in the project; scheduled ticks and unsupported conversion fail
+explicitly. Supported entities/NBT remain editable but cannot receive today's state-only certified
+export. Actual source/output/oracle DataVersions and mismatches are visible, never silently retagged.
 
-### Existing data files
+- [Import limits, provenance and example](docs/IMPORT.md)
+- [Project CLI and named memory](docs/PRODUCT.md) · [Python builder](docs/BUILDER.md)
+- [Coding-agent skill](skills/mira/SKILL.md) · [Current priorities/scope](docs/FOCUS.md)
+- [Measured import checkpoint](docs/audits/import_checkpoint_2026-11.md)
 
-Some data is gitignored and not included in the clone. If you're setting up from an existing machine, copy these over:
+Run test directories separately: `.venv/bin/python -m pytest tests/project -q`, then
+`.venv/bin/python -m pytest tests/unit/test_builder.py tests/unit/test_modules.py -q`.
 
-- `.env` — API keys (or recreate as above)
-- `data/raw_schematics/` — test schematics (required for tests)
-- `data/training/` — training datasets (~1.7 GB, only needed for training)
-- `discord_scraper/config.json` — Discord scraper tokens (only if scraping)
-
-Everything else (`.venv/`, `simulation/server/`) is regenerated by the setup steps above.
-
-## Core Features
-
-- **Hierarchical Planning:** Breaks complex circuits into modules with spatial constraints
-- **Headless Simulation:** Fabric-based Minecraft server with Carpet Mod for verification
-- **Automated Replicator:** Python-to-Minecraft bridge via RCON for block placement
-- **Verification Engine:** Scarpet scripts for real-time redstone signal validation
-
-## Architecture
-
-```
-mira/
-├── simulation/           # Minecraft integration
-│   ├── bridge.py         # RCON communication
-│   ├── replicator.py     # Build engine
-│   ├── llm_client.py     # OpenRouter API client
-│   ├── scarpet_scripts/  # Verification API
-│   └── server/           # Headless server (gitignored)
-├── data_mining/          # Schematic tools
-│   ├── parser.py         # Litematic parser
-│   └── corruptor.py      # Fault injection
-├── evaluation/           # Testing infrastructure
-│   ├── test_*.py         # Test scripts
-│   ├── test_circuits/    # Circuit definitions
-│   └── results/          # Test results
-├── docs/                 # Documentation
-│   ├── TESTING_REPORT.md     # Full testing results
-│   └── PAST_ATTEMPTS.md      # Historical context
-└── data/                 # Data storage
-    ├── raw_schematics/   # Test schematics
-    └── training/         # Training datasets
-```
-
-**See `docs/TESTING_REPORT.md` for full details of validation testing.**
-
-## Usage
-
-### Generate Training Data
-
-```python
-from simulation.llm_client import OpenRouterClient, ChatMessage
-
-client = OpenRouterClient(api_key="your-key")
-
-# Plan+Constraint prompt (recommended)
-prompt = f"""Plan this circuit with EXACTLY {expected_blocks} blocks:
-
-{circuit_description}
-
-REQUIREMENTS:
-- Generate EXACTLY {expected_blocks} blocks
-- Number each step 1 to {expected_blocks}
-- Include reason for each block
-- List connections to previous blocks"""
-
-response = client.complete_with_schema(
-    model="gemini-flash-lite",
-    prompt=prompt,
-    system_prompt="Plan redstone circuits step-by-step.",
-    schema=plan_schema,
-    temperature=0.5
-)
-```
-
-### Build Circuit in Minecraft
-
-```python
-from simulation.replicator import Replicator
-
-replicator = Replicator()
-replicator.load_schematic("path/to/circuit.litematic")
-replicator.build_at(x=0, y=64, z=0)
-```
-
-### Verify Circuit
-
-```python
-from simulation.bridge import RCONBridge
-
-bridge = RCONBridge()
-result = bridge.run_scarpet("scarpet_scripts/test_redstone.signal_strength(x, y, z)")
-```
-
-## Roadmap
-
-| Phase | Status | Description |
-|-------|--------|-------------|
-| 1. Infrastructure | ✅ Complete | RCON bridge, server orchestration |
-| 2. Data Factory | ✅ Complete | Litematic parsing, replicator |
-| 3. Verification | ✅ Complete | Scarpet API, integration tests |
-| 4. Reasoning Data | ✅ Complete | Testing validated, ready to generate |
-| 5. Training | 🔄 Next | Fine-tune Qwen 7B on generated data |
-| 6. Deployment | 📋 Planned | Production MIRA agent |
-
-## Next Steps
-
-1. **Generate 10k training circuits** (~$1.50, ~5 minutes with vLLM)
-2. **Fine-tune Qwen 3.5 9B** (~$50-100)
-3. **Validate in Minecraft** (build 10-20 circuits, expect 80%+ success)
-4. **Deploy MIRA inference loop** (generate → build → test → repair)
-
-## Documentation
-
-**To get started with development:**
-
-1. **`docs/ARCHITECTURE.md`** - Complete system reference (READ FIRST)
-   - Current architecture (one-shot training)
-   - Future architecture (iterative with verification)
-   - All components explained
-   - Development phases and roadmap
-   - How to get started
-
-2. **`docs/TESTING_REPORT.md`** - What we validated, key findings
-3. **`docs/PAST_ATTEMPTS.md`** - Historical context, what we tried
-
-**Testing infrastructure:**
-- **`evaluation/README.md`** - How to run tests
-
-**Archive (reference only):**
-- **`docs/archive_technical_design_original.md`** - Original vision (superseded by ARCHITECTURE.md)
-
-## License
-
-MIT
-
----
-
-*Last updated: November 1, 2026 - see `docs/STATUS_2026-11.md`.*
+Older Fabric/RCON, scraping, model/training and experimental-agent code is research/history,
+not the product workflow. See [past attempts](docs/PAST_ATTEMPTS.md) and
+[historical status](docs/STATUS_2026-11.md). No functional training improvement or general
+arbitrary-contraption reliability has been demonstrated.

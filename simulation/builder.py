@@ -538,6 +538,8 @@ class Part:
         self._ports[name] = (_pos(pos, f"port {name!r}"), kind, face)
 
     def label(self, name: str, a, b=None) -> None:
+        if name in self._labels:
+            raise ValueError(f"duplicate label {name!r}")
         a = _pos(a, "label corner")
         b = a if b is None else _pos(b, "label corner")
         self._labels[name] = (P(min(a.x, b.x), min(a.y, b.y), min(a.z, b.z)),
@@ -669,6 +671,8 @@ class Part:
             self._ports[f"{inst_name}.{pname}"] = (q, pkind, face)
             self._pinfo[f"{inst_name}.{pname}"] = res.pinfo.get(pname) or (pd.name, pname)
         for lname, (a, b) in res.labels.items():
+            if f"{inst_name}.{lname}" in self._labels:
+                raise ValueError(f"duplicate label {inst_name}.{lname}")
             a2, b2 = P(*rotate_point(a, rot, mirror)) + at, P(*rotate_point(b, rot, mirror)) + at
             self._labels[f"{inst_name}.{lname}"] = (P(min(a2.x, b2.x), min(a2.y, b2.y), min(a2.z, b2.z)),
                                                     P(max(a2.x, b2.x), max(a2.y, b2.y), max(a2.z, b2.z)))
@@ -1653,11 +1657,29 @@ def decompile(src, min_fill: int = 3, motifs: bool = True, verify: bool = True) 
     """.litematic/.schem path (or Nucleation Schematic) -> canonical program text.
 
     Coordinates are translated so the min block corner is (0,0,0). With verify=True the program
-    is compiled again and compared with the original (states, block-entity NBT, entities);
-    a mismatch raises DecompileError(reason=...). The same input always yields the same text."""
+    is compiled again and compared with normalized non-air content (states, block-entity NBT,
+    entities), NOT original bytes/metadata/air/selection semantics. File inputs undergo raw
+    admission checks; project import additionally bounds the whole operation in a worker.
+    A mismatch raises DecompileError(reason=...). The same input always yields the same text."""
     import nucleation
+    payloads = None
+    if isinstance(src, (str, os.PathLike)):
+        from simulation.imports import preflight, source_offset, _check_payloads, _check_cells, MAX_COMPRESSED
+        try:
+            with open(src, 'rb') as f:
+                _meta, payloads = preflight(f.read(MAX_COMPRESSED + 1))
+        except Exception as e:
+            raise DecompileError('unsupported_import', str(e)) from None
+        src = str(src)
     sc = nucleation.Schematic.load_from_file(src) if isinstance(src, str) else src
-    blocks, entities, offset = load_normalized(sc)
+    blocks, entities, offset = load_normalized(sc, strict_states=payloads is not None)
+    if payloads is not None:
+        try:
+            raw_offset = source_offset(_meta, offset)
+            _check_payloads(payloads, blocks, entities, raw_offset)
+            _check_cells(_meta['_raw_cells'], blocks, raw_offset)
+        except ValueError as e:
+            raise DecompileError('unsupported_payload', str(e)) from None
     text = _print_program(sc if motifs else None, blocks, entities, offset, min_fill)
     if verify:
         _verify_roundtrip(text, blocks, entities)

@@ -1,14 +1,14 @@
 # Builder: the authoring layer (2026-11)
 
-Implements the format decision in `docs/audits/oracle_format_2026-11.md`: a build is plain Python written against a small `Part` API, compiled in a sandbox to the flat `(x, y, z, state, nbt)` block list that everything else already speaks. Nucleation sits underneath for storage, transforms and simulation. The reverse direction, `decompile()`, turns any `.litematic`/`.schem` into the same kind of program, gated on a lossless round trip.
+Implements the format decision in `docs/audits/oracle_format_2026-11.md`: a build is plain Python written against a small `Part` API, compiled in a sandbox to the flat `(x, y, z, state, nbt)` block list that everything else already speaks. Nucleation sits underneath for storage, transforms and simulation. The reverse direction, `decompile()`, turns admitted `.litematic`/`.schem` content into the same kind of program, gated on a **normalized-content** round trip, not whole-file losslessness. Use [project import](IMPORT.md) for raw admission, original-byte provenance, named selections and worker resource limits.
 
-Files: `simulation/builder.py` (API, sandbox, `compile`, `decompile`), `simulation/blockstates.py` + `simulation/blockstates_1_21.json` (validator, canonical form, rotate/mirror tables), `scripts/corpus_decompile.py`, `tests/unit/test_builder.py` (95 tests), `evaluation/prompts/builder_system.md` (model-facing prompt with three worked examples).
+Files: `simulation/builder.py` (API, sandbox, `compile`, `decompile`), `simulation/blockstates.py` + `simulation/blockstates_1_21.json` (validator, canonical form, rotate/mirror tables), `scripts/corpus_decompile.py`, `tests/unit/test_builder.py` (106 tests), `evaluation/prompts/builder_system.md` (model-facing prompt with three worked examples).
 
 ## Quick start
 
 ```bash
 source .venv/bin/activate                       # or call .venv/bin/python directly
-python -m pytest tests/unit/test_builder.py -q   # 95 tests, ~3 s, no server/API key
+python -m pytest tests/unit/test_builder.py -q   # 106 tests, ~3 s, no server/API key
 python simulation/builder.py my_build.py         # compile a program, print the report
 python simulation/builder.py some.litematic      # decompile to program text on stdout
 python scripts/corpus_decompile.py               # whole corpus -> data/corpus/decompiled/*.py (+ stats), ~1 min
@@ -28,7 +28,7 @@ build.hash()      # sha256 over blocks + entities (determinism check)
 sim = build.simulate()                             # Nucleation TickSimulation, settle="Placement"
 sim.use_block(*build.local(build.ports["A"]["pos"]))
 build.save("out.litematic")                        # via Nucleation (.litematic / .schem)
-text = B.decompile("some.litematic")               # lossless-gated; raises DecompileError(reason=...)
+text = B.decompile("some.litematic")               # normalized-content gate; raises DecompileError(reason=...)
 ```
 
 Program shape: `from simulation.builder import *` then `def build(b):`. `evaluation/prompts/builder_system.md` is the full model-facing reference with the three examples (lamp, NOT, AND-from-three-inverters); `tests/unit/test_builder.py` extracts and simulates exactly those code blocks, so the prompt cannot drift from the code.
@@ -47,7 +47,7 @@ Program shape: `from simulation.builder import *` then `def build(b):`. `evaluat
 | `layers(origin, palette, rows)` | `rows[y][z][x]`; `"."`/space = no block; palette keys must be 1 char to be used in rows (longer keys are ignored, so one dict can serve `layers` and `set`) |
 | `get(pos)`, `remove(a, b=None)` | air is never stored; setting `air()` deletes |
 | `entity(id, (x, y, z), nbt=None)` | float position; rotated/mirrored with the part, other entity NBT is not |
-| `port(name, pos, kind="in", face=None)`, `label(name, a, b=None)` | named positions/regions that move with the part |
+| `port(name, pos, kind="in", face=None)`, `label(name, a, b=None)` | named positions/regions that move with the part; duplicate labels fail |
 | `place(part, at, rot=0, mirror=None, name=None, **params)` -> `Inst` | `inst["port"]` = world position after transform |
 | `array(part, n, step, at, rot, mirror, name, **params)` -> `[Inst]` | instance i at `at + i*step` (world-space step); ports are also registered as `"<part>[i].<port>"` |
 | `use(path, at, rot, mirror, name)` | library cell: `.litematic/.schem` under `lib_root`, ports from `<file>.ports.json` |
@@ -95,9 +95,13 @@ Program shape: `from simulation.builder import *` then `def build(b):`. `evaluat
 4. leftovers per y-layer as **`b.layers`** when the ASCII grid is cheaper than `points`, else **`b.points(K[..], (x,y,z), ...)`**;
 5. `b.entity(...)` lines.
 
-**Gate:** with `verify=True` the program is executed again and compared with the original: block states, block-entity NBT, entities (id, float `Pos`, NBT), `DecompileError(reason)` with `reason` in `program_error | block_mismatch | nbt_mismatch | entity_mismatch | bad_state`. Same input -> same text (tested). Air-likes (`air`, `cave_air`, `void_air`) are treated as empty on both sides. Entity NBT other than `Pos`/`id` (including the stale `AABB` that litematica stores in world coordinates) is passed through verbatim.
+**Raw-file admission:** file inputs are checked against raw packed cells and typed payloads before printing; scheduled ticks and unsupported conversion are refused. In-memory schematics have no raw-file guarantee. `decompile` itself remains in-process; project import bounds the entire operation and skips motif discovery.
 
-## Measured: corpus decompile (2296 `.litematic`, 16 workers)
+**Gate:** with `verify=True` the program is executed again and compared with normalized content, not the original file: block states, block-entity NBT, entities (id, float `Pos`, NBT), `DecompileError(reason)` with `reason` in `program_error | block_mismatch | nbt_mismatch | entity_mismatch | bad_state`. Same input -> same text (tested). Air-likes (`air`, `cave_air`, `void_air`) are treated as empty on both sides. Entity NBT other than `Pos`/`id` (including the stale `AABB` that litematica stores in world coordinates) is passed through verbatim.
+
+## Historical measurement: corpus decompile (2296 `.litematic`, 16 workers)
+
+This predates raw admission and is **not** today's import-success rate. “Lossless” below meant normalized loader-content equivalence only; scheduled ticks/metadata/selection semantics were not compared. The installed dependency now handles valid negative sizes (see generated import tests). Current bounded sample and explicit refusals: [import checkpoint](audits/import_checkpoint_2026-11.md).
 
 `python scripts/corpus_decompile.py` -> `data/corpus/decompiled/*.py`, `data/corpus/decompile_stats.jsonl`, `data/corpus/decompile_summary.json`. Tokens = chars / 3.6. "JSON" = `json.dumps` of `{x,y,z,state[,nbt]}` rows (+ entities); "compact" = palette lines + one `x y z idx` line per block.
 
@@ -129,8 +133,8 @@ Reading: the audit's prediction ("median at least 5x, 20x on repetitive builds")
 
 ## Open problems
 
-- 35 corpus files with negative region sizes need a litemapy fallback (its tile-entity coordinates for negative regions are unverified, so none was added).
+- Historical negative-size failures above were dependency-specific; current negative-size admission is tested, but arbitrary raw payload conversion can still fail explicitly.
 - NBT dominates program size; consider an explicit lossy "strip NBT/entities" view for retrieval/SFT.
 - `use()` library cells are implemented but only exercised through the same loader the corpus uses (no committed library yet).
 - Sandbox is not an OS jail (see decision 5).
-- `AGENTS.md` should mention builder/blockstates/corpus_decompile and the `Placement` settle rule; `requirements.txt` already has nucleation. Neither file is owned by this task.
+- Whole-file metadata/selection-air/version-conversion fidelity is not provided by normalized decompilation; retain the project import archive/sidecar.

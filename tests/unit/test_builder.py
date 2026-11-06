@@ -528,7 +528,7 @@ def test_save_and_reload_litematic_round_trip(tmp_path):
 
 
 @needs_nuc
-def test_decompile_round_trip_is_lossless(tmp_path):
+def test_decompile_round_trip_preserves_normalized_content(tmp_path):
     src = ("@part\ndef cell(p):\n    p.fill((0,0,0),(2,0,2),solid())\n    p.set((1,1,1),repeater(flow=EAST,delay=3))\n"
            "    p.set((0,1,0),wire())\n    p.set((2,1,2),lamp())\n"
            "def build(b):\n    b.array(cell, 6, (4,0,0))\n    b.set((0,5,0), chest(facing=SOUTH), nbt=items(('minecraft:redstone', 9)))\n"

@@ -12,7 +12,7 @@ simulation/views.py     pure renderers: overview maps, slices (y / x / z), diffs
 simulation/export.py    settle -> .litematic (Nucleation), vanilla structure .nbt (own writer), path check, paste_check (oracle)
 scripts/mira.py         CLI (same commands)
 mira_mcp/server.py      + project_* MCP tools (additive; the session tools are unchanged)
-tests/project/          69 offline tests (~30 s; the vanilla tests run when the oracle is installed, else they are skipped)
+tests/project/          137 tests (vanilla tests run when the oracle is installed, else they are skipped)
 ```
 
 ```bash
@@ -24,7 +24,11 @@ alias mira='.venv/bin/python scripts/mira.py'
 
 1. **init**: `mira init NAME [--from-task ID] [--from-litematic FILE] [--program FILE] [--dir PATH]`. This creates
    `data/projects/NAME/` (any path works with `--dir`). The project holds `build.py`, `modules/`, `NOTES.md`, `project.json` and
-   `.mira/`; `--from-task` also writes `spec.json`.
+   `.mira/`; `--from-task` also writes `spec.json`. Import is bounded raw admission with original-byte/SHA256,
+   version and named region/selection sidecars, not arbitrary or whole-file lossless conversion; see [IMPORT.md](IMPORT.md).
+   Failed init/reinit is staged so missing/malformed/unsupported inputs cannot modify an existing project.
+   Retaining an imported build also retains/validates its provenance. Publication commits the init;
+   post-publication cleanup failure returns success with a warning identifying retained leftovers.
 2. **Write the spec** (`spec.json`, contract v2, `docs/ENV.md`) from the user's request, or copy it from a task. `test` validates it with
    `env.contract` and reports problems as text.
 3. **Modules**: put cells and helpers in `modules/NAME.py`. Import them into `build.py` with `from modules.NAME import x`, and import library parts
@@ -52,7 +56,9 @@ alias mira='.venv/bin/python scripts/mira.py'
    saves time on long sequences). Fix the code, rebuild, then use `diff` (block-level, grouped by module and region) and `log`.
    **Is the spec good?** `spec-check [--mutants N] [--no-mutation]` (below); **does vanilla agree?** `verify-vanilla` (below).
 8. **notes**: keep `NOTES.md` true. `notes-check` reports references that no longer exist. Write references as `port:NAME`, `label:NAME`,
-   `module:NAME`, `inst:PATH`, `part:NAME` or `(x, y, z)`; backticked names that existed in an earlier revision are checked too.
+   `module:NAME`, `inst:PATH`, `part:NAME` or `(x, y, z)`. A backticked qualified reference such as
+   `` `label:inverter bay` `` checks one exact name including spaces; unquoted references still support ranges.
+   Backticked names that existed in an earlier revision are checked too.
 9. **export**: `export [--litematic OUT] [--nbt OUT] [--no-fixed] [--force]` writes the settled at-rest world (build + spec scenery),
    reads the file back, and reports whether the build is placement-path sensitive.
 10. **paste-check**: pastes the export into vanilla 26.2 (the oracle) twice, once quietly and once with the full update pass. Each paste idles

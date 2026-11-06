@@ -39,7 +39,9 @@ def engine():
 
 def bind(project, revision, module=None):
     spec = project.dir / (f"modules/{module}.spec.json" if module else "spec.json")
-    inputs = {"source": project.source_hash(), "spec": file_hash(spec), "build": revision.meta["hash"], "engine": engine()}
+    provenance = project.import_provenance()
+    inputs = {"source": project.source_hash(), "spec": file_hash(spec), "build": revision.meta["hash"], "engine": engine(),
+              "import": digest(provenance) if provenance else None}
     return {"schema": 1, "inputs": inputs, "id": digest(inputs)}
 
 
